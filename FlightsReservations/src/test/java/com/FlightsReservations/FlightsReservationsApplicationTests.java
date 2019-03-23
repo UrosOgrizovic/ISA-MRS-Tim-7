@@ -1,4 +1,4 @@
-package com.flightreservation.FlightsReservations;
+package com.FlightsReservations;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
