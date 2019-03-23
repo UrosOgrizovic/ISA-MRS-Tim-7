@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.FlightsReservations.domain.User;
 
 /*
- * This class will be used as dummy repository for purpose of first spring. 
+ * This class will be used as dummy repository for purpose of first sprint. 
  * It will be replaced with repository that interacts with database later.
  */
 
