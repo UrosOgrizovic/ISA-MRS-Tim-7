@@ -12,7 +12,7 @@
 	<artifactId>FlightsReservations</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FlightsReservations</name>
-	<description>Demo project for Spring Boot</description>
+	<description>ISA Projekat Tim 7</description>
 
 	<properties>
 		<java.version>1.8</java.version>
