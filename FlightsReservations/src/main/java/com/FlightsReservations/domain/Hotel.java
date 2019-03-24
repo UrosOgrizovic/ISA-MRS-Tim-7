@@ -12,12 +12,13 @@ public class Hotel
 	private Set <Room> roomConfiguration;
 	private double overallRating;
 	private Set<String> additionalServices;
+	private String logoPath;
 	//TODO: add the list of reservations?
 	
 	public Hotel() {}
 	
 	public Hotel(String name, String address, String promoDescription, Map<String, Double> servicesPriceList,
-			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices)
+			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices, String logoPath)
 	{
 		this.name = name;
 		this.address = address;
@@ -26,6 +27,7 @@ public class Hotel
 		this.roomConfiguration = roomConfiguration;
 		this.overallRating = overallRating;
 		this.additionalServices = additionalServices;
+		this.logoPath = logoPath;
 	}
 
 	public String getName()
@@ -96,6 +98,16 @@ public class Hotel
 	public void setAdditionalServices(Set<String> additionalServices)
 	{
 		this.additionalServices = additionalServices;
+	}
+
+	public String getLogoPath()
+	{
+		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath)
+	{
+		this.logoPath = logoPath;
 	}
 	
 	

@@ -1,0 +1,89 @@
+[33mcommit ad64acd12c8f23dba5599b89596cd10ac8c3c6ca[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Sun Mar 24 10:48:48 2019 +0100
+
+    Added form for editing rent-a-car service profile
+
+[33mcommit 05858d824a149a9b6c48421a1d6664757ac28bfb[m
+Author: MilosBujakovic <milosbujakovic97@gmail.com>
+Date:   Sat Mar 23 21:39:56 2019 +0100
+
+    Added class models for Admins, Hotel and Room
+
+[33mcommit f7808c0c61b35acff6c8d1409b3d1a048a8ccdb0[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Sat Mar 23 10:53:54 2019 +0100
+
+    Added META-INF, data.sql, schema.sql to resources folder
+
+[33mcommit 6f39661f39cda24889c873ca5f61e346d5e30651[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Sat Mar 23 10:24:44 2019 +0100
+
+    Izmenjen description u pom.xml
+
+[33mcommit c76819ff758dd64526e74cafe5ccd219a2771567[m
+Author: leonidas97 <ivkovicdjordje1997@gmail.com>
+Date:   Sat Mar 23 03:35:47 2019 +0100
+
+    Update InMemoryUserRepository.java
+
+[33mcommit 3a370c546d971d369a0af7f91420232a8e5d99b8[m
+Author: Djole <ivkovicdjordje1997@gmail.com>
+Date:   Sat Mar 23 03:32:18 2019 +0100
+
+    added interfaces for repo and services also their implementations for standard users.
+
+[33mcommit e0f9fa1a6463a5758182958fbcee7837bea4705d[m
+Author: leonidas97 <ivkovicdjordje1997@gmail.com>
+Date:   Fri Mar 22 14:13:29 2019 +0100
+
+    Update README.md
+
+[33mcommit a9b3ea32aaff031c957fb0a3f6e0a9df612b8f12[m
+Author: pax <ivkovicdjordje1997@gmail.com>
+Date:   Fri Mar 22 14:12:56 2019 +0100
+
+    readme added.
+
+[33mcommit 9f3c63d0071e485d221ce908b0b504e125eaba18[m
+Author: pax <ivkovicdjordje1997@gmail.com>
+Date:   Fri Mar 22 14:11:36 2019 +0100
+
+    Added initial project, JPA and security dependence commented in pom.xml
+
+[33mcommit 1796ffac075bdaad95c3d994bc7c69b49e309150[m
+Author: pax <ivkovicdjordje1997@gmail.com>
+Date:   Fri Mar 22 14:10:33 2019 +0100
+
+    Added file .gitattributes that deal with line endings per-repository
+
+[33mcommit 6df33a30c792b2aad7dcac8f3709b8494732d9da[m
+Author: pax <ivkovicdjordje1997@gmail.com>
+Date:   Fri Mar 22 14:04:14 2019 +0100
+
+    Demo project removed
+
+[33mcommit 0f72be74ba442ad87b4c1a787dfa31361fb0ea79[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Thu Mar 21 19:56:50 2019 +0100
+
+    Obrisani nepotrebni .gitignore fajlovi
+
+[33mcommit 38a28d6e0118fbe8e19ec0f0bfacc321afe45222[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Thu Mar 21 19:55:52 2019 +0100
+
+    Ispravljen .gitignore fajl
+
+[33mcommit 892c017db556d0058d73678a10d3ccc68bac5e45[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Thu Mar 21 19:51:46 2019 +0100
+
+    Initial project commit
+
+[33mcommit f982e74583d4122374ebc4bdf222088a4aac2764[m
+Author: UrosOgrizovic <uros.ogrizovic671@gmail.com>
+Date:   Wed Mar 6 14:05:33 2019 +0100
+
+    Initial commit

@@ -1,0 +1,10 @@
+  
+input[type=submit] {
+    width: 60%;
+    height: 75%;
+    font-size: 15px;
+    border-color: black;
+    border-radius: 10%;
+    font-weight: bold
+    
+}
