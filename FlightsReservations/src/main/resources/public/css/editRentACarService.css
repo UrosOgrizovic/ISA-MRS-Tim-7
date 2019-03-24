@@ -1,0 +1,22 @@
+* {
+  margin: 20px;
+}
+
+button {
+    margin: 10px;
+}
+
+.form-control {
+    margin: 10px;
+    width: 300px;
+}
+
+.left {
+    float: left;
+    width: 30%;
+}
+
+.right {
+    float: right;
+    width: 60%;
+}
