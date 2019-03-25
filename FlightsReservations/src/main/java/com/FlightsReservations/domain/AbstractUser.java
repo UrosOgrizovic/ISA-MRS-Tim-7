@@ -1,21 +1,31 @@
 package com.FlightsReservations.domain;
 
-public abstract class AbstractUser {
-	private Long id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class AbstractUser {
 	private String firstName;
 	private String lastName;
-	private String email;
+	private String email; // unique
 	private String phone;
 	private String address;
 	private String password;
 	private String picturePath;
 	
-	public Long getId() {
-		return id;
+	public AbstractUser() {
 	}
-	public void setId(Long id) {
-		this.id = id;
+	
+	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password,
+			String picturePath) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.password = password;
+		this.picturePath = picturePath;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -46,6 +56,7 @@ public abstract class AbstractUser {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
