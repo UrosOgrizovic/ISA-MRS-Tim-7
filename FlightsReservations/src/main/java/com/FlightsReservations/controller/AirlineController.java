@@ -6,28 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.User;
-import com.FlightsReservations.service.UserService;
+import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.service.AirlineService;
 
 @RestController
-@RequestMapping("/users")
-@CrossOrigin("*")
-public class UserController {
+@RequestMapping("/airlines")
+public class AirlineController {
+	@Autowired
+	private AirlineService service;
 	
-	@Autowired 
-	private UserService service;
-	
-	@RequestMapping(
-			value = "/getAll", 
-			method = RequestMethod.GET) 
-	public Collection<User> getAll()  {
+	@RequestMapping(value="/getAll", method = RequestMethod.GET) 
+	public Collection<Airline> getAll() {
 		return service.findAll();
+		
 	}
 	
 	@RequestMapping(
@@ -35,12 +31,11 @@ public class UserController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> update(@RequestBody User user) {
-		if (user.getFirstName().isBlank() ||
-				user.getLastName().isBlank() || 
-				user.getPhone().isBlank() || 
-				user.getAddress().isBlank())	
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<User>(service.update(user), HttpStatus.OK);
+	public ResponseEntity<Airline> update(@RequestBody Airline airline) {
+		if (airline.getName().isBlank() ||
+				airline.getLocation().isBlank() ||
+				airline.getPromoDescription().isBlank())
+			return new ResponseEntity<Airline>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Airline>(service.update(airline), HttpStatus.OK);
 	}
 }
