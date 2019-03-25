@@ -2,7 +2,8 @@ package com.FlightsReservations.repository;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,39 +15,43 @@ import com.FlightsReservations.domain.User;
  */
 
 @Repository
-public class InMemoryUserRepository implements IRepository<User>{
+public class InMemoryUserRepository implements IRepository<User, String>{
+	private ConcurrentHashMap<String, User> users = new ConcurrentHashMap<String, User>();
 	
-	private AtomicLong counter = new AtomicLong(); // thread safe while Long is not
-	private ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<Long, User>();
+	@PostConstruct
+	private void init_users() {
+		User u1 = new User("pera", "peric", "pera@gmail.com", "123", "ul bb", "sifra", "path");
+		User u2 = new User("mika", "mikic", "mika@gmail.com", "321", "ul bb2", "sifra2", "path2");
+		create(u1);
+		create(u2);
+		System.out.println("USERS CREATED!");
+	}
 	
 	@Override
 	public User create(User t) {
-		// TODO Auto-generated method stub
-		return null;
+		users.put(t.getEmail(), t);
+		return t;
 	}
 
 	@Override
 	public User update(User t) {
-		// TODO Auto-generated method stub
-		return null;
+		users.put(t.getEmail(), t);
+		return t;
 	}
 
 	@Override
-	public User findOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public User findOne(String email) {
+		return users.get(email);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String email) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Collection<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return users.values();
 	}
 
 }
