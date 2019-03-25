@@ -32,7 +32,7 @@ public class AirlineController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> update(@RequestBody Airline airline) {
-		if (airline.getName().isBlank() ||
+		if (airline.getName().trim().isEmpty() ||
 				airline.getLocation().trim().isEmpty() ||
 				airline.getPromoDescription().trim().isEmpty())
 			return new ResponseEntity<Airline>(HttpStatus.BAD_REQUEST);
