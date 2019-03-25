@@ -33,8 +33,8 @@ public class AirlineController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> update(@RequestBody Airline airline) {
 		if (airline.getName().isBlank() ||
-				airline.getLocation().isBlank() ||
-				airline.getPromoDescription().isBlank())
+				airline.getLocation().trim().isEmpty() ||
+				airline.getPromoDescription().trim().isEmpty())
 			return new ResponseEntity<Airline>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<Airline>(service.update(airline), HttpStatus.OK);
 	}

@@ -36,11 +36,11 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> update(@RequestBody User user) {
-		if (user.getFirstName().isBlank() ||
-				user.getLastName().isBlank() || 
-				user.getPhone().isBlank() || 
-				user.getAddress().isBlank())	
+		if (user.getFirstName().trim().isEmpty() ||
+				user.getLastName().trim().isEmpty() || 
+				user.getPhone().trim().isEmpty() || 
+				user.getAddress().trim().isEmpty() )	
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<User>(service.update(user), HttpStatus.OK);
 	}
-}
+}            
