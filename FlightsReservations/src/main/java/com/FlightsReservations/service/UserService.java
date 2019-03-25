@@ -9,39 +9,35 @@ import com.FlightsReservations.domain.User;
 import com.FlightsReservations.repository.InMemoryUserRepository;
 
 @Service
-public class UserService implements IService<User> {
+public class UserService implements IService<User,String> {
 	
 	@Autowired
 	private InMemoryUserRepository repository; // Type of repository will be changed in future
 	
 	@Override
 	public User create(User t) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.create(t);
 	}
 
 	@Override
 	public User update(User t) {
-		// TODO Auto-generated method stub
-		return null;
+		if (repository.findOne(t.getEmail()) == null)
+			return null;
+		return repository.update(t);
 	}
 
 	@Override
-	public User findOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public User findOne(String email) {
+		return repository.findOne(email);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String email) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Collection<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
-
 }
