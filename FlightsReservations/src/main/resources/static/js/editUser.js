@@ -1,7 +1,11 @@
-var mapa = new Map();
-var emailSelect = $("#email_select");
+var mapa;
+var emailSelect;
 
 $(document).ready(function(){
+	mapa = new Map();
+	emailSelect = $("#emailSelect");
+	emailSelect.change(setInputs);
+	
 	$.ajax({
 		url: "http://localhost:8080/users/getAll",
 		method: "GET",
@@ -36,6 +40,7 @@ function updateUser() {
 		dataType: "json",	
 		data: JSON.stringify(mapa[key]),
 		success: function(result) {
+			alert("Update successfull!");
 		}
 	});
 }
@@ -59,7 +64,3 @@ function setInputs(){
 	$("#phone").val(mapa[key].phone);
 	$("#address").val(mapa[key].address);
 }
-
-// event 
-emailSelect.change(setInputs);
-
