@@ -5,19 +5,16 @@ function searchCars() {
 		alert("Inputs are invalid!");
 		return;
 	}
-    var car = {};
-    car.name = $("#name").val();
-    car.yearOfManufacture = $("#yearOfManufacture").val();
-    car.manufacturer = $("#manufacturer").val();
-
-    console.log(car);
+    var name = $("#name").val();
+    var yearOfManufacture = $("#yearOfManufacture").val();
+    var manufacturer = $("#manufacturer").val();
 
     $.ajax({
-		url: searchUrl,
+		url: searchUrl + "?name=" + name + "&manufacturer=" + manufacturer + "&yearOfManufacture=" + yearOfManufacture,
 		method: "GET",
 		contentType: "application/json",
 		dataType: "json",	
-		data: JSON.stringify(car),
+		data: {},
 		success: function(result) {
             console.log(result);
 		}
