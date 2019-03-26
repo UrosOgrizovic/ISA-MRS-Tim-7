@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class Hotel
 {
+	private Long id;
 	private String name;
 	private String address;//TODO: add address via map
 	private String promoDescription;
@@ -17,9 +18,10 @@ public class Hotel
 	
 	public Hotel() {}
 	
-	public Hotel(String name, String address, String promoDescription, Map<String, Double> servicesPriceList,
+	public Hotel(Long id, String name, String address, String promoDescription, Map<String, Double> servicesPriceList,
 			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices, String logoPath)
 	{
+		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.promoDescription = promoDescription;
@@ -28,6 +30,18 @@ public class Hotel
 		this.overallRating = overallRating;
 		this.additionalServices = additionalServices;
 		this.logoPath = logoPath;
+	}
+	
+	
+
+	public Long getId()
+	{
+		return id;
+	}
+
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public String getName()

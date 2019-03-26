@@ -20,8 +20,8 @@ public class InMemoryUserRepository implements IRepository<User, String>{
 	
 	@PostConstruct
 	private void init_users() {
-		User u1 = new User("pera", "peric", "pera@gmail.com", "123", "ul bb", "sifra", "path");
-		User u2 = new User("mika", "mikic", "mika@gmail.com", "321", "ul bb2", "sifra2", "path2");
+		User u1 = new User(123L, "pera", "peric", "pera@gmail.com", "123", "ul bb", "sifra", "path");
+		User u2 = new User(456L, "mika", "mikic", "mika@gmail.com", "321", "ul bb2", "sifra2", "path2");
 		create(u1);
 		create(u2);
 		System.out.println("USERS CREATED!");
