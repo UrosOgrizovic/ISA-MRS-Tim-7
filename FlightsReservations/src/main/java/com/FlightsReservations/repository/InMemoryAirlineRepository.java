@@ -18,7 +18,7 @@ public class InMemoryAirlineRepository implements IRepository<Airline,Long>{
 	
 	@PostConstruct
 	private void init_airlines() {
-		Airline a1 = new Airline("AirSerbia", "Serbia", "Best in Serbia");
+		Airline a1 = new Airline("AirSerbia", "Serbia", "Best in Serbia");		
 		Airline a2 = new Airline("AirRussia", "Russia", "Best in Russia");
 		create(a1);
 		create(a2);
