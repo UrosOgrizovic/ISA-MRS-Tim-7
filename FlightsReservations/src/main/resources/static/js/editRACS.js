@@ -12,7 +12,6 @@ $(document).ready(function(){
 		success: function (result) {
 			for (var i = 0; i < result.length; i++) {
                 mapa[result[i].id] = result[i];
-                console.log(result[i].name + " " + result[i].address + " " + result[i].description);
                 nameSelect.append("<option>"+result[i].name+"</option>");
                 idSelect.append("<option>" + result[i].id + "</option>");
 			}
@@ -82,7 +81,3 @@ $(function(){
         setInputs();
     })
 })
-
-// event 
-nameSelect.change(setInputs);
-
