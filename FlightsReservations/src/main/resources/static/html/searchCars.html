@@ -19,7 +19,7 @@
   <body>
     <h3>By leaving a field blank, it will be considered a universal match.</h3>
     <div>
-        <form method="GET">
+        <form method="GET" id="carSearchForm">
             
             <label>Car name</label>
             <input type="text" class="form-control"  id="name"/>
@@ -27,7 +27,7 @@
             <input type="number" min="1950" class="form-control"  id="yearOfManufacture"/>
             <label>Manufacturer</label>
             <input type="text" class="form-control" id="manufacturer"/>
-            <button type="submit" class="btn btn-primary" onClick="searchCars()" >Search</button>
+            <input type="submit" class="btn btn-primary" value="Search" />
                     
         </form>
     </div>
