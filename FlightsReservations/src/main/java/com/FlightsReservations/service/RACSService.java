@@ -1,45 +1,56 @@
 package com.FlightsReservations.service;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.RACS;
-import com.FlightsReservations.repository.InMemoryRACSRepository;
+import com.FlightsReservations.repository.RACSRepository;
 
 @Component
-public class RACSService implements IService<RACS,Long> {
+public class RACSService {
 
 	@Autowired
-	InMemoryRACSRepository repository;
+	RACSRepository repository;
 	
-	@Override
 	public RACS create(RACS t) {
-		// TODO Auto-generated method stub
+		RACS r = findOne(t.getId());
+		if (r == null) {
+			return repository.save(t);
+		}
 		return null;
 	}
 
-	@Override
-	public RACS update(RACS t) {
-		if (repository.findOne(t.getId()) == null)
-			return null;
-		return repository.update(t);
+	public boolean update(RACS t) {
+		RACS r = findOne(t.getId());
+		if (r != null) {
+			r.setAddress(t.getAddress());
+			r.setBranchOffices(t.getBranchOffices());
+			r.setCars(t.getCars());
+			r.setDescription(t.getDescription());
+			r.setName(t.getName());
+			r.setPricelist(t.getPricelist());
+			repository.save(r);
+			return true;
+		}
+		return false;
 	}
 
-	@Override
 	public RACS findOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return repository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
-	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public Collection<RACS> findAll() {
 		return repository.findAll();
 	}

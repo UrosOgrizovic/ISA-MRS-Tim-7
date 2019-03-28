@@ -3,13 +3,30 @@ package com.FlightsReservations.domain;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class RACS {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@NotNull
 	private Long id;
+	@NotBlank
 	private String name;
+	@NotBlank
 	private String address;
+	@NotBlank
 	private String description;
+	@NotNull
 	private ArrayList<Entry<String, Double>> pricelist;
+	@NotNull
 	private ArrayList<Car> cars;
+	@NotNull
 	private ArrayList<String> branchOffices;
 	
 	public Long getId() {
