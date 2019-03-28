@@ -1,6 +1,7 @@
 package com.FlightsReservations.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,14 @@ public class AirlineService {
 	private AirlineRepository repository;
 	
 	public Airline create(Airline t) {
-		Airline a = repository.findOne(t.getId());
+		Airline a = findOne(t.getId());
 		if (a == null)
 			return repository.save(t);
 		return null;
 	}
 
 	public boolean update(Airline t) {
-		Airline a = repository.findOne(t.getId());
+		Airline a = findOne(t.getId());
 		if (a != null) {
 			a.setLocation(t.getLocation());
 			a.setName(t.getName());
@@ -34,7 +35,11 @@ public class AirlineService {
 	}
 
 	public Airline findOne(Long id) {
-		return repository.findOne(id);
+		try {
+			return repository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	public List<Airline> findAll() {
