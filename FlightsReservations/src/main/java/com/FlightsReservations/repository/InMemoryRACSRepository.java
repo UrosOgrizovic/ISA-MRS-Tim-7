@@ -15,7 +15,7 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 
 @Repository
-public class InMemoryRACSRepository implements IRepository<RACS, Long> {
+public class InMemoryRACSRepository {
 	private AtomicLong counter = new AtomicLong(); // thread safe while Long is not
 	private ConcurrentHashMap<Long, RACS> racss = new ConcurrentHashMap<Long, RACS>();
 
@@ -60,7 +60,6 @@ public class InMemoryRACSRepository implements IRepository<RACS, Long> {
 		System.out.println("RACS created!");
 	}
 	
-	@Override
 	public RACS create(RACS r) {
 		Long id = counter.getAndIncrement();
 		r.setId(id);
@@ -68,23 +67,19 @@ public class InMemoryRACSRepository implements IRepository<RACS, Long> {
 		return r;
 	}
 
-	@Override
 	public RACS update(RACS r) {
 		racss.put(r.getId(), r);
 		return r;
 	}
 
-	@Override
 	public RACS findOne(Long id) {
 		return racss.get(id);
 	}
 
-	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public Collection<RACS> findAll() {
 		return racss.values();
 	}
