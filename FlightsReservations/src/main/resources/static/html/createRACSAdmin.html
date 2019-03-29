@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create/Add a hotel</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+		      rel="stylesheet"
+		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		      crossorigin="anonymous"
+        />
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <link rel="stylesheet" href=".\..\css\createHotel.css">
+        <link rel="stylesheet" href=".\..\css\imageButton.css">
+        <script src=".\..\js\createRACSAdmin.js"></script>
+
+
+    </head>
+
+    <body>
+        <br>
+        <form method="post" name="createRACSAdmin" onsubmit="return createRACSAdmin(this)" action="login.html"><!-- add action later-->
+            <table class="table">
+                    <caption colspan=2> <h1> Add a new Rent-A-Car Administartor to application:</h1> </caption>
+                    <tr>
+                        <td> <label> Name* : </label> </td>
+                        <td> <input type="text" name="name"> </td>
+                    </tr>
+                    <tr>
+                        <td> <label> Address* : </label></td><!-- edit later-->
+                        <td> <input type="text" name="address"> </td>
+                    </tr>
+                    <tr>
+                        <td> <label> Description: </label> </td>
+                        <td> <input type="text" name="promoDescription"> </td>
+                    </tr>
+                    <tr>
+                        <td> <label> Logo: </label> </td>
+                        <td> <input type="file" name="logoPath" class="imageButton"> </td>
+                    </tr>
+                    <tr>
+                        <td><label> Administrator: </label></td>
+                        <td> <select disabled name="hotelAdmin">
+                                <option value="0">Allow Selection of Hotel Administrator</option>
+                            </select>
+                        </td>    <!-- add a Hotel administrator selection-->
+                    </tr>
+                    <tr>
+                        <td colspan=2 align="center"> <input type="submit" value="Add Hotel" class="btn btn-primary btn-lg" id="submitForm"> </td>
+                    </tr>
+                    <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
+            </table>
+
+        </form>
+    </body>
+</html>

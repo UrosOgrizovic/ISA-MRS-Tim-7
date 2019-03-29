@@ -10,38 +10,52 @@
 		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 		      crossorigin="anonymous"
         />
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <link rel="stylesheet" href=".\..\css\createHotel.css">
+        <link rel="stylesheet" href=".\..\css\imageButton.css">
         <script src=".\..\js\createHotel.js"></script>
-        <link rel="stylesheet" href=".\..\css\createHotel.css"> 
+
 
     </head>
 
     <body>
         <br>
-        <form method="post" name="createHotelForm" onsubmit="return create_hotel(this)" action="login.html"><!-- add action later-->
-            <table align="center">
-                    <th colspan=2> <h1>Add a new hotel to application:</h1> </th>
-                    <tr>
-                            <td> <label class="notNull"> Name* : </label> </td>
-                            <td> <input type="text" name="name"> </td>
-                    </tr>
-                    <tr>
-                            <td> <label class="notNull"> Address* : </label></td><!-- edit later-->
-                            <td> <input type="text" name="address"> </td>
-                    </tr>
-                    <tr>
-                            <td> <label> Description: </label> </td>
-                            <td> <input type="text" name="promoDescription"> </td>
-                    </tr>
-                    <tr>
-                            <td> <label> Logo: </label> </td>
-                            <td> <input type="file" name="logoPath"> </td>
-                    </tr>
-                    <tr>
-                        <td colspan=2 align="center"> <input type="submit" value="Add Hotel" > </td>
-                    </tr>
-                    <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
-            </table>
-
+        <form id="createHotelForm"><!-- onsubmit="return createHotel(this)" action="login.html"-->
+        <table class="table" onsubmit="createHotel()">
+                <caption colspan=2> Add a new hotel to application:</caption>
+                <tr>
+                    <td> <label> Name* : </label> </td>
+                    <td> <input type="text" name="name"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Address* : </label></td><!-- edit later-->
+                    <td> <input type="text" name="address"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Description: </label> </td>
+                    <td> <input type="text" name="promoDescription"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Logo: </label> </td>
+                    <td> <input type="file" name="logoPath" class="imageButton"> </td>
+                </tr>
+                <tr>
+                    <td><label> Administrator: </label></td>
+                    <td> <select disabled name="hotelAdmin">
+                            <option value="0">Allow Selection of Hotel Administrator</option>
+                        </select>
+                    </td>    <!-- add a Hotel administrator selection-->
+                </tr>
+                <tr>
+                    <td colspan=2 align="center"> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
+                        <input type="button" class="btn btn-danger" value="Add Hotel" name="createHotel">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary">Cancel</button>
+                    </td>
+                </tr>
+                <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
+        </table>
         </form>
     </body>
 </html>

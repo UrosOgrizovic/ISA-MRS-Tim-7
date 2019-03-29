@@ -9,6 +9,7 @@ public class Hotel
 	private String name;
 	private String address;//TODO: add address via map
 	private String promoDescription;
+	private HotelAdmin hotelAdmin;
 	private Map<String, Double> servicesPriceList;
 	private Set <Room> roomConfiguration;
 	private double overallRating;
@@ -18,20 +19,20 @@ public class Hotel
 	
 	public Hotel() {}
 	
-	public Hotel(Long id, String name, String address, String promoDescription, Map<String, Double> servicesPriceList,
+	public Hotel(Long id, String name, String address, String promoDescription, HotelAdmin hotelAdmin, Map<String, Double> servicesPriceList,
 			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices, String logoPath)
 	{
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.promoDescription = promoDescription;
+		this.hotelAdmin = hotelAdmin;
 		this.servicesPriceList = servicesPriceList;
 		this.roomConfiguration = roomConfiguration;
 		this.overallRating = overallRating;
 		this.additionalServices = additionalServices;
 		this.logoPath = logoPath;
 	}
-	
 	
 
 	public Long getId()
@@ -72,6 +73,16 @@ public class Hotel
 	public void setPromoDescription(String promoDescription)
 	{
 		this.promoDescription = promoDescription;
+	}
+
+	public HotelAdmin getHotelAdmin()
+	{
+		return hotelAdmin;
+	}
+
+	public void setHotelAdmin(HotelAdmin hotelAdmin)
+	{
+		this.hotelAdmin = hotelAdmin;
 	}
 
 	public Map<String, Double> getServicesPriceList()
