@@ -3,18 +3,21 @@ package com.FlightsReservations.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Airline;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.service.RACSService;
@@ -25,28 +28,35 @@ import com.FlightsReservations.service.RACSService;
 public class RACSController {
 	
 	@Autowired
-	RACSService service;
+	private RACSService service;
 	
-	@RequestMapping(value="/getAll", method = RequestMethod.GET) 
+	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
 		return service.findAll();
 		
 	}
 	
-	@RequestMapping(
-			value = "/update",
-			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RACS> update(@RequestBody RACS racs) {
-		if (racs.getName().trim().isEmpty() ||
-				racs.getAddress().trim().isEmpty() ||
-				racs.getDescription().trim().isEmpty())
-			return new ResponseEntity<RACS>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<RACS>(service.update(racs), HttpStatus.OK);
+	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RACS> add(@RequestBody @Valid RACS racs) {
+		RACS r = service.create(racs);
+		if (r != null) {
+			return new ResponseEntity<>(r, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(r, HttpStatus.CONFLICT);
 	}
 	
-	@RequestMapping(value="/searchCars", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(
+			value = "/update",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> update(@RequestBody @Valid RACS racs) {
+		if (service.update(racs))
+			return new ResponseEntity<>("Update successful", HttpStatus.OK);
+		return new ResponseEntity<>("Rent-a-car service with given id does not exist", HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping(value="/searchCars", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		if (name.trim().isEmpty() ||

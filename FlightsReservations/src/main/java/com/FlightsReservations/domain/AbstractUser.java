@@ -1,32 +1,39 @@
 package com.FlightsReservations.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public class AbstractUser 
 {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	
+	@Column(unique = true)
+	private String email;
+	
 	private String firstName;
-	private String lastName;
-	private String email; // unique
+	private String lastName; 
 	private String phone;
 	private String address;
 	private String password;
-	private String picturePath;
 	
 	public AbstractUser() {
 	}
 	
-	public AbstractUser(Long id, String firstName, String lastName, String email, String phone, String address, String password,
+	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password,
 			String picturePath) 
 	{
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
 		this.password = password;
-		this.picturePath = picturePath;
 	}
 	
 	public Long getId()
@@ -89,7 +96,6 @@ public class AbstractUser
 		this.address = address;
 	}
 	
-	@JsonIgnore
 	public String getPassword() 
 	{
 		return password;
@@ -98,15 +104,5 @@ public class AbstractUser
 	public void setPassword(String password) 
 	{
 		this.password = password;
-	}
-	
-	public String getPicturePath() 
-	{
-		return picturePath;
-	}
-	
-	public void setPicturePath(String picturePath) 
-	{
-		this.picturePath = picturePath;
 	}
 }

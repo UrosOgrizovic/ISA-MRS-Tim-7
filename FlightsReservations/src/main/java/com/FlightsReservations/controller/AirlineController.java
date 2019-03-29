@@ -1,15 +1,19 @@
 package com.FlightsReservations.controller;
 
-import java.util.Collection;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Airline;
@@ -22,21 +26,38 @@ public class AirlineController {
 	@Autowired
 	private AirlineService service;
 	
-	@RequestMapping(value="/getAll", method = RequestMethod.GET) 
-	public Collection<Airline> getAll() {
-		return service.findAll();	
+	@GetMapping(
+			value="/getAll", 
+			produces = MediaType.APPLICATION_JSON_VALUE
+			) 
+	public List<Airline> getAll() {
+		return service.findAll();
 	}
 	
-	@RequestMapping(
+	
+	
+	@PostMapping(
+			value = "/add",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<Airline> add(@RequestBody @Valid Airline airline) {
+		Airline a = service.create(airline);
+		if (a != null)
+			return new ResponseEntity<>(a, HttpStatus.CREATED);
+		return new ResponseEntity<>(a, HttpStatus.CONFLICT);
+	}
+	
+	
+	
+	@PutMapping(
 			value = "/update",
-			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Airline> update(@RequestBody Airline airline) {
-		if (airline.getName().trim().isEmpty() ||
-				airline.getLocation().trim().isEmpty() ||
-				airline.getPromoDescription().trim().isEmpty())
-			return new ResponseEntity<Airline>(HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<Airline>(service.update(airline), HttpStatus.OK);
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<String> update(@RequestBody @Valid Airline airline) {
+		if (service.update(airline))
+			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
+		return new ResponseEntity<>("Airline with given id does not exists.", HttpStatus.NOT_FOUND);
 	}
 }

@@ -1,22 +1,17 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Entity;
+
+@Entity
 public class User extends AbstractUser {
 	
-	// Attributes and methods for manipulating friends
-	
-		/* Price discounts (if they are bound to our application)
-		 * 
-		 * If they are bound to particular hotel/airline-company/rent-a-car 
-		 * where will we keep discount data? User or specific company?
-		 * 
-		 */
+	// friends attribute will be added
 	
 	public User() {
 		super();
 	}
 
-	public User(Long id, String firstName, String lastName, String email, String phone, String address, String password, String picturePath) {
-		super(id, firstName, lastName, email, phone, address, password, picturePath);
+	public User(String firstName, String lastName, String email, String phone, String address, String password, String picturePath) {
+		super(firstName, lastName, email, phone, address, password, picturePath);
 	}
-	
 }
