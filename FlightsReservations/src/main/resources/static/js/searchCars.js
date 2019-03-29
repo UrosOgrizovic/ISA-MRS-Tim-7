@@ -13,13 +13,13 @@ $(document).ready(function(){
         var yearOfManufacture = $("#yearOfManufacture").val();
         var manufacturer = $("#manufacturer").val();
     
+        $("#foundCars").remove();
         $.ajax({
             url: searchUrl + "?name=" + name + "&manufacturer=" + manufacturer + "&yearOfManufacture=" + yearOfManufacture,
             method: "GET",
             dataType: "json",
             contentType: "application/json",
             success: function(result) {
-                $("#foundCars").remove();
                 displaySearchResults(result);
             }, error: function(error) {
                 console.log(error);

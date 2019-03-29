@@ -1,5 +1,7 @@
 package com.FlightsReservations.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.service.UserService;
@@ -37,6 +41,21 @@ public class UserController {
 		return service.findAll();
 	}
 	
+	@GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<UserDTO> findOneUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+		if (email.trim().isEmpty() ||
+				password.trim().isEmpty())
+			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+		
+		Collection<RegistrationUserDTO> users = service.findAllRegistrationUsers();
+		
+		for (RegistrationUserDTO u : users) {
+			if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+				return new ResponseEntity<UserDTO>(u, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+	}
 	
 	
 	@PostMapping(

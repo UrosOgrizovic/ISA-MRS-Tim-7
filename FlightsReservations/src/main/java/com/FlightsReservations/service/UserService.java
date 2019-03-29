@@ -58,4 +58,12 @@ public class UserService {
 			dtos.add(new UserDTO(u));
 		return dtos;
 	}
+	
+	public List<RegistrationUserDTO> findAllRegistrationUsers() {
+		List<RegistrationUserDTO> rdtos = new ArrayList<>();
+		for (User u : repository.findAll()) {
+			rdtos.add(new RegistrationUserDTO(u));
+		}
+		return rdtos;
+	}
 }
