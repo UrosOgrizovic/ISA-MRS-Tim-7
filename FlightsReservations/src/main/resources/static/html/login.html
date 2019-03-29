@@ -9,27 +9,23 @@
 				integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 				crossorigin="anonymous"
 			/>
-			<!-- <link rel="stylesheet" href=".\..\css\login.css">-->
+            <link rel="stylesheet" href="../css/editRentACarService.css" />
 		<title>Log-in page</title>
 	</head>
 	
 	<body>
 		<br><br><br><br><br>
-		<form name="login_form" method="post"><!--  will add action later -->
-			<table align="center">
-				<tr>
-					<td> <label> Username: </label> </td>
-					<td> <input type="text" name="username"> </td>
-				</tr>
-				<tr>
-					<td> <label> Password: </label></td>
-					<td> <input type="text" name="password"> </td>
-				</tr>
-				<tr>
-					<td colspan=2 align="center"> <input type="submit" value="Login" > </td>
-				</tr>
-				<tr> <td colspan=2 align="center">Don't have an account? <a href="" >Register here</a> </td> </tr>
+		<form name="login_form" method="post">
+			<div align="center">
+				
+                <label> Email: </label>
+                <input type="text" class="form-control" name="email" required>
+                <label> Password: </label>
+                <input type="text" class="form-control" name="password" required>
+                <input type="submit" class="btn btn-primary" value="Login" >
+                <br>
+                Don't have an account? <a href="" >Register here</a>
 
-			</table>
+            </div>
 		</form>
 	</body>
