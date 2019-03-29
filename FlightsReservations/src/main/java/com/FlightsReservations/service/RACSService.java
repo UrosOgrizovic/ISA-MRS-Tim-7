@@ -16,11 +16,7 @@ public class RACSService {
 	RACSRepository repository;
 	
 	public RACS create(RACS t) {
-		RACS r = findOne(t.getId());
-		if (r == null) {
-			return repository.save(t);
-		}
-		return null;
+		return repository.save(t);
 	}
 
 	public boolean update(RACS t) {
