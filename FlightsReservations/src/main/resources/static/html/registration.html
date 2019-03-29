@@ -1,50 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			<link
-				rel="stylesheet"
-				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-				integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-				crossorigin="anonymous"
-			/>
-			<link rel="stylesheet" href="../css/editRentACarService.css" />
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="../css/editRentACarService.css" />
+        
+        
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
 		<title>Registration page</title>
 	</head>
 	
 	<body>
 		<br><br><br><br><br>
-		<form name="registration_form" method="post" onsubmit="return checkForm(this);"><!--  will add action later -->
+		<form id="registration_form">
 			<div align="center">
                 <h1>Registration </h1>
                 <div class="left">
                     <label> First name: </label>
-                    <input type="text" class="form-control" name="firstName" required>
+                    <input type="text" class="form-control" id="firstName" required>
                     <label> Email: </label>
-                    <input type="email" class="form-control" name="email" required>
+                    <input type="email" class="form-control" id="email" required>
                     <label> Address: </label>
-                    <input type="text" class="form-control" name="address" required>
+                    <input type="text" class="form-control" id="address" required>
                 </div>
                 <div class="right">
                     <label> Last name: </label>
-                    <input type="text" class="form-control" name="lastName" required>
+                    <input type="text" class="form-control" id="lastName" required>
                     
                     <label> Phone: </label>
-                    <input type="text" class="form-control" name="phone" required>
+                    <input type="text" class="form-control" id="phone" required>
                     
                     
                     <label> Password: </label>
-                    <input type="password" class="form-control" name="password" required> 
+                    <input type="password" class="form-control" id="password" required> 
                     <label> Confirm password: </label>
-                    <input type="password" class="form-control" name="confirmPassword" required>
+                    <input type="password" class="form-control" id="confirmPassword" required>
                 </div>
 
                 
                 
                 <input type="submit" class="btn btn-primary" value="Register"> 
         </form>
-				
-        <script src="../js/registerFormCheck.js" type="text/javascript"> </script>        
+                
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="../js/registration.js" type="text/javascript"> </script>        
     </body>
 </html>

@@ -45,6 +45,7 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<UserDTO> addUser(@RequestBody @Valid RegistrationUserDTO user) {
+		System.out.println("here");
 		UserDTO udto = service.create(user);
 		if (udto != null) 
 			return new ResponseEntity<>(udto, HttpStatus.CREATED);
