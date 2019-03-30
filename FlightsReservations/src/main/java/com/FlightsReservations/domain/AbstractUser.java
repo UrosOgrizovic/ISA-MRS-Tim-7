@@ -104,5 +104,5 @@ public class AbstractUser
 	public void setPassword(String password) 
 	{
 		this.password = password;
-	}
+	} 
 }

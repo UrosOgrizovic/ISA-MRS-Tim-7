@@ -26,6 +26,7 @@ public class UserService {
 			u.setAddress(t.getAddress());
 			u.setPhone(t.getPhone());
 			u.setPassword(t.getPassword());
+			u.setEnabled(true);
 			repository.save(u);
 			return new UserDTO(u);
 		}
@@ -39,6 +40,7 @@ public class UserService {
 			u.setLastName(t.getLastName());
 			u.setPhone(t.getPhone());
 			u.setAddress(t.getAddress());
+			u.setEnabled(t.isEnabled());
 			repository.save(u);
 			return true;
 		}

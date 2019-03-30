@@ -1,6 +1,7 @@
 package com.FlightsReservations.domain.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.User;
 
@@ -15,27 +16,39 @@ public class UserDTO {
 	private String phone;
 	@NotBlank
 	private String address;
+	@NotNull
+	private boolean enabled;
 
 	public UserDTO() {
 		super();
 	}
 
-	public UserDTO(String firstName, String lastName, String email, String phone, String address) {
+	public UserDTO(String firstName, String lastName, String email, String phone, String address, boolean enabled) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
+		this.enabled = enabled;
 	}
 	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public UserDTO(User user) {
 		this(
 			user.getFirstName(), 
 			user.getLastName(),
 			user.getEmail(),
 			user.getPhone(),
-			user.getAddress()
+			user.getAddress(),
+			user.isEnabled()
 			);
 	}
 
