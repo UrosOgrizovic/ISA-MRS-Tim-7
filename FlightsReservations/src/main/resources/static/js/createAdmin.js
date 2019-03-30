@@ -1,11 +1,42 @@
+var my_url = "http://localhost:8080";
 
 function validate_inputs(myForm)
 {
     console.log(myForm);
-
-    if(myForm.name.value.trim()=="")
+    //alert(""+myForm.adminType.type);
+    if(myForm.adminType.value==0)
     {
-        alert("You must enter a Hotel's name!");
+    	alert("You must select Administrator's type!");
+        return false;
+    }
+    else if(myForm.adminType.value==1)
+    {
+    	my_url += "/airlineAdministrator";
+    }
+    else if(myForm.adminType.value==2)
+    {
+    	my_url += "/hotelAdministrator";
+    }
+    else if(myForm.adminType.value==3)
+    {
+    	my_url += "/RACSAdministrator";
+    }
+    
+    if(myForm.firstName.value.trim()=="")
+    {
+        alert("You must enter Administrator's fist name!");
+        return false;
+    }
+
+    if(myForm.lastName.value.trim()=="")
+    {
+    	alert("You must enter Administrator's last name!");
+        return false;
+    }
+    
+    if(myForm.email.value.trim()=="")
+    {
+    	alert("You must enter Administrator's email address!");
         return false;
     }
     else//in case of wrong type (add later)
@@ -13,11 +44,13 @@ function validate_inputs(myForm)
 
     }
 
-    if(myForm.address.value.trim()=="")
+    
+    if(myForm.password.value.trim()=="")
     {
-        alert("You must enter a Hotel's address!");
+    	alert("You must enter Administrator's password!");
         return false;
     }
+    
 /*
     if(myForm.hotelAdministrator.value=="")//add hotel administrators first ??
     {
@@ -35,9 +68,9 @@ function validate_inputs(myForm)
     return true;
 }
 
-function create_hotel()
+function create_admin()
 {
-    myForm = document.getElementById("createHotelForm");
+    myForm = document.getElementById("createAdminForm");
     if(!validate_inputs(myForm))
     {
         return;
@@ -62,7 +95,7 @@ function create_hotel()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotel/create",//link assigned to method in HotelController
+            url: my_url + "/create",//link assigned to method in HotelController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",
