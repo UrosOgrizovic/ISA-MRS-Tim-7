@@ -1,13 +1,27 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+
+@Entity
 public class Airline {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@NotBlank
 	private Long id;
+	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String location;
+	
+	@NotBlank
 	private String promoDescription;
-	
-	// rest of attributes will be added later
-	
+		
 	public Airline() {
 		super();
 	}

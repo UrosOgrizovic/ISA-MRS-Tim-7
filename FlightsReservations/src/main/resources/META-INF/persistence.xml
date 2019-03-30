@@ -1,5 +1,0 @@
-<!-- The persistence.xml file is a standard configuration file in JPA. 
-It has to be included in the META-INF directory inside the 
-JAR file that contains the entity beans. 
-The persistence.xml file must define a persistence-unit with a unique name 
-in the current scoped class loader. -->

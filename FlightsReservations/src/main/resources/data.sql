@@ -1,1 +1,0 @@
-/* hardcoded INSERT INTO statements */

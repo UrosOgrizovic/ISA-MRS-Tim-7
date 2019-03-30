@@ -1,46 +1,48 @@
 package com.FlightsReservations.service;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Airline;
-import com.FlightsReservations.repository.InMemoryAirlineRepository;
+import com.FlightsReservations.repository.AirlineRepository;
 
-@Component
-public class AirlineService implements IService<Airline,Long>{
+@Service
+public class AirlineService {
 
 	@Autowired
-	InMemoryAirlineRepository repository;
+	private AirlineRepository repository;
 	
-	@Override
 	public Airline create(Airline t) {
-		// TODO Auto-generated method stub
+		Airline a = findOne(t.getId());
+		if (a == null)
+			return repository.save(t);
 		return null;
 	}
 
-	@Override
-	public Airline update(Airline t) {
-		if (repository.findOne(t.getId()) == null)
-			return null;
-		return repository.update(t);
+	public boolean update(Airline t) {
+		Airline a = findOne(t.getId());
+		if (a != null) {
+			a.setLocation(t.getLocation());
+			a.setName(t.getName());
+			a.setPromoDescription(t.getPromoDescription());
+			repository.save(a);
+			return true;
+		}
+		return false;
 	}
 
-	@Override
 	public Airline findOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return repository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
-	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Collection<Airline> findAll() {
+	public List<Airline> findAll() {
 		return repository.findAll();
 	}
 }

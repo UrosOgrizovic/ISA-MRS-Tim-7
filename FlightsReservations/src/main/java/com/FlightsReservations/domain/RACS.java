@@ -2,14 +2,38 @@ package com.FlightsReservations.domain;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class RACS {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	
+	@NotBlank
 	private String name;
+	@NotBlank
 	private String address;
+	@NotBlank
 	private String description;
+	@NotNull	
 	private ArrayList<Entry<String, Double>> pricelist;
-	private ArrayList<Car> cars;
+	
+	@NotNull
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Car> cars;
+	
+	@NotNull
 	private ArrayList<String> branchOffices;
 	
 	public Long getId() {
@@ -42,10 +66,10 @@ public class RACS {
 	public void setPricelist(ArrayList<Entry<String, Double>> pricelist) {
 		this.pricelist = pricelist;
 	}
-	public ArrayList<Car> getCars() {
+	public Set<Car> getCars() {
 		return cars;
 	}
-	public void setCars(ArrayList<Car> cars) {
+	public void setCars(Set<Car> cars) {
 		this.cars = cars;
 	}
 	public ArrayList<String> getBranchOffices() {
@@ -55,7 +79,7 @@ public class RACS {
 		this.branchOffices = branchOffices;
 	}
 	public RACS(String name, String address, String description, ArrayList<Entry<String, Double>> pricelist,
-			ArrayList<Car> cars, ArrayList<String> branchOffices) {
+			Set<Car> cars, ArrayList<String> branchOffices) {
 		super();
 		this.name = name;
 		this.address = address;
