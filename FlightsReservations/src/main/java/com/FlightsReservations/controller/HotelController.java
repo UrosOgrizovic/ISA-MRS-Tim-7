@@ -38,5 +38,19 @@ public class HotelController
         System.out.printf("\n\nHotel: %s , %s, %s\n\n", hotel.getName(), hotel.getAddress(), hotel.getPromoDescription() );
         return new ResponseEntity<Hotel>(service.create(hotel), HttpStatus.OK);
     }
+    
+	@RequestMapping(
+			value = "/update",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Hotel> update(@RequestBody Hotel hotel) {
+		if (hotel.getName().trim().isEmpty() ||
+				hotel.getAddress().trim().isEmpty() ||
+				hotel.getPromoDescription().trim().isEmpty())
+			
+			return new ResponseEntity<Hotel>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Hotel>(service.update(hotel), HttpStatus.OK);
+	}
             
 }

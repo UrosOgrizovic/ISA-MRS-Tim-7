@@ -1,21 +1,31 @@
 var mapa = new Map();
-var nameSelect = $("#name_select");
-var idSelect = $("#id_select");
+var name_select = $("#nameSelect");
+var id_select = $("#idSelect");
 
 
 $(document).ready(function(){
 	$.ajax({
-		url: "http://localhost:8080/racss/getAll",
+		url: "http://localhost:8080/hotel/getAll",
 		method: "GET",
 		dataType: "json",
 		crossDomain: true,
 		success: function (result) {
 			for (var i = 0; i < result.length; i++) {
                 mapa[result[i].id] = result[i];
-                nameSelect.append("<option>"+result[i].name+"</option>");
-                idSelect.append("<option>" + result[i].id + "</option>");
+                console.log("name_select:"+ name_select);
+                name_select.append("<option>"+result[i].name+"</option>");
+                id_select.append("<option>" + result[i].id + "</option>");
+                
 			}
-			setInputs();
+			
+			/*
+			console.log("name_select:"+ name_select);
+			for(var i in name_select)
+			{
+				console.log("name_select[i]:"+ name_select[i]);
+			}
+			console.log("id_select: " + id_select);*/
+			set_inputs();
 		}
 	});	
 });
@@ -57,12 +67,13 @@ function validate_inputs()
 	return flag;
 }
 
-function setInputs(){
-    var key = idSelect.val();
-	
+function set_inputs(){
+	console.log("id_select.val(): ");
+    var key = id_select.val();
+	console.log(key);
 	$("#name").val(mapa[key].name);
 	$("#address").val(mapa[key].address);
-	$("#promoDescription").val(mapa[key].description);
+	$("#promoDescription").val(mapa[key].promoDescription);
 }
 
 /*  if the 2nd item in one selectbox is selected,

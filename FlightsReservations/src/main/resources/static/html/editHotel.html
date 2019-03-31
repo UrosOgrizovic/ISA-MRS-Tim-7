@@ -22,10 +22,10 @@
     <body>
         <br><br><br>
         <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
-                <th colspan=2> Edit one of your Hotels : <select id="id_select"class="form-control" style="visibility:hidden;"></select></th>
+                <th colspan=2> Edit one of your Hotels : <select id="idSelect"class="form-control" style="visibility:hidden;"></select></th>
                 <tr>
                 	<td><label for="name_select">Current name:</label></td>
-            		<td> <select class="form-control" id="name_select"></select> </td>
+            		<td> <select class="form-control" id="nameSelect"></select> </td>
                 </tr>
         </table>
         <form id="editHotelForm"><!-- onsubmit="return createHotel(this)" action="login.html" onsubmit="createHotel()"-->
@@ -34,15 +34,15 @@
                 
                 <tr>
                     <td> <label> Name : </label> </td>
-                    <td> <input type="text" name="name" class="form-control"> </td>
+                    <td> <input type="text" name="name" class="form-control" id="name"> </td>
                 </tr>
                 <tr>
                     <td> <label> Address : </label></td><!-- edit later-->
-                    <td> <input type="text" name="address" class="form-control"> </td>
+                    <td> <input type="text" name="address" class="form-control" id="address"> </td>
                 </tr>
                 <tr>
                     <td> <label> Description : </label> </td>
-                    <td> <input type="text" name="promoDescription" class="form-control"> </td>
+                    <td> <input type="text" name="promoDescription" class="form-control" id="promoDescription"> </td>
                 </tr>
                 <tr height="40px"><td></td><td>Leaving a field empty will not change the corresponding attribute's value!
                 <tr>
