@@ -11,15 +11,15 @@ function validate_inputs(myForm)
     }
     else if(myForm.adminType.value==1)
     {
-    	my_url += "/airlineAdministrator";
+    	my_url += "/airlineAdmin";
     }
     else if(myForm.adminType.value==2)
     {
-    	my_url += "/hotelAdministrator";
+    	my_url += "/hotelAdmin";
     }
     else if(myForm.adminType.value==3)
     {
-    	my_url += "/RACSAdministrator";
+    	my_url += "/racsAdmin";
     }
     
     if(myForm.firstName.value.trim()=="")
@@ -77,17 +77,19 @@ function create_admin()
     }
     else
     {
-        var hotel =
+        var admin =
                 {
                     id : 1,//Fix later
-                    name : myForm.name.value,
+                    firstName : myForm.firstName.value,
+                    lastName : myForm.lastName.value,
+                    email : myForm.email.value,
+                    phone : myForm.phone.value,
                     address : myForm.address.value,
-                    promoDescription : myForm.promoDescription.value,
-                    hotelAdmin : null,//Object
-                    roomConfiguration : null,//Set
-                    overallRating : null,//double
-                    additionalServices : null,//Set
-                    logotPath : ""//String
+                    password : myForm.password.value,
+                    picturePath : ""//String
+                    /* // this is a DTO => not all fields are necessary
+                    hotelSet : null
+                     */
                 };
         //add image later
         //add administator later
@@ -99,7 +101,7 @@ function create_admin()
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",
-            data: JSON.stringify(hotel),
+            data: JSON.stringify(admin),
             cache: false,
             crossDomain: true,
             success: function(result) {window.alert("Poslato!"); },

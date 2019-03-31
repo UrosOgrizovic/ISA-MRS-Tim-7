@@ -50,11 +50,13 @@ function create_hotel()
                     name : myForm.name.value,
                     address : myForm.address.value,
                     promoDescription : myForm.promoDescription.value,
+                    /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set
                     overallRating : null,//double
                     additionalServices : null,//Set
-                    logotPath : ""//String
+                    */
+                    logoPath : ""//String
                 };
         //add image later
         //add administator later
