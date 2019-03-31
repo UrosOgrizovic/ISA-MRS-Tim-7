@@ -2,6 +2,7 @@ package com.FlightsReservations.domain;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,11 @@ public class User extends AbstractUser implements UserDetails {
 
 	private boolean enabled;
     
-    private Timestamp lastPasswordResetDate;
+	/* so as to only allow refreshing a token
+	 * that was created before the latest
+	 * password reset
+	 */
+    private Date lastPasswordResetDate;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -59,11 +64,11 @@ public class User extends AbstractUser implements UserDetails {
 		return this.getEmail();
 	}
 	
-	public Timestamp getLastPasswordResetDate() {
+	public Date getLastPasswordResetDate() {
         return lastPasswordResetDate;
     }
 
-    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 

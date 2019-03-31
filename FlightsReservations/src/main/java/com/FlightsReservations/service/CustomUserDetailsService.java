@@ -29,6 +29,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepository repository;
 	
+	public UserRepository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(UserRepository repository) {
+		this.repository = repository;
+	}
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
