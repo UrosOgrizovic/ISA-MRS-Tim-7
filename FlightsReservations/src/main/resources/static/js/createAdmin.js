@@ -86,7 +86,7 @@ function create_admin()
                     phone : myForm.phone.value,
                     address : myForm.address.value,
                     password : myForm.password.value,
-                    picturePath : ""//String
+                    picturePath : ""//TODO: add uploaded image location
                     /* // this is a DTO => not all fields are necessary
                     hotelSet : null
                      */
@@ -104,7 +104,7 @@ function create_admin()
             data: JSON.stringify(admin),
             cache: false,
             crossDomain: true,
-            success: function(result) {window.alert("Poslato!"); },
+            success: function(result) { },
             })
     }
 }

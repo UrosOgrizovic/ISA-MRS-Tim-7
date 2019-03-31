@@ -6,6 +6,10 @@ public class Airline {
 	private String location;
 	private String promoDescription;
 	
+	private AirlineAdmin airlineAdmin;
+	private String logoPath;
+	//TODO: add servicesPriceList, add overallRating, add additional services,...
+	//TODO: add flights/destinations/planes collections
 	// rest of attributes will be added later
 	
 	public Airline() {
@@ -17,6 +21,18 @@ public class Airline {
 		this.name = name;
 		this.location = location;
 		this.promoDescription = promoDescription;
+	}
+	
+	public Airline(Long id, String name, String location, String promoDescription, String logoPath,
+			AirlineAdmin airlineAdmin)
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.location = location;
+		this.promoDescription = promoDescription;
+		this.logoPath = logoPath;
+		this.airlineAdmin = airlineAdmin;
 	}
 
 	public Long getId() {
@@ -50,4 +66,26 @@ public class Airline {
 	public void setPromoDescription(String promoDescription) {
 		this.promoDescription = promoDescription;
 	}
+
+	public String getLogoPath()
+	{
+		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath)
+	{
+		this.logoPath = logoPath;
+	}
+
+	public AirlineAdmin getAirlineAdmin()
+	{
+		return airlineAdmin;
+	}
+
+	public void setAirlineAdmin(AirlineAdmin airlineAdmin)
+	{
+		this.airlineAdmin = airlineAdmin;
+	}
+	
+	
 }

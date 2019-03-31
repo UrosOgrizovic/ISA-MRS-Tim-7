@@ -5,7 +5,7 @@ function validate_inputs(myForm)
 
     if(myForm.name.value.trim()=="")
     {
-        alert("You must enter Hotel's name!");
+        alert("You must enter Airline's name!");
         return false;
     }
     else//in case of wrong type (add later)
@@ -13,9 +13,9 @@ function validate_inputs(myForm)
 
     }
 
-    if(myForm.address.value.trim()=="")
+    if(myForm.location.value.trim()=="")
     {
-        alert("You must enter Hotel's address!");
+        alert("You must enter Airline's location!");
         return false;
     }
 /*
@@ -35,40 +35,38 @@ function validate_inputs(myForm)
     return true;
 }
 
-function create_hotel()
+function create_airline()
 {
-    myForm = document.getElementById("createHotelForm");
+    myForm = document.getElementById("createAirlineForm");
     if(!validate_inputs(myForm))
     {
         return;
     }
     else
     {
-        var hotel =
+        var airline =
                 {
                     id : 1,//Fix later
                     name : myForm.name.value,
-                    address : myForm.address.value,
+                    location : myForm.location.value,
                     promoDescription : myForm.promoDescription.value,
                     /*//this is a DTO => not all field are necessary
-                    hotelAdmin : null,//Object
-                    roomConfiguration : null,//Set
+                    airlineAdmin : null,//Object
                     overallRating : null,//double
                     additionalServices : null,//Set
                     */
                     logoPath : ""//TODO: add uploaded image location
                 };
-        //add image later
-        //add administator later
+        //TODO: add administator later
 
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotel/create",//link assigned to method in HotelController
+            url: "http://localhost:8080/airlines/create",//link assigned to method in HotelController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",
-            data: JSON.stringify(hotel),
+            data: JSON.stringify(airline),
             cache: false,
             crossDomain: true,
             success: function(result) { },

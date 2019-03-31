@@ -26,7 +26,7 @@ public class HotelController
     				produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<Hotel> create(@RequestBody Hotel hotel)
     {
-        System.out.printf("\n\n %s , %s, %s\n\n", hotel.getName(), hotel.getAddress(), hotel.getPromoDescription() );
+        System.out.printf("\n\nHotel: %s , %s, %s\n\n", hotel.getName(), hotel.getAddress(), hotel.getPromoDescription() );
         return new ResponseEntity<Hotel>(service.create(hotel), HttpStatus.OK);
     }
             
