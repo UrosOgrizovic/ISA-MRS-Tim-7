@@ -74,7 +74,6 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<UserDTO> addUser(@RequestBody @Valid RegistrationUserDTO user) {
 		UserDTO udto = service.create(user);
 		if (udto != null) 

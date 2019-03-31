@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 public class AbstractUser 
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(unique = true)
