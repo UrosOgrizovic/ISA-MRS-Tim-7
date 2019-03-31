@@ -19,6 +19,20 @@ public class Hotel
 	
 	public Hotel() {}
 	
+	public Hotel (Hotel h)
+	{
+		this.id = h.id;
+		this.name = h.name;
+		this.address = h.address;
+		this.promoDescription = h.promoDescription;
+		this.hotelAdmin = h.hotelAdmin;
+		this.servicesPriceList = h.servicesPriceList;
+		this.roomConfiguration = h.roomConfiguration;
+		this.overallRating = h.overallRating;
+		this.additionalServices = h.additionalServices;
+		this.logoPath = h.logoPath;
+	}
+	
 	public Hotel(Long id, String name, String address, String promoDescription, HotelAdmin hotelAdmin, Map<String, Double> servicesPriceList,
 			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices, String logoPath)
 	{
@@ -32,6 +46,14 @@ public class Hotel
 		this.overallRating = overallRating;
 		this.additionalServices = additionalServices;
 		this.logoPath = logoPath;
+	}
+	
+	//TODO: this constructor is used only for editHotel form examples
+	public Hotel(String name, String address, String promoDescription)
+	{
+		this.name = name;
+		this.address = address;
+		this.promoDescription = promoDescription;
 	}
 	
 

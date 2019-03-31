@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Create/Add a hotel</title>
-        <meta charset="UTF-8" />
+        <title>Edit a Hotel</title>
+        <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" >
         <link
 		      rel="stylesheet"
 		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -11,50 +12,50 @@
 		      crossorigin="anonymous"
         />
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" >
+        <link rel="stylesheet" href=".\..\css\table.css">
+        <link rel="stylesheet" href=".\..\css\imageButton.css">
+        <script src=".\..\js\editHotel.js"></script>
+
 
     </head>
 
     <body>
-        <h1>Edit Hotel's info:</h1>
-        <h3> Leave the field blank if you don't want to change its value</h3> </td></tr>
         <br><br><br>
-
-        <form method="post" name="editHotelForm" onsubmit="return create_hotel(this)" action="login.html"><!-- add action later-->
-            <table >
-                    <th> <label>Select ID of a hotel you want to edit:</label>
-                        <select name="hotelId">
-                                <option value="0">-</option>
-                                <option value="123" onselect="editHotelOne()">123</option>
-                                <option value="456" onselect="editHotelTwo()">456</option>
-                                <option value="789" onselect="editHotelThree()">789</option>
-                        </select>
-                    </th>
-                    <tr>
-
-                            <td> <label class="notNull"> Name : </label> </td>
-                            <td> <input type="text" name="name"></td>
-                    </tr>
-                    <tr>
-                            <td> <label class="notNull"> Address : </label></td><!-- edit later-->
-                            <td> <input type="text" name="address"> </td>
-                    </tr>
-                    <tr>
-                            <td> <label> Description: </label> </td>
-                            <td> <input type="text" name="promoDescription"> </td>
-                    </tr>
-                    <tr>
-                            <td> <label> Logo: </label> </td>
-                            <td> <input type="file" name="logoPath"> </td>
-                    </tr>
-                    <tr>
-                        <td colspan=2 align="center"><br> <input type="submit" value="Add Hotel" > </td>
-                    </tr>
-
-
-                    <!-- hotel administrator will modify other fields, pricelist, services, rooms... - add later-->
-            </table>
-
+        <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
+                <th colspan=2> Edit one of your Hotels : <select id="id_select"class="form-control" style="visibility:hidden;"></select></th>
+                <tr>
+                	<td><label for="name_select">Current name:</label></td>
+            		<td> <select class="form-control" id="name_select"></select> </td>
+                </tr>
+        </table>
+        <form id="editHotelForm"><!-- onsubmit="return createHotel(this)" action="login.html" onsubmit="createHotel()"-->
+        <table class="table table-condensed table-hover table-bordered td-fit th-fit" >              
+                <tr height="40px"><td></td><td>Leaving a field empty will not change the corresponding attribute's value!</td></tr>
+                
+                <tr>
+                    <td> <label> Name : </label> </td>
+                    <td> <input type="text" name="name" class="form-control"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Address : </label></td><!-- edit later-->
+                    <td> <input type="text" name="address" class="form-control"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Description : </label> </td>
+                    <td> <input type="text" name="promoDescription" class="form-control"> </td>
+                </tr>
+                <tr height="40px"><td></td><td>Leaving a field empty will not change the corresponding attribute's value!
+                <tr>
+                    <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
+                    </td>
+                    <td align="center">
+                    	<button type="submit" class="btn btn-primary" name="createHotel" onClick="update_hotel()" id="submitButton" >Edit Hotel</button>
+                    	                                                   
+                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+                    </td>
+                </tr>
+                <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
+        </table>
         </form>
     </body>
 </html>

@@ -22,8 +22,7 @@ public class InMemoryHotelRepository implements IRepository<Hotel, Long> {
 	@PostConstruct
 	private void init_Hotel() {
 		// Entry is an interface and cannot be instantiated. Hence, SimpleEntry is used.
-		//TODO: initialize
-		/*
+		
 		SimpleEntry<String, Double> plItem1 = new SimpleEntry("hotel1", 100);
 		SimpleEntry<String, Double> plItem2 = new SimpleEntry("hotel2", 200);
 		SimpleEntry<String, Double> plItem3 = new SimpleEntry("hotel3", 300);
@@ -35,46 +34,40 @@ public class InMemoryHotelRepository implements IRepository<Hotel, Long> {
 		pricelist2.add(plItem3);
 		pricelist2.add(plItem4);
 		
-		Car c1 = new Car("blue", "honda", "civic", 2010);
-		Car c2 = new Car("red", "ferrari", "spider", 2008);
-		Car c3 = new Car("white", "toyota", "supra", 2001);
-		Car c4 = new Car("yellow", "fiat", "501", 1960);
-		ArrayList<Car> cars1 = new ArrayList<Car>(); 
-		cars1.add(c1); 
-		cars1.add(c2);
-		ArrayList<Car> cars2 = new ArrayList<Car>();
-		cars2.add(c3);
-		cars2.add(c4);
+		Room r1 = new Room(2, "1 bedroom", "has only 1 bed");
+		Room r2 = new Room(1, "1 bedroom", "has only 1 bed");
+		Room r3 = new Room(2, "2 bedroom", "has 2 beds");
+		Room r4 = new Room(2, "3 bedroom", "has 3 beds");
+		ArrayList<Room> rooms1 = new ArrayList<Room>(); 
+		rooms1.add(r1); 
+		rooms1.add(r2);
+		ArrayList<Room> rooms2 = new ArrayList<Room>();
+		rooms2.add(r3);
+		rooms2.add(r4);
 		String bo1 = "bo1";
 		String bo2 = "bo2";
 		String bo3 = "bo3";
 		String bo4 = "bo4";
-		ArrayList<String> branchOffices1 = new ArrayList<String>();
-		branchOffices1.add(bo1);
-		branchOffices1.add(bo2);
-		ArrayList<String> branchOffices2 = new ArrayList<String>();
-		branchOffices2.add(bo3);
-		branchOffices2.add(bo4);
 		
-		Hotel r1 = new Hotel("r1", "adr1", "desc1", pricelist1, cars1, branchOffices1);
-		Hotel r2 = new Hotel("r2", "adr2", "desc2", pricelist2, cars2, branchOffices2);
-		create(r1);
-		create(r2);
-		System.out.println("Hotel created!");*/
+		Hotel h1 = new Hotel("hotel1", "adr1", "desc1");
+		Hotel h2 = new Hotel("hotel2", "adr2", "desc2");
+		create(h1);
+		create(h2);
+		System.out.println("Hotels created!");
 	}
 	
 	@Override
-	public Hotel create(Hotel r) {
+	public Hotel create(Hotel h) {
 		Long id = counter.getAndIncrement();
-		r.setId(id);
-		hotels.put(id, r);
-		return r;
+		h.setId(id);
+		hotels.put(id, h);
+		return h;
 	}
 
 	@Override
-	public Hotel update(Hotel r) {
-		hotels.put(r.getId(), r);
-		return r;
+	public Hotel update(Hotel h) {
+		hotels.put(h.getId(), h);
+		return h;
 	}
 
 	@Override
