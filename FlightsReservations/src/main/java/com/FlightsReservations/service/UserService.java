@@ -33,6 +33,14 @@ public class UserService {
 		return null;
 	}
 
+	public UserRepository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(UserRepository repository) {
+		this.repository = repository;
+	}
+
 	public boolean update(UserDTO t) {
 		User u = repository.findByEmail(t.getEmail());
 		if (u != null) {

@@ -23,6 +23,7 @@ import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.service.CustomUserDetailsService;
+import com.FlightsReservations.service.UserService;
 
 @RestController
 @RequestMapping("/users")
@@ -30,7 +31,7 @@ import com.FlightsReservations.service.CustomUserDetailsService;
 public class UserController {
 	
 	@Autowired 
-	private CustomUserDetailsService service;
+	private UserService service;
 	
 	
 	@GetMapping(
