@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -50,8 +52,13 @@ public class AuthenticationController {
 		
 		UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(email, password); 
 		
-		final Authentication authentication = authenticationManager.authenticate(uat);
-
+		final Authentication authentication;
+		try {
+			authentication = authenticationManager.authenticate(uat);
+		} catch (BadCredentialsException ex) {
+			return new ResponseEntity<>("Bad credentials", HttpStatus.UNAUTHORIZED);
+		}
+		
 		// add username & password to context
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 

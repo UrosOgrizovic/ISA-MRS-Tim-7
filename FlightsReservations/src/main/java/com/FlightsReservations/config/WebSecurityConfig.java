@@ -68,10 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// all users are allowed to access /auth/** and /h2-console/**
 			.authorizeRequests()
 			.antMatchers("/auth/**").permitAll()
-			.antMatchers("/h2-console/**").permitAll()
-			.antMatchers("/users/**").permitAll()
-			
-			
+			//.antMatchers("/users/**").permitAll()
 			
 			// every request must be authorized
 			.anyRequest().authenticated().and()
@@ -88,7 +85,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// TokenAuthenticationFilter will ignore the following paths
 		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login");
 		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
-	}
-
-	
+	}	
 }
