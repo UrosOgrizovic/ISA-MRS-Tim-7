@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.User;
@@ -17,6 +18,9 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public UserDTO create(RegistrationUserDTO t) {
 		if (repository.findByEmail(t.getEmail()) == null) {
 			User u = new User();
@@ -25,7 +29,7 @@ public class UserService {
 			u.setEmail(t.getEmail());
 			u.setAddress(t.getAddress());
 			u.setPhone(t.getPhone());
-			u.setPassword(t.getPassword());
+			u.setPassword(passwordEncoder.encode(t.getPassword()));
 			u.setEnabled(true);
 			repository.save(u);
 			return new UserDTO(u);

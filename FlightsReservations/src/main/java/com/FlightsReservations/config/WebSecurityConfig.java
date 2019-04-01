@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			// all users are allowed to access /auth/** and /h2-console/**
 			.authorizeRequests()
 			.antMatchers("/auth/**").permitAll()
-			//.antMatchers("/users/**").permitAll()
+			.antMatchers("/users/**").permitAll()
 			
 			// every request must be authorized
 			.anyRequest().authenticated().and()
