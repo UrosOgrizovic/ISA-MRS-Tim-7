@@ -64,9 +64,7 @@ public class RACSController {
 			return new ResponseEntity<ArrayList<Car>>(HttpStatus.BAD_REQUEST);
 		Collection<RACS> racss = service.findAll();
 		ArrayList<Car> matchingCars = new ArrayList<Car>();
-		
-		
-		
+				
 		for (RACS r : racss) {
 			for (Car c : r.getCars()) {
 				if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && 
