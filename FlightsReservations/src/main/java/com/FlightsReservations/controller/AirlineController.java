@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.service.AirlineService;
 
 @RestController
@@ -30,7 +30,7 @@ public class AirlineController {
 			value="/getAll", 
 			produces = MediaType.APPLICATION_JSON_VALUE
 			) 
-	public List<Airline> getAll() {
+	public List<AirlineDTO> getAll() {
 		return service.findAll();
 	}
 	
@@ -41,21 +41,21 @@ public class AirlineController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<Airline> add(@RequestBody @Valid Airline airline) {
-		Airline a = service.create(airline);
+	public ResponseEntity<?> add(@RequestBody @Valid AirlineDTO airline) {
+		AirlineDTO a = service.create(airline);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.CREATED);
-		return new ResponseEntity<>(a, HttpStatus.CONFLICT);
+		return new ResponseEntity<>("Airline with given id already exists!", HttpStatus.CONFLICT);
 	}
 	
 	
-	
+
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<String> update(@RequestBody @Valid Airline airline) {
+	public ResponseEntity<String> update(@RequestBody @Valid AirlineDTO airline) {
 		if (service.update(airline))
 			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
 		return new ResponseEntity<>("Airline with given id does not exists.", HttpStatus.NOT_FOUND);
