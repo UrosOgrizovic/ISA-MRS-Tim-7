@@ -1,4 +1,7 @@
 # ISA-MRS-Tim-7  
+
+Java app for booking flights, hotels, rent-a-cars.  
+
 Team members:  
 Đorđe Ivković, SW-54/2016  
 Uroš Ogrizović, SW-39/2016  
