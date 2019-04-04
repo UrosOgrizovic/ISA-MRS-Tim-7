@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class Airline {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@NotBlank
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	private Long id;
 	
 	@NotBlank

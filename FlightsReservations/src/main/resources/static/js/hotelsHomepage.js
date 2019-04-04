@@ -1,7 +1,7 @@
 var getAllLink = "/racss/getAll";
 
 $(document).ready(function(){
-    $("#viewAllRACS").on('click', function(e) {
+    $("#viewAllHotels").on('click', function(e) {
         
         e.preventDefault();
         

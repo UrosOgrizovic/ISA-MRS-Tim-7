@@ -16,10 +16,10 @@ public class AirlineService {
 	private AirlineRepository repository;
 	
 	public Airline create(Airline t) {
-		Airline a = findOne(t.getId());
-		if (a == null)
+		//Airline a = ;
+		//if (findOne(t.getId()) == null)
 			return repository.save(t);
-		return null;
+		//return null;
 	}
 
 	public boolean update(Airline t) {
