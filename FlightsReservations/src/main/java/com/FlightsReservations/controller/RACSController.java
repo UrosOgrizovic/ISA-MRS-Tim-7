@@ -35,7 +35,6 @@ public class RACSController {
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
 		return service.findAll();
-		
 	}
 	
 	//@PreAuthorize("hasRole('ADMIN')")

@@ -1,36 +1,46 @@
 package com.FlightsReservations.domain;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class Hotel
 {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank
 	private String name;
-	private String address;//TODO: add address via map
+	@NotBlank
+	private String address;
+	@NotBlank
 	private String promoDescription;
-	private Map<String, Double> servicesPriceList;
-	private Set <Room> roomConfiguration;
+	@NotNull
+	private ArrayList<PricelistItem> servicesPriceList;
+	@NotNull
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Room> roomConfiguration;
+	@NotNull
 	private double overallRating;
-	private Set<String> additionalServices;
-	private String logoPath;
-	//TODO: add the list of reservations?
 	
-	public Hotel() {}
 	
-	public Hotel(Long id, String name, String address, String promoDescription, Map<String, Double> servicesPriceList,
-			Set<Room> roomConfiguration, double overallRating, Set<String> additionalServices, String logoPath)
-	{
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.promoDescription = promoDescription;
-		this.servicesPriceList = servicesPriceList;
-		this.roomConfiguration = roomConfiguration;
-		this.overallRating = overallRating;
-		this.additionalServices = additionalServices;
-		this.logoPath = logoPath;
+	public Hotel() {
+		super();
 	}
+	
+	
 	
 	
 
@@ -74,15 +84,39 @@ public class Hotel
 		this.promoDescription = promoDescription;
 	}
 
-	public Map<String, Double> getServicesPriceList()
-	{
+
+	public Hotel(Long id, @NotBlank String name, @NotBlank String address, @NotBlank String promoDescription,
+			@NotNull ArrayList<PricelistItem> servicesPriceList, @NotNull Set<Room> roomConfiguration,
+			@NotNull double overallRating) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.promoDescription = promoDescription;
+		this.servicesPriceList = servicesPriceList;
+		this.roomConfiguration = roomConfiguration;
+		this.overallRating = overallRating;
+	}
+
+
+
+
+
+	public ArrayList<PricelistItem> getServicesPriceList() {
 		return servicesPriceList;
 	}
 
-	public void setServicesPriceList(Map<String, Double> servicesPriceList)
-	{
+
+
+
+
+	public void setServicesPriceList(ArrayList<PricelistItem> servicesPriceList) {
 		this.servicesPriceList = servicesPriceList;
 	}
+
+
+
+
 
 	public Set<Room> getRoomConfiguration()
 	{
@@ -103,27 +137,4 @@ public class Hotel
 	{
 		this.overallRating = overallRating;
 	}
-
-	public Set<String> getAdditionalServices()
-	{
-		return additionalServices;
-	}
-
-	public void setAdditionalServices(Set<String> additionalServices)
-	{
-		this.additionalServices = additionalServices;
-	}
-
-	public String getLogoPath()
-	{
-		return logoPath;
-	}
-
-	public void setLogoPath(String logoPath)
-	{
-		this.logoPath = logoPath;
-	}
-	
-	
-	
 }

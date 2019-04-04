@@ -51,7 +51,7 @@ $(document).ready(function(){
                     for (var item of racs.pricelist) {
                         var textItem = JSON.stringify(item, null, 4);
                         textItem = textItem.substring(1, textItem.length - 1);
-                        textItem = textItem.split('"').join('');
+                        textItem = textItem.split('"').join('') + "$";
                         text += "<a class=\"dropdown-item\" href=\"#\">" + textItem + "</a>";
                     }
                     text += "</div></div></td>";

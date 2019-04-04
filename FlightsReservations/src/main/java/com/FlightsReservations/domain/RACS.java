@@ -27,7 +27,7 @@ public class RACS {
 	@NotBlank
 	private String description;
 	@NotNull	
-	private ArrayList<Entry<String, Double>> pricelist;
+	private ArrayList<PricelistItem> pricelist;
 	
 	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -60,10 +60,10 @@ public class RACS {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ArrayList<Entry<String, Double>> getPricelist() {
+	public ArrayList<PricelistItem> getPricelist() {
 		return pricelist;
 	}
-	public void setPricelist(ArrayList<Entry<String, Double>> pricelist) {
+	public void setPricelist(ArrayList<PricelistItem> pricelist) {
 		this.pricelist = pricelist;
 	}
 	public Set<Car> getCars() {
@@ -78,7 +78,7 @@ public class RACS {
 	public void setBranchOffices(ArrayList<String> branchOffices) {
 		this.branchOffices = branchOffices;
 	}
-	public RACS(String name, String address, String description, ArrayList<Entry<String, Double>> pricelist,
+	public RACS(String name, String address, String description, ArrayList<PricelistItem> pricelist,
 			Set<Car> cars, ArrayList<String> branchOffices) {
 		super();
 		this.name = name;

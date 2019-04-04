@@ -1,45 +1,40 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class Room
 {
-	private int roomID;//TODO: room number - unique
-	private double overallRating;//1-5
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	@NotNull
+	private double overallRating;
+	@NotNull
 	private double overNightStay;
-	//private Set<BufferedImage> images;  //TODO: ??
-	//TODO: add more attributes?
-	
-	public Room() {}
-
-	public int getRoomID()
-	{
-		return roomID;
+	public int getId() {
+		return id;
 	}
-
-	public void setRoomID(int roomID)
-	{
-		this.roomID = roomID;
+	public void setId(int id) {
+		this.id = id;
 	}
-
-	public double getOverallRating()
-	{
+	public double getOverallRating() {
 		return overallRating;
 	}
-
-	public void setOverallRating(double overallRating)
-	{
+	public void setOverallRating(double overallRating) {
 		this.overallRating = overallRating;
 	}
-
-	public double getOverNightStay()
-	{
+	public double getOverNightStay() {
 		return overNightStay;
 	}
-
-	public void setOverNightStay(double overNightStay)
-	{
+	public void setOverNightStay(double overNightStay) {
 		this.overNightStay = overNightStay;
 	}
 	
-	
+		
 	
 }
