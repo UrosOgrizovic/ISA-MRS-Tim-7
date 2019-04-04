@@ -59,10 +59,10 @@ public class Flight {
 	private Airport end;
 
 	@OneToMany(mappedBy = "firstFlight")
-	private Set<Reservation> firstReservations = new HashSet<>();
+	private Set<AirReservation> firstReservations = new HashSet<>();
 
 	@OneToMany(mappedBy = "returnFlight")
-	private Set<Reservation> secondFlights = new HashSet<>();
+	private Set<AirReservation> secondFlights = new HashSet<>();
 
 	public Flight() {
 		super();
@@ -70,7 +70,7 @@ public class Flight {
 
 	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double ticketPrice,
 			boolean active, Airline airline, Set<Seat> seats, Set<Airport> stops, Airport start, Airport end,
-			Set<Reservation> firstReservations, Set<Reservation> secondFlights) {
+			Set<AirReservation> firstReservations, Set<AirReservation> secondFlights) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
@@ -183,19 +183,19 @@ public class Flight {
 		this.end = end;
 	}
 
-	public Set<Reservation> getFirstReservations() {
+	public Set<AirReservation> getFirstReservations() {
 		return firstReservations;
 	}
 
-	public void setFirstReservations(Set<Reservation> firstReservations) {
+	public void setFirstReservations(Set<AirReservation> firstReservations) {
 		this.firstReservations = firstReservations;
 	}
 
-	public Set<Reservation> getSecondFlights() {
+	public Set<AirReservation> getSecondFlights() {
 		return secondFlights;
 	}
 
-	public void setSecondFlights(Set<Reservation> secondFlights) {
+	public void setSecondFlights(Set<AirReservation> secondFlights) {
 		this.secondFlights = secondFlights;
 	}
 

@@ -32,6 +32,7 @@ public class User extends AbstractUser implements UserDetails {
 	 * so as to only allow refreshing a token that was created before the latest
 	 * password reset
 	 */
+
 	private Date lastPasswordResetDate;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -39,16 +40,17 @@ public class User extends AbstractUser implements UserDetails {
 	private List<Authority> authorities;
 
 	@OneToMany(mappedBy = "owner")
-	private Set<Reservation> reservations = new HashSet<>();
+	private Set<AirReservation> airReservations = new HashSet<>();
 
 	public User() {
 		super();
 	}
 
-	public User(String firstName, String lastName, String email, String phone, String address, String password, boolean enabled, Set<Reservation> reservations) {
+	public User(String firstName, String lastName, String email, String phone, String address, String password,
+			boolean enabled, Set<AirReservation> airReservations) {
 		super(firstName, lastName, email, phone, address, password);
 		this.enabled = enabled;
-		this.reservations = reservations;
+		this.airReservations = airReservations;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -73,12 +75,12 @@ public class User extends AbstractUser implements UserDetails {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<Reservation> getReservations() {
-		return reservations;
+	public Set<AirReservation> getReservations() {
+		return airReservations;
 	}
 
-	public void setReservations(Set<Reservation> reservations) {
-		this.reservations = reservations;
+	public void setReservations(Set<AirReservation> airReservations) {
+		this.airReservations = airReservations;
 	}
 
 	@JsonIgnore

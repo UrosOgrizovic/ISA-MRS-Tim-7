@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import com.FlightsReservations.domain.enums.ReservationType;
 
 @Entity
-public class Reservation {
+public class AirReservation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,11 +40,11 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 
-	public Reservation() {
+	public AirReservation() {
 		super();
 	}
 
-	public Reservation(ReservationType type, Float discount, Airline airline, Seat seat, Flight firstFlight,
+	public AirReservation(ReservationType type, Float discount, Airline airline, Seat seat, Flight firstFlight,
 			Flight returnFlight, User owner) {
 		super();
 		this.type = type;

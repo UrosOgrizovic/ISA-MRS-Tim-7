@@ -19,7 +19,7 @@ public class Airline extends Company {
 	private Set<Flight> flights = new HashSet<>(); 
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Reservation> reservations = new HashSet<>();
+	private Set<AirReservation> reservations = new HashSet<>();
 	
 	@ManyToMany
     @JoinTable(name = "airline_airports",
@@ -47,11 +47,11 @@ public class Airline extends Company {
 		this.flights = flights;
 	}
 
-	public Set<Reservation> getReservations() {
+	public Set<AirReservation> getReservations() {
 		return reservations;
 	}
 
-	public void setReservations(Set<Reservation> reservations) {
+	public void setReservations(Set<AirReservation> reservations) {
 		this.reservations = reservations;
 	}
 

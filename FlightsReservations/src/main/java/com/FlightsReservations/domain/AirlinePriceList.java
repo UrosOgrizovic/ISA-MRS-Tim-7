@@ -34,7 +34,7 @@ public class AirlinePriceList {
 
 	public AirlinePriceList(Airline a, double bussines, double economic, double first) {
 		super();
-		this.airline = airline;
+		this.airline = a;
 		this.bussines = bussines;
 		this.economic = economic;
 		this.first = first;
