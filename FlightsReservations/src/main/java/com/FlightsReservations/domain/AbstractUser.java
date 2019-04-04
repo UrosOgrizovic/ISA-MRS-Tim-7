@@ -1,15 +1,18 @@
 package com.FlightsReservations.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class AbstractUser {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(unique = true)
@@ -24,8 +27,7 @@ public class AbstractUser {
 	public AbstractUser() {
 	}
 	
-	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath) 
+	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password) 
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;

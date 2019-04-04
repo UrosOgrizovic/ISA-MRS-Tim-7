@@ -45,9 +45,8 @@ public class User extends AbstractUser implements UserDetails {
 		super();
 	}
 
-	public User(String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath, boolean enabled, Set<Reservation> reservations) {
-		super(firstName, lastName, email, phone, address, password, picturePath);
+	public User(String firstName, String lastName, String email, String phone, String address, String password, boolean enabled, Set<Reservation> reservations) {
+		super(firstName, lastName, email, phone, address, password);
 		this.enabled = enabled;
 		this.reservations = reservations;
 	}

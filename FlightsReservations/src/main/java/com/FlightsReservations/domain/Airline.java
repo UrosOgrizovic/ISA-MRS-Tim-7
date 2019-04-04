@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Airline extends Company {
@@ -25,6 +26,9 @@ public class Airline extends Company {
                joinColumns = @JoinColumn(name="airline_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="airport_id", referencedColumnName="id"))
 	private Set<Airport> airports = new HashSet<>(); 
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private AirlinePriceList pricelist;
 	
 	public Airline() {
 		super();
