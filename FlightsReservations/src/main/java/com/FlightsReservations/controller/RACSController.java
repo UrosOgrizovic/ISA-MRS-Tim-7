@@ -77,6 +77,5 @@ public class RACSController {
 		}
 		
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
-		
 	}
 }

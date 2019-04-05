@@ -37,13 +37,13 @@ public class UserController {
 			value = "/getAll",
 			produces = MediaType.APPLICATION_JSON_VALUE
 			) 
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	public List<UserDTO> getAll()  {
 		return service.findAll();
 	}
 		
 	@GetMapping(value = "/getUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	public Optional<User> loadUserById(@PathVariable Long id) {
 		return this.service.getRepository().findById(id);
 	}
