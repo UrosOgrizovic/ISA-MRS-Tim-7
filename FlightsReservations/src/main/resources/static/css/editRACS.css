@@ -1,5 +1,6 @@
 * {
   margin: 20px;
+  box-sizing: border-box;
 }
 
 button, input[type=submit] {
@@ -10,6 +11,13 @@ button, input[type=submit] {
     margin: 10px;
     width: 300px;
 }
+
+.column {
+    float: left;
+    width: 30%;
+    padding: 10px;
+}
+
 
 .left {
     float: left;

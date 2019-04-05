@@ -6,8 +6,11 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.repository.RACSRepository;
+
+import ch.qos.logback.classic.net.SyslogAppender;
 
 @Component
 public class RACSService {
@@ -30,6 +33,9 @@ public class RACSService {
 			r.setDescription(t.getDescription());
 			r.setName(t.getName());
 			r.setPricelist(t.getPricelist());
+			for (Car c : r.getCars()) {
+				System.out.println(c.getManufacturer() + " " + c.getName() + " " + c.getColor());
+			}
 			repository.save(r);
 			return true;
 		}

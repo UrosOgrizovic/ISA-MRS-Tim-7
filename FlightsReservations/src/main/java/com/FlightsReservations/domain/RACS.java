@@ -30,7 +30,7 @@ public class RACS {
 	private ArrayList<PricelistItem> pricelist;
 	
 	@NotNull
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<Car> cars;
 	
 	@NotNull

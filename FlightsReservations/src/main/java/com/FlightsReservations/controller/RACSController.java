@@ -2,6 +2,7 @@ package com.FlightsReservations.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,6 +77,20 @@ public class RACSController {
 		}
 		
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
-		
+	}
+	
+	@PutMapping(
+			value = "/addCar",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Car> addCar(@RequestBody @Valid Car car) {
+		System.out.println(car.getManufacturer() + " " + car.getName() + " " + car.getColor() + " " + car.getYearOfManufacture());
+		RACS racs = service.findOne(car.getRacs().getId());
+		Set<Car> cars = racs.getCars();
+		cars.add(car);
+		racs.setCars(cars);
+		if (service.update(racs))
+			return new ResponseEntity<>(car, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 }
