@@ -2,7 +2,6 @@ package com.FlightsReservations.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -83,13 +83,8 @@ public class RACSController {
 			value = "/addCar",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Car> addCar(@RequestBody @Valid Car car) {
-		System.out.println(car.getManufacturer() + " " + car.getName() + " " + car.getColor() + " " + car.getYearOfManufacture());
-		RACS racs = service.findOne(car.getRacs().getId());
-		Set<Car> cars = racs.getCars();
-		cars.add(car);
-		racs.setCars(cars);
-		if (service.update(racs))
+	public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO car) {
+		if (service.addCar(car))
 			return new ResponseEntity<>(car, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}

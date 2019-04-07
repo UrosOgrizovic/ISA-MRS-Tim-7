@@ -1,29 +1,25 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 @Entity
 public class Car {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotBlank
 	private String manufacturer;
-	@NotBlank
 	private String name;
-	@NotNull
 	private int yearOfManufacture;
-	@NotBlank
 	private String color;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private RACS racs;
 
 	public Long getId() {
@@ -74,22 +70,18 @@ public class Car {
 		this.racs = racs;
 	}
 
-	public Car(Long id, @NotBlank String manufacturer, @NotBlank String name, @NotNull int yearOfManufacture,
-			@NotBlank String color, RACS racs) {
+	public Car(String manufacturer,String name, int yearOfManufacture,
+			String color, RACS racs) {
 		super();
-		this.id = id;
 		this.manufacturer = manufacturer;
 		this.name = name;
 		this.yearOfManufacture = yearOfManufacture;
 		this.color = color;
 		this.racs = racs;
 	}
-
+	
 	public Car() {
 		super();
 	}
-	
-	
-
 }
 	
