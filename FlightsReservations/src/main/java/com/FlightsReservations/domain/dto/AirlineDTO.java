@@ -1,5 +1,8 @@
 package com.FlightsReservations.domain.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +14,8 @@ public class AirlineDTO {
 	@NotNull private Float latitude;
 	@NotBlank private String promoDescription;
 	private float avarageScore;
+	
+	private Set<String> airports = new HashSet<>(); 
 	
 	public AirlineDTO() {
 		super();
@@ -69,4 +74,11 @@ public class AirlineDTO {
 		this.promoDescription = promoDescription;
 	}
 
+	public Set<String> getAirports() {
+		return airports;
+	}
+
+	public void setAirports(Set<String> airports) {
+		this.airports = airports;
+	}
 }

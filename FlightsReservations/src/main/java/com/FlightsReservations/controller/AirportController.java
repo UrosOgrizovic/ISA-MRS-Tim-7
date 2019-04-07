@@ -1,7 +1,6 @@
 package com.FlightsReservations.controller;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,26 +22,20 @@ import com.FlightsReservations.service.AirportService;
 @CrossOrigin("*")
 public class AirportController {
 	
-	/*
-	 * get
-	 * getAll
-	 * add
-	 * 
-	 */
-	
 	@Autowired
 	private AirportService service;
+	
 	
 	@GetMapping(
 			value = "/{name}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findOne(@NotBlank @PathVariable String name) {
+	public ResponseEntity<?> findOne(@PathVariable String name) {
 		AirportDTO a = service.findOne(name);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.OK);
 		return new ResponseEntity<>("Airport with given name doesnt exists!", HttpStatus.NOT_FOUND);
-		
 	}
+	
 	
 	@GetMapping(
 			produces = MediaType.APPLICATION_JSON_VALUE)

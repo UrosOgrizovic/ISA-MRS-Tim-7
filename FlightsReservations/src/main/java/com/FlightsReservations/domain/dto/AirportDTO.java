@@ -24,8 +24,8 @@ public class AirportDTO {
 	@NotNull
 	private float latitude;
 
-	private Set<AirlineDTO> airlines = new HashSet<>();
-	private Set<FlightDTO> flights = new HashSet<>();
+	private Set<String> airlines = new HashSet<>();
+	private Set<String> flights = new HashSet<>();
 
 	public AirportDTO() {
 		super();
@@ -84,19 +84,19 @@ public class AirportDTO {
 		this.latitude = latitude;
 	}
 
-	public Set<AirlineDTO> getAirlines() {
+	public Set<String> getAirlines() {
 		return airlines;
 	}
 
-	public void setAirlines(Set<AirlineDTO> airlines) {
+	public void setAirlines(Set<String> airlines) {
 		this.airlines = airlines;
 	}
 
-	public Set<FlightDTO> getFlights() {
+	public Set<String> getFlights() {
 		return flights;
 	}
 
-	public void setFlights(Set<FlightDTO> flights) {
+	public void setFlights(Set<String> flights) {
 		this.flights = flights;
 	}
 }

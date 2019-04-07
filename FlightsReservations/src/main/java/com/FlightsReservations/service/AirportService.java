@@ -68,33 +68,15 @@ public class AirportService {
 	
 	private AirportDTO createDTO(Airport a) {
 		AirportDTO dto = new AirportDTO(a);
-		dto.setFlights(getFlights(a));
-		dto.setAirlines(getAirlines(a));
+		for (Airline al : a.getAirlines())
+			dto.getAirlines().add(al.getName());
+		
+//		for (Flight f : a.getStarts())
+//			dto.getFlights().add(f.buduciId);
+//		
+//		for (Flight f : a.getEnds())
+//			dto.getFlights().add(f.buduciId);
+		
 		return dto;
-	}
-	
-	
-	private Set<AirlineDTO> getAirlines(Airport a) {
-		if (a != null) {
-			Set<AirlineDTO> airlines = new HashSet<>();
-			for (Airline al : a.getAirlines())
-				airlines.add(new AirlineDTO(al));
-			return airlines;
-		}
-		return null;
-	}
-	
-	private Set<FlightDTO> getFlights(Airport a) {
-		if (a != null) {
-			Set<FlightDTO> flights = new HashSet<>();
-			for (Flight f : a.getStarts())
-				flights.add(new FlightDTO(f));
-			
-			for (Flight f : a.getStops())
-				flights.add(new FlightDTO(f));
-			
-			return flights;
-		}
-		return null;
-	}
+	}	
 }
