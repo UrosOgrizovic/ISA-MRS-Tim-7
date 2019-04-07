@@ -35,7 +35,6 @@ public class AirlineController {
 	}
 	
 	
-	
 	@PostMapping(
 			value = "/add",
 			produces = MediaType.APPLICATION_JSON_VALUE,

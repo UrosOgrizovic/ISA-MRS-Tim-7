@@ -39,9 +39,6 @@ public class Flight {
 	@Column(nullable = false)
 	private double ticketPrice;
 
-	@Column(nullable = false)
-	private boolean active;
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
@@ -69,7 +66,7 @@ public class Flight {
 	}
 
 	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double ticketPrice,
-			boolean active, Airline airline, Set<Seat> seats, Set<Airport> stops, Airport start, Airport end,
+			Airline airline, Set<Seat> seats, Set<Airport> stops, Airport start, Airport end,
 			Set<AirReservation> firstReservations, Set<AirReservation> secondFlights) {
 		super();
 		this.takeoffTime = takeoffTime;
@@ -77,7 +74,6 @@ public class Flight {
 		this.flightTime = flightTime;
 		this.flightDistance = flightDistance;
 		this.ticketPrice = ticketPrice;
-		this.active = active;
 		this.airline = airline;
 		this.seats = seats;
 		this.stops = stops;
@@ -133,14 +129,6 @@ public class Flight {
 
 	public void setTicketPrice(double ticketPrice) {
 		this.ticketPrice = ticketPrice;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	public Airline getAirline() {
