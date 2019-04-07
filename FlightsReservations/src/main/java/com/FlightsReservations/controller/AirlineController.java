@@ -31,7 +31,8 @@ public class AirlineController {
 	
 	@GetMapping(
 			value = "/{name}",
-			produces = MediaType.APPLICATION_JSON_VALUE)
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
 	public ResponseEntity<?> findOne(@PathVariable String name) {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
