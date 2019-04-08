@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,16 +20,24 @@ import com.FlightsReservations.service.FlightService;
 @RestController
 @RequestMapping("/flights")
 @CrossOrigin("*")
-public class FlightsController {
+public class FlightController {
 	
 	/*
 	 * addFlight
 	 * editFlight
-	 * getFlight
+	 * getFlights - pageable
+	 * getAllFlights - for testing
 	 */
 	
 	@Autowired
 	private FlightService service;
+	
+	@GetMapping(
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<?> findAll() {
+		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+	}
 	
 	@PostMapping(
 			consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.FlightsReservations.domain.Airport;
 import com.FlightsReservations.domain.Flight;
+import com.FlightsReservations.domain.Seat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FlightDTO {
@@ -23,6 +24,7 @@ public class FlightDTO {
 	private Set<String> stops;
 	private String startAirport;
 	private String endAirport;
+	private Set<SeatDTO> seats;
 
 	public FlightDTO() {
 		super();
@@ -40,6 +42,7 @@ public class FlightDTO {
 		this.startAirport = startAirport;
 		this.endAirport = endAirport;
 		this.stops = new HashSet<>();
+		this.seats = new HashSet<>();
 	}
 
 	public FlightDTO(Flight f) {
@@ -48,6 +51,11 @@ public class FlightDTO {
 
 		for (Airport a : f.getStops())
 			stops.add(a.getName());
+		
+		for (Seat s : f.getSeats()) {
+			System.out.println("Adding seat.");
+			seats.add(new SeatDTO(s));
+		}
 	}
 
 	public Long getId() {
@@ -122,4 +130,11 @@ public class FlightDTO {
 		this.endAirport = endAirport;
 	}
 
+	public Set<SeatDTO> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(Set<SeatDTO> seats) {
+		this.seats = seats;
+	}
 }

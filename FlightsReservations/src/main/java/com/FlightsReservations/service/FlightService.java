@@ -1,5 +1,7 @@
 package com.FlightsReservations.service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,17 @@ public class FlightService {
 		}
 		return null;
 	}
+	
+	
+	public Set<FlightDTO> findAll() {
+		List<Flight> flights = repository.findAll();
+		Set<FlightDTO> dtos = new HashSet<>();
+		
+		for (Flight f : flights) 
+			dtos.add(new FlightDTO(f));
+		return dtos;
+	}
+	
 	
 	private void createSeats(Flight f, int numOfSeats, int numOfFirst, int numOfBusiness) {
 		Seat s;
