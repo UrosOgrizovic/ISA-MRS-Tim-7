@@ -20,7 +20,7 @@ public class AirlineService {
 	
 	@Autowired
 	private AirportRepository airportRepository;
-	
+
 	public AirlineDTO create(AirlineDTO t) {
 		Airline a = repository.findByName(t.getName());
 		if (a == null) {

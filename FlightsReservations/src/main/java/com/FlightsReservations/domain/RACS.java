@@ -1,7 +1,7 @@
 package com.FlightsReservations.domain;
 
 import java.util.ArrayList;
-import java.util.Map.Entry;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,60 +10,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
-public class RACS {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+public class RACS extends Company {
 	
-	@NotBlank
-	private String name;
-	@NotBlank
-	private String address;
-	@NotBlank
-	private String description;
-	@NotNull	
-	private ArrayList<Entry<String, Double>> pricelist;
+
+	private ArrayList<PricelistItem> pricelist;
 	
-	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Car> cars;
+	@JoinColumn(name = "racs_id")
+	private Set<Car> cars = new HashSet<>();	
 	
-	@NotNull
 	private ArrayList<String> branchOffices;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public ArrayList<Entry<String, Double>> getPricelist() {
+	public ArrayList<PricelistItem> getPricelist() {
 		return pricelist;
 	}
-	public void setPricelist(ArrayList<Entry<String, Double>> pricelist) {
+	public void setPricelist(ArrayList<PricelistItem> pricelist) {
 		this.pricelist = pricelist;
 	}
 	public Set<Car> getCars() {
@@ -78,16 +43,11 @@ public class RACS {
 	public void setBranchOffices(ArrayList<String> branchOffices) {
 		this.branchOffices = branchOffices;
 	}
-	public RACS(String name, String address, String description, ArrayList<Entry<String, Double>> pricelist,
-			Set<Car> cars, ArrayList<String> branchOffices) {
-		super();
-		this.name = name;
-		this.address = address;
-		this.description = description;
-		this.pricelist = pricelist;
-		this.cars = cars;
-		this.branchOffices = branchOffices;
+	public RACS(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+			int numberOfVotes) {
+		super(name, longitude, latitude, promoDescription, avarageScore, numberOfVotes);
 	}
+	
 	public RACS() {
 		super();
 	}

@@ -9,7 +9,7 @@
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../css/editRentACarService.css" />
+    <link rel="stylesheet" href="../css/editRACS.css" />
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
 
@@ -20,13 +20,16 @@
     <h3>By leaving a field blank, the corresponding attribute will not change.</h3>
     <div>
         <select id="id_select" class="form-control" style="visibility:hidden;"></select>
-        <div class="left">
+
+        
+        <div class="column">
             <label for="name_select">Current name</label>
             <select class="form-control" id="name_select">
             </select>      
         </div>
 
-        <form class="right" method="PUT">
+        
+        <form class="column" method="PUT">
             <label for="name">New name</label>
             <input type="text" class="form-control" id="name"/>
             <label for="address">New address</label>
@@ -34,9 +37,38 @@
             <label for="description">New description</label>
             <input type="text" class="form-control"  id="description"/>
             <button type="submit" class="btn btn-primary" onClick="updateRACS()">Submit</button>
-            <button type="button" class="btn btn-primary">Cancel</button>
         </form>
+        
+        <form method="PUT" class="column">
+            <label>Car name: </label>
+            <input type="text" class="form-control" id="carName"/>
+            <label>Car manufacturer: </label>
+            <input type="text" class="form-control" id="carManufacturer"/>
+            <label>Car color: </label>
+            <input type="text" class="form-control" id="carColor"/>
+            <label>Car year of manufacture: </label>
+            <input type="number" min="1950" value="1950" class="form-control" id="carYOM"/>
+            <button type="submit" class="btn btn-primary" onClick="addCarToRACS()">Add car to rent-a-car service</button>
+        </form>
+        
     </div>
+    <br>
+
+    <div>
+        <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
+        <div class="column">
+            <label for="car_select">Choose car</label>
+            <select class="form-control" id="car_select">
+            </select>      
+        </div>
+        <!--TODO: Add select for cars for selected RACS -->
+
+        <!--TODO: Add edit form for cars -->
+        <!--TODO: Add remove form for cars -->
+    </div>
+    
+
+    
 
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

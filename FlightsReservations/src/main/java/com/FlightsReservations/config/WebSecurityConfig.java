@@ -15,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
 import com.FlightsReservations.security.TokenUtils;
 import com.FlightsReservations.security.auth.RestAuthenticationEntryPoint;
 import com.FlightsReservations.security.auth.TokenAuthenticationFilter;
@@ -72,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/racss/**").permitAll()
 			.antMatchers("/airlines/**").permitAll()
 			.antMatchers("/airports/**").permitAll()
+			.antMatchers("/hotels/**").permitAll()
 			
 			// every request must be authorized
 			.anyRequest().authenticated().and()
