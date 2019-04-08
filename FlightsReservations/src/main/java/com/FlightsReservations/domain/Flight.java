@@ -60,7 +60,7 @@ public class Flight {
 
 	@OneToMany(mappedBy = "returnFlight")
 	private Set<AirReservation> secondFlights = new HashSet<>();
-
+	
 	public Flight() {
 		super();
 	}

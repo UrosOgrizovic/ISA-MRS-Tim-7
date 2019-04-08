@@ -25,6 +25,7 @@ import com.FlightsReservations.service.AirlineService;
 @RequestMapping("/airlines")
 @CrossOrigin("*")
 public class AirlineController {
+	
 	@Autowired
 	private AirlineService service;
 	
@@ -74,7 +75,8 @@ public class AirlineController {
 	
 	
 	@PutMapping(
-			value = "/addAirport/{airline}/{airport}"
+			value = "/addAirport/{airline}/{airport}",
+			produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<?> update(@NotBlank @PathVariable String airline,
 			@NotBlank @PathVariable String airport) {

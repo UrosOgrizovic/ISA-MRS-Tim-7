@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class AirlinePriceList {
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
-
+	
 	@Column(nullable = false)
 	private double bussines;
 	
