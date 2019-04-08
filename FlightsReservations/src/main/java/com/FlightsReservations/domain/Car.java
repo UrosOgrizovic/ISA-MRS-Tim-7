@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
@@ -19,7 +20,10 @@ public class Car {
 	private int yearOfManufacture;
 	private String color;
 	
+
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	
 	private RACS racs;
 
 	public Long getId() {

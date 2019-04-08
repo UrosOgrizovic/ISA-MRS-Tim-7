@@ -27,14 +27,11 @@ public class RACSService {
 		RACS r = findOne(t.getId());
 		if (r != null) {
 			r.setAddress(t.getAddress());
-			// r.setBranchOffices(t.getBranchOffices());
+			r.setBranchOffices(t.getBranchOffices());
 			r.setCars(t.getCars());
 			r.setDescription(t.getDescription());
 			r.setName(t.getName());
-			// r.setPricelist(t.getPricelist());
-			for (Car c : r.getCars()) {
-				System.out.println(c.getManufacturer() + " " + c.getName() + " " + c.getColor());
-			}
+			r.setPricelist(t.getPricelist());
 			repository.save(r);
 			return true;
 		}
@@ -42,7 +39,7 @@ public class RACSService {
 	}
 
 	public boolean addCar(CarDTO car) {
-		Long racsID = car.getRacsID();
+		Long racsID = car.getRacs_id();
 		RACS racs = findOne(racsID);
 
 		if (racs != null) {
