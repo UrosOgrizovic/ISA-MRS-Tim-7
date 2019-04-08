@@ -3,28 +3,37 @@ package com.FlightsReservations.domain.dto;
 import java.util.Date;
 import java.util.Set;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CreateFlightDTO {
 
 	@NotNull
+	@Future
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date takeOffTime;
 
 	@NotNull
+	@Future
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date landingTime;
 
 	@NotNull
+	@Positive
 	private int numberOfSeats;
 	
 	@NotNull
+	@PositiveOrZero
 	private int firstClassNum;
 
 	@NotNull
+	@PositiveOrZero
 	private int businessClassNum;
-	
-	@NotNull
-	private int economicClassNum;
 	
 	@NotNull
 	private Set<String> stopNames;
@@ -82,14 +91,6 @@ public class CreateFlightDTO {
 		this.businessClassNum = businessClassNum;
 	}
 
-	public int getEconomicClassNum() {
-		return economicClassNum;
-	}
-
-	public void setEconomicClassNum(int economicClassNum) {
-		this.economicClassNum = economicClassNum;
-	}
-
 	public Set<String> getStopNames() {
 		return stopNames;
 	}
@@ -121,5 +122,4 @@ public class CreateFlightDTO {
 	public void setAirlineName(String airlineName) {
 		this.airlineName = airlineName;
 	}
-
 }
