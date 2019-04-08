@@ -1,20 +1,18 @@
 package com.FlightsReservations.domain;
 
-import java.util.Collection;
-
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-@MappedSuperclass
-public class AbstractUser implements UserDetails {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class AbstractUser {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(unique = true)
@@ -29,8 +27,7 @@ public class AbstractUser implements UserDetails {
 	public AbstractUser() {
 	}
 	
-	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath) 
+	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password) 
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -110,39 +107,4 @@ public class AbstractUser implements UserDetails {
 		this.password = password;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	} 
 }

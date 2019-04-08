@@ -7,4 +7,5 @@ import com.FlightsReservations.domain.Airline;
 
 @Repository
 public interface AirlineRepository extends JpaRepository<Airline, Long>{
+	Airline findByName(String name);
 }

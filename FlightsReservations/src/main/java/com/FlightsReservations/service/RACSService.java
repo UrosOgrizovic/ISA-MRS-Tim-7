@@ -26,10 +26,11 @@ public class RACSService {
 	public boolean update(RACS t) {
 		RACS r = findOne(t.getId());
 		if (r != null) {
-			r.setAddress(t.getAddress());
+			r.setLongitude(t.getLongitude());
+			r.setLatitude(t.getLatitude());
 			r.setBranchOffices(t.getBranchOffices());
 			r.setCars(t.getCars());
-			r.setDescription(t.getDescription());
+			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
 			r.setPricelist(t.getPricelist());
 			repository.save(r);

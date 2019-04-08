@@ -3,8 +3,6 @@ FlightsReservations.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -80,6 +78,7 @@ public class RACSController {
 		}
 		
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
+
 	}
 	
 	@PutMapping(
@@ -90,5 +89,6 @@ public class RACSController {
 		if (service.addCar(car))
 			return new ResponseEntity<>(car, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
 	}
 }

@@ -1,67 +1,66 @@
 package com.FlightsReservations.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Airline {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Airline extends Company {
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Flight> flights = new HashSet<>(); 
+
 	
-	private Long id;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<AirReservation> reservations = new HashSet<>();
 	
-	@NotBlank
-	private String name;
+	@ManyToMany
+    @JoinTable(name = "airline_airports",
+               joinColumns = @JoinColumn(name="airline_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="airport_id", referencedColumnName="id"))
+	private Set<Airport> airports = new HashSet<>(); 
 	
-	@NotBlank
-	private String location;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private AirlinePriceList pricelist;
 	
-	@NotBlank
-	private String promoDescription;
-		
 	public Airline() {
 		super();
 	}
-	
-	public Airline(String name, String location, String promoDescription) {
-		super();
-		this.name = name;
-		this.location = location;
-		this.promoDescription = promoDescription;
+
+	public Airline(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+			int numberOfVotes) {
+		super(name, longitude, latitude, promoDescription, avarageScore, numberOfVotes);
 	}
 
-	public Long getId() {
-		return id;
+	public Set<Flight> getFlights() {
+		return flights;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setFlights(Set<Flight> flights) {
+		this.flights = flights;
 	}
 
-	public String getName() {
-		return name;
+	public Set<AirReservation> getReservations() {
+		return reservations;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setReservations(Set<AirReservation> reservations) {
+		this.reservations = reservations;
 	}
 
-	public String getLocation() {
-		return location;
+	public Set<Airport> getAirports() {
+		return airports;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public String getPromoDescription() {
-		return promoDescription;
-	}
-
-	public void setPromoDescription(String promoDescription) {
-		this.promoDescription = promoDescription;
+	public void setAirports(Set<Airport> airports) {
+		this.airports = airports;
 	}
 }

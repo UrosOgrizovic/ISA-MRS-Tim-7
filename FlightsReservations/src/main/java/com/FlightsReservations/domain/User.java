@@ -2,7 +2,9 @@ package com.FlightsReservations.domain;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,35 +21,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User extends AbstractUser implements UserDetails {
-	
+
 	// friends attribute will be added
-	
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private boolean enabled;
-    
-	/* so as to only allow refreshing a token
-	 * that was created before the latest
+
+	/*
+	 * so as to only allow refreshing a token that was created before the latest
 	 * password reset
 	 */
-    private Date lastPasswordResetDate;
-	
+
+	private Date lastPasswordResetDate;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private List<Authority> authorities;
-	
+	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+	private List<Authority> authorities;
+
+	@OneToMany(mappedBy = "owner")
+	private Set<AirReservation> airReservations = new HashSet<>();
+
 	public User() {
 		super();
 	}
 
-	public User(String firstName, String lastName, String email, String phone, String address, String password, String picturePath, boolean enabled) {
-		super(firstName, lastName, email, phone, address, password, picturePath);
+	public User(String firstName, String lastName, String email, String phone, String address, String password,
+			boolean enabled, Set<AirReservation> airReservations) {
+		super(firstName, lastName, email, phone, address, password);
 		this.enabled = enabled;
+		this.airReservations = airReservations;
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -62,14 +66,22 @@ public class User extends AbstractUser implements UserDetails {
 	public String getUsername() {
 		return this.getEmail();
 	}
-	
-	public Date getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
 
-    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
+	public Date getLastPasswordResetDate() {
+		return lastPasswordResetDate;
+	}
+
+	public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+	public Set<AirReservation> getReservations() {
+		return airReservations;
+	}
+
+	public void setReservations(Set<AirReservation> airReservations) {
+		this.airReservations = airReservations;
+	}
 
 	@JsonIgnore
 	@Override
@@ -92,5 +104,5 @@ public class User extends AbstractUser implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
-	} 
+	}
 }

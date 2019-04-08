@@ -7,4 +7,5 @@ import com.FlightsReservations.domain.RACS;
 
 @Repository
 public interface RACSRepository extends JpaRepository<RACS, Long> {
+	RACS findByName(String name);
 }
