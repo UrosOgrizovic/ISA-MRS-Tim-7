@@ -5,13 +5,15 @@ public class CarDTO {
 	private String name;
 	private int yearOfManufacture;
 	private String color;
+	private Long racs_id;
+	
 	public Long getRacs_id() {
 		return racs_id;
 	}
 	public void setRacs_id(Long racs_id) {
 		this.racs_id = racs_id;
 	}
-	private Long racs_id;
+	
 	public CarDTO() {
 		super();
 	}

@@ -7,11 +7,10 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class RACS extends Company {
@@ -19,7 +18,12 @@ public class RACS extends Company {
 
 	private ArrayList<PricelistItem> pricelist;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	
+	/* orphanRemoval = true - guarantees that when a car is removed from  
+	 * the RACS's set it will also be removed from the database
+	 * more: https://stackoverflow.com/a/5642615
+	*/
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "racs_id")
 	private Set<Car> cars = new HashSet<>();	
 	

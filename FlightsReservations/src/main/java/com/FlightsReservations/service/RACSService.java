@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.RACSRepository;
 
 @Component
@@ -16,11 +17,10 @@ public class RACSService {
 
 	@Autowired
 	RACSRepository repository;
+	
 
 	public RACS create(RACS t) {
-
 		return repository.save(t);
-
 	}
 
 	public boolean update(RACS t) {
@@ -33,11 +33,14 @@ public class RACSService {
 			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
 			r.setPricelist(t.getPricelist());
+			r.setAverageScore(t.getAverageScore());
+			r.setNumberOfVotes(t.getNumberOfVotes());
 			repository.save(r);
 			return true;
 		}
 		return false;
 	}
+	
 
 	public boolean addCar(CarDTO car) {
 		Long racsID = car.getRacs_id();
@@ -57,6 +60,7 @@ public class RACSService {
 		}
 		return false;
 	}
+	
 
 	public RACS findOne(Long id) {
 		try {
@@ -65,10 +69,10 @@ public class RACSService {
 			return null;
 		}
 	}
+	
 
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		repository.deleteById(id);
 	}
 
 	public Collection<RACS> findAll() {

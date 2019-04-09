@@ -34,8 +34,6 @@ public class AirlineController {
 		return service.findAll();
 	}
 	
-	
-	
 	@PostMapping(
 			value = "/add",
 			produces = MediaType.APPLICATION_JSON_VALUE,

@@ -12,18 +12,23 @@ $(document).ready(function(){
 		dataType: "json",
 		crossDomain: true,
 		success: function (result) {
+            console.log("RESULT: " + result);
 			for (var i = 0; i < result.length; i++) {
+                console.log(result);
                 mapa[result[i].id] = result[i];
                 nameSelect.append("<option>"+result[i].name+"</option>");
                 idSelect.append("<option>" + result[i].id + "</option>");
 			}
 			setInputs();
-		}
+        },
+        error: function(err) {
+            console.log(err);
+        }
 	});	
 });
 
 function updateRACS() {
-    var ids = ["name", "address", "description"];
+    var ids = ["name", "longitude", "latitude", "description", "averageScore", "numberOfVotes"];
 	if (!validateInputs(ids)) {
 		alert("Inputs are invalid!");
 		return;
@@ -32,8 +37,12 @@ function updateRACS() {
     var key = idSelect.val();
 
 	mapa[key].name = $("#name").val();
-	mapa[key].address = $("#address").val();
-	mapa[key].description = $("#description").val();
+    mapa[key].longitude = $("#longitude").val();
+    mapa[key].latitude = $("#latitude").val();
+    mapa[key].promoDescription = $("#description").val();
+    mapa[key].averageScore = $("#averageScore").val();
+    mapa[key].numberOfVotes = $("#numberOfVotes").val();
+    
 		
 	$.ajax({
 		url: "http://localhost:8080/racss/update",
@@ -126,9 +135,8 @@ function addCarToRACS() {
     newCar.manufacturer = $("#carManufacturer").val();
     newCar.color = $("#carColor").val();
     newCar.yearOfManufacture = $("#carYOM").val();
-    var racs = {id: 1};
-    newCar.racs = racs;
-    newCar.racs.id = idSelect.val();
+    
+    newCar.racs_id = idSelect.val();
     console.log(newCar);
     $.ajax({
 		url: "http://localhost:8080/racss/addCar",
