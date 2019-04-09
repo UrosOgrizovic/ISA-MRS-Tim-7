@@ -27,7 +27,7 @@ package com.FlightsReservations.common;
 /*::                                                                         :*/
 /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
-class DistanceCalculator
+public class DistanceCalculator
 {
 	public DistanceCalculator() {
 		super();

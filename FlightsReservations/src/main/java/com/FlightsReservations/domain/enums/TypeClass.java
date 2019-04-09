@@ -1,5 +1,5 @@
 package com.FlightsReservations.domain.enums;
 
 public enum TypeClass {
-	BUSINESS, ECONOMY
+	BUSINESS, ECONOMY, FIRST
 }

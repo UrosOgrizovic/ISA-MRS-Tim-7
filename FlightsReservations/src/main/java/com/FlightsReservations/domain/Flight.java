@@ -36,12 +36,6 @@ public class Flight {
 	@Column(nullable = false)
 	private double flightDistance;
 
-	@Column(nullable = false)
-	private double ticketPrice;
-
-	@Column(nullable = false)
-	private boolean active;
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
@@ -63,28 +57,22 @@ public class Flight {
 
 	@OneToMany(mappedBy = "returnFlight")
 	private Set<AirReservation> secondFlights = new HashSet<>();
-
+	
 	public Flight() {
 		super();
 	}
 
-	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double ticketPrice,
-			boolean active, Airline airline, Set<Seat> seats, Set<Airport> stops, Airport start, Airport end,
-			Set<AirReservation> firstReservations, Set<AirReservation> secondFlights) {
+	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance,
+			Airline airline, Airport start, Airport end, Set<Airport> stops) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
 		this.flightTime = flightTime;
 		this.flightDistance = flightDistance;
-		this.ticketPrice = ticketPrice;
-		this.active = active;
 		this.airline = airline;
-		this.seats = seats;
-		this.stops = stops;
 		this.start = start;
 		this.end = end;
-		this.firstReservations = firstReservations;
-		this.secondFlights = secondFlights;
+		this.stops = stops;
 	}
 
 	public Long getId() {
@@ -125,22 +113,6 @@ public class Flight {
 
 	public void setFlightDistance(double flightDistance) {
 		this.flightDistance = flightDistance;
-	}
-
-	public double getTicketPrice() {
-		return ticketPrice;
-	}
-
-	public void setTicketPrice(double ticketPrice) {
-		this.ticketPrice = ticketPrice;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	public Airline getAirline() {

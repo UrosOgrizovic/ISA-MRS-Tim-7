@@ -2,14 +2,15 @@ package com.FlightsReservations.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.Airport;
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.repository.AirlineRepository;
+import com.FlightsReservations.repository.AirportRepository;
 
 @Service
 public class AirlineService {
@@ -17,6 +18,8 @@ public class AirlineService {
 	@Autowired
 	private AirlineRepository repository;
 	
+	@Autowired
+	private AirportRepository airportRepository;
 
 	public AirlineDTO create(AirlineDTO t) {
 		Airline a = repository.findByName(t.getName());
@@ -28,7 +31,7 @@ public class AirlineService {
 					t.getPromoDescription(), 
 					0, 0);
 			repository.save(a);
-			return new AirlineDTO(a);
+			return createDTO(a);
 		}
 		return null;
 	}
@@ -46,17 +49,38 @@ public class AirlineService {
 		return false;
 	}
 
-	public Airline findOne(Long id) {
-		Optional<Airline> o = repository.findById(id);
-		if (o.isPresent())
-			return o.get();
+	public AirlineDTO findOne(String name) {
+		Airline a = repository.findByName(name);
+		if (a != null)
+			return createDTO(a);
 		return null;
 	}
 	
 	public List<AirlineDTO> findAll() {
 		List<AirlineDTO> dtos = new ArrayList<>();
 		for (Airline a : repository.findAll()) 
-			dtos.add(new AirlineDTO(a));
+			dtos.add(createDTO(a));
 		return dtos;
+	}	
+	
+	
+	public AirlineDTO addAirport(String airlineName, String airportName) {
+		Airline airline = repository.findByName(airlineName);
+		Airport airport = airportRepository.findByName(airportName);
+		
+		if (airline != null && airport != null) {
+			airline.getAirports().add(airport);
+			repository.save(airline);
+			return createDTO(airline);
+		}
+		return null;
+	}
+	
+	
+	private AirlineDTO createDTO(Airline airline) {
+		AirlineDTO dto = new AirlineDTO(airline);
+		for (Airport a : airline.getAirports()) 
+			dto.getAirports().add(a.getName());
+		return dto;
 	}
 }

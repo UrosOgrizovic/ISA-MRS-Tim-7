@@ -23,7 +23,7 @@ public class Seat {
 	private Integer seatNumber;
 
 	@Column(nullable = false)
-	private Boolean taken;
+	private Boolean available;
 
 	@Column(nullable = false)
 	private TypeClass type;
@@ -38,10 +38,10 @@ public class Seat {
 		super();
 	}
 
-	public Seat(Integer seatNumber, Boolean taken, TypeClass type, Flight flight, AirReservation reservation) {
+	public Seat(Integer seatNumber, Boolean available, TypeClass type, Flight flight, AirReservation reservation) {
 		super();
 		this.seatNumber = seatNumber;
-		this.taken = taken;
+		this.available= available;
 		this.type = type;
 		this.flight = flight;
 		this.reservation = reservation;
@@ -63,12 +63,12 @@ public class Seat {
 		this.seatNumber = seatNumber;
 	}
 
-	public Boolean getTaken() {
-		return taken;
+	public Boolean isAvailable() {
+		return available;
 	}
 
-	public void setTaken(Boolean taken) {
-		this.taken = taken;
+	public void setAvailable(Boolean available) {
+		this.available= available;
 	}
 
 	public TypeClass getType() {

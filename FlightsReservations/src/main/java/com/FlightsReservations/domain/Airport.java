@@ -11,11 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.FlightsReservations.domain.dto.AirportDTO;
+
 @Entity
 public class Airport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(unique = true, nullable = false)
+	private String name;
 
 	@Column(nullable = false)
 	private String city;
@@ -45,18 +50,17 @@ public class Airport {
 		super();
 	}
 
-	public Airport(Long id, String city, String state, float longitude, float latitude, Set<Airline> airlines,
-			Set<Flight> stops, Set<Flight> starts, Set<Flight> ends) {
+	public Airport(String name, String city, String state, float longitude, float latitude) {
 		super();
-		this.id = id;
+		this.name = name;
 		this.city = city;
 		this.state = state;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.airlines = airlines;
-		this.stops = stops;
-		this.starts = starts;
-		this.ends = ends;
+	}
+	
+	public Airport(AirportDTO dto) {
+		this(dto.getName(), dto.getCity(), dto.getState(), dto.getLongitude(), dto.getLatitude());
 	}
 
 	public Long getId() {
@@ -129,5 +133,13 @@ public class Airport {
 
 	public void setEnds(Set<Flight> ends) {
 		this.ends = ends;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
