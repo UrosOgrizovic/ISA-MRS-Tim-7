@@ -46,14 +46,11 @@ public class SeatService {
 	
 	public boolean delete(Long flightID, Long seatNum) {
 		Seat s = repository.findInFlight(flightID, seatNum);
-		System.err.println(s);
-		if (s != null) {
-			System.err.println("========================="+s.getSeatNumber());
+		if (s != null) 
 			if (s.isAvailable()) {
 				repository.delete(s);
 				return true;
 			}
-		}
 		return false;
 	}
 }
