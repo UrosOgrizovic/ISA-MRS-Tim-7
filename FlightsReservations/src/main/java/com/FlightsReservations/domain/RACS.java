@@ -39,7 +39,11 @@ public class RACS extends Company {
 		return cars;
 	}
 	public void setCars(Set<Car> cars) {
-		this.cars = cars;
+		this.cars.clear();
+		if (cars != null) {
+			this.cars.addAll(cars);
+		}
+		
 	}
 	public ArrayList<String> getBranchOffices() {
 		return branchOffices;
@@ -55,6 +59,48 @@ public class RACS extends Company {
 	public RACS() {
 		super();
 	}
+	@Override
+	public int hashCode() {
+		
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((branchOffices == null) ? 0 : branchOffices.hashCode());
+		result = prime * result + ((cars == null) ? 0 : cars.hashCode());
+		result = prime * result + ((pricelist == null) ? 0 : pricelist.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (! super.equals(obj)) return false;
+		else {
+			RACS other = (RACS) obj;
+			if (branchOffices == null) {
+				if (other.branchOffices != null)
+					return false;
+			} else if (!branchOffices.equals(other.branchOffices))
+				return false;
+			if (cars == null) {
+				if (other.cars != null)
+					return false;
+			} else if (!cars.equals(other.cars))
+				return false;
+			if (pricelist == null) {
+				if (other.pricelist != null)
+					return false;
+			} else if (!pricelist.equals(other.pricelist))
+				return false;
+			return true;
+		}
+		
+	}
+	
+	
 	
 		
 	

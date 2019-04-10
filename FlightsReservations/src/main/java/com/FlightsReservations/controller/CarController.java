@@ -35,8 +35,9 @@ public class CarController {
 	}
 	
 	@DeleteMapping(value = "/removeCar/{id}")
-	public void removeCar(@PathVariable Long id) {
+	public Collection<Car> removeCar(@PathVariable Long id) {
 		service.delete(id);
+		return service.findAll();
 	}
 	
 	@PutMapping(

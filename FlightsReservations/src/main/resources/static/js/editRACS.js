@@ -1,6 +1,6 @@
 var mapa = new Map();
-var nameSelect = $("#name_select");
-var idSelect = $("#id_select");
+var nameSelect = $("#racs_name_select");
+var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
@@ -12,9 +12,7 @@ $(document).ready(function(){
 		dataType: "json",
 		crossDomain: true,
 		success: function (result) {
-            console.log("RESULT: " + result);
 			for (var i = 0; i < result.length; i++) {
-                console.log(result);
                 mapa[result[i].id] = result[i];
                 nameSelect.append("<option>"+result[i].name+"</option>");
                 idSelect.append("<option>" + result[i].id + "</option>");
@@ -42,6 +40,19 @@ function updateRACS() {
     mapa[key].promoDescription = $("#description").val();
     mapa[key].averageScore = $("#averageScore").val();
     mapa[key].numberOfVotes = $("#numberOfVotes").val();
+    var carsOfRacs = [];
+    
+
+    $("#car_select > option").each(function() {
+        var currentCar = {};
+        currentCar.manufacturer = this.text.split(" ")[1];
+        currentCar.name = this.text.split(" ")[2];
+        currentCar.color = this.text.split(" ")[3];
+        currentCar.yearOfManufacture = parseInt(this.text.split(" ")[4]);
+        carsOfRacs.push(currentCar);
+    });
+
+    mapa[key].cars = carsOfRacs;
     
 		
 	$.ajax({
@@ -71,15 +82,21 @@ function setInputs(){
     var key = idSelect.val();
 	
 	$("#name").val(mapa[key].name);
-	$("#address").val(mapa[key].address);
-    $("#description").val(mapa[key].description);
-    
+	$("#longitude").val(mapa[key].longitude);
+	$("#latitude").val(mapa[key].latitude);
+    $("#description").val(mapa[key].promoDescription);
+    $("#averageScore").val(mapa[key].averageScore);
+    $("#numberOfVotes").val(mapa[key].numberOfVotes);
+
     carSelect.empty();
     carIdSelect.empty();
 
+    var idx = 0;
+    mapa[key].cars.sort();
     for (var car of mapa[key].cars) {
+        idx++;
         carIdSelect.append("<option>"+car.id+"</option>");
-        carSelect.append("<option>"+ "#" + car.id + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture +"</option>");
+        carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture +"</option>");
     }
 }
 
@@ -88,39 +105,20 @@ then the 2nd item is selected in all other
 selectboxes as well
 */
 $(function(){
-    $('#name_select').change(function(){ // when one changes
-        var idx = $('#name_select').prop('selectedIndex');
-        document.getElementById('id_select').selectedIndex = idx;
-        document.getElementById('car_select').selectedIndex = idx;
-        document.getElementById('car_id_select').selectedIndex = idx;
+    $('#racs_name_select').change(function(){ // when one changes
+        var idx = $('#racs_name_select').prop('selectedIndex');
+        document.getElementById('racs_id_select').selectedIndex = idx;
         
         setInputs();
     })
-    $('#id_select').change(function(){ // when one changes
-        var idx = $('#id_select').prop('selectedIndex');
-        document.getElementById('name_select').selectedIndex = idx;
-        document.getElementById('car_select').selectedIndex = idx;
-        document.getElementById('car_id_select').selectedIndex = idx;
-        
-        setInputs();
-    })
+    
 
     $("#car_select").change(function() {
         var idx = $("#car_select").prop('selectedIndex');
         document.getElementById('car_id_select').selectedIndex = idx;
-        document.getElementById('id_select').selectedIndex = idx;
-        document.getElementById('name_select').selectedIndex = idx;
-
-        setInputs();
+    
     })
-    $("#car_id_select").change(function() {
-        var idx = $("#car_id_select").prop('selectedIndex');
-        document.getElementById('car_select').selectedIndex = idx;
-        document.getElementById('id_select').selectedIndex = idx;
-        document.getElementById('name_select').selectedIndex = idx;
-
-        setInputs();
-    })
+    
 })
 
 function addCarToRACS() {
@@ -136,6 +134,7 @@ function addCarToRACS() {
     newCar.color = $("#carColor").val();
     newCar.yearOfManufacture = $("#carYOM").val();
     
+
     newCar.racs_id = idSelect.val();
     console.log(newCar);
     $.ajax({
@@ -153,4 +152,33 @@ function addCarToRACS() {
         }
 	});
     
+}
+
+function removeCarFromRACS() {
+    var carID = carIdSelect.val();
+    $.ajax({
+        url: "http://localhost:8080/cars/removeCar/" + carID,
+        method: "DELETE",
+        data: {},
+        contentType: "application/json",
+        dataType: "json",
+        success: function(allCars) {
+            carIdSelect.empty();
+            carSelect.empty();
+            allCars.sort();
+            var idx = 0;
+            for (var car of allCars) {
+                idx++;
+                carIdSelect.append("<option>"+car.id+"</option>");
+                carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture +"</option>");
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
+function updateCar() {
+
 }
