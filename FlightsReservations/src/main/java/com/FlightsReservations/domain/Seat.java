@@ -28,23 +28,22 @@ public class Seat {
 	@Column(nullable = false)
 	private TypeClass type;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Flight flight;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private AirReservation reservation;
-
+	
 	public Seat() {
 		super();
 	}
-
-	public Seat(Integer seatNumber, Boolean available, TypeClass type, Flight flight, AirReservation reservation) {
+	
+	public Seat(Integer seatNumber, Boolean available, TypeClass type, Flight flight) {
 		super();
 		this.seatNumber = seatNumber;
 		this.available= available;
 		this.type = type;
 		this.flight = flight;
-		this.reservation = reservation;
 	}
 
 	public Long getId() {

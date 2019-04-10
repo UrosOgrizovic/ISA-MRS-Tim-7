@@ -48,8 +48,7 @@ public class FlightService {
 							start.getLatitude(), 
 							start.getLongitude(), 
 							end.getLatitude(), 
-							end.getLongitude(), 
-							"K"),
+							end.getLongitude(), "K"),
 					airline, start, end, stops);
 			
 			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
@@ -82,7 +81,7 @@ public class FlightService {
 			else 
 				type = TypeClass.ECONOMY;
 			
-			s = new Seat(i, true, type, f, null);
+			s = new Seat(i, true, type, f);
 			f.getSeats().add(s);
 		}
 	}

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Airline;
 import com.FlightsReservations.domain.Airport;
+import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.dto.AirlineDTO;
+import com.FlightsReservations.domain.dto.FlightDTO;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 
@@ -81,6 +83,9 @@ public class AirlineService {
 		AirlineDTO dto = new AirlineDTO(airline);
 		for (Airport a : airline.getAirports()) 
 			dto.getAirports().add(a.getName());
+		for (Flight f : airline.getFlights())
+			dto.getFlights().add(new FlightDTO(f));
+		
 		return dto;
 	}
 }
