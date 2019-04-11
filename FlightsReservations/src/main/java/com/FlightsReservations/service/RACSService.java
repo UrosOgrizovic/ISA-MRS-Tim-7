@@ -70,6 +70,13 @@ public class RACSService {
 		}
 	}
 	
+	public Collection<RACS> findByName(String name) {
+		try {
+			return repository.findByName(name);
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+	}
 
 	public void delete(Long id) {
 		repository.deleteById(id);
