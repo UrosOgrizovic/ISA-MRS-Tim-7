@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/airports/**").permitAll()
 			.antMatchers("/hotels/**").permitAll()
 			.antMatchers("/flights/**").permitAll()
+			.antMatchers("/seats/**").permitAll()
 			
 			// every request must be authorized
 			.anyRequest().authenticated().and()
