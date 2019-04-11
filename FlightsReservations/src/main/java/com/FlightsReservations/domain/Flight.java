@@ -35,7 +35,7 @@ public class Flight {
 
 	@Column(nullable = false)
 	private double flightDistance;
-	
+
 	@Column(nullable = false)
 	private double price;
 
@@ -55,18 +55,15 @@ public class Flight {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport end;
 
-	@OneToMany(mappedBy = "firstFlight")
-	private Set<AirReservation> firstReservations = new HashSet<>();
+	@OneToMany(mappedBy = "flight")
+	private Set<AirReservationFlight> reservations = new HashSet<>();
 
-	@OneToMany(mappedBy = "returnFlight")
-	private Set<AirReservation> secondFlights = new HashSet<>();
-	
 	public Flight() {
 		super();
 	}
 
-	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price
-			, Airline airline, Airport start, Airport end, Set<Airport> stops) {
+	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price,
+			Airline airline, Airport start, Airport end, Set<Airport> stops) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
@@ -159,22 +156,6 @@ public class Flight {
 		this.end = end;
 	}
 
-	public Set<AirReservation> getFirstReservations() {
-		return firstReservations;
-	}
-
-	public void setFirstReservations(Set<AirReservation> firstReservations) {
-		this.firstReservations = firstReservations;
-	}
-
-	public Set<AirReservation> getSecondFlights() {
-		return secondFlights;
-	}
-
-	public void setSecondFlights(Set<AirReservation> secondFlights) {
-		this.secondFlights = secondFlights;
-	}
-
 	public double getPrice() {
 		return price;
 	}
@@ -182,6 +163,13 @@ public class Flight {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
-	
+
+	public Set<AirReservationFlight> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<AirReservationFlight> reservations) {
+		this.reservations = reservations;
+	}
+
 }
