@@ -36,6 +36,10 @@ public class CreateFlightDTO {
 	private int businessClassNum;
 	
 	@NotNull
+	@PositiveOrZero
+	private double price;
+	
+	@NotNull
 	private Set<String> stopNames;
 	
 	@NotBlank
@@ -121,5 +125,13 @@ public class CreateFlightDTO {
 
 	public void setAirlineName(String airlineName) {
 		this.airlineName = airlineName;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }

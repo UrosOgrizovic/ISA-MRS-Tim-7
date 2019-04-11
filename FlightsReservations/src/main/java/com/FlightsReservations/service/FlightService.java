@@ -49,6 +49,7 @@ public class FlightService {
 							start.getLongitude(), 
 							end.getLatitude(), 
 							end.getLongitude(), "K"),
+					dto.getPrice(),
 					airline, start, end, stops);
 			
 			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
