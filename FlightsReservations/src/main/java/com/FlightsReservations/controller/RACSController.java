@@ -40,6 +40,11 @@ public class RACSController {
 		return service.findAll();
 	}
 	
+	@GetMapping(value="/searchRACS/{value}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<RACS> searchRACS(@PathVariable String value) {
+		return service.findByName(value);
+	}
+	
 	//@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
