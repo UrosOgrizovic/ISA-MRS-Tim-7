@@ -9,14 +9,19 @@ import javax.validation.constraints.NotNull;
 import com.FlightsReservations.domain.Airline;
 
 public class AirlineDTO {
-	@NotBlank private String name;
-	@NotNull private Float longitude;
-	@NotNull private Float latitude;
-	@NotBlank private String promoDescription;
+	@NotBlank
+	private String name;
+	@NotNull
+	private Float longitude;
+	@NotNull
+	private Float latitude;
+	@NotBlank
+	private String promoDescription;
 	private float avarageScore;
-	
-	private Set<String> airports = new HashSet<>(); 
-	
+
+	private Set<String> airports = new HashSet<>();
+	private Set<FlightDTO> flights = new HashSet<>();
+
 	public AirlineDTO() {
 		super();
 	}
@@ -81,4 +86,13 @@ public class AirlineDTO {
 	public void setAirports(Set<String> airports) {
 		this.airports = airports;
 	}
+
+	public Set<FlightDTO> getFlights() {
+		return flights;
+	}
+
+	public void setFlights(Set<FlightDTO> flights) {
+		this.flights = flights;
+	}
+
 }

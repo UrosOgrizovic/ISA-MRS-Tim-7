@@ -53,7 +53,6 @@ public class FlightDTO {
 			stops.add(a.getName());
 		
 		for (Seat s : f.getSeats()) {
-			System.out.println("Adding seat.");
 			seats.add(new SeatDTO(s));
 		}
 	}

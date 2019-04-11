@@ -4,7 +4,7 @@ import com.FlightsReservations.domain.Seat;
 
 public class SeatDTO {
 	private Integer seatNum;
-	private boolean available;
+	private Boolean available;
 	private String typeClass;
 	private Long flightId;
 
