@@ -42,8 +42,7 @@ public class CarController {
 	
 	@PutMapping(
 			value = "/update",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateCar(@RequestBody @Valid Car car) {
 		if (service.update(car))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);

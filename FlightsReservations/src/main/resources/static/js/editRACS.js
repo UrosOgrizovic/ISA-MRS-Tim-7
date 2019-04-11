@@ -59,10 +59,13 @@ function updateRACS() {
 		url: "http://localhost:8080/racss/update",
 		method: "PUT",
 		contentType: "application/json",
-		dataType: "json",	
+		dataType: "text",	
 		data: JSON.stringify(mapa[key]),
 		success: function(result) {
-		}
+            
+		}, error: function(err) {
+            console.log(err);
+        }
 	});
 }
 
@@ -92,7 +95,7 @@ function setInputs(){
     carIdSelect.empty();
 
     var idx = 0;
-    mapa[key].cars.sort();
+    mapa[key].cars.sort(compareCars);
     for (var car of mapa[key].cars) {
         idx++;
         carIdSelect.append("<option>"+car.id+"</option>");
@@ -136,7 +139,7 @@ function addCarToRACS() {
     
 
     newCar.racs_id = idSelect.val();
-    console.log(newCar);
+    
     $.ajax({
 		url: "http://localhost:8080/racss/addCar",
 		method: "PUT",
@@ -144,8 +147,7 @@ function addCarToRACS() {
 		dataType: "json",	
 		data: JSON.stringify(newCar),
 		success: function(car) {
-            //TODO: ovde sta treba
-            console.log("AAA " + car);
+            
             $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture+"</option>");
 		}, error: function(error) {
             console.log(error);
@@ -180,5 +182,44 @@ function removeCarFromRACS() {
 }
 
 function updateCar() {
+    var carID = carIdSelect.val();
+    var editedCar = {};
+    editedCar.manufacturer = $("#editCarManufacturer").val();
+    editedCar.color = $("#editCarColor").val();
+    editedCar.yearOfManufacture = parseInt($("#editCarYearOfManufacture").val());
+    editedCar.name = $("#editCarName").val();
+    editedCar.id = parseInt(carID);
+    
+    $.ajax({
+        url: "http://localhost:8080/cars/update",
+        method: "PUT",
+        data: JSON.stringify(editedCar),
+        contentType: "application/json",
+        dataType: "text",
+        success: function(result) {
+            location.reload();
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
 
+// used for sorting cars array
+function compareCars(a, b) {
+    if (a.id < b.id) return -1;
+    else if (a.id > b.id) return 1;
+    else return 0;
+}
+
+// allow only numbers to be entered where required
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    // at most 4 digits
+    evt.target.value = evt.target.value.slice(0, 3);
+    return true;
 }

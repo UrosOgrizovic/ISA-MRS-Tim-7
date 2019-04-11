@@ -53,8 +53,7 @@ public class RACSController {
 	
 	@PutMapping(
 			value = "/update",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@RequestBody @Valid RACS racs) {
 		if (service.update(racs))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);

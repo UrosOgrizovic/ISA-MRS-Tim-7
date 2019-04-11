@@ -25,7 +25,7 @@ public class CarService {
 			car.setManufacturer(c.getManufacturer());
 			car.setYearOfManufacture(c.getYearOfManufacture());
 			car.setName(c.getName());
-			car.setRacs(c.getRacs());
+			System.out.println(car);
 			repository.save(car);
 			return true;
 		}

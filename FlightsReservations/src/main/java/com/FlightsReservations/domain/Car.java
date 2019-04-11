@@ -89,5 +89,13 @@ public class Car {
 	public Car() {
 		super();
 	}
+	
+
+	@Override
+	public String toString() {
+		return "Car [id=" + id + ", manufacturer=" + manufacturer + ", name=" + name + ", yearOfManufacture="
+				+ yearOfManufacture + ", color=" + color + "]";
+	}
+
 }
 	

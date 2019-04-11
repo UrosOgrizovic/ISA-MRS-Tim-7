@@ -99,6 +99,12 @@ public class RACS extends Company {
 		}
 		
 	}
+	@Override
+	public String toString() {
+		return "RACS [getId()=" + getId() + ", getName()=" + getName() + ", getLongitude()=" + getLongitude()
+				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
+				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + "]";
+	}
 	
 	
 	
