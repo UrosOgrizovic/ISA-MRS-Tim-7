@@ -49,7 +49,6 @@ public class AirlineController {
 		return service.findAll();
 	}
 	
-	
 	@PostMapping(
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE

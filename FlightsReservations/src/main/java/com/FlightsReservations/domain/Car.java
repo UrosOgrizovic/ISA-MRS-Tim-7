@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Car {
@@ -21,9 +23,9 @@ public class Car {
 	private String color;
 	
 
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	
+	//@JsonIgnore is used so as to avoid infinite recursion
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
 
 	public Long getId() {
@@ -87,5 +89,13 @@ public class Car {
 	public Car() {
 		super();
 	}
+	
+
+	@Override
+	public String toString() {
+		return "Car [id=" + id + ", manufacturer=" + manufacturer + ", name=" + name + ", yearOfManufacture="
+				+ yearOfManufacture + ", color=" + color + "]";
+	}
+
 }
 	

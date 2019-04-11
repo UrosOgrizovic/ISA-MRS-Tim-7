@@ -36,7 +36,7 @@ public class AirlineDTO {
 	}
 
 	public AirlineDTO(Airline a) {
-		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAvarageScore());
+		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore());
 	}
 
 	public float getAvarageScore() {

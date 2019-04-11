@@ -28,7 +28,7 @@ public class Company {
 	private String promoDescription;
 
 	@Column(nullable = false)
-	private float avarageScore;
+	private float averageScore;
 
 	@Column(nullable = false)
 	private int numberOfVotes;
@@ -44,7 +44,7 @@ public class Company {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.promoDescription = promoDescription;
-		this.avarageScore = avarageScore;
+		this.averageScore = avarageScore;
 		this.numberOfVotes = numberOfVotes;
 	}
 
@@ -88,12 +88,12 @@ public class Company {
 		this.promoDescription = promoDescription;
 	}
 
-	public float getAvarageScore() {
-		return avarageScore;
+	public float getAverageScore() {
+		return averageScore;
 	}
 
-	public void setAvarageScore(float avarageScore) {
-		this.avarageScore = avarageScore;
+	public void setAverageScore(float avarageScore) {
+		this.averageScore = avarageScore;
 	}
 
 	public int getNumberOfVotes() {
