@@ -2,6 +2,7 @@ package com.FlightsReservations.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class FlightService {
 							start.getLongitude(), 
 							end.getLatitude(), 
 							end.getLongitude(), "K"),
-					airline, start, end, stops);
+					airline, start, end, stops,
+					dto.getAverageScore(), dto.getNumberOfVotes());
 			
 			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
 			
@@ -147,5 +149,27 @@ public class FlightService {
 			return false;
 
 		return true;
+	}
+	
+	public Flight findOne(Long id) {
+		try {
+			return repository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+	}
+	
+	public Flight rate(Long id, float score) {
+		Flight flight = findOne(id);
+		if (flight != null) {
+			float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + score;
+			int newNumberOfVotes = flight.getNumberOfVotes() + 1;
+			flight.setNumberOfVotes(newNumberOfVotes);
+			flight.setAverageScore(newAvgScore / newNumberOfVotes);
+			repository.save(flight);
+			return flight;
+		}
+		return null;
+			
 	}
 }

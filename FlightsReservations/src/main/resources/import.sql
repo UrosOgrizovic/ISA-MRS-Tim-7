@@ -13,3 +13,15 @@ INSERT INTO authority (id, name) VALUES (2, 'ROLE_ADMIN');
 INSERT INTO user_authority (user_id, authority_id) VALUES (1, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (2, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (2, 2);
+
+INSERT INTO airline (id, name, latitude, longitude, promo_description, average_score, number_of_votes) VALUES (1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22);
+
+INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (1, 'airport1', 'city1', 'state1', 55.659, 44.332);
+INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (2, 'airport2', 'city2', 'state2', 35.659, 64.332);
+INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (3, 'airport3', 'city3', 'state3', 22.659, 11.332);
+INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (4, 'airport4', 'city4', 'state4', 60.659, 75.332);
+
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 1);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);

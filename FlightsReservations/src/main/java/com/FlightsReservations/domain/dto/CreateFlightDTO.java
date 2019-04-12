@@ -3,6 +3,7 @@ package com.FlightsReservations.domain.dto;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,6 +48,29 @@ public class CreateFlightDTO {
 	@NotBlank
 	private String airlineName;
 	
+	@NotNull
+	private float averageScore;
+
+	@NotNull
+	private int numberOfVotes;
+	
+	
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
 	public CreateFlightDTO() {
 		super();
 	}

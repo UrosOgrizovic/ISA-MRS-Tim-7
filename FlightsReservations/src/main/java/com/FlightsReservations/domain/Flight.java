@@ -17,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Flight {
 
@@ -36,6 +39,7 @@ public class Flight {
 	@Column(nullable = false)
 	private double flightDistance;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
@@ -44,11 +48,14 @@ public class Flight {
 
 	@ManyToMany
 	@JoinTable(name = "flight_stops", joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
+	@JsonManagedReference
 	private Set<Airport> stops = new HashSet<>();
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport start;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport end;
 
@@ -58,12 +65,18 @@ public class Flight {
 	@OneToMany(mappedBy = "returnFlight")
 	private Set<AirReservation> secondFlights = new HashSet<>();
 	
+	@Column(nullable = false)
+	private float averageScore;
+
+	@Column(nullable = false)
+	private int numberOfVotes;
+	
 	public Flight() {
 		super();
 	}
 
 	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance,
-			Airline airline, Airport start, Airport end, Set<Airport> stops) {
+			Airline airline, Airport start, Airport end, Set<Airport> stops, float averageScore, int numberOfVotes) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
@@ -73,6 +86,24 @@ public class Flight {
 		this.start = start;
 		this.end = end;
 		this.stops = stops;
+		this.averageScore = averageScore;
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
 	}
 
 	public Long getId() {

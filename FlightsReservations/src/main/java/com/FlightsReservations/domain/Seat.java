@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.enums.TypeClass;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Seat {
@@ -28,6 +29,7 @@ public class Seat {
 	@Column(nullable = false)
 	private TypeClass type;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Flight flight;
 

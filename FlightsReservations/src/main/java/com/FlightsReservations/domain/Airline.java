@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Airline extends Company {
 
@@ -21,6 +23,7 @@ public class Airline extends Company {
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AirReservation> reservations = new HashSet<>();
 	
+	@JsonManagedReference
 	@ManyToMany
     @JoinTable(name = "airline_airports",
                joinColumns = @JoinColumn(name="airline_id", referencedColumnName="id"),
