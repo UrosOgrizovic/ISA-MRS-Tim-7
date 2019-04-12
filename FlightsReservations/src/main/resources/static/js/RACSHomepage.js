@@ -1,5 +1,6 @@
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
+var rateRACSLink = "/racss/rate";
 
 $(document).ready(function(){
     $("#viewAllRACS").on('click', function(e) {
@@ -38,6 +39,8 @@ function displayRACSS(racss) {
     text += "<th>Cars</th>";
     text += "<th>Pricelist</th>";
     text += "<th>Branch offices</th>";
+    text += "<th>Average rating</th>";
+    text += "<th>Your rating</th>";
     text += "</tr>";
     text += "</thead><tbody>";
     
@@ -76,11 +79,111 @@ function displayRACSS(racss) {
         }
         text += "</div></div></td>";
 
+        // Average rating
+
+        text += "<td>";
+        var avgstar5id = "avgstar5" + racs.id;
+        var avgstar4id = "avgstar4" + racs.id;
+        var avgstar3id = "avgstar3" + racs.id;
+        var avgstar2id = "avgstar2" + racs.id;
+        var avgstar1id = "avgstar1" + racs.id;
+        /* each radio group has to have a different name, otherwise only one 
+        one of them will be checked
+         */
+        var groupName = "avg" + racs.id;
+        text += "<div class=\"rate\">" +
+        "<input type=\"radio\" id=\""+avgstar5id+"\" name=\""+groupName+"\" value=\"5\" />" + 
+        "<label for=\""+avgstar5id+"\">5 stars</label>" + 
+        "<input type=\"radio\" id=\""+avgstar4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+        "<label for=\""+avgstar4id+"\">4 stars</label>" +
+        "<input type=\"radio\" id=\""+avgstar3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+        "<label for=\""+avgstar3id+"\">3 stars</label>" +
+        "<input type=\"radio\" id=\""+avgstar2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+        "<label for=\""+avgstar2id+"\">2 stars</label>" +
+        "<input type=\"radio\" id=\""+avgstar1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+        "<label for=\""+avgstar1id+"\">1 star</label>" +
+        "<div id=\"avgscore"+racs.id+"\"></div>" +
+        "</div>";
+
         
+    
+        text += "</td>"; 
+
+        // Your rating
+
+
+
+        text += "<td>";
+        var star5id = "star5" + racs.id;
+        var star4id = "star4" + racs.id;
+        var star3id = "star3" + racs.id;
+        var star2id = "star2" + racs.id;
+        var star1id = "star1" + racs.id;
+        /* each radio group has to have a different name, otherwise only one 
+        one of them will be checked
+         */
+        var groupName = "rate" + racs.id;
+        text += "<div class=\"rate\">" +
+        "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star5id+")\" value=\"5\" />" + 
+        "<label for=\""+star5id+"\">5 stars</label>" + 
+        "<input type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star4id+")\" value=\"4\" />" +
+        "<label for=\""+star4id+"\">4 stars</label>" +
+        "<input type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star3id+")\" value=\"3\" />" +
+        "<label for=\""+star3id+"\">3 stars</label>" +
+        "<input type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star2id+")\" value=\"2\" />" +
+        "<label for=\""+star2id+"\">2 stars</label>" +
+        "<input type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star1id+")\" value=\"1\" />" +
+        "<label for=\""+star1id+"\">1 star</label>" +
+        "</div>";
+    
+        text += "</td>"; 
+
         text += "</tr>";
     }
     text += "</tbody></table>";
     $(document.documentElement).append(text);
+    
+    for (var racs of racss) {        
+        displayRACSRating(racs);
+    }
+}
+
+function displayRACSRating(racs) {
+    if (racs.averageScore >= 4.5) {
+        document.getElementById("avgstar5"+racs.id).checked = true;
+    } else if (racs.averageScore >= 3.5) {
+        document.getElementById("avgstar4"+racs.id).checked = true;
+    } else if (racs.averageScore >= 2.5) {
+        document.getElementById("avgstar3"+racs.id).checked = true;
+    } else if (racs.averageScore >= 1.5) {
+        document.getElementById("avgstar2"+racs.id).checked = true;
+    } else {
+        document.getElementById("avgstar1"+racs.id).checked = true;
+    }
+    document.getElementById("avgscore"+racs.id).innerHTML = "("+racs.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
+}
+
+function rateRACS(el) {
+    var arr = el.id.split("star");
+    var ratingRACSID = arr[1].split("");
+    
+    var obj = {};
+    obj.id = ratingRACSID[1];
+    obj.score = parseFloat(ratingRACSID[0]);
+
+    $.ajax({
+        url: rateRACSLink,
+        method: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        dataType: "json",
+        success: function(racs) {
+            displayRACSRating(racs);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
 }
 
 function searchRACSByName() {
