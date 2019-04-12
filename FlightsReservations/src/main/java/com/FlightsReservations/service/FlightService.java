@@ -159,17 +159,16 @@ public class FlightService {
 		}
 	}
 	
-	public Flight rate(Long id, float score) {
-		Flight flight = findOne(id);
-		if (flight != null) {
-			float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + score;
-			int newNumberOfVotes = flight.getNumberOfVotes() + 1;
-			flight.setNumberOfVotes(newNumberOfVotes);
-			flight.setAverageScore(newAvgScore / newNumberOfVotes);
-			repository.save(flight);
-			return flight;
-		}
-		return null;
-			
-	}
+	//public Flight rate(Long id, float score) {
+	//	Flight flight = findOne(id);
+	//	if (flight != null) {
+	//		float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + score;
+	//		int newNumberOfVotes = flight.getNumberOfVotes() + 1;
+	//		flight.setNumberOfVotes(newNumberOfVotes);
+	//		flight.setAverageScore(newAvgScore / newNumberOfVotes);
+	//		repository.save(flight);
+	//		return flight;
+	//	}
+	//	return null;	
+	//}
 }

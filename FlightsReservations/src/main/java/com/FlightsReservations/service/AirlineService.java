@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.FlightsReservations.domain.Airline;
 import com.FlightsReservations.domain.Airport;
 import com.FlightsReservations.domain.Flight;
-import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
 import com.FlightsReservations.repository.AirlineRepository;
@@ -92,16 +91,16 @@ public class AirlineService {
 		return dto;
 	}
 	
-	public Airline rate(String name, float score) {
-		Airline airline = repository.findByName(name);
-		if (airline != null) {
-			float newAvgScore = airline.getAverageScore() * airline.getNumberOfVotes() + score;
-			int newNumberOfVotes = airline.getNumberOfVotes() + 1;
-			airline.setNumberOfVotes(newNumberOfVotes);
-			airline.setAverageScore(newAvgScore / newNumberOfVotes);
-			repository.save(airline);
-			return airline;
-		}
-		return null;
-	}
+	//public Airline rate(String name, float score) {
+	//	Airline airline = repository.findByName(name);
+	//	if (airline != null) {
+	//		float newAvgScore = airline.getAverageScore() * airline.getNumberOfVotes() + score;
+	//		int newNumberOfVotes = airline.getNumberOfVotes() + 1;
+	//		airline.setNumberOfVotes(newNumberOfVotes);
+	//		airline.setAverageScore(newAvgScore / newNumberOfVotes);
+	//		repository.save(airline);
+	//		return airline;
+	//	}
+	//	return null;
+	//}
 }

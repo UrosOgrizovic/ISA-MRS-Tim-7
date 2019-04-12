@@ -17,8 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Flight {
@@ -39,7 +37,6 @@ public class Flight {
 	@Column(nullable = false)
 	private double flightDistance;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
@@ -48,14 +45,11 @@ public class Flight {
 
 	@ManyToMany
 	@JoinTable(name = "flight_stops", joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
-	@JsonManagedReference
 	private Set<Airport> stops = new HashSet<>();
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport start;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport end;
 

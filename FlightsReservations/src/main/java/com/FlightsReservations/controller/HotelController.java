@@ -1,6 +1,5 @@
 package com.FlightsReservations.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -15,13 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Hotel;
-import com.FlightsReservations.domain.RACS;
-import com.FlightsReservations.domain.RatingObject;
 import com.FlightsReservations.service.HotelService;
 
 @RestController
@@ -58,12 +53,12 @@ public class HotelController {
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
 	}
 	
-	@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> rate(@RequestBody RatingObject ro) {
-		Hotel hotel = service.rate(ro.getId(), ro.getScore());
-		if (hotel != null) 
-			return new ResponseEntity<>(hotel, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	}
+	//@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	//public ResponseEntity<?> rate(@RequestBody RatingObject ro) {
+	//	Hotel hotel = service.rate(ro.getId(), ro.getScore());
+	//	if (hotel != null) 
+	//		return new ResponseEntity<>(hotel, HttpStatus.OK);
+	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	//}
 	
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
-import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.repository.HotelRepository;
 
 @Service
@@ -49,16 +48,16 @@ public class HotelService {
 		return repository.findAll();
 	}
 	
-	public Hotel rate(Long id, float score) {
-		Hotel hotel = findOne(id);
-		if (hotel != null) {
-			float newAvgScore = hotel.getAverageScore() * hotel.getNumberOfVotes() + score;
-			int newNumberOfVotes = hotel.getNumberOfVotes() + 1;
-			hotel.setNumberOfVotes(newNumberOfVotes);
-			hotel.setAverageScore(newAvgScore / newNumberOfVotes);
-			repository.save(hotel);
-			return hotel;
-		}
-		return null;
-	}
+	//public Hotel rate(Long id, float score) {
+	//	Hotel hotel = findOne(id);
+	//	if (hotel != null) {
+	//		float newAvgScore = hotel.getAverageScore() * hotel.getNumberOfVotes() + score;
+	//		int newNumberOfVotes = hotel.getNumberOfVotes() + 1;
+	//		hotel.setNumberOfVotes(newNumberOfVotes);
+	//		hotel.setAverageScore(newAvgScore / newNumberOfVotes);
+	//		repository.save(hotel);
+	//		return hotel;
+	//	}
+	//	return null;
+	//}
 }
