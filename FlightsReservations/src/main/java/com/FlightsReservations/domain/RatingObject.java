@@ -3,6 +3,14 @@ package com.FlightsReservations.domain;
 public class RatingObject {
 	private Long id;
 	private float score;
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getId() {
 		return id;
 	}

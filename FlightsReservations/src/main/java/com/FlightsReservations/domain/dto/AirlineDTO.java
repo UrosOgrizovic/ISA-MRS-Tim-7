@@ -17,7 +17,16 @@ public class AirlineDTO {
 	private Float latitude;
 	@NotBlank
 	private String promoDescription;
-	private float avarageScore;
+	private float averageScore;
+	private int numberOfVotes;
+	
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
 
 	private Set<String> airports = new HashSet<>();
 	private Set<FlightDTO> flights = new HashSet<>();
@@ -26,25 +35,26 @@ public class AirlineDTO {
 		super();
 	}
 
-	public AirlineDTO(String name, Float longitude, Float latitude, String promoDescription, float score) {
+	public AirlineDTO(String name, Float longitude, Float latitude, String promoDescription, float score, int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.promoDescription = promoDescription;
-		this.avarageScore = score;
+		this.averageScore = score;
+		this.numberOfVotes = numberOfVotes;
 	}
 
 	public AirlineDTO(Airline a) {
-		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore());
+		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore(), a.getNumberOfVotes());
 	}
 
-	public float getAvarageScore() {
-		return avarageScore;
+	public float getAverageScore() {
+		return averageScore;
 	}
 
-	public void setAvarageScore(float avarageScore) {
-		this.avarageScore = avarageScore;
+	public void setAverageScore(float avarageScore) {
+		this.averageScore = avarageScore;
 	}
 
 	public String getName() {

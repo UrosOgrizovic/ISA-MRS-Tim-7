@@ -103,15 +103,11 @@ function displayRACSS(racss) {
         "<input type=\"radio\" id=\""+avgstar1id+"\" name=\""+groupName+"\" value=\"1\" />" +
         "<label for=\""+avgstar1id+"\">1 star</label>" +
         "<div id=\"avgscore"+racs.id+"\"></div>" +
-        "</div>";
+        "</div>";        
 
-        
-    
         text += "</td>"; 
 
         // Your rating
-
-
 
         text += "<td>";
         var star5id = "star5" + racs.id;

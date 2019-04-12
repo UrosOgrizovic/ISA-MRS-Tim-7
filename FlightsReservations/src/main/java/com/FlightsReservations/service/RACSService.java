@@ -97,7 +97,5 @@ public class RACSService {
 			return racs;
 		}
 		return null;
-		
-		
 	}
 }

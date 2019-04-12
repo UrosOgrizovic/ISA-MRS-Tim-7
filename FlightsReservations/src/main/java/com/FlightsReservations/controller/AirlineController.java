@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.RatingObject;
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.service.AirlineService;
 
@@ -83,5 +86,13 @@ public class AirlineController {
 		if (dto != null) 
 			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>("Bad input parameters!", HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
+		Airline airline = service.rate(ro.getName(), ro.getScore()); 
+		if (airline != null)
+			return new ResponseEntity<>(airline, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 }
