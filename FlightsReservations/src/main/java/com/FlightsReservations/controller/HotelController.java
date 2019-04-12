@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.RatingObject;
 import com.FlightsReservations.service.HotelService;
 
 @RestController
@@ -55,6 +56,14 @@ public class HotelController {
 		if (service.update(hotel))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
+	}
+	
+	@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> rate(@RequestBody RatingObject ro) {
+		Hotel hotel = service.rate(ro.getId(), ro.getScore());
+		if (hotel != null) 
+			return new ResponseEntity<>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 }

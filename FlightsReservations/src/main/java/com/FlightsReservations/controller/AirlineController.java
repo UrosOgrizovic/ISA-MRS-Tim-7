@@ -51,7 +51,7 @@ public class AirlineController {
 	public List<AirlineDTO> findAll() {
 		return service.findAll();
 	}
-	
+		
 	@PostMapping(
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE
