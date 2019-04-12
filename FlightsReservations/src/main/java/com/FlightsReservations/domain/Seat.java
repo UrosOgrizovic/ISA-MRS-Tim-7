@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.FlightsReservations.domain.enums.TypeClass;
+import com.FlightsReservations.domain.enums.SeatType;
 
 @Entity
 public class Seat {
@@ -26,7 +26,7 @@ public class Seat {
 	private Boolean available;
 
 	@Column(nullable = false)
-	private TypeClass type;
+	private SeatType type;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Flight flight;
@@ -38,7 +38,7 @@ public class Seat {
 		super();
 	}
 	
-	public Seat(Integer seatNumber, Boolean available, TypeClass type, Flight flight) {
+	public Seat(Integer seatNumber, Boolean available, SeatType type, Flight flight) {
 		super();
 		this.seatNumber = seatNumber;
 		this.available= available;
@@ -70,11 +70,11 @@ public class Seat {
 		this.available= available;
 	}
 
-	public TypeClass getType() {
+	public SeatType getType() {
 		return type;
 	}
 
-	public void setType(TypeClass type) {
+	public void setType(SeatType type) {
 		this.type = type;
 	}
 

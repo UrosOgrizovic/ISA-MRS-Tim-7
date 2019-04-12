@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.FlightsReservations.domain.enums.ReservationType;
+import com.FlightsReservations.domain.enums.TripType;
 
 @Entity
 public class AirReservation {
@@ -24,7 +24,7 @@ public class AirReservation {
 	private Long id;
 
 	@Column(nullable = false)
-	private ReservationType type;
+	private TripType type;
 
 	@Column(nullable = false)
 	private Float discount;
@@ -45,7 +45,7 @@ public class AirReservation {
 		super();
 	}
 
-	public AirReservation(ReservationType type, Float discount, Airline airline, Seat seat, User owner) {
+	public AirReservation(TripType type, Float discount, Airline airline, Seat seat, User owner) {
 		super();
 		this.type = type;
 		this.discount = discount;
@@ -62,11 +62,11 @@ public class AirReservation {
 		this.id = id;
 	}
 
-	public ReservationType getType() {
+	public TripType getType() {
 		return type;
 	}
 
-	public void setType(ReservationType type) {
+	public void setType(TripType type) {
 		this.type = type;
 	}
 
