@@ -1,6 +1,6 @@
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
-var rateRACSLink = "/racss/rate";
+var rateLink = "/companies/rate";
 
 $(document).ready(function(){
     $("#viewAllRACS").on('click', function(e) {
@@ -82,15 +82,15 @@ function displayRACSS(racss) {
         // Average rating
 
         text += "<td>";
-        var avgstar5id = "avgstar5" + racs.id;
-        var avgstar4id = "avgstar4" + racs.id;
-        var avgstar3id = "avgstar3" + racs.id;
-        var avgstar2id = "avgstar2" + racs.id;
-        var avgstar1id = "avgstar1" + racs.id;
+        var avgstar5id = "avgstar5" + racs.name;
+        var avgstar4id = "avgstar4" + racs.name;
+        var avgstar3id = "avgstar3" + racs.name;
+        var avgstar2id = "avgstar2" + racs.name;
+        var avgstar1id = "avgstar1" + racs.name;
         /* each radio group has to have a different name, otherwise only one 
         one of them will be checked
          */
-        var groupName = "avg" + racs.id;
+        var groupName = "avg" + racs.name;
         text += "<div class=\"rate\">" +
         "<input type=\"radio\" id=\""+avgstar5id+"\" name=\""+groupName+"\" value=\"5\" />" + 
         "<label for=\""+avgstar5id+"\">5 stars</label>" + 
@@ -102,7 +102,7 @@ function displayRACSS(racss) {
         "<label for=\""+avgstar2id+"\">2 stars</label>" +
         "<input type=\"radio\" id=\""+avgstar1id+"\" name=\""+groupName+"\" value=\"1\" />" +
         "<label for=\""+avgstar1id+"\">1 star</label>" +
-        "<div id=\"avgscore"+racs.id+"\"></div>" +
+        "<div id=\"avgscore"+racs.name+"\"></div>" +
         "</div>";        
 
         text += "</td>"; 
@@ -110,15 +110,15 @@ function displayRACSS(racss) {
         // Your rating
 
         text += "<td>";
-        var star5id = "star5" + racs.id;
-        var star4id = "star4" + racs.id;
-        var star3id = "star3" + racs.id;
-        var star2id = "star2" + racs.id;
-        var star1id = "star1" + racs.id;
+        var star5id = "star5" + racs.name;
+        var star4id = "star4" + racs.name;
+        var star3id = "star3" + racs.name;
+        var star2id = "star2" + racs.name;
+        var star1id = "star1" + racs.name;
         /* each radio group has to have a different name, otherwise only one 
         one of them will be checked
          */
-        var groupName = "rate" + racs.id;
+        var groupName = "rate" + racs.name;
         text += "<div class=\"rate\">" +
         "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star5id+")\" value=\"5\" />" + 
         "<label for=\""+star5id+"\">5 stars</label>" + 
@@ -146,29 +146,30 @@ function displayRACSS(racss) {
 
 function displayRACSRating(racs) {
     if (racs.averageScore >= 4.5) {
-        document.getElementById("avgstar5"+racs.id).checked = true;
+        document.getElementById("avgstar5"+racs.name).checked = true;
     } else if (racs.averageScore >= 3.5) {
-        document.getElementById("avgstar4"+racs.id).checked = true;
+        document.getElementById("avgstar4"+racs.name).checked = true;
     } else if (racs.averageScore >= 2.5) {
-        document.getElementById("avgstar3"+racs.id).checked = true;
+        document.getElementById("avgstar3"+racs.name).checked = true;
     } else if (racs.averageScore >= 1.5) {
-        document.getElementById("avgstar2"+racs.id).checked = true;
+        document.getElementById("avgstar2"+racs.name).checked = true;
     } else {
-        document.getElementById("avgstar1"+racs.id).checked = true;
+        document.getElementById("avgstar1"+racs.name).checked = true;
     }
-    document.getElementById("avgscore"+racs.id).innerHTML = "("+racs.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
+    document.getElementById("avgscore"+racs.name).innerHTML = "("+racs.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
 }
 
 function rateRACS(el) {
+    
     var arr = el.id.split("star");
-    var ratingRACSID = arr[1].split("");
+    var ratingRACSName = arr[1].split("");
     
     var obj = {};
-    obj.id = ratingRACSID[1];
-    obj.score = parseFloat(ratingRACSID[0]);
+    obj.name = arr[1].substring(1);
+    obj.averageScore = parseFloat(ratingRACSName[0]);
 
     $.ajax({
-        url: rateRACSLink,
+        url: rateLink,
         method: "PUT",
         data: JSON.stringify(obj),
         contentType: "application/json",

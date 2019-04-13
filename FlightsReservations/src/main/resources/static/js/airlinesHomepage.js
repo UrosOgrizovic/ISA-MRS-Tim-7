@@ -1,16 +1,13 @@
 var getAllLink = "/airlines";
-var rateAirlineLink = "/airlines/rate";
+var rateLink = "/companies/rate";
 
 $(document).ready(function(){
     $("#viewAllAirlines").on('click', function(e) {
         
         e.preventDefault();
         
-        
         $("#all").remove();
         $("#error").remove();
-        console.clear();
-        
         
         $.ajax({
             url: getAllLink,
@@ -145,10 +142,10 @@ function rateAirline(el) {
     
     var obj = {};
     obj.name = ratingAirlineName.slice(1).join("");
-    obj.score = parseFloat(ratingAirlineName[0]);
+    obj.averageScore = parseFloat(ratingAirlineName[0]);
 
     $.ajax({
-        url: rateAirlineLink,
+        url: rateLink,
         method: "PUT",
         data: JSON.stringify(obj),
         contentType: "application/json",
