@@ -1,5 +1,5 @@
 var getAllLink = "/flights";
-var rateFlightLink = "/flights/rate";
+var rateLink = "/flights/rate";
 
 $(document).ready(function(){
     $("#viewAllFlights").on('click', function(e) {
@@ -44,7 +44,6 @@ function displayFlights(flights) {
     text += "</thead><tbody>";
     
     for (var flight of flights) {
-        console.log(flight);
         text += "<tr>";
         text += "<td>" + flight.id + "</td>";
         text += "<td>" + flight.takeoffTime + "</td>";
@@ -139,11 +138,11 @@ function rateFlight(el) {
     var ratingFlightID = arr[1].split("");
     
     var obj = {};
-    obj.id = ratingFlightID[1];
-    obj.score = parseFloat(ratingFlightID[0]);
-    
+    obj.id = ratingFlightID.slice(1).join("");
+    obj.averageScore = parseFloat(ratingFlightID[0]);
+
     $.ajax({
-        url: rateFlightLink,
+        url: rateLink,
         method: "PUT",
         data: JSON.stringify(obj),
         contentType: "application/json",
