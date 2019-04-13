@@ -25,13 +25,31 @@ public class FlightDTO {
 	private String startAirport;
 	private String endAirport;
 	private Set<SeatDTO> seats;
+	private float averageScore;
+	private int numberOfVotes;
+
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
 
 	public FlightDTO() {
 		super();
 	}
 
 	public FlightDTO(Long id, Date takeoffTime, Date landingTime, int flightTime, double flightDistance,
-			String airlineName, String startAirport, String endAirport) {
+			String airlineName, String startAirport, String endAirport, float averageScore, int numberOfVotes) {
 		super();
 		this.id = id;
 		this.takeoffTime = takeoffTime;
@@ -43,11 +61,13 @@ public class FlightDTO {
 		this.endAirport = endAirport;
 		this.stops = new HashSet<>();
 		this.seats = new HashSet<>();
+		this.averageScore = averageScore;
+		this.numberOfVotes = numberOfVotes;
 	}
 
 	public FlightDTO(Flight f) {
 		this(f.getId(), f.getTakeoffTime(), f.getLandingTime(), f.getFlightTime(), f.getFlightDistance(),
-				f.getAirline().getName(), f.getStart().getName(), f.getEnd().getName());
+				f.getAirline().getName(), f.getStart().getName(), f.getEnd().getName(), f.getAverageScore(), f.getNumberOfVotes());
 
 		for (Airport a : f.getStops())
 			stops.add(a.getName());

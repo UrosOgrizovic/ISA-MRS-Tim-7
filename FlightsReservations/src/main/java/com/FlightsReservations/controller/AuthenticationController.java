@@ -53,7 +53,6 @@ public class AuthenticationController {
 		
 		final Authentication authentication;
 		
-		
 		try {
 			authentication = authenticationManager.authenticate(uat);
 		} catch (BadCredentialsException ex) {
