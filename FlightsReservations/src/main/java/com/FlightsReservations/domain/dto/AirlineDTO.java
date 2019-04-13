@@ -27,7 +27,7 @@ public class AirlineDTO {
 	private float averageScore;
 
 	@NotNull
-	@NotBlank
+	@PositiveOrZero
 	private int numberOfVotes;
 
 	private Set<String> airports = new HashSet<>();

@@ -20,6 +20,7 @@ public class CompanyService {
 			int newNumberOfVotes = c.getNumberOfVotes() + 1;
 			c.setNumberOfVotes(newNumberOfVotes);
 			c.setAverageScore(newAvgScore / newNumberOfVotes);
+			repository.save(c);
 			return new RatingDTO(c.getName(), c.getAverageScore());
 		}		
 		return null;

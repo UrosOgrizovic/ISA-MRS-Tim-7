@@ -16,7 +16,7 @@ public class RatingDTO {
 		super();
 	}
 
-	public RatingDTO(@NotBlank String name, @NotNull @Positive float score) {
+	public RatingDTO(String name, float score) {
 		super();
 		this.score = score;
 		this.name = name;
