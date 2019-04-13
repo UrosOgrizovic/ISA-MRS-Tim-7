@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -49,6 +51,8 @@ public class CreateFlightDTO {
 	
 	@NotNull
 	@PositiveOrZero
+	@Min(value = 1)
+	@Max(value = 5)
 	private float averageScore;
 
 	@NotNull
