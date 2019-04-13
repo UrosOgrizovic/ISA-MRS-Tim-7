@@ -77,17 +77,22 @@ public class FlightService {
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
 		if (searchFlightSemanticValidation(dto)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			List<List<FlightDTO>> results = new ArrayList<>();
-			Pageable pageable = PageRequest.of(dto.getStartIndex(), dto.getEndIndex());
+			
+			// prepare results list, pageable object and get id of seat in enum if present
+			List<List<FlightDTO>> results = new ArrayList<>();			
+			Pageable pageable = PageRequest.of(dto.getStartIndex(), dto.getNumberOfResults());
+			Long seatOrdinal = null;
+			if (dto.getSeatType() != null)
+				seatOrdinal = (long) dto.getSeatType().ordinal();
 			
 			for (FlightSearchQueryDTO query : dto.getQueries()) {	
 				Page<Flight> flights = repository.search(
-						sdf.format(query.getDepartureTime()), 
+						sdf.format(query.getTakeOffTime()), 
 						sdf.format(query.getLandingTime()), 
-						query.getStartAirport(), 
-						query.getEndAirport(), 
+						query.getStartAirportName(), 
+						query.getEndAirportName(), 
 						dto.getNumOfPassengers(),
-						dto.getSeatType(),
+						seatOrdinal,
 						pageable);
 				
 				List<FlightDTO> dtos = new ArrayList<>();
@@ -183,7 +188,7 @@ public class FlightService {
 		if (!dto.getTakeOffTime().before(dto.getLandingTime()))
 			return false;
 
-		// number of seats < firstclass + business
+		// number of seats < first class + business
 		if (dto.getNumberOfSeats() < (dto.getFirstClassNum() + dto.getBusinessClassNum()))
 			return false;
 
@@ -201,13 +206,13 @@ public class FlightService {
 		
 		// for each flight departure time must be before landing time
 		for (FlightSearchQueryDTO query : dto.getQueries())
-			if(!query.getDepartureTime().before(query.getLandingTime()))
+			if(!query.getTakeOffTime().before(query.getLandingTime()))
 				return false;		
 
 		// in round trip landing time of first flight must be before departure time of second flight
 		if (dto.getTripType().equals(TripType.RoundTrip)) {
 			Date landing = dto.getQueries().get(0).getLandingTime();
-			Date departure = dto.getQueries().get(1).getDepartureTime();
+			Date departure = dto.getQueries().get(1).getTakeOffTime();
 			
 			if (!landing.before(departure))
 				return false;

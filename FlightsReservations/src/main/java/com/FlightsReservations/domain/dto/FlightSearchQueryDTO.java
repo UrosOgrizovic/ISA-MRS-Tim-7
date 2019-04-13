@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FlightSearchQueryDTO {
 	@NotBlank
-	private String startAirport;
+	private String startAirportName;
 
 	@NotBlank
-	private String endAirport;
+	private String endAirportName;
 	
 	@Future
 	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date departureTime;
+	private Date takeOffTime;
 	
 	@Future
 	@JsonFormat(pattern = "dd-MM-yyyy")
@@ -26,36 +26,36 @@ public class FlightSearchQueryDTO {
 		super();
 	}
 
-	public FlightSearchQueryDTO(String startAirport, String endAirport, Date departureTime, Date landingTime) {
+	public FlightSearchQueryDTO(String startAirportName, String endAirportName, Date takeOffTime, Date landingTime) {
 		super();
-		this.startAirport = startAirport;
-		this.endAirport = endAirport;
-		this.departureTime = departureTime;
+		this.startAirportName = startAirportName;
+		this.endAirportName = endAirportName;
+		this.takeOffTime = takeOffTime;
 		this.landingTime = landingTime;
 	}
 
-	public String getStartAirport() {
-		return startAirport;
+	public String getStartAirportName() {
+		return startAirportName;
 	}
 
-	public void setStartAirport(String startAirport) {
-		this.startAirport = startAirport;
+	public void setStartAirport(String startAirportName) {
+		this.startAirportName = startAirportName;
 	}
 
-	public String getEndAirport() {
-		return endAirport;
+	public String getEndAirportName() {
+		return endAirportName;
 	}
 
-	public void setEndAirport(String endAirport) {
-		this.endAirport = endAirport;
+	public void setEndAirportName(String endAirportName) {
+		this.endAirportName = endAirportName;
 	}
 
-	public Date getDepartureTime() {
-		return departureTime;
+	public Date getTakeOffTime() {
+		return takeOffTime;
 	}
 
-	public void setDepartureTime(Date departureTime) {
-		this.departureTime = departureTime;
+	public void setTakeOffTime(Date takeOffTime) {
+		this.takeOffTime = takeOffTime;
 	}
 
 	public Date getLandingTime() {

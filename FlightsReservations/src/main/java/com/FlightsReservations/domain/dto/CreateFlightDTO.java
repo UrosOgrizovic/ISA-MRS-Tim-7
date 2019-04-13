@@ -27,19 +27,19 @@ public class CreateFlightDTO {
 
 	@NotNull
 	@Positive
-	private int numberOfSeats;
+	private Integer numberOfSeats;
 	
 	@NotNull
 	@PositiveOrZero
-	private int firstClassNum;
+	private Integer firstClassNum;
 
 	@NotNull
 	@PositiveOrZero
-	private int businessClassNum;
+	private Integer businessClassNum;
 	
 	@NotNull
 	@PositiveOrZero
-	private double price;
+	private Double price;
 	
 	@NotNull
 	private Set<String> stopNames;
@@ -57,29 +57,29 @@ public class CreateFlightDTO {
 	@PositiveOrZero
 	@Min(value = 1)
 	@Max(value = 5)
-	private float averageScore;
+	private Float averageScore;
 
 	@NotNull
 	@PositiveOrZero
-	private int numberOfVotes;
+	private Integer numberOfVotes;
 	
 	public CreateFlightDTO() {
 		super();
 	}
 	
-	public float getAverageScore() {
+	public Float getAverageScore() {
 		return averageScore;
 	}
 
-	public void setAverageScore(float averageScore) {
+	public void setAverageScore(Float averageScore) {
 		this.averageScore = averageScore;
 	}
 
-	public int getNumberOfVotes() {
+	public Integer getNumberOfVotes() {
 		return numberOfVotes;
 	}
 
-	public void setNumberOfVotes(int numberOfVotes) {
+	public void setNumberOfVotes(Integer numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
 
@@ -99,27 +99,27 @@ public class CreateFlightDTO {
 		this.landingTime = landingTime;
 	}
 
-	public int getNumberOfSeats() {
+	public Integer getNumberOfSeats() {
 		return numberOfSeats;
 	}
 
-	public void setNumberOfSeats(int numberOfSeats) {
+	public void setNumberOfSeats(Integer numberOfSeats) {
 		this.numberOfSeats = numberOfSeats;
 	}
 
-	public int getFirstClassNum() {
+	public Integer getFirstClassNum() {
 		return firstClassNum;
 	}
 
-	public void setFirstClassNum(int firstClassNum) {
+	public void setFirstClassNum(Integer firstClassNum) {
 		this.firstClassNum = firstClassNum;
 	}
 
-	public int getBusinessClassNum() {
+	public Integer getBusinessClassNum() {
 		return businessClassNum;
 	}
 
-	public void setBusinessClassNum(int businessClassNum) {
+	public void setBusinessClassNum(Integer businessClassNum) {
 		this.businessClassNum = businessClassNum;
 	}
 
@@ -155,11 +155,11 @@ public class CreateFlightDTO {
 		this.airlineName = airlineName;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 }

@@ -2,6 +2,7 @@ package com.FlightsReservations.domain.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -12,36 +13,38 @@ import com.FlightsReservations.domain.enums.TripType;
 
 public class FlightSearchRequestDTO {
 	@NotEmpty
+	@Valid
 	private List<FlightSearchQueryDTO> queries;
 
 	@NotNull
 	private TripType tripType;
 
-	@NotNull
-	private SeatType seatType;
+	private SeatType seatType; // can be null
 
 	@Positive
-	private Integer numOfPassengers;
+	private Integer numOfPassengers; // can be null
 
 	@PositiveOrZero
+	@NotNull
 	private Integer startIndex;
 
 	@Positive
-	private Integer endIndex;
+	@NotNull
+	private Integer numberOfResults;
 
 	public FlightSearchRequestDTO() {
 		super();
 	}
 
 	public FlightSearchRequestDTO(List<FlightSearchQueryDTO> queries, TripType tripType, SeatType seatType,
-			Integer numOfPassengers, Integer startIndex, Integer endIndex) {
+			Integer numOfPassengers, Integer startIndex, Integer numberOfResults) {
 		super();
 		this.queries = queries;
 		this.tripType = tripType;
 		this.seatType = seatType;
 		this.numOfPassengers = numOfPassengers;
 		this.startIndex = startIndex;
-		this.endIndex = endIndex;
+		this.numberOfResults = numberOfResults;
 	}
 
 	public List<FlightSearchQueryDTO> getQueries() {
@@ -84,12 +87,12 @@ public class FlightSearchRequestDTO {
 		this.startIndex = startIndex;
 	}
 
-	public Integer getEndIndex() {
-		return endIndex;
+	public Integer getNumberOfResults() {
+		return numberOfResults;
 	}
 
-	public void setEndIndex(Integer endIndex) {
-		this.endIndex = endIndex;
+	public void setNumberOfResults(Integer numberOfResults) {
+		this.numberOfResults = numberOfResults;
 	}
 
 }
