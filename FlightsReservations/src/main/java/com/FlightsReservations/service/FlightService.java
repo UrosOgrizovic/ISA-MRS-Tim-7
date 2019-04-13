@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.FlightsReservations.domain.dto.FlightSearchQueryDTO;
 import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
 import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.domain.enums.TripType;
+import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 import com.FlightsReservations.repository.FlightRepository;
@@ -59,7 +61,8 @@ public class FlightService {
 							end.getLatitude(), 
 							end.getLongitude(), "K"),
 					dto.getPrice(),
-					airline, start, end, stops);
+					airline, start, end, stops,
+					dto.getAverageScore(), dto.getNumberOfVotes());
 			
 			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
 			
@@ -211,5 +214,26 @@ public class FlightService {
 		}
 		
 		return true;
+	}
+	
+	public Flight findOne(Long id) {
+		try {
+			return repository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+	}
+	
+	public FlightRatingDTO rate(FlightRatingDTO dto) {
+		Flight flight = findOne(dto.getId());
+		if (flight != null) {
+			float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + dto.getAverageScore();
+			int newNumberOfVotes = flight.getNumberOfVotes() + 1;
+			flight.setNumberOfVotes(newNumberOfVotes);
+			flight.setAverageScore(newAvgScore / newNumberOfVotes);
+			repository.save(flight);
+			return new FlightRatingDTO(flight.getId(), flight.getAverageScore());
+		}
+		return null;	
 	}
 }

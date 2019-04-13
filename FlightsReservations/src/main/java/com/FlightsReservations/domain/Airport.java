@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.FlightsReservations.domain.dto.AirportDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Airport {
@@ -34,10 +35,12 @@ public class Airport {
 	@Column(nullable = false)
 	private float latitude;
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy = "airports")
 	Set<Airline> airlines = new HashSet<>();
 	
 	@ManyToMany(mappedBy = "stops")
+	@JsonBackReference
 	Set<Flight> stops = new HashSet<>();
 	
 	@OneToMany(mappedBy = "start")

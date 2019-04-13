@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -51,8 +53,34 @@ public class CreateFlightDTO {
 	@NotBlank
 	private String airlineName;
 	
+	@NotNull
+	@PositiveOrZero
+	@Min(value = 1)
+	@Max(value = 5)
+	private float averageScore;
+
+	@NotNull
+	@PositiveOrZero
+	private int numberOfVotes;
+	
 	public CreateFlightDTO() {
 		super();
+	}
+	
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
 	}
 
 	public Date getTakeOffTime() {

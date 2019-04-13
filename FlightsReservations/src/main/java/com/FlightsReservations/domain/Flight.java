@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+
 @Entity
 public class Flight {
 
@@ -58,12 +59,18 @@ public class Flight {
 	@OneToMany(mappedBy = "flight")
 	private Set<AirReservationFlight> reservations = new HashSet<>();
 
+	@Column(nullable = false)
+	private float averageScore;
+
+	@Column(nullable = false)
+	private int numberOfVotes;
+	
 	public Flight() {
 		super();
 	}
 
 	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price,
-			Airline airline, Airport start, Airport end, Set<Airport> stops) {
+			Airline airline, Airport start, Airport end, Set<Airport> stops, float averageScore, int numberOfVotes) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
@@ -74,6 +81,24 @@ public class Flight {
 		this.start = start;
 		this.end = end;
 		this.stops = stops;
+		this.averageScore = averageScore;
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
 	}
 
 	public Long getId() {
