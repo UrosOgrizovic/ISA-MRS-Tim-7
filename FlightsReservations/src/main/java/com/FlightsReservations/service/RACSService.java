@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
-import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.RACSRepository;
 
 @Component
@@ -86,16 +85,16 @@ public class RACSService {
 		return repository.findAll();
 	}
 
-	public RACS rate(Long id, float score) {
-		RACS racs = findOne(id);
-		if (racs != null) {
-			float newAvgScore = racs.getAverageScore() * racs.getNumberOfVotes() + score;
-			int newNumberOfVotes = racs.getNumberOfVotes() + 1;
-			racs.setNumberOfVotes(newNumberOfVotes);
-			racs.setAverageScore(newAvgScore / newNumberOfVotes);
-			repository.save(racs);
-			return racs;
-		}
-		return null;
-	}
+	//public RACS rate(Long id, float score) {
+	//	RACS racs = findOne(id);
+	//	if (racs != null) {
+	//		float newAvgScore = racs.getAverageScore() * racs.getNumberOfVotes() + score;
+	//		int newNumberOfVotes = racs.getNumberOfVotes() + 1;
+	//		racs.setNumberOfVotes(newNumberOfVotes);
+	//		racs.setAverageScore(newAvgScore / newNumberOfVotes);
+	//		repository.save(racs);
+	//		return racs;
+	//	}
+	//	return null;
+	//}
 }

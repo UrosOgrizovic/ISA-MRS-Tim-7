@@ -5,28 +5,30 @@ import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.FlightsReservations.domain.Airline;
 
 public class AirlineDTO {
 	@NotBlank
 	private String name;
+	
 	@NotNull
 	private Float longitude;
+	
 	@NotNull
 	private Float latitude;
+	
 	@NotBlank
 	private String promoDescription;
-	private float averageScore;
-	private int numberOfVotes;
-	
-	public int getNumberOfVotes() {
-		return numberOfVotes;
-	}
 
-	public void setNumberOfVotes(int numberOfVotes) {
-		this.numberOfVotes = numberOfVotes;
-	}
+	@NotNull
+	@PositiveOrZero
+	private float averageScore;
+
+	@NotNull
+	@PositiveOrZero
+	private int numberOfVotes;
 
 	private Set<String> airports = new HashSet<>();
 	private Set<FlightDTO> flights = new HashSet<>();
@@ -35,7 +37,8 @@ public class AirlineDTO {
 		super();
 	}
 
-	public AirlineDTO(String name, Float longitude, Float latitude, String promoDescription, float score, int numberOfVotes) {
+	public AirlineDTO(String name, Float longitude, Float latitude, String promoDescription, float score,
+			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
@@ -45,8 +48,17 @@ public class AirlineDTO {
 		this.numberOfVotes = numberOfVotes;
 	}
 
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
 	public AirlineDTO(Airline a) {
-		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore(), a.getNumberOfVotes());
+		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore(),
+				a.getNumberOfVotes());
 	}
 
 	public float getAverageScore() {

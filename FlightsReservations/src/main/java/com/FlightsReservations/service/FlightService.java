@@ -15,6 +15,7 @@ import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.domain.enums.TypeClass;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
@@ -159,17 +160,16 @@ public class FlightService {
 		}
 	}
 	
-	public Flight rate(Long id, float score) {
-		Flight flight = findOne(id);
+	public FlightRatingDTO rate(FlightRatingDTO dto) {
+		Flight flight = findOne(dto.getId());
 		if (flight != null) {
-			float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + score;
+			float newAvgScore = flight.getAverageScore() * flight.getNumberOfVotes() + dto.getAverageScore();
 			int newNumberOfVotes = flight.getNumberOfVotes() + 1;
 			flight.setNumberOfVotes(newNumberOfVotes);
 			flight.setAverageScore(newAvgScore / newNumberOfVotes);
 			repository.save(flight);
-			return flight;
+			return new FlightRatingDTO(flight.getId(), flight.getAverageScore());
 		}
-		return null;
-			
+		return null;	
 	}
 }

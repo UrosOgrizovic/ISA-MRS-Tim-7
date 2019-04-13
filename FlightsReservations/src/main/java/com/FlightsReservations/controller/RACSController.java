@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
-import com.FlightsReservations.domain.RatingObject;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.service.RACSService;
 
@@ -98,13 +97,13 @@ public class RACSController {
 
 	}
 	
-	@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
-		RACS racs = service.rate(ro.getId(), ro.getScore()); 
-		if (racs != null)
-			return new ResponseEntity<>(racs, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	}
+	//@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	//public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
+	//	RACS racs = service.rate(ro.getId(), ro.getScore()); 
+	//	if (racs != null)
+	//		return new ResponseEntity<>(racs, HttpStatus.OK);
+	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	//}
 	
 	
 }

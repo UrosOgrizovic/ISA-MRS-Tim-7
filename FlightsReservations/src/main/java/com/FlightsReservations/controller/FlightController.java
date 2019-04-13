@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Flight;
-import com.FlightsReservations.domain.RatingObject;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.service.FlightService;
 
 @RestController
@@ -53,9 +52,9 @@ public class FlightController {
 	}
 	
 	@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> rate(@RequestBody RatingObject ro) {
-		System.out.println(ro);
-		Flight flight = service.rate(ro.getId(), ro.getScore());
+	public ResponseEntity<?> rate(@Valid @RequestBody FlightRatingDTO dto) {
+
+		FlightRatingDTO flight = service.rate(dto);
 		if (flight != null)
 			return new ResponseEntity<>(flight, HttpStatus.OK);
 		return new ResponseEntity<>(flight, HttpStatus.NOT_FOUND);
