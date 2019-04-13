@@ -1,5 +1,5 @@
 var getAllHotelsLink = "/hotels/getAll";
-var rateHotelLink = "/hotels/rate";
+var rateLink = "/companies/rate";
 
 $(document).ready(function(){
     $("#viewAllHotels").on('click', function(e) {
@@ -73,15 +73,15 @@ function displayHotels(hotels) {
         // Average rating
 
         text += "<td>";
-        var avgstar5id = "avgstar5" + hotel.id;
-        var avgstar4id = "avgstar4" + hotel.id;
-        var avgstar3id = "avgstar3" + hotel.id;
-        var avgstar2id = "avgstar2" + hotel.id;
-        var avgstar1id = "avgstar1" + hotel.id;
+        var avgstar5id = "avgstar5" + hotel.name;
+        var avgstar4id = "avgstar4" + hotel.name;
+        var avgstar3id = "avgstar3" + hotel.name;
+        var avgstar2id = "avgstar2" + hotel.name;
+        var avgstar1id = "avgstar1" + hotel.name;
         /* each radio group has to have a different name, otherwise only one 
         one of them will be checked
             */
-        var groupName = "avg" + hotel.id;
+        var groupName = "avg" + hotel.name;
         text += "<div class=\"rate\">" +
         "<input type=\"radio\" id=\""+avgstar5id+"\" name=\""+groupName+"\" value=\"5\" />" + 
         "<label for=\""+avgstar5id+"\">5 stars</label>" + 
@@ -93,7 +93,7 @@ function displayHotels(hotels) {
         "<label for=\""+avgstar2id+"\">2 stars</label>" +
         "<input type=\"radio\" id=\""+avgstar1id+"\" name=\""+groupName+"\" value=\"1\" />" +
         "<label for=\""+avgstar1id+"\">1 star</label>" +
-        "<div id=\"avgscore"+hotel.id+"\"></div>" +
+        "<div id=\"avgscore"+hotel.name+"\"></div>" +
         "</div>";        
 
         text += "</td>"; 
@@ -101,15 +101,15 @@ function displayHotels(hotels) {
         // Your rating
 
         text += "<td>";
-        var star5id = "star5" + hotel.id;
-        var star4id = "star4" + hotel.id;
-        var star3id = "star3" + hotel.id;
-        var star2id = "star2" + hotel.id;
-        var star1id = "star1" + hotel.id;
+        var star5id = "star5" + hotel.name;
+        var star4id = "star4" + hotel.name;
+        var star3id = "star3" + hotel.name;
+        var star2id = "star2" + hotel.name;
+        var star1id = "star1" + hotel.name;
         /* each radio group has to have a different name, otherwise only one 
         one of them will be checked
             */
-        var groupName = "rate" + hotel.id;
+        var groupName = "rate" + hotel.name;
         text += "<div class=\"rate\">" +
         "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\" onclick=\"rateHotel("+star5id+")\" value=\"5\" />" + 
         "<label for=\""+star5id+"\">5 stars</label>" + 
@@ -136,29 +136,29 @@ function displayHotels(hotels) {
 
 function displayHotelRating(hotel) {
     if (hotel.averageScore >= 4.5) {
-        document.getElementById("avgstar5"+hotel.id).checked = true;
+        document.getElementById("avgstar5"+hotel.name).checked = true;
     } else if (hotel.averageScore >= 3.5) {
-        document.getElementById("avgstar4"+hotel.id).checked = true;
+        document.getElementById("avgstar4"+hotel.name).checked = true;
     } else if (hotel.averageScore >= 2.5) {
-        document.getElementById("avgstar3"+hotel.id).checked = true;
+        document.getElementById("avgstar3"+hotel.name).checked = true;
     } else if (hotel.averageScore >= 1.5) {
-        document.getElementById("avgstar2"+hotel.id).checked = true;
+        document.getElementById("avgstar2"+hotel.name).checked = true;
     } else {
-        document.getElementById("avgstar1"+hotel.id).checked = true;
+        document.getElementById("avgstar1"+hotel.name).checked = true;
     }
-    document.getElementById("avgscore"+hotel.id).innerHTML = "("+hotel.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
+    document.getElementById("avgscore"+hotel.name).innerHTML = "("+hotel.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
 }
 
 function rateHotel(el) {
     var arr = el.id.split("star");
-    var ratingHotelID = arr[1].split("");
+    var ratingHotelName = arr[1].split("");
     
     var obj = {};
-    obj.id = ratingHotelID[1];
-    obj.score = parseFloat(ratingHotelID[0]);
+    obj.name = ratingHotelName.slice(1).join("");
+    obj.averageScore = parseFloat(ratingHotelName[0]);
 
     $.ajax({
-        url: rateHotelLink,
+        url: rateLink,
         method: "PUT",
         data: JSON.stringify(obj),
         contentType: "application/json",
