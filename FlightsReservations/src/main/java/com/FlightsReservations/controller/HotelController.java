@@ -43,6 +43,16 @@ public class HotelController {
 		return new ResponseEntity<>(h, HttpStatus.CONFLICT);
 	}
 	
+	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Hotel> create(@RequestBody @Valid Hotel hotel) {
+		Hotel h = service.create(hotel);
+		if (h != null) {
+			return new ResponseEntity<>(h, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(h, HttpStatus.CONFLICT);
+	}
+	
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
