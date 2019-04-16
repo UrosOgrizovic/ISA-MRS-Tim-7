@@ -1,0 +1,24 @@
+.table
+{
+    white-space: nowrap;
+    margin: auto;
+  	width: 50%;
+}
+
+#cancelButton
+{
+	position: relative;
+	left: 15%;
+}
+
+#submitButton
+{
+	position: relative;
+	right: 15%;
+}
+th
+{
+	text-align: center;
+	font-size:  40px;
+	font-weight: 200;
+}
