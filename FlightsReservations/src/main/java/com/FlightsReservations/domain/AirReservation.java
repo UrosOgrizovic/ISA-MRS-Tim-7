@@ -1,5 +1,8 @@
 package com.FlightsReservations.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.FlightsReservations.domain.enums.ReservationType;
+import com.FlightsReservations.domain.enums.TripType;
 
 @Entity
 public class AirReservation {
@@ -20,7 +24,7 @@ public class AirReservation {
 	private Long id;
 
 	@Column(nullable = false)
-	private ReservationType type;
+	private TripType type;
 
 	@Column(nullable = false)
 	private Float discount;
@@ -30,29 +34,23 @@ public class AirReservation {
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Seat seat;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Flight firstFlight;
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Flight returnFlight;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
+
+	@OneToMany(mappedBy = "reservation")
+	private Set<AirReservationFlight> flights = new HashSet<>();
 
 	public AirReservation() {
 		super();
 	}
 
-	public AirReservation(ReservationType type, Float discount, Airline airline, Seat seat, Flight firstFlight,
-			Flight returnFlight, User owner) {
+	public AirReservation(TripType type, Float discount, Airline airline, Seat seat, User owner) {
 		super();
 		this.type = type;
 		this.discount = discount;
 		this.airline = airline;
 		this.seat = seat;
-		this.firstFlight = firstFlight;
-		this.returnFlight = returnFlight;
 		this.owner = owner;
 	}
 
@@ -64,11 +62,11 @@ public class AirReservation {
 		this.id = id;
 	}
 
-	public ReservationType getType() {
+	public TripType getType() {
 		return type;
 	}
 
-	public void setType(ReservationType type) {
+	public void setType(TripType type) {
 		this.type = type;
 	}
 
@@ -94,22 +92,6 @@ public class AirReservation {
 
 	public void setSeat(Seat seat) {
 		this.seat = seat;
-	}
-
-	public Flight getFirstFlight() {
-		return firstFlight;
-	}
-
-	public void setFirstFlight(Flight firstFlight) {
-		this.firstFlight = firstFlight;
-	}
-
-	public Flight getReturnFlight() {
-		return returnFlight;
-	}
-
-	public void setReturnFlight(Flight returnFlight) {
-		this.returnFlight = returnFlight;
 	}
 
 	public User getOwner() {

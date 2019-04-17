@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.SeatDTO;
-import com.FlightsReservations.domain.enums.TypeClass;
+import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.service.SeatService;
 
 @RestController
@@ -34,7 +34,7 @@ public class SeatController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(
 			@NotNull @Positive @PathVariable Long flightID,
-			@NotBlank @PathVariable TypeClass type) {
+			@NotBlank @PathVariable SeatType type) {
 		SeatDTO dto = service.add(flightID, type);
 		if (dto != null)
 			return new ResponseEntity<>(dto, HttpStatus.CREATED);
@@ -48,7 +48,7 @@ public class SeatController {
 	public ResponseEntity<?> edit(
 			@NotNull @Positive @PathVariable Long flightID,
 			@NotNull @Positive @PathVariable Long seatNum,
-			@NotBlank @PathVariable TypeClass type) {
+			@NotBlank @PathVariable SeatType type) {
 		if (service.edit(flightID, seatNum, type)) 
 			return new ResponseEntity<>("", HttpStatus.OK);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
