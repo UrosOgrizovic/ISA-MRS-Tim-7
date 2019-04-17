@@ -32,7 +32,7 @@ public class Seat {
 	private Flight flight;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private AirReservation reservation;
+	private FlightReservation reservation;
 	
 	public Seat() {
 		super();
@@ -86,11 +86,11 @@ public class Seat {
 		this.flight = flight;
 	}
 
-	public AirReservation getReservation() {
+	public FlightReservation getReservation() {
 		return reservation;
 	}
 
-	public void setReservation(AirReservation reservation) {
+	public void setReservation(FlightReservation reservation) {
 		this.reservation = reservation;
 	}
 

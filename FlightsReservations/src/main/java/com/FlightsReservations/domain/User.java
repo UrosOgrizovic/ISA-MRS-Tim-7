@@ -40,14 +40,14 @@ public class User extends AbstractUser implements UserDetails {
 	private List<Authority> authorities;
 
 	@OneToMany(mappedBy = "owner")
-	private Set<AirReservation> airReservations = new HashSet<>();
+	private Set<FlightReservation> airReservations = new HashSet<>();
 
 	public User() {
 		super();
 	}
 
 	public User(String firstName, String lastName, String email, String phone, String address, String password,
-			boolean enabled, Set<AirReservation> airReservations) {
+			boolean enabled, Set<FlightReservation> airReservations) {
 		super(firstName, lastName, email, phone, address, password);
 		this.enabled = enabled;
 		this.airReservations = airReservations;
@@ -75,11 +75,11 @@ public class User extends AbstractUser implements UserDetails {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<AirReservation> getReservations() {
+	public Set<FlightReservation> getReservations() {
 		return airReservations;
 	}
 
-	public void setReservations(Set<AirReservation> airReservations) {
+	public void setReservations(Set<FlightReservation> airReservations) {
 		this.airReservations = airReservations;
 	}
 

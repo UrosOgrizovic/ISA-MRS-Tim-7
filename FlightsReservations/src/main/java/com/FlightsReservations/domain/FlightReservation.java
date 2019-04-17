@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,18 +11,23 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.enums.TripType;
 
 @Entity
-public class AirReservation {
+public class FlightReservation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@Column(nullable = false)
+	private Date dateOfReservation;
 
 	@Column(nullable = false)
 	private TripType type;
@@ -29,26 +35,35 @@ public class AirReservation {
 	@Column(nullable = false)
 	private Float discount;
 
+	@Column(nullable = false)
+	private String passport;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Seat seat;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
+	
+	@ManyToMany
+    @JoinTable(name = "reservations_flights",
+               joinColumns = @JoinColumn(name="reservation_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="flight_id", referencedColumnName="id"))
+	private Set<Flight> flights = new HashSet<>();
 
-	@OneToMany(mappedBy = "reservation")
-	private Set<AirReservationFlight> flights = new HashSet<>();
-
-	public AirReservation() {
+	public FlightReservation() {
 		super();
 	}
 
-	public AirReservation(TripType type, Float discount, Airline airline, Seat seat, User owner) {
+	public FlightReservation(TripType type, Date date, Float discount, String passport, Airline airline, Seat seat,
+			User owner) {
 		super();
 		this.type = type;
+		this.dateOfReservation = date;
 		this.discount = discount;
+		this.passport = passport;
 		this.airline = airline;
 		this.seat = seat;
 		this.owner = owner;
@@ -100,6 +115,30 @@ public class AirReservation {
 
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	public String getPassport() {
+		return passport;
+	}
+
+	public void setPassport(String passport) {
+		this.passport = passport;
+	}
+
+	public Set<Flight> getFlights() {
+		return flights;
+	}
+
+	public void setFlights(Set<Flight> flights) {
+		this.flights = flights;
+	}
+
+	public Date getDateOfReservation() {
+		return dateOfReservation;
+	}
+
+	public void setDateOfReservation(Date dateOfReservation) {
+		this.dateOfReservation = dateOfReservation;
 	}
 
 }
