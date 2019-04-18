@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import com.FlightsReservations.domain.enums.TripType;
 
@@ -36,37 +36,42 @@ public class FlightReservation {
 	private Float discount;
 
 	@Column(nullable = false)
-	private String passport;
+	private Float price;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Airline airline;
-
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Seat seat;
+	@Column(nullable = false)
+	private Boolean confirmed;
+	
+	/*
+	 * Be careful with reservation cancel. 
+	 * CascadeType for passangers, owner and flight is set to ALL. Change it according to your needs.
+	 */
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Passenger> passengers = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
-	
+
 	@ManyToMany
-    @JoinTable(name = "reservations_flights",
-               joinColumns = @JoinColumn(name="reservation_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="flight_id", referencedColumnName="id"))
+	@JoinTable(
+			name = "reservations_flights", 
+			joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), 
+			inverseJoinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"))
 	private Set<Flight> flights = new HashSet<>();
 
 	public FlightReservation() {
 		super();
 	}
 
-	public FlightReservation(TripType type, Date date, Float discount, String passport, Airline airline, Seat seat,
-			User owner) {
+	public FlightReservation(Date dateOfReservation, TripType type, Float discount, Float price, User owner,
+			Boolean confirmed) {
 		super();
+		this.dateOfReservation = dateOfReservation;
 		this.type = type;
-		this.dateOfReservation = date;
 		this.discount = discount;
-		this.passport = passport;
-		this.airline = airline;
-		this.seat = seat;
+		this.price = price;
 		this.owner = owner;
+		this.confirmed = confirmed;
 	}
 
 	public Long getId() {
@@ -75,6 +80,14 @@ public class FlightReservation {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getDateOfReservation() {
+		return dateOfReservation;
+	}
+
+	public void setDateOfReservation(Date dateOfReservation) {
+		this.dateOfReservation = dateOfReservation;
 	}
 
 	public TripType getType() {
@@ -93,20 +106,20 @@ public class FlightReservation {
 		this.discount = discount;
 	}
 
-	public Airline getAirline() {
-		return airline;
+	public Float getPrice() {
+		return price;
 	}
 
-	public void setAirline(Airline airline) {
-		this.airline = airline;
+	public void setPrice(Float price) {
+		this.price = price;
 	}
 
-	public Seat getSeat() {
-		return seat;
+	public Set<Passenger> getPassengers() {
+		return passengers;
 	}
 
-	public void setSeat(Seat seat) {
-		this.seat = seat;
+	public void setPassengers(Set<Passenger> passengers) {
+		this.passengers = passengers;
 	}
 
 	public User getOwner() {
@@ -117,14 +130,6 @@ public class FlightReservation {
 		this.owner = owner;
 	}
 
-	public String getPassport() {
-		return passport;
-	}
-
-	public void setPassport(String passport) {
-		this.passport = passport;
-	}
-
 	public Set<Flight> getFlights() {
 		return flights;
 	}
@@ -133,12 +138,12 @@ public class FlightReservation {
 		this.flights = flights;
 	}
 
-	public Date getDateOfReservation() {
-		return dateOfReservation;
+	public Boolean getConfirmed() {
+		return confirmed;
 	}
 
-	public void setDateOfReservation(Date dateOfReservation) {
-		this.dateOfReservation = dateOfReservation;
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 
 }

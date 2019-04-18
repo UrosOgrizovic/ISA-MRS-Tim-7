@@ -18,21 +18,21 @@ public class Seat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
 	@Column(nullable = false)
 	private Integer seatNumber;
-
+	
 	@Column(nullable = false)
 	private Boolean available;
-
+	
 	@Column(nullable = false)
 	private SeatType type;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Flight flight;
-
+	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private FlightReservation reservation;
+	private Passenger passenger;
 	
 	public Seat() {
 		super();
@@ -84,14 +84,6 @@ public class Seat {
 
 	public void setFlight(Flight flight) {
 		this.flight = flight;
-	}
-
-	public FlightReservation getReservation() {
-		return reservation;
-	}
-
-	public void setReservation(FlightReservation reservation) {
-		this.reservation = reservation;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -38,19 +39,26 @@ public class User extends AbstractUser implements UserDetails {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	private List<Authority> authorities;
-
+	
+	
+	
 	@OneToMany(mappedBy = "owner")
-	private Set<FlightReservation> airReservations = new HashSet<>();
+	private Set<FlightReservation> flightReservations = new HashSet<>();
+	
+	//@Column(nullable = false)
+	//private Integer flightBonusPoints;
 
 	public User() {
 		super();
 	}
 
 	public User(String firstName, String lastName, String email, String phone, String address, String password,
-			boolean enabled, Set<FlightReservation> airReservations) {
+			boolean enabled, Integer flightBonusPoints) {
 		super(firstName, lastName, email, phone, address, password);
+		//this.flightBonusPoints = flightBonusPoints;
+		
 		this.enabled = enabled;
-		this.airReservations = airReservations;
+		
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -76,11 +84,11 @@ public class User extends AbstractUser implements UserDetails {
 	}
 
 	public Set<FlightReservation> getReservations() {
-		return airReservations;
+		return flightReservations;
 	}
 
 	public void setReservations(Set<FlightReservation> airReservations) {
-		this.airReservations = airReservations;
+		this.flightReservations = airReservations;
 	}
 
 	@JsonIgnore
