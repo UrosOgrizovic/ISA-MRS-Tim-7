@@ -2,6 +2,7 @@ package com.FlightsReservations.domain.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -10,24 +11,25 @@ import com.FlightsReservations.domain.enums.TripType;
 
 public class FlightsReservationRequestDTO {
 	@NotBlank
-	private String ownerUsername;
+	private String ownerEmail;
 
 	@NotNull
 	private TripType tripType;
 
 	@NotEmpty
+	@Valid
 	private List<FlightReservationDetailsDTO> flights;
 
 	public FlightsReservationRequestDTO() {
 		super();
 	}
 
-	public String getOwnerUsername() {
-		return ownerUsername;
+	public String getOwnerEmail() {
+		return ownerEmail;
 	}
 
-	public void setOwnerUsername(String ownerUsername) {
-		this.ownerUsername = ownerUsername;
+	public void setOwnerEmail(String ownerEmail) {
+		this.ownerEmail = ownerEmail;
 	}
 
 	public TripType getTripType() {

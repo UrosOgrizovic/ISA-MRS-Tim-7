@@ -2,6 +2,7 @@ package com.FlightsReservations.domain.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -9,23 +10,25 @@ import javax.validation.constraints.Positive;
 public class FlightReservationDetailsDTO {
 	@NotNull
 	@Positive
-	private Integer flightId;
+	private Long flightId;
 
 	@NotEmpty
+	@Valid
 	private List<PassengerDTO> passengers;
 
 	//@NotNull Friends not implemented yet
+	//@Valid
 	private List<FlightInviteDTO> invites;
 
 	public FlightReservationDetailsDTO() {
 		super();
 	}
 
-	public Integer getFlightId() {
+	public Long getFlightId() {
 		return flightId;
 	}
 
-	public void setFlightId(Integer flightId) {
+	public void setFlightId(Long flightId) {
 		this.flightId = flightId;
 	}
 

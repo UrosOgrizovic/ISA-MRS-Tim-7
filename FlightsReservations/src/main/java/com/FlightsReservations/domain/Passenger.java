@@ -1,11 +1,15 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.FlightsReservations.domain.dto.PassengerDTO;
 
 @Entity
 public class Passenger {
@@ -22,7 +26,7 @@ public class Passenger {
 	@Column(nullable = false, unique = true)
 	private String passport;
 	
-	@OneToOne(mappedBy = "passenger")
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 	private Seat seat;
 	
 	public Passenger() {
@@ -37,6 +41,10 @@ public class Passenger {
 		this.seat = seat;
 	}
 
+	public Passenger(PassengerDTO dto, Seat seat) {
+		this(dto.getName(), dto.getSurname(), dto.getPassport(), seat);
+	}
+	
 	public Long getId() {
 		return id;
 	}

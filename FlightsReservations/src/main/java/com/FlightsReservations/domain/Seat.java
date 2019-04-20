@@ -18,30 +18,30 @@ public class Seat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private Integer seatNumber;
-	
+
 	@Column(nullable = false)
 	private Boolean available;
-	
+
 	@Column(nullable = false)
 	private SeatType type;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Flight flight;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+
+	@OneToOne(mappedBy = "seat")
 	private Passenger passenger;
-	
+
 	public Seat() {
 		super();
 	}
-	
+
 	public Seat(Integer seatNumber, Boolean available, SeatType type, Flight flight) {
 		super();
 		this.seatNumber = seatNumber;
-		this.available= available;
+		this.available = available;
 		this.type = type;
 		this.flight = flight;
 	}
@@ -67,7 +67,7 @@ public class Seat {
 	}
 
 	public void setAvailable(Boolean available) {
-		this.available= available;
+		this.available = available;
 	}
 
 	public SeatType getType() {
@@ -84,6 +84,14 @@ public class Seat {
 
 	public void setFlight(Flight flight) {
 		this.flight = flight;
+	}
+
+	public Passenger getPassenger() {
+		return passenger;
+	}
+
+	public void setPassenger(Passenger passenger) {
+		this.passenger = passenger;
 	}
 
 }

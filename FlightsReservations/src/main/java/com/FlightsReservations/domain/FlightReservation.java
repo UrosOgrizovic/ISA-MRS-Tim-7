@@ -48,7 +48,7 @@ public class FlightReservation {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
-
+	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 
