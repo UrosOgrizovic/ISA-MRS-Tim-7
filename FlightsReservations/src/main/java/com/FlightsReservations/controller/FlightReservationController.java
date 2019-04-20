@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.service.FlightReservationService;
 
@@ -31,8 +32,10 @@ public class FlightReservationController {
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
-		boolean result = service.create(dto);
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		FlightReservationDTO fdto = service.create(dto);
+		if (fdto != null)
+			return new ResponseEntity<>(fdto, HttpStatus.CREATED);
+		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping(value = "/cancel/{id}")

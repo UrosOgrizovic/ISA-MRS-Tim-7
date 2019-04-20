@@ -4,6 +4,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.FlightsReservations.domain.Passenger;
+
 public class PassengerDTO {
 	@NotBlank
 	private String name;
@@ -23,6 +25,14 @@ public class PassengerDTO {
 
 	public PassengerDTO() {
 		super();
+	}
+	
+	public PassengerDTO(Passenger p) {
+		super();
+		name = p.getName();
+		surname = p.getSurname();
+		passport = p.getPassport();
+		seatNumber = p.getSeat().getSeatNumber();
 	}
 
 	public String getName() {

@@ -23,7 +23,7 @@ public class Passenger {
 	@Column(nullable = false)
 	private String surname;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String passport;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
@@ -77,11 +77,11 @@ public class Passenger {
 		this.passport = passport;
 	}
 
-	public Seat getSeats() {
+	public Seat getSeat() {
 		return seat;
 	}
 
-	public void setSeats(Seat seat) {
+	public void setSeat(Seat seat) {
 		this.seat = seat;
 	}
 }

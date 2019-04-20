@@ -17,8 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.FlightsReservations.domain.enums.TripType;
-
 @Entity
 public class FlightReservation {
 
@@ -30,9 +28,6 @@ public class FlightReservation {
 	private Date dateOfReservation;
 
 	@Column(nullable = false)
-	private TripType type;
-
-	@Column(nullable = false)
 	private Float discount;
 
 	@Column(nullable = false)
@@ -40,15 +35,15 @@ public class FlightReservation {
 
 	@Column(nullable = false)
 	private Boolean confirmed;
-	
+
 	/*
-	 * Be careful with reservation cancel. 
-	 * CascadeType for passangers, owner and flight is set to ALL. Change it according to your needs.
+	 * Be careful with reservation cancel. CascadeType for passengers, owner and
+	 * flight is set to ALL. If reservation is deleted after cancel then change cascade type.
 	 */
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 
@@ -63,11 +58,9 @@ public class FlightReservation {
 		super();
 	}
 
-	public FlightReservation(Date dateOfReservation, TripType type, Float discount, Float price, User owner,
-			Boolean confirmed) {
+	public FlightReservation(Date dateOfReservation, Float discount, Float price, User owner, Boolean confirmed) {
 		super();
 		this.dateOfReservation = dateOfReservation;
-		this.type = type;
 		this.discount = discount;
 		this.price = price;
 		this.owner = owner;
@@ -88,14 +81,6 @@ public class FlightReservation {
 
 	public void setDateOfReservation(Date dateOfReservation) {
 		this.dateOfReservation = dateOfReservation;
-	}
-
-	public TripType getType() {
-		return type;
-	}
-
-	public void setType(TripType type) {
-		this.type = type;
 	}
 
 	public Float getDiscount() {
