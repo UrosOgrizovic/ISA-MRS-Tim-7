@@ -38,6 +38,22 @@ public class User extends AbstractUser implements UserDetails {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	private List<Authority> authorities;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name="user_friends",
+	 joinColumns=@JoinColumn(name="user_id"),
+	 inverseJoinColumns=@JoinColumn(name="friend_id")
+	)
+	private List<User> friends;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name="user_friends",
+	 joinColumns=@JoinColumn(name="friend_id"),
+	 inverseJoinColumns=@JoinColumn(name="user_id")
+	)
+	private List<User> friendOf;
+	
+	
 
 	@OneToMany(mappedBy = "owner")
 	private Set<AirReservation> airReservations = new HashSet<>();
@@ -105,4 +121,12 @@ public class User extends AbstractUser implements UserDetails {
 	public boolean isEnabled() {
 		return this.enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "User [getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName() + ", getEmail()="
+				+ getEmail() + "]";
+	}
+
+	
 }

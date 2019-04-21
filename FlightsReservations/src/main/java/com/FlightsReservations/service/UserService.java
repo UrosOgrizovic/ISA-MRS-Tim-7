@@ -72,4 +72,23 @@ public class UserService {
 			dtos.add(new UserDTO(u));
 		return dtos;
 	}
+	
+	public List<UserDTO> getFriends(String email) {
+		
+		User u = repository.findByEmail(email);
+		
+		List<User> friends = repository.findFriends(u.getId());
+		List<UserDTO> friendsDTO = new ArrayList<UserDTO>();
+		for (User user : friends) {
+			if (user.isEnabled()) {
+				UserDTO udto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
+				friendsDTO.add(udto);
+			}
+		}
+		return friendsDTO;
+	}
+	
+	public void addFriend(Long userId, Long friendId) {
+		repository.addFriend(userId, friendId);
+	}
 }

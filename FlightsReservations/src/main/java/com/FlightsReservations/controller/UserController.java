@@ -31,7 +31,6 @@ public class UserController {
 	@Autowired 
 	private UserService service;
 	
-	
 	@GetMapping(
 			value = "/getAll",
 			produces = MediaType.APPLICATION_JSON_VALUE
@@ -46,7 +45,21 @@ public class UserController {
 	public Optional<User> loadUserById(@PathVariable Long id) {
 		return this.service.getRepository().findById(id);
 	}
-
+	
+	@GetMapping(value = "/getFriends/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<UserDTO> getFriends(@PathVariable String email) {
+		System.out.println(email);
+		return this.service.getFriends(email);
+	}
+	
+	@PutMapping(
+			value = "/addFriend/{userId}/{friendId}",
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+		service.addFriend(userId, friendId);
+	}
 	
 	@PostMapping(
 			value = "/add",
@@ -59,8 +72,6 @@ public class UserController {
 			return new ResponseEntity<>(udto, HttpStatus.CREATED);
 		return new ResponseEntity<>(udto, HttpStatus.CONFLICT);
 	}
-	
-	
 	
 	@PutMapping(
 			value = "/update",
