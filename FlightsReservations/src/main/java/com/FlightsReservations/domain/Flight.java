@@ -56,8 +56,8 @@ public class Flight {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport end;
 
-	@OneToMany(mappedBy = "flight")
-	private Set<AirReservationFlight> reservations = new HashSet<>();
+	@ManyToMany(mappedBy = "flights")
+	private Set<FlightReservation> reservations = new HashSet<>();
 
 	@Column(nullable = false)
 	private float averageScore;
@@ -189,11 +189,11 @@ public class Flight {
 		this.price = price;
 	}
 
-	public Set<AirReservationFlight> getReservations() {
+	public Set<FlightReservation> getReservations() {
 		return reservations;
 	}
 
-	public void setReservations(Set<AirReservationFlight> reservations) {
+	public void setReservations(Set<FlightReservation> reservations) {
 		this.reservations = reservations;
 	}
 
