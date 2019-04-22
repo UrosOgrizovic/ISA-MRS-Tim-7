@@ -31,10 +31,10 @@
             <select class="form-control" id="car_select">
             </select>      
 
-            <!--TODO: Add remove form for cars -->
+            
             <button type="submit" class="btn btn-primary" onClick="removeCarFromRACS()">Remove selected car from rent-a-car service</button>
     
-            <!--TODO: Add edit form for cars -->
+            
             <label>New car manufacturer</label>
             <input type="text" class="form-control" id="editCarManufacturer"/>
             <label>New car name</label>
@@ -43,6 +43,8 @@
             <input type="text" class="form-control" id="editCarColor"/>
             <label>New car year of manufacture</label>
             <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="editCarYearOfManufacture"/>
+            <label>New car price per hour</label>
+            <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
             <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
 
             
