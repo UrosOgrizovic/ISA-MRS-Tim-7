@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.AirlineDTO;
+import com.FlightsReservations.domain.dto.AirportDTO;
 import com.FlightsReservations.service.AirlineService;
 
 @RestController
@@ -38,7 +39,7 @@ public class AirlineController {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.OK);
-		return new ResponseEntity<>("Airport with given name doesnt exists!", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	
@@ -48,7 +49,8 @@ public class AirlineController {
 	public List<AirlineDTO> findAll() {
 		return service.findAll();
 	}
-		
+	
+	
 	@PostMapping(
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE
@@ -57,7 +59,7 @@ public class AirlineController {
 		AirlineDTO a = service.create(airline);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.CREATED);
-		return new ResponseEntity<>("Airline with given id already exists!", HttpStatus.CONFLICT);
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 	
 	
@@ -68,8 +70,8 @@ public class AirlineController {
 			)
 	public ResponseEntity<String> update(@RequestBody @Valid AirlineDTO airline) {
 		if (service.update(airline))
-			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
-		return new ResponseEntity<>("Airline with given id does not exists.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("OK", HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	
@@ -79,9 +81,17 @@ public class AirlineController {
 			)
 	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline,
 			@NotBlank @PathVariable String airport) {
-		AirlineDTO dto = service.addAirport(airline, airport);
+		AirportDTO dto = service.addAirport(airline, airport);
 		if (dto != null) 
 			return new ResponseEntity<>(dto, HttpStatus.OK);
-		return new ResponseEntity<>("Bad input parameters!", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	@GetMapping(value="/airports/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAirports(@NotBlank @PathVariable String airline) {
+		List<AirportDTO> dtos = service.getAirports(airline); 
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	}
+	
 }

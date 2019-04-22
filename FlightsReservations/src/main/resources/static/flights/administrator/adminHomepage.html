@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js"></script>
+    
+    <link rel="stylesheet" href="css/editAirline.css">
+ 
+    
+    <title>Airlines Homepage</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-brand">Bookr</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+	            <li class="nav-item">
+	                <a id="home" class="nav-link" href="adminHomepage.html">Home <span class="sr-only">(current)</span></a>
+	            </li>
+	            <li class="nav-item active">
+	                <a id="company" class="nav-link" href="adminHomepage.html">Company</a>
+	            </li>
+	            <li class="nav-item">
+	                <a id="airports" class="nav-link" href="manageAirports.html">Airports</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">Flights</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">Pricelist</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">Reservations</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">Reports</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">My profile</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="#">Logout</a>
+	            </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div>
+  
+    <div class="master-div">
+		<h1> Profile details </h1>	
+		<div class="form-group">
+		   
+		    <div class="form-group">
+    			<label for="name">Name</label>
+    			<input type="text" class="form-control" id="name" readonly>
+  			</div>
+
+  			<div class="form-group">
+    			<label for="promoDesc">Promo description</label>
+    			<textarea class="form-control" id="promoDesc" rows="3"> </textarea>
+  			</div>
+  			
+  			<div class="form-group">
+    			<label for="numOfVotes">Number of votes</label>
+    			<input class="form-control" id="numOfVotes" readonly> 
+  			</div>
+  			
+  			<div class="form-group">
+    			<label for="avgScore">Average score</label>
+    			<input class="form-control" id="avgScore" readonly>
+  			</div>
+  	
+  			<button type="submit" class="btn btn-primary" onclick="updateAirline()">Submit</button>
+		  </div>
+		</div>
+		
+		<div class="map-div">
+  			<h1>Location</h1>
+  			<div class="map" id="map">
+  			</div>
+  		</div>
+  	</div>  
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="js/map.js"></script>
+	
+</body>
+</html>
