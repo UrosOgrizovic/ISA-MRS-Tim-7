@@ -37,7 +37,6 @@ function addAirport() {
 		$.ajax({
 			url: "http://localhost:8080/airlines/addAirport/" + airline + "/" + airport,
 			method: "PUT",
-			dataType: "json",
 			async: false,
 			success: function (result) {
 				insertRow(result);

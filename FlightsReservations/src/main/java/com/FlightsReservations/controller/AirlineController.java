@@ -72,7 +72,7 @@ public class AirlineController {
 	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String airport) {
 		AirportDTO dto = service.addAirport(airline, airport);
 		if (dto != null) 
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 	
