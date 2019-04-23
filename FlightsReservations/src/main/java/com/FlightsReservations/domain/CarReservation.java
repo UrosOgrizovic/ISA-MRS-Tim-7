@@ -11,7 +11,26 @@ public class CarReservation extends Reservation {
 	private Long carId;
 	
 	@Column(nullable = false)
-	private int reservationDurationHours;
+	private Date startTime;
+	
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	@Column(nullable = false)
+	private Date endTime;
 
 	public Long getCarId() {
 		return carId;
@@ -21,19 +40,12 @@ public class CarReservation extends Reservation {
 		this.carId = carId;
 	}
 
-	public int getReservationDurationHours() {
-		return reservationDurationHours;
-	}
-
-	public void setReservationDurationHours(int reservationDurationHours) {
-		this.reservationDurationHours = reservationDurationHours;
-	}
-
 	public CarReservation(Date dateOfReservation, Float discount, Float price, Boolean confirmed, User owner,
-			Long carId, int reservationDurationHours) {
+			Long carId, Date startTime, Date endTime) {
 		super(dateOfReservation, discount, price, confirmed, owner);
 		this.carId = carId;
-		this.reservationDurationHours = reservationDurationHours;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 	
 }

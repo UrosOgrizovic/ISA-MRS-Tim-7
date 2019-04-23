@@ -1,7 +1,12 @@
 package com.FlightsReservations.domain.dto;
 
+import java.util.Date;
+
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CarReservationRequestDTO {
 	@NotBlank
@@ -11,7 +16,41 @@ public class CarReservationRequestDTO {
 	private Long carId;
 	
 	@NotNull
-	private int reservationDurationHours;
+	@Future
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	private Date startTime;
+	
+	@NotNull
+	@Future
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	private Date endTime;
+	
+	@NotNull
+	private Float discount;
+
+	public Float getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Float discount) {
+		this.discount = discount;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
 	public CarReservationRequestDTO() {
 		super();
@@ -33,11 +72,4 @@ public class CarReservationRequestDTO {
 		this.carId = carId;
 	}
 	
-	public int getReservationDurationHours() {
-		return reservationDurationHours;
-	}
-
-	public void setReservationDurationHours(int reservationDurationHours) {
-		this.reservationDurationHours = reservationDurationHours;
-	}
 }

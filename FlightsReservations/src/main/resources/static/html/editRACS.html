@@ -46,9 +46,7 @@
             <label>New car price per hour</label>
             <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
             <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
-
-            
-            
+          
         </div>
 
         
@@ -78,6 +76,8 @@
             <input type="text" class="form-control" id="carColor"/>
             <label>Car year of manufacture: </label>
             <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="carYOM"/>
+            <label>Car price per hour: </label>
+            <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="carPricePerHour"/>
             <button type="submit" class="btn btn-primary" onClick="addCarToRACS()">Add car to rent-a-car service</button>
         </form>
         
