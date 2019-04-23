@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.service.HotelService;
 
 @RestController
@@ -28,36 +28,26 @@ public class HotelController {
 	
 	//@PreAuthorize("hasRole('USER')")
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
-	public Collection<Hotel> getAll() {
+	public Collection<HotelDTO> getAll() {
 		return service.findAll();
 	}
 	
 	//@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Hotel> add(@RequestBody @Valid Hotel hotel) {
-		Hotel h = service.create(hotel);
+	public ResponseEntity<HotelDTO> add(@RequestBody @Valid HotelDTO hotel) {
+		HotelDTO h = service.create(hotel);
 		if (h != null) {
 			return new ResponseEntity<>(h, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(h, HttpStatus.CONFLICT);
-	}
-	
-	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Hotel> create(@RequestBody @Valid Hotel hotel) {
-		Hotel h = service.create(hotel);
-		if (h != null) {
-			return new ResponseEntity<>(h, HttpStatus.CREATED);
-		}
-		return new ResponseEntity<>(h, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(h, HttpStatus.CONFLICT);//TODO: finish later - same id?
 	}
 	
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@RequestBody @Valid Hotel hotel) {
+	public ResponseEntity<String> update(@RequestBody @Valid HotelDTO hotel) {
 		if (service.update(hotel))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);

@@ -1,18 +1,13 @@
 package com.FlightsReservations.domain;
 
+
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -20,10 +15,16 @@ public class Hotel extends Company
 {
 	@NotNull
 	private ArrayList<PricelistItem> pricelist;
+	
+	
 	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<Room> roomConfiguration;
-		
+	
+	@NotNull
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
+	private Set<HotelReservation> reservations;
+	
 	public Hotel() {
 		super();
 	}
@@ -52,4 +53,13 @@ public class Hotel extends Company
 		this.roomConfiguration = roomConfiguration;
 	}
 
+	public Set<HotelReservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<HotelReservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	
 }
