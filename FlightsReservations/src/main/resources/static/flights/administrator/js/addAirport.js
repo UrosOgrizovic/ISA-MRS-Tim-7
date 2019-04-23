@@ -15,7 +15,6 @@ function getAirports(airline) {
 		url: "http://localhost:8080/airlines/airports/" + airline,
 		method: "GET",
 		dataType: "json",
-		async: false,
 		success: function (result) {
 			populateTable(result);
 		},

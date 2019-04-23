@@ -34,7 +34,7 @@ public class AirlineController {
 	
 	@GetMapping(value = "/{name}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> findOne(@PathVariable String name) {
+	public ResponseEntity<?> findOne(@NotBlank @PathVariable String name) {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.OK);
@@ -91,6 +91,12 @@ public class AirlineController {
 			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	} 
+	
+	
+	@GetMapping(value="/flights/{airline}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getFlights(@NotBlank @PathVariable String airline) {
+		return new ResponseEntity<>(service.getFlights(airline), HttpStatus.OK);
+	}
 	
 	
 	@PostMapping(value="/pricelist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 

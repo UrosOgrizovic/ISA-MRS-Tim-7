@@ -14,11 +14,11 @@ function createAirport() {
 	//    alert with error
 	
 	var airport = new Object();
-	airport.name = $("#name").val();
-	airport.city = $("#city").val();
-	airport.state = $("#state").val();
-	airport.lat = $("#lat").val();
-	airport.lng = $("#lng").val();
+	airport.name = $("#name").val().trim();
+	airport.city = $("#city").val().trim();
+	airport.state = $("#state").val().trim();
+	airport.lat = $("#lat").val().trim();
+	airport.lng = $("#lng").val().trim();
 	
 	if (validate(airport)) {
 		airport = makeAjaxCall(airport);

@@ -28,7 +28,7 @@ public class CreateFlightDTO {
 	@NotNull
 	@Positive
 	private Integer numberOfSeats;
-	
+
 	@NotNull
 	@PositiveOrZero
 	private Integer firstClassNum;
@@ -36,23 +36,27 @@ public class CreateFlightDTO {
 	@NotNull
 	@PositiveOrZero
 	private Integer businessClassNum;
-	
+
+	@NotNull
+	@PositiveOrZero
+	private Integer economicClassNum;
+
 	@NotNull
 	@PositiveOrZero
 	private Double price;
-	
+
 	@NotNull
 	private Set<String> stopNames;
-	
+
 	@NotBlank
 	private String startAirportName;
-	
+
 	@NotBlank
 	private String endAirportName;
-	
+
 	@NotBlank
 	private String airlineName;
-	
+
 	@NotNull
 	@PositiveOrZero
 	@Min(value = 1)
@@ -62,11 +66,11 @@ public class CreateFlightDTO {
 	@NotNull
 	@PositiveOrZero
 	private Integer numberOfVotes;
-	
+
 	public CreateFlightDTO() {
 		super();
 	}
-	
+
 	public Float getAverageScore() {
 		return averageScore;
 	}
@@ -162,4 +166,13 @@ public class CreateFlightDTO {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
+	public Integer getEconomicClassNum() {
+		return economicClassNum;
+	}
+
+	public void setEconomicClassNum(Integer economicClassNum) {
+		this.economicClassNum = economicClassNum;
+	}
+
 }

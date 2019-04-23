@@ -117,6 +117,15 @@ public class AirlineService {
 	}
 	
 	
+	public List<FlightDTO> getFlights(String airline) {
+		Airline a = repository.findByName(airline);
+		List<FlightDTO> dtos = new ArrayList<>();
+		for (Flight f : a.getFlights())
+			dtos.add(new FlightDTO(f));
+		return dtos;
+	}
+	
+	
 	
 	private AirlineDTO createDTO(Airline airline) {
 		AirlineDTO dto = new AirlineDTO(airline);
