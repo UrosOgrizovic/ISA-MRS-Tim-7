@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.AirlinePriceList;
 import com.FlightsReservations.domain.Airport;
 import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.AirportDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.PricelistDTO;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 
@@ -39,27 +41,24 @@ public class AirlineService {
 		return null;
 	}
 
-	public boolean update(AirlineDTO t) {
-		Airline a = repository.findByName(t.getName());
+	public boolean update(String airline, String promo) {
+		Airline a = repository.findByName(airline);
 		if (a != null) {
-			a.setName(t.getName());
-			a.setLongitude(t.getLongitude());
-			a.setLatitude(t.getLatitude());
-			a.setPromoDescription(t.getPromoDescription());
-			a.setAverageScore(t.getAverageScore());
-			a.setNumberOfVotes(t.getNumberOfVotes());
+			a.setPromoDescription(promo);
 			repository.save(a);
 			return true;
 		}
 		return false;
 	}
 
+	
 	public AirlineDTO findOne(String name) {
 		Airline a = repository.findByName(name);
 		if (a != null)
 			return createDTO(a);
 		return null;
 	}
+	
 	
 	public List<AirlineDTO> findAll() {
 		List<AirlineDTO> dtos = new ArrayList<>();
@@ -85,6 +84,7 @@ public class AirlineService {
 		return null;
 	}
 	
+	
 	public List<AirportDTO> getAirports(String airlineName) {
 		Airline airline = repository.findByName(airlineName);
 		List<AirportDTO> dtos = new ArrayList<AirportDTO>();
@@ -96,8 +96,31 @@ public class AirlineService {
 	}
 	
 	
+	public PricelistDTO getPricelist(String airline) {
+		Airline a = repository.findByName(airline);
+		if (a != null && a.getPricelist() != null)
+			return new PricelistDTO(a.getPricelist());
+		return null;
+	}
+	
+	
+	
+	public boolean setPricelist(PricelistDTO dto) {
+		Airline a = repository.findByName(dto.getAirline());
+		if (a != null) {
+			AirlinePriceList p = new AirlinePriceList(a, dto.getBusiness(), dto.getEconomic(), dto.getFirst());
+			a.setPricelist(p);
+			repository.save(a);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
 	private AirlineDTO createDTO(Airline airline) {
 		AirlineDTO dto = new AirlineDTO(airline);
+		
 		for (Airport a : airline.getAirports()) 
 			dto.getAirports().add(a.getName());
 		for (Flight f : airline.getFlights())
@@ -105,6 +128,4 @@ public class AirlineService {
 		
 		return dto;
 	}
-	
-	
 }

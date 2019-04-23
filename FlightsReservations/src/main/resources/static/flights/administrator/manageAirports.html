@@ -5,21 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js">
-	
-</script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
-
-
-<link rel="stylesheet" href="css/editAirports.css">
-
-<script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js"></script>
-
-<title>Airlines Homepage</title>
+<link rel="stylesheet" href="css/manageAirports.css">
+<title>Manage airports</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,12 +30,12 @@
 				<li class="nav-item"><a id="home" class="nav-link"
 					href="adminHomepage.html">Home <span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item active"><a id="company" class="nav-link"
+				<li class="nav-item"><a id="company" class="nav-link"
 					href="adminHomepage.html">Company</a></li>
-				<li class="nav-item"><a id="airports" class="nav-link"
+				<li class="nav-item active"><a id="airports" class="nav-link"
 					href="manageAirports.html">Airports</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">Flights</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Pricelist</a>
+				<li class="nav-item"><a class="nav-link" href="managePricelist.html">Pricelist</a>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#">Reservations</a>
 				</li>
@@ -174,7 +168,6 @@
 			</div>
 		</div>
 		
-		
 		<!--  Modal trigger buttons  -->
 		<span>
 			<!-- Button trigger addAirportModal -->
@@ -189,7 +182,6 @@
 			<button type="button" class="btn btn-primary" data-toggle="modal"
 				data-target="#viewAllModal">View all</button>
 				
-			
 		</span>
 	</div>
 

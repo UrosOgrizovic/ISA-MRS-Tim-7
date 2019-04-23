@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.AirportDTO;
+import com.FlightsReservations.domain.dto.PricelistDTO;
 import com.FlightsReservations.service.AirlineService;
 
 @RestController
@@ -31,10 +32,8 @@ public class AirlineController {
 	private AirlineService service;
 	
 	
-	@GetMapping(
-			value = "/{name}",
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
+	@GetMapping(value = "/{name}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findOne(@PathVariable String name) {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
@@ -43,18 +42,15 @@ public class AirlineController {
 	}
 	
 	
-	@GetMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE
-			) 
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) 
 	public List<AirlineDTO> findAll() {
 		return service.findAll();
 	}
 	
 	
 	@PostMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE
-			)
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(@RequestBody @Valid AirlineDTO airline) {
 		AirlineDTO a = service.create(airline);
 		if (a != null)
@@ -63,27 +59,20 @@ public class AirlineController {
 	}
 	
 	
-	@PutMapping(
-			value = "/update",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<String> update(@RequestBody @Valid AirlineDTO airline) {
-		if (service.update(airline))
+	@PutMapping(value = "/update/{airline}/{promo}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String promo) {
+		if (service.update(airline, promo))
 			return new ResponseEntity<>("OK", HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	
-	@PutMapping(
-			value = "/addAirport/{airline}/{airport}",
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline,
-			@NotBlank @PathVariable String airport) {
+	@PutMapping(value = "/addAirport/{airline}/{airport}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String airport) {
 		AirportDTO dto = service.addAirport(airline, airport);
 		if (dto != null) 
-			return new ResponseEntity<>(dto, HttpStatus.OK);
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -93,5 +82,23 @@ public class AirlineController {
 		List<AirportDTO> dtos = service.getAirports(airline); 
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value="/pricelist/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getPricelist(@NotBlank @PathVariable String airline) {
+		PricelistDTO dto = service.getPricelist(airline); 
+		if (dto != null)
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	} 
+	
+	
+	@PostMapping(value="/pricelist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<?> setPricelist(@Valid @RequestBody PricelistDTO dto) {
+		if (service.setPricelist(dto))
+			return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+	
 	
 }
