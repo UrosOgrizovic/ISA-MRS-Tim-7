@@ -50,11 +50,13 @@ public class AirlineController {
 	}
 		
 	@PostMapping(
+			value = "/add",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<?> add(@RequestBody @Valid AirlineDTO airline) {
 		AirlineDTO a = service.create(airline);
+		//System.out.println(airline.getName()+" added to the database");
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.CREATED);
 		return new ResponseEntity<>("Airline with given id already exists!", HttpStatus.CONFLICT);
