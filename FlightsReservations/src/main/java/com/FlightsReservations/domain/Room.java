@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class Room
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@NotNull
 	private double overallRating;

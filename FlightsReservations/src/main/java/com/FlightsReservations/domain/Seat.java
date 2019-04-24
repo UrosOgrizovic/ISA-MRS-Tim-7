@@ -31,7 +31,7 @@ public class Seat {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Flight flight;
 
-	@OneToOne(mappedBy = "seat")
+	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
 	private Passenger passenger;
 
 	public Seat() {
