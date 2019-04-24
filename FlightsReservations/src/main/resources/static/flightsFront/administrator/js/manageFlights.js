@@ -134,11 +134,11 @@ function insertFlightRow(flight) {
 			<td>${flight.endAirport}</td>
 			<td>${flight.takeoffTime}</td>
 			<td>${flight.landingTime}</td>
-			<td><button type="button" class="btn" onclick="showSeatModal(${flight.id})">Click</button></td>
+			<td><button type="button" class="btn" onclick="showSeatModal(${flight.id})">Show</button></td>
 			<td>${flight.flightDistance.toFixed(1)}</td>
 			<td>${flight.flightTime}</td>
 			<td>${flight.price}</td>
-			<td>click to see</td>
+			<td><button type="button" class="btn" onclick="showStopsOnMap(${flight.id})">Show</button></td>
 			<td>${flight.averageScore}</td>
 			<td>${flight.numberOfVotes}</td>
 		</tr>`;

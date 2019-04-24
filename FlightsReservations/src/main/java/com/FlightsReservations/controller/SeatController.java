@@ -46,7 +46,7 @@ public class SeatController {
 			@NotNull @Positive @PathVariable Long seatNum,
 			@NotBlank @PathVariable SeatType type) {
 		if (service.edit(flightID, seatNum, type)) 
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
@@ -56,7 +56,7 @@ public class SeatController {
 			@NotNull @Positive @PathVariable Long flightID,
 			@NotNull @Positive @PathVariable Long seatNum) {
 		if (service.delete(flightID, seatNum)) 
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }	

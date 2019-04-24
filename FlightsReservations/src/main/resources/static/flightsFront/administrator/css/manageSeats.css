@@ -68,6 +68,7 @@ div.seatCharts-seat.selected {
 }
 div.seatCharts-seat.unavailable {
 	background-color: #472B34;
+	pointer-events: none;
 }
 div.seatCharts-container {
 	border-right: 1px dotted #adadad;

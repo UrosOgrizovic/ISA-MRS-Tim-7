@@ -1,13 +1,76 @@
 var selectedSeat = null;
-var seatObjects = [];
+var currentFlight = null;
+
+$(document).ready(function(){
+	$("#createSeatBtn").click(createSeat);
+	$("#updateSeatBtn").click(updateSeat);
+	$("#deleteSeatBtn").click(deleteSeat);
+});
+
+function createSeat() {
+	var flightId = currentFlight.id;
+	$.ajax({
+		url: "http://localhost:8080/seats/" + flightId + "/ECONOMY",
+		method: "POST",
+		dataType: "json",
+		success: function(result) {
+			currentFlight.seats.push(result);
+			showSeatModal(flightId);
+		},
+		error: function() {
+			alert("Error.");
+		}
+	});
+}
+
+function updateSeat() {
+	var type = $("#newSeatType").val();
+	var flightId = currentFlight.id;
+	var seatNum = selectedSeat.settings.label;
+	
+	$.ajax({
+		url: "http://localhost:8080/seats/" + flightId + "/" + seatNum + "/" + type,
+		method: "PUT",
+		success: function() {
+			for (var i = 0; i < currentFlight.seats.length; i++)
+				if (currentFlight.seats[i].seatNum == seatNum) {
+					currentFlight.seats[i].typeClass = type;
+					showSeatModal(flightId);
+				}
+		},
+		error: function() {
+			alert("Bad request!");
+		}
+	});
+}
+
+function deleteSeat() {
+	var flightId = currentFlight.id;
+	var seatNum = selectedSeat.settings.label;
+	
+	$.ajax({
+		url: "http://localhost:8080/seats/" + flightId + "/" + seatNum,
+		method: "DELETE",
+		success: function() {
+			for (var i = 0; i < currentFlight.seats.length; i++)
+				if (currentFlight.seats[i].seatNum == seatNum) {
+					currentFlight.seats.splice(i,1);
+					showSeatModal(flightId);
+				}
+		},
+		error: function() {
+			alert("Bad request!");
+		}
+	});
+}
+
 
 function showSeatModal(flightId) {
 	refreshSeatModal();
-	var flight = getFlight(flightId);
-	var seatStructure = createSeatStructure(flight.seats);
-	renderSeats(flight.seats, seatStructure, flight.price);
+	currentFlight = getFlight(flightId);
+	var seatStructure = createSeatStructure(currentFlight.seats);
+	renderSeats(currentFlight.seats, seatStructure, currentFlight.price);
 	updateSeatButtons(true);
-	
 	$("#seatModal").modal("show");
 }
 
@@ -31,12 +94,16 @@ function createSeatStructure(seats) {
 	var rowCounter = 0;
 	var row = "";
 	for(var i = 0; i < seats.length; i++) {
-		if (seats[i].typeClass == "ECONOMY")
-			row = row + "e";
-		else if (seats[i].typeClass == "BUSINESS")
-			row = row + "b";
-		else 
-			row = row + "f";
+		if (seats[i].available) {
+			if (seats[i].typeClass == "ECONOMY")
+				row = row + "e";
+			else if (seats[i].typeClass == "BUSINESS")
+				row = row + "b";
+			else 
+				row = row + "f";
+		} else {
+			row = row + "u";
+		}
 		rowCounter += 1;
 		if (rowCounter == 7) {
 			rowCounter = 0;
@@ -50,28 +117,6 @@ function createSeatStructure(seats) {
 	return seatStructure;
 }
 
-
-function getUnavailableSeats(seats) {
-	var unavailable = [];
-	var rowCounter = 0;
-	var elCounter = 0;
-	for(var i = 0; i < seats.length; i++) {
-		console.log(seats[i].available);
-		if (!seats[i].available) {
-			
-			unavailable.push((rowCounter+1) + "_" + (elCounter +1))
-		}
-		elCounter += 1;
-		if (elCounter == 7) {
-			elCounter = 0;
-			rowCounter += 1;
-		}
-	}
-	return unavailable;
-}
-
-
-
 function renderSeats(seats, seatStructure, price) {
 	// clear last seat chart
 	
@@ -83,20 +128,21 @@ function renderSeats(seats, seatStructure, price) {
 		map: seatStructure,
 		seats: {
 			f: {
-				price   : 100,
 				classes : 'first-class', //your custom CSS class
-				category: 'First Class',
+				category: 'FIRST',
 			},
 			e: {
-				price   : 40,
 				classes : 'economy-class', //your custom CSS class
-				category: 'Economy Class',
+				category: 'ECONOMY',
 				},
 			b: {
-				price   : 70,
 				classes : 'business-class', //your custom CSS class
-				category: 'Business Class',
+				category: 'BUSINESS',
 				},
+			u: {
+		        classes: 'unavailable',
+		        category: 'Unavailable'
+			    }
 		
 		},
 		naming : {
@@ -111,7 +157,7 @@ function renderSeats(seats, seatStructure, price) {
 				[ 'f', 'available',   'First Class' ],
 				[ 'e', 'available',   'Economy Class'],
 				[ 'b', 'available',   'Business Class'],
-				[ 'f', 'unavailable', 'Already Booked']
+				[ 'u', 'unavailable', 'Already Booked']
 							]
 		},
 		click: function () {
@@ -138,24 +184,18 @@ function renderSeats(seats, seatStructure, price) {
 				return this.style();
 			}
 		}
-	});
-	
-	//let's pretend some seats have already been booked
-	
-	
-	sc.get(getUnavailableSeats(seats)).status('unavailable');
+	});	
 }
 
-
 function updateSeatTable(seat) {
-	var html = `
+	var html = ` 
 		<tr>
 			<td>${seat.settings.label}</td>
 			<td>
 				<select class="form-control input-sm" id="newSeatType">
-      				<option id="first">First Class</option>
-      				<option id="business">Business Class</option>
-      				<option id="economy">Economy Class</option>
+      				<option id="first">FIRST</option>
+      				<option id="business">BUSINESS</option>
+      				<option id="economy">ECONOMY</option>
     			</select>
 			</td>
 		</tr>`;
