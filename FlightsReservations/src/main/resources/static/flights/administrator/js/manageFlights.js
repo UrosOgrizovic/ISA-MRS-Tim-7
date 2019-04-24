@@ -1,6 +1,7 @@
 var airline = "airserbia";
 var stops = [];
 var availableStops = [];
+var flights = null;
 
 $(document).ready(function(){
 	configureDatepickers();
@@ -74,8 +75,11 @@ function createFlight() {
 			data: JSON.stringify(flight),
 			dataType: "json",
 			success: function(result) {
+				flights.push(result);
+				
 				refreshStopTable();
-				getFlights();
+				updateFligthTable(flights);
+				
 				$("#closeCreateModal").click();
 			},
 			error: function(e) {
@@ -106,6 +110,7 @@ function getFlights() {
 		method: "GET",
 		dataType: "json",
 		success: function(result) {
+			flights = result;
 			updateFligthTable(result);
 		},
 		error: function(e) {
@@ -129,7 +134,7 @@ function insertFlightRow(flight) {
 			<td>${flight.endAirport}</td>
 			<td>${flight.takeoffTime}</td>
 			<td>${flight.landingTime}</td>
-			<td>click to see</td>
+			<td><button type="button" class="btn" onclick="showSeatModal(${flight.id})">Click</button></td>
 			<td>${flight.flightDistance.toFixed(1)}</td>
 			<td>${flight.flightTime}</td>
 			<td>${flight.price}</td>
@@ -137,13 +142,18 @@ function insertFlightRow(flight) {
 			<td>${flight.averageScore}</td>
 			<td>${flight.numberOfVotes}</td>
 		</tr>`;
+	
+	
+	       
 	$("#flightsTable tbody").append(html);
 }
+
 
 function refreshFlightTable() {
 	$("#flightsTable tbody").remove();
 	$("#flightsTable").append("<tbody></tbody>")
 }
+
 
 function getStopNames(stops) {
 	var names = []
@@ -166,6 +176,7 @@ function getStops() {
 		}
 	});
 }
+
 
 function addStop() {
 	var stopName = $("#stop").val().trim();
@@ -248,5 +259,3 @@ function configureDatepickers() {
         format: 'dd-mm-yyyy' 
     });
 }
-
-

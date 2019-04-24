@@ -66,8 +66,7 @@ public class FlightService {
 					airline, start, end, stops,
 					dto.getAverageScore(), dto.getNumberOfVotes());
 			
-			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
-			
+			createSeats(f, dto);
 			f = repository.save(f);
 			return new FlightDTO(f);
 		}
@@ -118,18 +117,27 @@ public class FlightService {
 	}
 	
 	
-	private void createSeats(Flight f, int numOfSeats, int numOfFirst, int numOfBusiness) {
+	private void createSeats(Flight f, CreateFlightDTO dto) {
 		Seat s;
-		SeatType type;
-		for (int i = 0; i < numOfSeats; i++) {
-			if (i < numOfFirst)
-				type = SeatType.FIRST;
-			else if (numOfFirst < i && i < numOfBusiness) 
-				type = SeatType.BUSINESS;
-			else 
-				type = SeatType.ECONOMY;
-			
-			s = new Seat(i, true, type, f);
+		int offset = 0;
+		int first = dto.getFirstClassNum();
+		int business = dto.getBusinessClassNum();
+		int eco = dto.getEconomicClassNum();
+		
+		for (int i = offset; i < first; i++) {
+			s = new Seat(i+1, true, SeatType.FIRST, f);
+			f.getSeats().add(s);
+		}
+		
+		offset = first;	
+		for (int i = offset; i < first + business; i++) {
+			s = new Seat(i+1, true, SeatType.BUSINESS, f);
+			f.getSeats().add(s);
+		}
+		
+		offset += business;
+		for (int i = offset; i < first + business + eco; i++) {
+			s = new Seat(i+1, true, SeatType.ECONOMY, f);
 			f.getSeats().add(s);
 		}
 	}
