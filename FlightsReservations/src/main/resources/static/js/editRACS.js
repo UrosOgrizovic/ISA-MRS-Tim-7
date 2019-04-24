@@ -49,6 +49,7 @@ function updateRACS() {
         currentCar.name = this.text.split(" ")[2];
         currentCar.color = this.text.split(" ")[3];
         currentCar.yearOfManufacture = parseInt(this.text.split(" ")[4]);
+        currentCar.pricePerHour = parseFloat(this.text.split(" ")[5]);
         carsOfRacs.push(currentCar);
     });
 
@@ -99,7 +100,7 @@ function setInputs(){
     for (var car of mapa[key].cars) {
         idx++;
         carIdSelect.append("<option>"+car.id+"</option>");
-        carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture +"</option>");
+        carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
     }
 }
 
@@ -125,7 +126,7 @@ $(function(){
 })
 
 function addCarToRACS() {
-    var ids = ["carName", "carManufacturer", "carColor", "carYOM"];
+    var ids = ["carName", "carManufacturer", "carColor", "carYOM", "carPricePerHour"];
     if (!validateInputs(ids)) {
 		alert("Inputs are invalid!");
 		return;
@@ -136,6 +137,7 @@ function addCarToRACS() {
     newCar.manufacturer = $("#carManufacturer").val();
     newCar.color = $("#carColor").val();
     newCar.yearOfManufacture = $("#carYOM").val();
+    newCar.pricePerHour = $("#carPricePerHour").val();
     
 
     newCar.racs_id = idSelect.val();
@@ -148,7 +150,7 @@ function addCarToRACS() {
 		data: JSON.stringify(newCar),
 		success: function(car) {
             
-            $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture+"</option>");
+            $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture + " " + car.pricePerHour+"</option>");
 		}, error: function(error) {
             console.log(error);
         }
@@ -172,7 +174,7 @@ function removeCarFromRACS() {
             for (var car of allCars) {
                 idx++;
                 carIdSelect.append("<option>"+car.id+"</option>");
-                carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture +"</option>");
+                carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
             }
         },
         error: function(err) {
@@ -188,6 +190,7 @@ function updateCar() {
     editedCar.color = $("#editCarColor").val();
     editedCar.yearOfManufacture = parseInt($("#editCarYearOfManufacture").val());
     editedCar.name = $("#editCarName").val();
+    editedCar.pricePerHour = parseFloat($("#editCarPricePerHour").val());
     editedCar.id = parseInt(carID);
     
     $.ajax({
