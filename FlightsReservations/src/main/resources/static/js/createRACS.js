@@ -6,16 +6,17 @@ $(document).ready(function(){
         
         racs = {};
         racs.name = document.getElementById("name").value;
-        racs.address = document.getElementById("address").value;
-        racs.description = document.getElementById("description").value;
+        racs.promoDescription = document.getElementById("description").value;
         racs.pricelist = [];
         racs.cars = [];
         racs.branchOffices = [];
+        racs.latitude = document.getElementById("latitude").value;
+        racs.longitude = document.getElementById("longitude").value;
         
         $("#addedSuccessfully").remove();
         $("#error").remove();
         console.clear();
-        console.log("AAAAAAAAA");
+        
         $.ajax({
             url: addRACSLink,
             method: "POST",

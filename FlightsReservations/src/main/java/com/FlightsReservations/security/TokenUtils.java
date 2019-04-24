@@ -48,6 +48,8 @@ public class TokenUtils {
 				.setAudience(generateAudience())
 				.setIssuedAt(timeProvider.now())
 				.setExpiration(generateExpirationDate())
+//				.claim("username", user.getEmail())
+//				.claim("roles", user.getAuthorities())
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 	
