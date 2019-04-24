@@ -37,6 +37,9 @@ public class Flight {
 	@Column(nullable = false)
 	private double flightDistance;
 
+	@Column(nullable = false)
+	private double price;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
@@ -53,12 +56,9 @@ public class Flight {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport end;
 
-	@OneToMany(mappedBy = "firstFlight")
-	private Set<AirReservation> firstReservations = new HashSet<>();
+	@ManyToMany(mappedBy = "flights")
+	private Set<FlightReservation> reservations = new HashSet<>();
 
-	@OneToMany(mappedBy = "returnFlight")
-	private Set<AirReservation> secondFlights = new HashSet<>();
-	
 	@Column(nullable = false)
 	private float averageScore;
 
@@ -69,13 +69,14 @@ public class Flight {
 		super();
 	}
 
-	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance,
+	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price,
 			Airline airline, Airport start, Airport end, Set<Airport> stops, float averageScore, int numberOfVotes) {
 		super();
 		this.takeoffTime = takeoffTime;
 		this.landingTime = landingTime;
 		this.flightTime = flightTime;
 		this.flightDistance = flightDistance;
+		this.price = price;
 		this.airline = airline;
 		this.start = start;
 		this.end = end;
@@ -180,20 +181,20 @@ public class Flight {
 		this.end = end;
 	}
 
-	public Set<AirReservation> getFirstReservations() {
-		return firstReservations;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setFirstReservations(Set<AirReservation> firstReservations) {
-		this.firstReservations = firstReservations;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
-	public Set<AirReservation> getSecondFlights() {
-		return secondFlights;
+	public Set<FlightReservation> getReservations() {
+		return reservations;
 	}
 
-	public void setSecondFlights(Set<AirReservation> secondFlights) {
-		this.secondFlights = secondFlights;
+	public void setReservations(Set<FlightReservation> reservations) {
+		this.reservations = reservations;
 	}
 
 }

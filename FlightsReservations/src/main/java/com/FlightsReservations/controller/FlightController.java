@@ -1,5 +1,7 @@
 package com.FlightsReservations.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
 import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.service.FlightService;
 
@@ -49,6 +52,18 @@ public class FlightController {
 		if (flight != null)
 			return new ResponseEntity<>(flight, HttpStatus.CREATED);
 		return new ResponseEntity<>("Bad input parameters.", HttpStatus.BAD_REQUEST);
+	}	
+	
+	
+	@PostMapping(
+			value = "/search",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> search(@Valid @RequestBody FlightSearchRequestDTO dto) {
+		List<List<FlightDTO>> dtos = service.search(dto);
+		if (dtos != null)
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+		return new ResponseEntity<>("Bad search parameters.", HttpStatus.BAD_REQUEST);
 	}
 	
 	@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

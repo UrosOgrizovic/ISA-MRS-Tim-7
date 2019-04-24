@@ -10,8 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.FlightsReservations.domain.enums.TypeClass;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.FlightsReservations.domain.enums.SeatType;
 
 @Entity
 public class Seat {
@@ -27,23 +26,22 @@ public class Seat {
 	private Boolean available;
 
 	@Column(nullable = false)
-	private TypeClass type;
+	private SeatType type;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Flight flight;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private AirReservation reservation;
-	
+	@OneToOne(mappedBy = "seat")
+	private Passenger passenger;
+
 	public Seat() {
 		super();
 	}
-	
-	public Seat(Integer seatNumber, Boolean available, TypeClass type, Flight flight) {
+
+	public Seat(Integer seatNumber, Boolean available, SeatType type, Flight flight) {
 		super();
 		this.seatNumber = seatNumber;
-		this.available= available;
+		this.available = available;
 		this.type = type;
 		this.flight = flight;
 	}
@@ -69,14 +67,14 @@ public class Seat {
 	}
 
 	public void setAvailable(Boolean available) {
-		this.available= available;
+		this.available = available;
 	}
 
-	public TypeClass getType() {
+	public SeatType getType() {
 		return type;
 	}
 
-	public void setType(TypeClass type) {
+	public void setType(SeatType type) {
 		this.type = type;
 	}
 
@@ -88,12 +86,12 @@ public class Seat {
 		this.flight = flight;
 	}
 
-	public AirReservation getReservation() {
-		return reservation;
+	public Passenger getPassenger() {
+		return passenger;
 	}
 
-	public void setReservation(AirReservation reservation) {
-		this.reservation = reservation;
+	public void setPassenger(Passenger passenger) {
+		this.passenger = passenger;
 	}
 
 }

@@ -79,19 +79,11 @@ public class AirlineController {
 			value = "/addAirport/{airline}/{airport}",
 			produces = MediaType.APPLICATION_JSON_VALUE
 			)
-	public ResponseEntity<?> update(@NotBlank @PathVariable String airline,
+	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline,
 			@NotBlank @PathVariable String airport) {
 		AirlineDTO dto = service.addAirport(airline, airport);
 		if (dto != null) 
 			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>("Bad input parameters!", HttpStatus.BAD_REQUEST);
 	}
-	
-	//@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	//public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
-	//	Airline airline = service.rate(ro.getName(), ro.getScore()); 
-	//	if (airline != null)
-	//		return new ResponseEntity<>(airline, HttpStatus.OK);
-	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	//}
 }
