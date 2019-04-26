@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.User;
@@ -46,10 +47,16 @@ public class UserController {
 		return this.service.getRepository().findById(id);
 	}
 	
-	@GetMapping(value = "/getFriends/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('USER')")
-	public List<UserDTO> getFriends(@PathVariable String email) {
-		System.out.println(email);
+	public List<UserDTO> getFriends(@RequestBody @Valid String email) {
+		// remove whitespace
+		email = email.trim();
+		
+		int length = email.length();
+		// remove quotes
+		email = email.substring(1, length-1);
+		
 		return this.service.getFriends(email);
 	}
 	

@@ -1,4 +1,4 @@
-var getAllFriendsLink = "/users/getFriends";
+var getAllFriendsLink = "http://localhost:8080/users/getFriends";
 
 
 $(document).ready(function(){
@@ -10,11 +10,11 @@ $(document).ready(function(){
         $("#error").remove();
         
         $.ajax({
-            url: getAllFriendsLink + "/" + email,
-            method: "GET",
+            url: getAllFriendsLink,
+            method: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: {},
+            data: JSON.stringify(email),
             success: function(friends) {
                 displayFriends(friends);
             }, error: function(error) {
