@@ -101,4 +101,14 @@ public class CarReservationService {
         }
         return date;
     }
+	
+	public boolean cancel(Long id) {
+		CarReservation cr = repository.findById(id).get();
+		if (cr != null) {
+			cr.setConfirmed(false);
+			repository.save(cr);
+			return true;
+		}
+		return false;
+	}
 }

@@ -1,4 +1,7 @@
 var getAllFriendsLink = "http://localhost:8080/users/getFriends";
+var getAllCarReservationsLink = "http://localhost:8080/users/getCarReservations";
+var getAllFlightReservationsLink = "http://localhost:8080/users/getFlightReservations";
+var getAllHotelReservationsLink = "http://localhost:8080/users/getHotelReservations";
 
 
 $(document).ready(function(){
@@ -23,6 +26,28 @@ $(document).ready(function(){
             }
         });
     });
+
+    $("#viewAllReservations").on('click', function(e) {
+        var email = $("#email").text();
+        e.preventDefault();
+        $("#all").remove();
+        $("#error").remove();
+        
+        $.ajax({
+            url: getAllReservationsLink,
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(email),
+            success: function(carReservations) {
+                displayCarReservations(carReservations);
+            }, error: function(error) {
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                console.log(error);
+            }
+        });
+
+    })
 });
 
 function displayFriends(friends) {
@@ -51,4 +76,8 @@ function displayFriends(friends) {
     text += "</tbody></table>";
     $(document.documentElement).append(text);
     
+}
+
+function displayCarReservations(carReservations) {
+
 }
