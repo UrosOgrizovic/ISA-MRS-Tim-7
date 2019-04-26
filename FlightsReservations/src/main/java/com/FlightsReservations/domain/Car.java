@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,12 +16,23 @@ public class Car {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(nullable = false)
 	private String manufacturer;
+	
+	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
 	private int yearOfManufacture;
+	
+	@Column(nullable = false)
 	private String color;
 	
-
+	@Column(nullable = false)
+	private double pricePerHour;
+	
+	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -73,15 +85,24 @@ public class Car {
 	public void setRacs(RACS racs) {
 		this.racs = racs;
 	}
+	
+	public double getPricePerHour() {
+		return pricePerHour;
+	}
+
+	public void setPricePerHour(double pricePerHour) {
+		this.pricePerHour = pricePerHour;
+	}
 
 	public Car(String manufacturer,String name, int yearOfManufacture,
-			String color, RACS racs) {
+			String color, RACS racs, double pricePerHour) {
 		super();
 		this.manufacturer = manufacturer;
 		this.name = name;
 		this.yearOfManufacture = yearOfManufacture;
 		this.color = color;
 		this.racs = racs;
+		this.pricePerHour = pricePerHour;
 	}
 	
 	public Car() {

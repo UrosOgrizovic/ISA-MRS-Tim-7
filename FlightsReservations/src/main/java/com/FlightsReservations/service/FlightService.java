@@ -47,25 +47,26 @@ public class FlightService {
 		Airport start = airportRepository.findByName(dto.getStartAirportName());
 		Airport end = airportRepository.findByName(dto.getEndAirportName());
 
-		if (createFlightSemanticValidation(airline, start, end, dto)) {
+		if (verifyCreateDTO(airline, start, end, dto)) {
 			Set<Airport> stops = airportRepository.findByNameIn(dto.getStopNames());
 			Long flightTime = (dto.getLandingTime().getTime() - dto.getTakeOffTime().getTime()) / (1000 * 60);
-
+			
+			double dist = DistanceCalculator.distance(
+					start.getLatitude(), 
+					start.getLongitude(), 
+					end.getLatitude(), 
+					end.getLongitude(), "K");
+			
 			Flight f = new Flight(
 					dto.getTakeOffTime(), 
 					dto.getLandingTime(), 
 					flightTime.intValue(), 
-					DistanceCalculator.distance(
-							start.getLatitude(), 
-							start.getLongitude(), 
-							end.getLatitude(), 
-							end.getLongitude(), "K"),
+					dist,
 					dto.getPrice(),
 					airline, start, end, stops,
 					dto.getAverageScore(), dto.getNumberOfVotes());
 			
-			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
-			
+			createSeats(f, dto);
 			f = repository.save(f);
 			return new FlightDTO(f);
 		}
@@ -75,7 +76,7 @@ public class FlightService {
 	
 	
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
-		if (searchFlightSemanticValidation(dto)) {
+		if (verifySearchDTO(dto)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
 			// prepare results list, pageable object and get id of seat in enum if present
@@ -116,23 +117,32 @@ public class FlightService {
 	}
 	
 	
-	private void createSeats(Flight f, int numOfSeats, int numOfFirst, int numOfBusiness) {
+	private void createSeats(Flight f, CreateFlightDTO dto) {
 		Seat s;
-		SeatType type;
-		for (int i = 0; i < numOfSeats; i++) {
-			if (i < numOfFirst)
-				type = SeatType.FIRST;
-			else if (numOfFirst < i && i < numOfBusiness) 
-				type = SeatType.BUSINESS;
-			else 
-				type = SeatType.ECONOMY;
-			
-			s = new Seat(i, true, type, f);
+		int offset = 0;
+		int first = dto.getFirstClassNum();
+		int business = dto.getBusinessClassNum();
+		int eco = dto.getEconomicClassNum();
+		
+		for (int i = offset; i < first; i++) {
+			s = new Seat(i+1, true, SeatType.FIRST, f);
+			f.getSeats().add(s);
+		}
+		
+		offset = first;	
+		for (int i = offset; i < first + business; i++) {
+			s = new Seat(i+1, true, SeatType.BUSINESS, f);
+			f.getSeats().add(s);
+		}
+		
+		offset += business;
+		for (int i = offset; i < first + business + eco; i++) {
+			s = new Seat(i+1, true, SeatType.ECONOMY, f);
 			f.getSeats().add(s);
 		}
 	}
 
-	private boolean createFlightSemanticValidation(Airline airline, Airport start, Airport end, CreateFlightDTO dto) {
+	private boolean verifyCreateDTO(Airline airline, Airport start, Airport end, CreateFlightDTO dto) {
 		/*
 		 * Flight validation: 
 		 * 1. check if airline exists 
@@ -143,7 +153,7 @@ public class FlightService {
 		 * 6. check if airline have stops
 		 * 7. check if start and end not in stops
 		 * 8. check if dates are correct (take off < landing ) 
-		 * 9. check if firstClass + businessClass <= numOfSeats
+		 * 9. check if first+ business + economic = numOfSeats
 		 */
 		
 		// airline exists
@@ -189,13 +199,13 @@ public class FlightService {
 			return false;
 
 		// number of seats < first class + business
-		if (dto.getNumberOfSeats() < (dto.getFirstClassNum() + dto.getBusinessClassNum()))
+		if (dto.getNumberOfSeats() != (dto.getFirstClassNum() + dto.getBusinessClassNum() + dto.getEconomicClassNum()))
 			return false;
 
 		return true;
 	}
 	
-	private boolean searchFlightSemanticValidation(FlightSearchRequestDTO dto) {
+	private boolean verifySearchDTO(FlightSearchRequestDTO dto) {
 		// number of flight queries in one way trip must be 1
 		if (dto.getTripType().equals(TripType.OneWay) && dto.getQueries().size() != 1)
 			return false;

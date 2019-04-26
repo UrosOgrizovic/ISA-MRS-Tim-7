@@ -38,6 +38,7 @@ public class SeatService {
 		if (s != null)
 			if (s.isAvailable()) {
 				s.setType(type);
+				repository.save(s);
 				return true;
 			}
 		return false;
