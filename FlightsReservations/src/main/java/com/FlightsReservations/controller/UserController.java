@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.User;
@@ -31,7 +32,6 @@ public class UserController {
 	@Autowired 
 	private UserService service;
 	
-	
 	@GetMapping(
 			value = "/getAll",
 			produces = MediaType.APPLICATION_JSON_VALUE
@@ -46,7 +46,27 @@ public class UserController {
 	public Optional<User> loadUserById(@PathVariable Long id) {
 		return this.service.getRepository().findById(id);
 	}
-
+	
+	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<UserDTO> getFriends(@RequestBody @Valid String email) {
+		// remove whitespace
+		email = email.trim();
+		
+		int length = email.length();
+		// remove quotes
+		email = email.substring(1, length-1);
+		
+		return this.service.getFriends(email);
+	}
+	
+	@PutMapping(
+			value = "/addFriend/{userId}/{friendId}",
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+		service.addFriend(userId, friendId);
+	}
 	
 	@PostMapping(
 			value = "/add",
@@ -59,8 +79,6 @@ public class UserController {
 			return new ResponseEntity<>(udto, HttpStatus.CREATED);
 		return new ResponseEntity<>(udto, HttpStatus.CONFLICT);
 	}
-	
-	
 	
 	@PutMapping(
 			value = "/update",
