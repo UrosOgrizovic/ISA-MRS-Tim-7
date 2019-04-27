@@ -101,4 +101,19 @@ public class CarReservationService {
         }
         return date;
     }
+	
+	public boolean cancel(Long id) {
+		CarReservation cr = repository.findById(id).get();
+		if (cr != null) {
+			Date now = new Date();
+			// difference between now (cancellation time) and reservation start time in days
+			long diff = (cr.getStartTime().getTime() - now.getTime()) / (24 * 60 * 60 * 1000);
+			// reservation cannot be cancelled less than two days before the reservation starts
+			if (diff < 2) return false;
+			cr.setConfirmed(false);
+			repository.save(cr);
+			return true;
+		}
+		return false;
+	}
 }
