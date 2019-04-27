@@ -93,7 +93,8 @@ function displayCarReservations(carReservations) {
     text += "<thead>";
     text += "<tr>";
     text += "<th>Price (USD)</th>";
-    text += "<th>Confirmed</th>";
+    text += "<th>Confirmed&nbsp<a title=\"Reservation cannot be cancelled less than two days before its start time\"><i class=\"fa fa-question-circle\" aria-hidden=\"true\"></i></a></th>";
+    
     text += "<th>Date of reservation</th>";
     text += "<th>Start time</th>";
     text += "<th>End time</th>";
@@ -101,9 +102,20 @@ function displayCarReservations(carReservations) {
     text += "</thead><tbody>";
     for (var cr of carReservations) {
         text += "<tr>";
-
+        var currentTime = new Date();
+        var day = cr.startTime.substring(0, 2);
+        // months start at 0 in js, hence the - 1
+        var month = parseInt(cr.startTime.substring(3, 5)) - 1;
+        var year = cr.startTime.substring(6, 10);
+        var hour = cr.startTime.substring(11, 13);
+        var minute = cr.startTime.substring(14);
+        var startTimeDate = new Date(year, month, day, hour, minute);
+        var diff = startTimeDate - currentTime;
+        var oneDayInMillis = 3600000 * 24;
         text += "<td>" + cr.price + "</td>";
-        if (cr.confirmed) {
+        if (diff <= 2 * oneDayInMillis) {
+            text += "<td>Can't be canceled</td>";
+        } else if (cr.confirmed) {
             
             text += "<td>" + "<button class=\"btn btn-secondary\" onClick=\"cancelCarReservation("+cr.id+")\">Cancel</button>" + "</td>";
         } else {
