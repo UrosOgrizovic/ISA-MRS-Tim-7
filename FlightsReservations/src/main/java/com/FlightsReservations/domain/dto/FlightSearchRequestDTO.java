@@ -18,33 +18,34 @@ public class FlightSearchRequestDTO {
 
 	@NotNull
 	private TripType tripType;
-
-	private SeatType seatType; // can be null
+	
+	@NotNull
+	private SeatType seatType;
 
 	@Positive
-	private Integer numOfPassengers; // can be null
+	private Integer numOfPassengers;
 
 	@PositiveOrZero
 	@NotNull
-	private Integer startIndex;
+	private Integer pageNumber;
 
 	@Positive
 	@NotNull
-	private Integer numberOfResults;
+	private Integer resultCount;
 
 	public FlightSearchRequestDTO() {
 		super();
 	}
 
 	public FlightSearchRequestDTO(List<FlightSearchQueryDTO> queries, TripType tripType, SeatType seatType,
-			Integer numOfPassengers, Integer startIndex, Integer numberOfResults) {
+			Integer numOfPassengers, Integer pageNumber, Integer resultCount) {
 		super();
 		this.queries = queries;
 		this.tripType = tripType;
 		this.seatType = seatType;
 		this.numOfPassengers = numOfPassengers;
-		this.startIndex = startIndex;
-		this.numberOfResults = numberOfResults;
+		this.pageNumber = pageNumber;
+		this.resultCount = resultCount;
 	}
 
 	public List<FlightSearchQueryDTO> getQueries() {
@@ -79,20 +80,19 @@ public class FlightSearchRequestDTO {
 		this.numOfPassengers = numOfPassengers;
 	}
 
-	public Integer getStartIndex() {
-		return startIndex;
+	public Integer getPageNumber() {
+		return pageNumber;
 	}
 
-	public void setStartIndex(Integer startIndex) {
-		this.startIndex = startIndex;
+	public void setPageNumber(Integer pageNumber) {
+		this.pageNumber = pageNumber;
 	}
 
-	public Integer getNumberOfResults() {
-		return numberOfResults;
+	public Integer getResultCount() {
+		return resultCount;
 	}
 
-	public void setNumberOfResults(Integer numberOfResults) {
-		this.numberOfResults = numberOfResults;
+	public void setResultCount(Integer resultCount) {
+		this.resultCount = resultCount;
 	}
-
 }

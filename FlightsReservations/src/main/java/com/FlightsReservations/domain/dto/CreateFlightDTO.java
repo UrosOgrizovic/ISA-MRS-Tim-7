@@ -17,12 +17,12 @@ public class CreateFlightDTO {
 
 	@NotNull
 	@Future
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date takeOffTime;
 
 	@NotNull
 	@Future
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date landingTime;
 
 	@NotNull
