@@ -2,6 +2,7 @@ package com.FlightsReservations.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,11 +21,11 @@ import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.domain.dto.FlightSearchQueryDTO;
 import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
 import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.domain.enums.TripType;
-import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 import com.FlightsReservations.repository.FlightRepository;
@@ -76,7 +77,7 @@ public class FlightService {
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
 		if (verifySearchDTO(dto)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			List<List<FlightDTO>> results = new ArrayList<>();			
+			List<List<FlightDTO>> toCombine = new ArrayList<>();			
 			Pageable pageable = PageRequest.of(dto.getPageNumber(), dto.getResultCount());
 			Long seatOrdinal = getSeatOrdinal(dto.getSeatType());
 			
@@ -92,18 +93,71 @@ public class FlightService {
 				List<FlightDTO> dtos = new ArrayList<>();
 				for (Flight f : flights.getContent())
 					dtos.add(new FlightDTO(f));
-				results.add(dtos);
+				toCombine.add(dtos);
 			}
+			List<List<FlightDTO>> results = combineAll(toCombine);
+			results = filterBadDates(results);
 			return results;
 		}
 		return null;
 	}
 	
-	private List<List<FlightDTO>> combineResults(List<List<FlightDTO>> dtos) {
-		List<List<FlightDTO>> results = new ArrayList<>();
+	// remove flight results where landing time of first flight is after takeoff time of return flight
+	private List<List<FlightDTO>> filterBadDates(List<List<FlightDTO>> results) {
+		List<List<FlightDTO>> filtered = new ArrayList<>();
 		
-		return null;
+		Date landingTime;
+		boolean flag;
+		for (List<FlightDTO> result : results) {
+			landingTime = result.get(0).getLandingTime();
+			flag = false;
+			for (int i = 1; i < result.size(); i++) {
+				if (!landingTime.before(result.get(i).getTakeoffTime())) {
+					flag = true;
+					break;
+				} else {
+					landingTime = result.get(i).getLandingTime();
+				}
+			}
+			if (!flag)
+				filtered.add(result);	
+		}
+		
+		return filtered;
 	}
+	
+	
+	private List<List<FlightDTO>> combineAll(List<List<FlightDTO>> toCombine) {
+		List<List<FlightDTO>> result = new ArrayList<>();
+		for (List<FlightDTO> list : toCombine)
+			result = combineTwo(result, list);
+		return result;
+		
+	} 
+	
+	private List<List<FlightDTO>> combineTwo(List<List<FlightDTO>> result, List<FlightDTO> list) {
+		List<List<FlightDTO>> newResult = new ArrayList<>();
+		
+		if (result.isEmpty()) {
+			for (FlightDTO s : list) {
+				List<FlightDTO> temp = new ArrayList<>();
+				temp.add(s);
+				newResult.add(temp);
+			}
+		} else {
+			for (List<FlightDTO> r : result) {
+				for (FlightDTO s : list) {
+					List<FlightDTO> temp = new ArrayList<>();
+					temp.addAll(r);
+					temp.add(s);
+					newResult.add(temp);
+				}
+			}
+		}
+		
+		return newResult;
+	}
+	
 	
 	
 	private Long getSeatOrdinal(SeatType seatType) {

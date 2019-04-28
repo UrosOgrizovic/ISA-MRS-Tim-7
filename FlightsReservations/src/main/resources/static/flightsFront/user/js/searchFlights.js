@@ -6,6 +6,7 @@ $(document).ready(function() {
 	updateSearchForm();
 });
 
+
 function search() {
 	var tripType = $("#type-search").val();
 	var seatType = $("#class-search").val();
@@ -42,6 +43,7 @@ function oneWaySearch(tripType, seatType, passengerNum) {
 	sendRequest(request);
 }
 
+
 function roundTripSearch(tripType, seatType, passengerNum) {
 	var fromCity = $("#from-search-one").val();
 	var toCity = $("#to-search-one").val();
@@ -71,6 +73,7 @@ function roundTripSearch(tripType, seatType, passengerNum) {
 	sendRequest(request);
 }
 
+
 function multiTripSearch(tripType, seatType, passengerNum) {
 	var request = new Object();
 	request.seatType = seatType;
@@ -95,6 +98,7 @@ function multiTripSearch(tripType, seatType, passengerNum) {
 	sendRequest(request);
 }
 
+
 function sendRequest(request) {
 	$.ajax({
 		url: "http://localhost:8080/flights/search",
@@ -103,29 +107,13 @@ function sendRequest(request) {
 		dataType: "json",
 		data: JSON.stringify(request),
 		success: function(result) {
-			combineResults(result);
+			
 		},
 		error: function(error) {
-			alert("Bad request!");
+			alert("Bad request says server!");
 		}
 	});
 }
-
-function combineResults(results) {
-	var combined = [];
-	
-	if (results.length == 0)
-		alert("No results.");
-	else if (results.length == 1) 
-		combined = results[0];
-	else {
-		for (var i = 0; i < results[0].length; i++) 
-			for (var j = 0; j < results[1].length; j++)
-				combined.push([results[0][i], results[1][j]]);
-	} 
-	console.log(combined);
-}
-
 
 
 
@@ -146,6 +134,7 @@ function updateSearchForm() {
 		$("#to-date-search-two-div").hide();
 	}
 }
+
 
 function configureDatepickers() {
 	var ids = ["#from-date-search-one", "#from-date-search-two", "#to-date-search-one", "#to-date-search-two"];
