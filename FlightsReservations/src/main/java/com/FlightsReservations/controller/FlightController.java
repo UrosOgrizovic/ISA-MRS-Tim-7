@@ -31,9 +31,7 @@ public class FlightController {
 	private FlightService service;
 	
 	
-	@GetMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAll() {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
@@ -46,7 +44,7 @@ public class FlightController {
 		FlightDTO flight = service.add(dto);
 		if (flight != null)
 			return new ResponseEntity<>(flight, HttpStatus.CREATED);
-		return new ResponseEntity<>("Bad input parameters.", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}	
 	
 	
