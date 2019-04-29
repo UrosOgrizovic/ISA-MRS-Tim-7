@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.service.HotelService;
 
 @RestController
@@ -63,12 +64,11 @@ public class HotelController {
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
 	}
 	
-	//@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	//public ResponseEntity<?> rate(@RequestBody RatingObject ro) {
-	//	Hotel hotel = service.rate(ro.getId(), ro.getScore());
-	//	if (hotel != null) 
-	//		return new ResponseEntity<>(hotel, HttpStatus.OK);
-	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	//}
-	
+	@PutMapping(value = "/addRoom", consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addRoom(@RequestBody @Valid RoomDTO room) {
+		if (service.addRoom(room))
+			return new ResponseEntity<>(room, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
 }
