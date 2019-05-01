@@ -1,8 +1,7 @@
 var searchResults = [];
 var pageNumber = 0;
-var pageSize = 1;
+var pageSize = 10;
 var lastRequest = null;
-
 
 
 $(document).ready(function() {
@@ -10,12 +9,12 @@ $(document).ready(function() {
 	$("#searchBtn").click(search);
 	$("#prevPageBtn").click(prevPage);
 	$("#nextPageBtn").click(nextPage);
+	
 
 	hidePaginationButtons();
 	configureDatepickers();
 	updateSearchForm();
 });
-
 
 
 function search() {
@@ -34,7 +33,6 @@ function search() {
 	else if (tripType)
 		multiTripSearch(tripType, seatType, passengerNum);
 }
-
 
 
 function oneWaySearch(tripType, seatType, passengerNum) {
@@ -58,7 +56,6 @@ function oneWaySearch(tripType, seatType, passengerNum) {
 
 	sendRequest(request);
 }
-
 
 
 function roundTripSearch(tripType, seatType, passengerNum) {
@@ -91,7 +88,6 @@ function roundTripSearch(tripType, seatType, passengerNum) {
 }
 
 
-
 function multiTripSearch(tripType, seatType, passengerNum) {
 	var request = new Object();
 	request.seatType = seatType;
@@ -115,7 +111,6 @@ function multiTripSearch(tripType, seatType, passengerNum) {
 
 	sendRequest(request);
 }
-
 
 
 function sendRequest(request) {
@@ -143,7 +138,6 @@ function sendRequest(request) {
 }
 
 
-
 function updateSearchForm() {
 	var type = $("#type-search").val();
 	
@@ -163,7 +157,6 @@ function updateSearchForm() {
 }
 
 
-
 function configureDatepickers() {
 	var ids = ["#from-date-search-one", "#from-date-search-two", "#to-date-search-one", "#to-date-search-two"];
 	
@@ -175,15 +168,18 @@ function configureDatepickers() {
 	});
 }
 
+
 function hidePaginationButtons() {
 	$("#prevPageBtn").hide();
 	$("#nextPageBtn").hide();
 }
 
+
 function showPaginationButtons() {
 	$("#prevPageBtn").show();
 	$("#nextPageBtn").show();
 }
+
 
 function prevPage() {
 	if (pageNumber == 0) {
@@ -195,6 +191,7 @@ function prevPage() {
 	lastRequest.pageNumber = pageNumber;
 	sendRequest(lastRequest);
 }
+
 
 function nextPage() {
 	pageNumber++;

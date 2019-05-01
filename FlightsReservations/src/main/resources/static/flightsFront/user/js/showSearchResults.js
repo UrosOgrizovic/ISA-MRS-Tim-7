@@ -1,12 +1,13 @@
 function showResults() {
 	$("#search-results").html("");
 	showPaginationButtons();
-	searchResults.forEach(function(result) {
-		showResult(result);
-	});
+
+	for (var i = 0; i < searchResults.length; i++) {
+		showResult(searchResults[i], i);
+	}
 }
 
-function showResult(result) {
+function showResult(result, i) {
 	var rows = "";
 	var rowspan = result.length;
 	var buttonAdded = false;
@@ -36,12 +37,16 @@ function showResult(result) {
 			<td class="align-middle xl-text">
 				<b>${time}</b>
 			</td>
+			<td class="align-middle xl-text">
+				<b>${flight.price}</b>
+			</td>
 		`; 	
 
 		if (!buttonAdded) {
+			var total = getTotalPrice(result);
 			rows += `<td class = "align-center align-bottom" rowspan="${rowspan}">
-						<b class="xxl-text"> ${flight.price}e </b> <br>
-						<button-widthon id="searchBtn" type="submit" class="btn btn-primary button-width">Buy</button>
+						<b class="xxl-text"> ${total} </b> <br>
+						<button-widthon id="searchBtn" type="submit" class="btn btn-primary button-width" onclick="showReservationModal(${i})">Reserve</button>
 					</td>`;
 			buttonAdded = true;
 		}
@@ -56,4 +61,13 @@ function showResult(result) {
 	</table>`; 
 
 	$("#search-results").append(html);
+}
+
+
+function getTotalPrice(result) {
+	var total = 0;
+	result.forEach(function(flight){
+		total += flight.price;
+	})
+	return total;
 }

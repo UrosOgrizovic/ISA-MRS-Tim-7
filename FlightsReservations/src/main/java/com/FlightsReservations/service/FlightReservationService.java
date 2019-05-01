@@ -2,7 +2,6 @@ package com.FlightsReservations.service;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,13 +49,6 @@ public class FlightReservationService {
 		for (FlightReservationDetailsDTO dtos : dto.getFlights()) {
 			flight = findFlight(dtos.getFlightId());
 			for (PassengerDTO pdto : dtos.getPassengers()) {
-				// automatic detail entry for owner
-				if (pdto.isOwner()) {
-					pdto.setName(owner.getFirstName());
-					pdto.setSurname(owner.getLastName());
-				}
-
-				// findAvailableSeat method returns null if
 				// seat doesn't exists or if seat is already taken
 				seat = findAvailableSeat(flight, pdto.getSeatNumber());
 				if (seat != null) {
@@ -105,24 +97,7 @@ public class FlightReservationService {
 			}
 		}
 
-		// number of automatic entry per flight must be 1 or multiple passengers with
-		// same details could exist
-		for (FlightReservationDetailsDTO detailDTO : dto.getFlights()) {
-			if (!checkAutoEntry(detailDTO.getPassengers()))
-				return false;
-		}
 		// add validation for invited friends
-		return true;
-	}
-
-	private boolean checkAutoEntry(List<PassengerDTO> passengers) {
-		// check if number of automatic entry is valid
-		int counter = 0;
-		for (PassengerDTO p : passengers)
-			if (p.isOwner())
-				counter++;
-		if (counter > 1)
-			return false;
 		return true;
 	}
 

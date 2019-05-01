@@ -37,3 +37,12 @@ td {
 .button-width {
 	width: 100%;
 }
+
+.pagination {
+	margin-left: 5%;
+	float: left;
+}
+
+.modal {
+  overflow-y:auto;
+}

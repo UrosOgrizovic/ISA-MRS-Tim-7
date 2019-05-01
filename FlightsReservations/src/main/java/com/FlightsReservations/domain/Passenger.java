@@ -1,4 +1,4 @@
-package com.FlightsReservations.domain;
+	package com.FlightsReservations.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
