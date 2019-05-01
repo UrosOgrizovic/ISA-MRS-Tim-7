@@ -1,24 +1,40 @@
+var searchResults = [];
+var pageNumber = 0;
+var pageSize = 1;
+var lastRequest = null;
+
+
+
 $(document).ready(function() {
 	$("#type-search").change(updateSearchForm);
 	$("#searchBtn").click(search);
+	$("#prevPageBtn").click(prevPage);
+	$("#nextPageBtn").click(nextPage);
 
+	hidePaginationButtons();
 	configureDatepickers();
 	updateSearchForm();
 });
 
 
+
 function search() {
+	pageNumber = 0;
 	var tripType = $("#type-search").val();
-	var seatType = $("#class-search").val();
 	var passengerNum = $("#passengerNum-search").val();
 	
+	var seatType = $("#class-search").val();
+	if (seatType == "ANY")
+		seatType = null;
+
 	if (tripType == "OneWay") 
 		oneWaySearch(tripType, seatType, passengerNum);
 	else if (tripType == "RoundTrip")
 		roundTripSearch(tripType, seatType, passengerNum);
-	else
+	else if (tripType)
 		multiTripSearch(tripType, seatType, passengerNum);
 }
+
 
 
 function oneWaySearch(tripType, seatType, passengerNum) {
@@ -30,8 +46,8 @@ function oneWaySearch(tripType, seatType, passengerNum) {
 	request.seatType = seatType;
 	request.tripType = tripType;
 	request.numOfPassengers = passengerNum;
-	request.pageNumber = 0;
-	request.resultCount = 10;
+	request.pageNumber = pageNumber;
+	request.resultCount = pageSize;
 	
 	request.queries = [];
 	query = new Object();
@@ -44,6 +60,7 @@ function oneWaySearch(tripType, seatType, passengerNum) {
 }
 
 
+
 function roundTripSearch(tripType, seatType, passengerNum) {
 	var fromCity = $("#from-search-one").val();
 	var toCity = $("#to-search-one").val();
@@ -54,8 +71,8 @@ function roundTripSearch(tripType, seatType, passengerNum) {
 	request.seatType = seatType;
 	request.tripType = tripType;
 	request.numOfPassengers = passengerNum;
-	request.pageNumber = 0;
-	request.resultCount = 10;
+	request.pageNumber = pageNumber;
+	request.resultCount = pageSize;
 	
 	request.queries = [];
 	queryOne = new Object();
@@ -74,13 +91,14 @@ function roundTripSearch(tripType, seatType, passengerNum) {
 }
 
 
+
 function multiTripSearch(tripType, seatType, passengerNum) {
 	var request = new Object();
 	request.seatType = seatType;
 	request.tripType = tripType;
 	request.numOfPassengers = passengerNum;
-	request.pageNumber = 0;
-	request.resultCount = 10;
+	request.pageNumber = pageNumber;
+	request.resultCount = pageSize;
 	
 	request.queries = [];
 	queryOne = new Object();
@@ -99,6 +117,7 @@ function multiTripSearch(tripType, seatType, passengerNum) {
 }
 
 
+
 function sendRequest(request) {
 	$.ajax({
 		url: "http://localhost:8080/flights/search",
@@ -107,7 +126,15 @@ function sendRequest(request) {
 		dataType: "json",
 		data: JSON.stringify(request),
 		success: function(result) {
-			
+			if (result.length > 0) {
+				searchResults = result;
+				lastRequest = request;
+				showResults();
+			} else {
+				if (pageNumber > 0)
+					pageNumber--;
+				alert("No results!");
+			}
 		},
 		error: function(error) {
 			alert("Bad request says server!");
@@ -136,6 +163,7 @@ function updateSearchForm() {
 }
 
 
+
 function configureDatepickers() {
 	var ids = ["#from-date-search-one", "#from-date-search-two", "#to-date-search-one", "#to-date-search-two"];
 	
@@ -145,4 +173,31 @@ function configureDatepickers() {
 			 format: 'dd-mm-yyyy' 
 		});
 	});
+}
+
+function hidePaginationButtons() {
+	$("#prevPageBtn").hide();
+	$("#nextPageBtn").hide();
+}
+
+function showPaginationButtons() {
+	$("#prevPageBtn").show();
+	$("#nextPageBtn").show();
+}
+
+function prevPage() {
+	if (pageNumber == 0) {
+		alert("Already on first page!");
+		return;
+	}
+
+	pageNumber--;
+	lastRequest.pageNumber = pageNumber;
+	sendRequest(lastRequest);
+}
+
+function nextPage() {
+	pageNumber++;
+	lastRequest.pageNumber = pageNumber;
+	sendRequest(lastRequest);	
 }

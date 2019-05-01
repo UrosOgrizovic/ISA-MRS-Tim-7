@@ -77,6 +77,7 @@ public class FlightService {
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
 		if (verifySearchDTO(dto)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			List<List<FlightDTO>> toCombine = new ArrayList<>();			
 			Pageable pageable = PageRequest.of(dto.getPageNumber(), dto.getResultCount());
 			Long seatOrdinal = getSeatOrdinal(dto.getSeatType());
@@ -91,8 +92,9 @@ public class FlightService {
 						pageable);
 				
 				List<FlightDTO> dtos = new ArrayList<>();
-				for (Flight f : flights.getContent())
+				for (Flight f : flights.getContent()) {
 					dtos.add(new FlightDTO(f));
+				}
 				toCombine.add(dtos);
 			}
 			List<List<FlightDTO>> results = combineAll(toCombine);
@@ -101,7 +103,7 @@ public class FlightService {
 		}
 		return null;
 	}
-	
+
 	// remove flight results where landing time of first flight is after takeoff time of return flight
 	private List<List<FlightDTO>> filterBadDates(List<List<FlightDTO>> results) {
 		List<List<FlightDTO>> filtered = new ArrayList<>();
@@ -120,7 +122,7 @@ public class FlightService {
 				}
 			}
 			if (!flag)
-				filtered.add(result);	
+				filtered.add(result);
 		}
 		
 		return filtered;

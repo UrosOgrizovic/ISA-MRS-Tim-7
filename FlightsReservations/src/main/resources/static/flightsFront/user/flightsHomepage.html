@@ -12,10 +12,13 @@
 		<link rel="stylesheet" href="css/homepage.css">
 		<link rel="stylesheet" href="css/searchForm.css">
 		<script src="js/searchFlights.js"></script>
-		
+		<script src="js/showSearchResults.js"></script>
+
 		<title>Flights Homepage</title>
 	</head>
 	<body>
+
+		<!-- NAVBAR -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="navbar-brand">Bookr</div>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,12 +46,14 @@
 			</div>
 		</nav>
 		
+		<div>
 		<!-- SEARCH ROW ONE - OPTIONS -->
 		<div class="form-row search-form">
 			<div class="col">
 				<label for="class-search">Seat type</label>
 				<select id="class-search" class="form-control">
-					<option selected>ECONOMY</option>
+					<option selected>ANY</option>
+					<option>ECONOMY</option>
 					<option>FIRST</option>
 					<option>BUSINESS</option>
 				</select>
@@ -107,12 +112,27 @@
 				<input id="to-date-search-two" type="text" class="form-control" placeholder="Landing">
 			</div>
 		</div>
+
+		<!-- SEARCH BUTTON -->
 		<button id="searchBtn" type="submit" class="btn btn-primary search-form">Search</button>
-		
+		</div>
+
+		<div>
+		<!-- FILTER MENU -->
+		<div class="filter-window">
+			<p> FILTERING PANEL </p>	
+		</div>
+
 		<!-- SEARCH RESULTS -->
-		
-		
-		
+		<div id="search-results" class="search-results">
+			
+		</div>
+		</div>
+
+
+		<button id="prevPageBtn" type="submit" class="btn btn-primary">Previous page</button>
+		<button id="nextPageBtn" type="submit" class="btn btn-primary">Next page</button>
+					
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	</body>

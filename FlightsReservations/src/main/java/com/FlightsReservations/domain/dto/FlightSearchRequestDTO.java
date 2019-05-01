@@ -16,12 +16,6 @@ public class FlightSearchRequestDTO {
 	@Valid
 	private List<FlightSearchQueryDTO> queries;
 
-	@NotNull
-	private TripType tripType;
-	
-	@NotNull
-	private SeatType seatType;
-
 	@Positive
 	private Integer numOfPassengers;
 
@@ -32,6 +26,11 @@ public class FlightSearchRequestDTO {
 	@Positive
 	@NotNull
 	private Integer resultCount;
+	
+	@NotNull
+	private TripType tripType;
+	
+	private SeatType seatType;
 
 	public FlightSearchRequestDTO() {
 		super();
