@@ -9,11 +9,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.CarReservation;
+import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
+import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.repository.CarReservationRepository;
+import com.FlightsReservations.repository.FlightReservationRepository;
 import com.FlightsReservations.repository.UserRepository;
 
 @Service
@@ -24,6 +27,9 @@ public class UserService {
 
 	@Autowired
 	private CarReservationRepository carReservationRepository;
+	
+	@Autowired
+	private FlightReservationRepository flightReservationRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -108,5 +114,16 @@ public class UserService {
 			carReservationsDTO.add(crdto);
 		}
 		return carReservationsDTO;
+	}
+	
+	public List<FlightReservationDTO> getFlightReservations(String email) {
+		User u = repository.findByEmail(email);
+		Collection<FlightReservation> flightReservations  = flightReservationRepository.findFlightReservationsOfUser(u.getId());
+		List<FlightReservationDTO> flightReservationsDTO = new ArrayList<FlightReservationDTO>();
+		for (FlightReservation fr : flightReservations) {
+			FlightReservationDTO frdto = new FlightReservationDTO(fr);
+			flightReservationsDTO.add(frdto);
+		}
+		return flightReservationsDTO;
 	}
 }

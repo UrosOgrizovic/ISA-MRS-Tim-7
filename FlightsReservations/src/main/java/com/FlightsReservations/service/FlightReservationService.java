@@ -1,5 +1,7 @@
 package com.FlightsReservations.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -138,5 +140,36 @@ public class FlightReservationService {
 			if (s.getSeatNumber().equals(seatNum) && s.isAvailable())
 				return s;
 		return null;
+	}
+	
+	public boolean cancel(Long id) {
+		FlightReservation fr = repository.findById(id).get();
+		
+		if (fr != null) {
+			Date now = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date minDate = new Date();
+			try {
+				minDate = sdf.parse("2050-05-05");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			for (Flight f : fr.getFlights()) {
+				Date takeoffTime = f.getTakeoffTime();
+				if (takeoffTime.before(minDate)) {
+					minDate = takeoffTime;
+				}
+			}
+			// difference between now (cancellation time) and reservation start time in hours
+			long diff = (minDate.getTime() - now.getTime()) / (60 * 60 * 1000);
+			System.out.println(diff);
+			// reservation cannot be cancelled less than two days before the reservation starts
+			if (diff < 3) return false;
+			
+			fr.setConfirmed(false);
+			repository.save(fr);
+			return true;
+		}
+		return false;
 	}
 }

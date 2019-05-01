@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
+import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.service.UserService;
@@ -63,14 +64,17 @@ public class UserController {
 	@PostMapping(value = "/getCarReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('USER')")
 	public List<CarReservationDTO> getCarReservations(@RequestBody @Valid String email) {
-		// remove whitespace
-		email = email.trim();
-		
-		int length = email.length();
-		// remove quotes
-		email = email.substring(1, length-1);
+		email = trimEmail(email);
 		
 		return this.service.getCarReservations(email);
+	}
+	
+	@PostMapping(value = "/getFlightReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<FlightReservationDTO> getFlightReservations(@RequestBody @Valid String email) {
+		email = trimEmail(email);
+		
+		return this.service.getFlightReservations(email);
 	}
 	
 	@PutMapping(
@@ -102,5 +106,17 @@ public class UserController {
 		if (service.update(user))
 			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
 		return new ResponseEntity<>("User with given email doesnt exists.", HttpStatus.NOT_FOUND);
+	}
+	
+	// helper method
+	public String trimEmail(String email) {
+		// remove whitespace
+		email = email.trim();
+
+		int length = email.length();
+		// remove quotes
+		email = email.substring(1, length-1);
+
+		return email;
 	}
 }            

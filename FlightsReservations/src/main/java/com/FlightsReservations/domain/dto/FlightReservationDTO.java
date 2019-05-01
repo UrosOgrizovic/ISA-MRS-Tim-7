@@ -14,7 +14,7 @@ public class FlightReservationDTO {
 	private Float totalPrice;
 	private String ownerEmail;
 	private Boolean confirmed;
-	private List<Long> flights;
+	private List<FlightDTO> flights;
 	private List<PassengerDTO> passengers;
 	
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
@@ -27,7 +27,7 @@ public class FlightReservationDTO {
 	}
 
 	public FlightReservationDTO(Long id, Float totalPrice, Date dateOfReservation, String ownerEmail, Boolean confirmed,
-			List<Long> flights, List<PassengerDTO> passengers) {
+			List<FlightDTO> flights, List<PassengerDTO> passengers) {
 		super();
 		this.id = id;
 		this.totalPrice = totalPrice;
@@ -50,7 +50,7 @@ public class FlightReservationDTO {
 			);
 		
 		for (Flight f : reservation.getFlights())
-			flights.add(f.getId());
+			flights.add(new FlightDTO(f));
 		
 		for (Passenger p : reservation.getPassengers())
 			passengers.add(new PassengerDTO(p));
@@ -104,11 +104,11 @@ public class FlightReservationDTO {
 		this.confirmed = confirmed;
 	}
 
-	public List<Long> getFlights() {
+	public List<FlightDTO> getFlights() {
 		return flights;
 	}
 
-	public void setFlights(List<Long> flights) {
+	public void setFlights(List<FlightDTO> flights) {
 		this.flights = flights;
 	}
 	
