@@ -127,6 +127,8 @@ function updateFligthTable(flights) {
 }
 
 function insertFlightRow(flight) {
+	var time = Math.floor(flight.flightTime/60) + "hrs " + flight.flightTime%60 + "mins";
+	
 	var html = `
 		<tr>
 			<td>${flight.id}</td>
@@ -136,14 +138,12 @@ function insertFlightRow(flight) {
 			<td>${flight.landingTime}</td>
 			<td><button type="button" class="btn" onclick="showSeatModal(${flight.id})">Show</button></td>
 			<td>${flight.flightDistance.toFixed(1)}</td>
-			<td>${flight.flightTime}</td>
+			<td>${time}</td>
 			<td>${flight.price}</td>
 			<td><button type="button" class="btn" onclick="showStopsOnMap(${flight.id})">Show</button></td>
 			<td>${flight.averageScore}</td>
 			<td>${flight.numberOfVotes}</td>
 		</tr>`;
-	
-	
 	       
 	$("#flightsTable tbody").append(html);
 }

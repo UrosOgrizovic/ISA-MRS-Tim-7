@@ -20,9 +20,6 @@ public class PassengerDTO {
 	@Positive
 	private Integer seatNumber;
 
-	@NotNull
-	private boolean owner;
-
 	public PassengerDTO() {
 		super();
 	}
@@ -65,14 +62,6 @@ public class PassengerDTO {
 
 	public void setSeatNumber(Integer seatNumber) {
 		this.seatNumber = seatNumber;
-	}
-
-	public boolean isOwner() {
-		return owner;
-	}
-
-	public void setOwner(boolean owner) {
-		this.owner = owner;
 	}
 
 }

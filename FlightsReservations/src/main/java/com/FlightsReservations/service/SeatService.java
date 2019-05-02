@@ -21,6 +21,7 @@ public class SeatService {
 	private FlightRepository flightRepository;
 
 	
+	// mora biti transakciona!!!
 	public SeatDTO add(Long flightId, SeatType type) {
 		Optional<Flight> of = flightRepository.findById(flightId);
 		if (of.isPresent()) {

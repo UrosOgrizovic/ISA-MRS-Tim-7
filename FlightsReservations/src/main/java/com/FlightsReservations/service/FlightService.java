@@ -21,11 +21,11 @@ import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
+import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.domain.dto.FlightSearchQueryDTO;
 import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
 import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.domain.enums.TripType;
-import com.FlightsReservations.domain.dto.FlightRatingDTO;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 import com.FlightsReservations.repository.FlightRepository;
@@ -42,6 +42,7 @@ public class FlightService {
 	@Autowired
 	private AirportRepository airportRepository;
 
+	
 	public FlightDTO add(CreateFlightDTO dto) {
 		Airline airline = airlineRepository.findByName(dto.getAirlineName());
 		Airport start = airportRepository.findByName(dto.getStartAirportName());
@@ -65,7 +66,6 @@ public class FlightService {
 					dto.getPrice(),
 					airline, start, end, stops,
 					dto.getAverageScore(), dto.getNumberOfVotes());
-			
 			createSeats(f, dto);
 			f = repository.save(f);
 			return new FlightDTO(f);
@@ -74,46 +74,98 @@ public class FlightService {
 	}
 	
 	
-	
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
 		if (verifySearchDTO(dto)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
-			// prepare results list, pageable object and get id of seat in enum if present
-			List<List<FlightDTO>> results = new ArrayList<>();			
-			Pageable pageable = PageRequest.of(dto.getStartIndex(), dto.getNumberOfResults());
-			Long seatOrdinal = null;
-			if (dto.getSeatType() != null)
-				seatOrdinal = (long) dto.getSeatType().ordinal();
+			List<List<FlightDTO>> toCombine = new ArrayList<>();			
+			Pageable pageable = PageRequest.of(dto.getPageNumber(), dto.getResultCount());
+			Long seatOrdinal = getSeatOrdinal(dto.getSeatType());
 			
-			for (FlightSearchQueryDTO query : dto.getQueries()) {	
+			for (FlightSearchQueryDTO query : dto.getQueries()) {		
 				Page<Flight> flights = repository.search(
-						sdf.format(query.getTakeOffTime()), 
-						sdf.format(query.getLandingTime()), 
-						query.getStartAirportName(), 
-						query.getEndAirportName(), 
+						sdf.format(query.getTakeoffDate()), 
+						query.getStartCity(), 
+						query.getEndCity(), 
 						dto.getNumOfPassengers(),
 						seatOrdinal,
 						pageable);
 				
 				List<FlightDTO> dtos = new ArrayList<>();
-				for (Flight f : flights.getContent())
+				for (Flight f : flights.getContent()) {
 					dtos.add(new FlightDTO(f));
-				results.add(dtos);
+				}
+				toCombine.add(dtos);
 			}
+			List<List<FlightDTO>> results = combineAll(toCombine);
+			results = filterBadDates(results);
 			return results;
 		}
 		return null;
 	}
+
+	// remove flight results where landing time of first flight is after takeoff time of return flight
+	private List<List<FlightDTO>> filterBadDates(List<List<FlightDTO>> results) {
+		List<List<FlightDTO>> filtered = new ArrayList<>();
+		
+		Date landingTime;
+		boolean flag;
+		for (List<FlightDTO> result : results) {
+			landingTime = result.get(0).getLandingTime();
+			flag = false;
+			for (int i = 1; i < result.size(); i++) {
+				if (!landingTime.before(result.get(i).getTakeoffTime())) {
+					flag = true;
+					break;
+				} else {
+					landingTime = result.get(i).getLandingTime();
+				}
+			}
+			if (!flag)
+				filtered.add(result);
+		}
+		
+		return filtered;
+	}
 	
-	public Set<FlightDTO> findAll() {
-		List<Flight> flights = repository.findAll();
+	
+	private List<List<FlightDTO>> combineAll(List<List<FlightDTO>> toCombine) {
+		List<List<FlightDTO>> result = new ArrayList<>();
+		for (List<FlightDTO> list : toCombine)
+			result = combineTwo(result, list);
+		return result;
 		
-		Set<FlightDTO> dtos = new HashSet<>();
+	} 
+	
+	private List<List<FlightDTO>> combineTwo(List<List<FlightDTO>> result, List<FlightDTO> list) {
+		List<List<FlightDTO>> newResult = new ArrayList<>();
 		
-		for (Flight f : flights) 
-			dtos.add(new FlightDTO(f));
-		return dtos;
+		if (result.isEmpty()) {
+			for (FlightDTO s : list) {
+				List<FlightDTO> temp = new ArrayList<>();
+				temp.add(s);
+				newResult.add(temp);
+			}
+		} else {
+			for (List<FlightDTO> r : result) {
+				for (FlightDTO s : list) {
+					List<FlightDTO> temp = new ArrayList<>();
+					temp.addAll(r);
+					temp.add(s);
+					newResult.add(temp);
+				}
+			}
+		}
+		
+		return newResult;
+	}
+	
+	
+	
+	private Long getSeatOrdinal(SeatType seatType) {
+		if (seatType != null)
+			return (long) seatType.ordinal();
+		return null;
 	}
 	
 	
@@ -214,20 +266,6 @@ public class FlightService {
 		if (dto.getTripType().equals(TripType.RoundTrip) && dto.getQueries().size() != 2)
 			return false;
 		
-		// for each flight departure time must be before landing time
-		for (FlightSearchQueryDTO query : dto.getQueries())
-			if(!query.getTakeOffTime().before(query.getLandingTime()))
-				return false;		
-
-		// in round trip landing time of first flight must be before departure time of second flight
-		if (dto.getTripType().equals(TripType.RoundTrip)) {
-			Date landing = dto.getQueries().get(0).getLandingTime();
-			Date departure = dto.getQueries().get(1).getTakeOffTime();
-			
-			if (!landing.before(departure))
-				return false;
-		}
-		
 		return true;
 	}
 	
@@ -237,6 +275,14 @@ public class FlightService {
 		} catch (NoSuchElementException e) {
 			return null;
 		}
+	}
+	
+	public Set<FlightDTO> findAll() {
+		List<Flight> flights = repository.findAll();
+		Set<FlightDTO> dtos = new HashSet<>();
+		for (Flight f : flights) 
+			dtos.add(new FlightDTO(f));
+		return dtos;
 	}
 	
 	public FlightRatingDTO rate(FlightRatingDTO dto) {

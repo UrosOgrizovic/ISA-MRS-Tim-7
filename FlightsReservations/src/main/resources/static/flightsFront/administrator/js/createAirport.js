@@ -17,8 +17,8 @@ function createAirport() {
 	airport.name = $("#name").val().trim();
 	airport.city = $("#city").val().trim();
 	airport.state = $("#state").val().trim();
-	airport.lat = $("#lat").val().trim();
-	airport.lng = $("#lng").val().trim();
+	airport.latitude = $("#lat").val().trim();
+	airport.longitude = $("#lng").val().trim();
 	
 	if (validate(airport)) {
 		airport = makeAjaxCall(airport);
