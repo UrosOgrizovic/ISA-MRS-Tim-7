@@ -6,7 +6,14 @@ public class CarDTO {
 	private int yearOfManufacture;
 	private String color;
 	private Long racs_id;
+	private int pricePerHour;
 	
+	public int getPricePerHour() {
+		return pricePerHour;
+	}
+	public void setPricePerHour(int pricePerHour) {
+		this.pricePerHour = pricePerHour;
+	}
 	public Long getRacs_id() {
 		return racs_id;
 	}

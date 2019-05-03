@@ -1,11 +1,17 @@
 package com.FlightsReservations.service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.common.DistanceCalculator;
@@ -16,7 +22,10 @@ import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
 import com.FlightsReservations.domain.dto.FlightRatingDTO;
-import com.FlightsReservations.domain.enums.TypeClass;
+import com.FlightsReservations.domain.dto.FlightSearchQueryDTO;
+import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
+import com.FlightsReservations.domain.enums.SeatType;
+import com.FlightsReservations.domain.enums.TripType;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.AirportRepository;
 import com.FlightsReservations.repository.FlightRepository;
@@ -33,29 +42,31 @@ public class FlightService {
 	@Autowired
 	private AirportRepository airportRepository;
 
+	
 	public FlightDTO add(CreateFlightDTO dto) {
 		Airline airline = airlineRepository.findByName(dto.getAirlineName());
 		Airport start = airportRepository.findByName(dto.getStartAirportName());
 		Airport end = airportRepository.findByName(dto.getEndAirportName());
 
-		if (semanticValidation(airline, start, end, dto)) {
+		if (verifyCreateDTO(airline, start, end, dto)) {
 			Set<Airport> stops = airportRepository.findByNameIn(dto.getStopNames());
 			Long flightTime = (dto.getLandingTime().getTime() - dto.getTakeOffTime().getTime()) / (1000 * 60);
-
+			
+			double dist = DistanceCalculator.distance(
+					start.getLatitude(), 
+					start.getLongitude(), 
+					end.getLatitude(), 
+					end.getLongitude(), "K");
+			
 			Flight f = new Flight(
 					dto.getTakeOffTime(), 
 					dto.getLandingTime(), 
 					flightTime.intValue(), 
-					DistanceCalculator.distance(
-							start.getLatitude(), 
-							start.getLongitude(), 
-							end.getLatitude(), 
-							end.getLongitude(), "K"),
+					dist,
+					dto.getPrice(),
 					airline, start, end, stops,
 					dto.getAverageScore(), dto.getNumberOfVotes());
-			
-			createSeats(f, dto.getNumberOfSeats(), dto.getFirstClassNum(), dto.getBusinessClassNum());
-			
+			createSeats(f, dto);
 			f = repository.save(f);
 			return new FlightDTO(f);
 		}
@@ -63,33 +74,127 @@ public class FlightService {
 	}
 	
 	
-	public Set<FlightDTO> findAll() {
-		List<Flight> flights = repository.findAll();
-		Set<FlightDTO> dtos = new HashSet<>();
+	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
+		if (verifySearchDTO(dto)) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			List<List<FlightDTO>> toCombine = new ArrayList<>();			
+			Pageable pageable = PageRequest.of(dto.getPageNumber(), dto.getResultCount());
+			Long seatOrdinal = getSeatOrdinal(dto.getSeatType());
+			
+			for (FlightSearchQueryDTO query : dto.getQueries()) {		
+				Page<Flight> flights = repository.search(
+						sdf.format(query.getTakeoffDate()), 
+						query.getStartCity(), 
+						query.getEndCity(), 
+						dto.getNumOfPassengers(),
+						seatOrdinal,
+						pageable);
+				
+				List<FlightDTO> dtos = new ArrayList<>();
+				for (Flight f : flights.getContent()) {
+					dtos.add(new FlightDTO(f));
+				}
+				toCombine.add(dtos);
+			}
+			List<List<FlightDTO>> results = combineAll(toCombine);
+			results = filterBadDates(results);
+			return results;
+		}
+		return null;
+	}
+
+	// remove flight results where landing time of first flight is after takeoff time of return flight
+	private List<List<FlightDTO>> filterBadDates(List<List<FlightDTO>> results) {
+		List<List<FlightDTO>> filtered = new ArrayList<>();
 		
-		for (Flight f : flights) 
-			dtos.add(new FlightDTO(f));
-		return dtos;
+		Date landingTime;
+		boolean flag;
+		for (List<FlightDTO> result : results) {
+			landingTime = result.get(0).getLandingTime();
+			flag = false;
+			for (int i = 1; i < result.size(); i++) {
+				if (!landingTime.before(result.get(i).getTakeoffTime())) {
+					flag = true;
+					break;
+				} else {
+					landingTime = result.get(i).getLandingTime();
+				}
+			}
+			if (!flag)
+				filtered.add(result);
+		}
+		
+		return filtered;
 	}
 	
 	
-	private void createSeats(Flight f, int numOfSeats, int numOfFirst, int numOfBusiness) {
+	private List<List<FlightDTO>> combineAll(List<List<FlightDTO>> toCombine) {
+		List<List<FlightDTO>> result = new ArrayList<>();
+		for (List<FlightDTO> list : toCombine)
+			result = combineTwo(result, list);
+		return result;
+		
+	} 
+	
+	private List<List<FlightDTO>> combineTwo(List<List<FlightDTO>> result, List<FlightDTO> list) {
+		List<List<FlightDTO>> newResult = new ArrayList<>();
+		
+		if (result.isEmpty()) {
+			for (FlightDTO s : list) {
+				List<FlightDTO> temp = new ArrayList<>();
+				temp.add(s);
+				newResult.add(temp);
+			}
+		} else {
+			for (List<FlightDTO> r : result) {
+				for (FlightDTO s : list) {
+					List<FlightDTO> temp = new ArrayList<>();
+					temp.addAll(r);
+					temp.add(s);
+					newResult.add(temp);
+				}
+			}
+		}
+		
+		return newResult;
+	}
+	
+	
+	
+	private Long getSeatOrdinal(SeatType seatType) {
+		if (seatType != null)
+			return (long) seatType.ordinal();
+		return null;
+	}
+	
+	
+	private void createSeats(Flight f, CreateFlightDTO dto) {
 		Seat s;
-		TypeClass type;
-		for (int i = 0; i < numOfSeats; i++) {
-			if (i < numOfFirst)
-				type = TypeClass.FIRST;
-			else if (numOfFirst < i && i < numOfBusiness) 
-				type = TypeClass.BUSINESS;
-			else 
-				type = TypeClass.ECONOMY;
-			
-			s = new Seat(i, true, type, f);
+		int offset = 0;
+		int first = dto.getFirstClassNum();
+		int business = dto.getBusinessClassNum();
+		int eco = dto.getEconomicClassNum();
+		
+		for (int i = offset; i < first; i++) {
+			s = new Seat(i+1, true, SeatType.FIRST, f);
+			f.getSeats().add(s);
+		}
+		
+		offset = first;	
+		for (int i = offset; i < first + business; i++) {
+			s = new Seat(i+1, true, SeatType.BUSINESS, f);
+			f.getSeats().add(s);
+		}
+		
+		offset += business;
+		for (int i = offset; i < first + business + eco; i++) {
+			s = new Seat(i+1, true, SeatType.ECONOMY, f);
 			f.getSeats().add(s);
 		}
 	}
 
-	private boolean semanticValidation(Airline airline, Airport start, Airport end, CreateFlightDTO dto) {
+	private boolean verifyCreateDTO(Airline airline, Airport start, Airport end, CreateFlightDTO dto) {
 		/*
 		 * Flight validation: 
 		 * 1. check if airline exists 
@@ -100,7 +205,7 @@ public class FlightService {
 		 * 6. check if airline have stops
 		 * 7. check if start and end not in stops
 		 * 8. check if dates are correct (take off < landing ) 
-		 * 9. check if firstClass + businessClass <= numOfSeats
+		 * 9. check if first+ business + economic = numOfSeats
 		 */
 		
 		// airline exists
@@ -145,10 +250,22 @@ public class FlightService {
 		if (!dto.getTakeOffTime().before(dto.getLandingTime()))
 			return false;
 
-		// number of seats < firstclass + business
-		if (dto.getNumberOfSeats() < (dto.getFirstClassNum() + dto.getBusinessClassNum()))
+		// number of seats < first class + business
+		if (dto.getNumberOfSeats() != (dto.getFirstClassNum() + dto.getBusinessClassNum() + dto.getEconomicClassNum()))
 			return false;
 
+		return true;
+	}
+	
+	private boolean verifySearchDTO(FlightSearchRequestDTO dto) {
+		// number of flight queries in one way trip must be 1
+		if (dto.getTripType().equals(TripType.OneWay) && dto.getQueries().size() != 1)
+			return false;
+		
+		// number of flight queries in round trip must be 1
+		if (dto.getTripType().equals(TripType.RoundTrip) && dto.getQueries().size() != 2)
+			return false;
+		
 		return true;
 	}
 	
@@ -158,6 +275,14 @@ public class FlightService {
 		} catch (NoSuchElementException e) {
 			return null;
 		}
+	}
+	
+	public Set<FlightDTO> findAll() {
+		List<Flight> flights = repository.findAll();
+		Set<FlightDTO> dtos = new HashSet<>();
+		for (Flight f : flights) 
+			dtos.add(new FlightDTO(f));
+		return dtos;
 	}
 	
 	public FlightRatingDTO rate(FlightRatingDTO dto) {

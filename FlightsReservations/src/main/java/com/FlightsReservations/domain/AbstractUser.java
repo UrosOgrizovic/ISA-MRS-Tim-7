@@ -14,21 +14,32 @@ public class AbstractUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(unique = true)
+
+	@Column(nullable = false, unique = true)
 	private String email;
 	
+	@Column(nullable = false)
 	private String firstName;
-	private String lastName; 
+	
+	@Column(nullable = false)
+	private String lastName;
+	
+	@Column(nullable = false)
 	private String phone;
+	
+	@Column(nullable = false)
 	private String address;
+	
+	@Column(nullable = false)
 	private String password;
-	
+
 	public AbstractUser() {
+		super();
 	}
-	
-	public AbstractUser(String firstName, String lastName, String email, String phone, String address, String password) 
-	{
+
+	public AbstractUser(String firstName, String lastName, String email, String phone, String address,
+			String password) {
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -36,74 +47,60 @@ public class AbstractUser {
 		this.address = address;
 		this.password = password;
 	}
-	
-	public Long getId()
-	{
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id)
-	{
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getFirstName() 
-	{
+	public String getFirstName() {
 		return firstName;
 	}
-	
-	public void setFirstName(String firstName) 
-	{
+
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	
-	public String getLastName() 
-	{
+
+	public String getLastName() {
 		return lastName;
 	}
-	
-	public void setLastName(String lastName) 
-	{
+
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	public String getEmail() 
-	{
+
+	public String getEmail() {
 		return email;
 	}
-	
-	public void setEmail(String email) 
-	{
+
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public String getPhone() 
-	{
+
+	public String getPhone() {
 		return phone;
 	}
-	
-	public void setPhone(String phone) 
-	{
+
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	public String getAddress() 
-	{
+
+	public String getAddress() {
 		return address;
 	}
-	
-	public void setAddress(String address) 
-	{
+
+	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public String getPassword() 
-	{
+
+	public String getPassword() {
 		return password;
 	}
-	
-	public void setPassword(String password) 
-	{
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
 

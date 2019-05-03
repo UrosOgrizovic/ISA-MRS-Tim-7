@@ -11,15 +11,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FlightDTO {
 	private Long id;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date takeoffTime;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date landingTime;
-	
+
 	private int flightTime;
 	private double flightDistance;
+	private double price;
 	private String airlineName;
 	private Set<String> stops;
 	private String startAirport;
@@ -28,27 +29,11 @@ public class FlightDTO {
 	private float averageScore;
 	private int numberOfVotes;
 
-	public float getAverageScore() {
-		return averageScore;
-	}
-
-	public void setAverageScore(float averageScore) {
-		this.averageScore = averageScore;
-	}
-
-	public int getNumberOfVotes() {
-		return numberOfVotes;
-	}
-
-	public void setNumberOfVotes(int numberOfVotes) {
-		this.numberOfVotes = numberOfVotes;
-	}
-
 	public FlightDTO() {
 		super();
 	}
 
-	public FlightDTO(Long id, Date takeoffTime, Date landingTime, int flightTime, double flightDistance,
+	public FlightDTO(Long id, Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price,
 			String airlineName, String startAirport, String endAirport, float averageScore, int numberOfVotes) {
 		super();
 		this.id = id;
@@ -56,6 +41,7 @@ public class FlightDTO {
 		this.landingTime = landingTime;
 		this.flightTime = flightTime;
 		this.flightDistance = flightDistance;
+		this.price = price;
 		this.airlineName = airlineName;
 		this.startAirport = startAirport;
 		this.endAirport = endAirport;
@@ -66,12 +52,13 @@ public class FlightDTO {
 	}
 
 	public FlightDTO(Flight f) {
-		this(f.getId(), f.getTakeoffTime(), f.getLandingTime(), f.getFlightTime(), f.getFlightDistance(),
-				f.getAirline().getName(), f.getStart().getName(), f.getEnd().getName(), f.getAverageScore(), f.getNumberOfVotes());
+		this(f.getId(), f.getTakeoffTime(), f.getLandingTime(), f.getFlightTime(), f.getFlightDistance(), f.getPrice(),
+				f.getAirline().getName(), f.getStart().getName(), f.getEnd().getName(), f.getAverageScore(),
+				f.getNumberOfVotes());
 
 		for (Airport a : f.getStops())
 			stops.add(a.getName());
-		
+
 		for (Seat s : f.getSeats()) {
 			seats.add(new SeatDTO(s));
 		}
@@ -156,4 +143,29 @@ public class FlightDTO {
 	public void setSeats(Set<SeatDTO> seats) {
 		this.seats = seats;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
 }

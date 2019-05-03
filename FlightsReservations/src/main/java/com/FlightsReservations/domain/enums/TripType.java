@@ -1,5 +1,5 @@
 package com.FlightsReservations.domain.enums;
 
-public enum ReservationType {
+public enum TripType {
 	OneWay, RoundTrip, MultiCity
 }

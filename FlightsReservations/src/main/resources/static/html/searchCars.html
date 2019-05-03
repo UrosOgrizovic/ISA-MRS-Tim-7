@@ -24,7 +24,7 @@
             <label>Car name</label>
             <input type="text" class="form-control"  id="name"/>
             <label>Year of manufacture</label>
-            <input type="number" min="1950" value="1950" class="form-control"  id="yearOfManufacture"/>
+            <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control"  id="yearOfManufacture"/>
             <label>Manufacturer</label>
             <input type="text" class="form-control" id="manufacturer"/>
             <input type="submit" class="btn btn-primary" value="Search" />

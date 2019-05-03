@@ -1,6 +1,5 @@
 package com.FlightsReservations.domain;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class Room
 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@NotNull
 	private String name;

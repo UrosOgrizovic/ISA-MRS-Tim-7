@@ -1,15 +1,19 @@
 package com.FlightsReservations.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
+import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.UserRepository;
 
 @Service
@@ -18,6 +22,9 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 
+	@Autowired
+	private CarReservationRepository carReservationRepository;
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -71,5 +78,35 @@ public class UserService {
 		for (User u : repository.findAll())
 			dtos.add(new UserDTO(u));
 		return dtos;
+	}
+	
+	public List<UserDTO> getFriends(String email) {
+		
+		User u = repository.findByEmail(email);
+		
+		List<User> friends = repository.findFriends(u.getId());
+		List<UserDTO> friendsDTO = new ArrayList<UserDTO>();
+		for (User user : friends) {
+			if (user.isEnabled()) {
+				UserDTO udto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
+				friendsDTO.add(udto);
+			}
+		}
+		return friendsDTO;
+	}
+	
+	public void addFriend(Long userId, Long friendId) {
+		repository.addFriend(userId, friendId);
+	}
+	
+	public List<CarReservationDTO> getCarReservations(String email) {
+		User u = repository.findByEmail(email);
+		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
+		List<CarReservationDTO> carReservationsDTO = new ArrayList<CarReservationDTO>();
+		for (CarReservation cr : carReservations) {
+			CarReservationDTO crdto = new CarReservationDTO(cr);
+			carReservationsDTO.add(crdto);
+		}
+		return carReservationsDTO;
 	}
 }

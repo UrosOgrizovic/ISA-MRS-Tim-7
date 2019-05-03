@@ -1,5 +1,7 @@
 package com.FlightsReservations.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.dto.CreateFlightDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
 import com.FlightsReservations.domain.dto.FlightRatingDTO;
+import com.FlightsReservations.domain.dto.FlightSearchRequestDTO;
 import com.FlightsReservations.service.FlightService;
 
 @RestController
@@ -24,32 +27,38 @@ import com.FlightsReservations.service.FlightService;
 @CrossOrigin("*")
 public class FlightController {
 	
-	/*
-	 * addFlight
-	 * editFlight
-	 * getFlights - pageable
-	 * getAllFlights - for testing
-	 */
-	
 	@Autowired
 	private FlightService service;
 	
-	@GetMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> findAll() {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
+	
 	
 	@PostMapping(
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(@Valid @RequestBody CreateFlightDTO dto) {
-		FlightDTO flight= service.add(dto);
+		FlightDTO flight = service.add(dto);
 		if (flight != null)
 			return new ResponseEntity<>(flight, HttpStatus.CREATED);
-		return new ResponseEntity<>("Bad input parameters.", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}	
+	
+	
+	@PostMapping(
+			value = "/search",
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> search(@Valid @RequestBody FlightSearchRequestDTO dto) {
+		List<List<FlightDTO>> dtos = service.search(dto);
+		if (dtos != null)
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+	
 	
 	@PutMapping(value ="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> rate(@Valid @RequestBody FlightRatingDTO dto) {
