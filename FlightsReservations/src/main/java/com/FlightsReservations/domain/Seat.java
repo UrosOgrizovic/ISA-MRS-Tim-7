@@ -16,7 +16,7 @@ import com.FlightsReservations.domain.enums.SeatType;
 public class Seat {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)

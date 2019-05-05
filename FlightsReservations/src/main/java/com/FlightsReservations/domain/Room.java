@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Room {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	private double overallRating;
 	
