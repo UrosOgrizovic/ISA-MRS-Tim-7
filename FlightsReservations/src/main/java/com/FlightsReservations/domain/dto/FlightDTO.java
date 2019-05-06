@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class FlightDTO {
 	private Long id;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date takeoffTime;
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone="Europe/Belgrade")
 	private Date landingTime;
 
 	private int flightTime;

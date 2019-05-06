@@ -16,32 +16,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.dto.FlightReservationDTO;
-import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
-import com.FlightsReservations.service.FlightReservationService;
+import com.FlightsReservations.domain.dto.RoomReservationDTO;
+import com.FlightsReservations.domain.dto.RoomReservationRequestDTO;
+import com.FlightsReservations.service.RoomReservationService;
 
 @RestController
-@RequestMapping("/flightReservations")
+@RequestMapping("/roomReservations")
 @CrossOrigin("*")
-public class FlightReservationController {
+public class RoomReservationController {
 	
 	@Autowired
-	private FlightReservationService service;
+	private RoomReservationService service;
 	
-	@PostMapping(
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
-		FlightReservationDTO fdto = service.create(dto);
-		if (fdto != null)
-			return new ResponseEntity<>(fdto, HttpStatus.CREATED);
+	public ResponseEntity<?> create(@Valid @RequestBody RoomReservationRequestDTO dto) {
+		RoomReservationDTO rdto = service.create(dto);
+		if (rdto != null) 
+			return new ResponseEntity<>(rdto, HttpStatus.CREATED);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
-
+	
 	@PutMapping(value = "/cancel/{id}")
 	public ResponseEntity<?> cancel(@NotNull @Positive @PathVariable Long id) {
-		if (service.cancel(id))
+		if (service.cancel(id)) 
 			return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
+
 }

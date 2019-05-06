@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.FlightsReservations.domain.User;
-import com.FlightsReservations.domain.dto.UserDTO;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	User findByEmail(String email);

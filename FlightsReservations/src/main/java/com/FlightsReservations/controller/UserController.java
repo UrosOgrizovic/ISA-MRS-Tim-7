@@ -22,6 +22,7 @@ import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
+import com.FlightsReservations.domain.dto.RoomReservationDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.service.UserService;
 
@@ -51,13 +52,7 @@ public class UserController {
 	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('USER')")
 	public List<UserDTO> getFriends(@RequestBody @Valid String email) {
-		// remove whitespace
-		email = email.trim();
-		
-		int length = email.length();
-		// remove quotes
-		email = email.substring(1, length-1);
-		
+		email = trimEmail(email);
 		return this.service.getFriends(email);
 	}
 	
@@ -65,7 +60,7 @@ public class UserController {
 	//@PreAuthorize("hasRole('USER')")
 	public List<CarReservationDTO> getCarReservations(@RequestBody @Valid String email) {
 		email = trimEmail(email);
-		
+
 		return this.service.getCarReservations(email);
 	}
 	
@@ -75,6 +70,14 @@ public class UserController {
 		email = trimEmail(email);
 		
 		return this.service.getFlightReservations(email);
+
+	}
+	
+	@PostMapping(value = "/getRoomReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<RoomReservationDTO> getRoomReservations(@RequestBody @Valid String email) {
+		email = trimEmail(email);
+		return this.service.getRoomReservations(email);
 	}
 	
 	@PutMapping(
@@ -112,6 +115,7 @@ public class UserController {
 	public String trimEmail(String email) {
 		// remove whitespace
 		email = email.trim();
+
 
 		int length = email.length();
 		// remove quotes

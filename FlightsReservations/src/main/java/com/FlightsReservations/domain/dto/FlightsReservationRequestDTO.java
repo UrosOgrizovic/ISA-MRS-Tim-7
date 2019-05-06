@@ -9,11 +9,11 @@ import javax.validation.constraints.NotEmpty;
 public class FlightsReservationRequestDTO {
 	@NotBlank
 	private String ownerEmail;
-
+	
 	@NotEmpty
 	@Valid
 	private List<FlightReservationDetailsDTO> flights;
-
+	
 	public FlightsReservationRequestDTO() {
 		super();
 	}

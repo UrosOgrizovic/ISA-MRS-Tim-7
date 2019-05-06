@@ -1,4 +1,4 @@
-package com.FlightsReservations.domain;
+	package com.FlightsReservations.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import com.FlightsReservations.domain.dto.PassengerDTO;
 @Entity
 public class Passenger {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)

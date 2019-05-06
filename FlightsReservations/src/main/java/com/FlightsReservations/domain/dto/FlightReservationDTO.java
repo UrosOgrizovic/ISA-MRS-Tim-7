@@ -1,13 +1,11 @@
 package com.FlightsReservations.domain.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.Passenger;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FlightReservationDTO {
 	private Long id;
@@ -17,21 +15,16 @@ public class FlightReservationDTO {
 	private List<FlightDTO> flights;
 	private List<PassengerDTO> passengers;
 	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-	private Date dateOfReservation;
-	
-	// TODO: pending friend invites with status
-
 	public FlightReservationDTO() {
 		super();
 	}
 
-	public FlightReservationDTO(Long id, Float totalPrice, Date dateOfReservation, String ownerEmail, Boolean confirmed,
+
+	public FlightReservationDTO(Long id, Float totalPrice, String ownerEmail, Boolean confirmed,
 			List<FlightDTO> flights, List<PassengerDTO> passengers) {
 		super();
 		this.id = id;
 		this.totalPrice = totalPrice;
-		this.dateOfReservation = dateOfReservation;
 		this.flights = flights;
 		this.passengers = passengers;
 		this.ownerEmail = ownerEmail;
@@ -42,7 +35,6 @@ public class FlightReservationDTO {
 		this(
 			reservation.getId(),
 			reservation.getPrice(),
-			reservation.getDateOfReservation(),
 			reservation.getOwner().getEmail(),
 			reservation.getConfirmed(),
 			new ArrayList<>(),
@@ -70,14 +62,6 @@ public class FlightReservationDTO {
 
 	public void setTotalPrice(Float totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	public Date getDateOfReservation() {
-		return dateOfReservation;
-	}
-
-	public void setDateOfReservation(Date dateOfReservation) {
-		this.dateOfReservation = dateOfReservation;
 	}
 
 	public List<PassengerDTO> getPassengers() {
