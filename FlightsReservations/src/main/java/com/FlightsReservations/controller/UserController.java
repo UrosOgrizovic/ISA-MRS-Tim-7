@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,7 @@ public class UserController {
 	@GetMapping(value = "/getUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('ADMIN')")
 	public Optional<User> loadUserById(@PathVariable Long id) {
-		return this.service.getRepository().findById(id);
+		return service.findById(id);
 	}
 	
 	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -77,6 +79,39 @@ public class UserController {
 		service.addFriend(userId, friendId);
 	}
 	
+	
+	@PutMapping(value="/friendRequest/send/{sender}/{reciever}")
+	public ResponseEntity<?> sendFriendRequest(@NotBlank @Email @PathVariable String sender, @NotBlank @Email @PathVariable String reciever) {
+		if (service.sendFriendRequest(sender, reciever)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@PutMapping(value="/friendRequest/approve/{sender}/{reciever}")
+	public ResponseEntity<?> approveFriendRequest(@NotBlank @Email @PathVariable String sender, @NotBlank @Email @PathVariable String reciever) {
+		if (service.approveFriendRequest(sender, reciever)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	} 
+	
+	
+	@PutMapping(value="/friendRequest/decline/{sender}/{reciever}")
+	public ResponseEntity<?> declineFriendRequest(@NotBlank @Email @PathVariable String sender, @NotBlank @Email @PathVariable String reciever) {
+		if (service.declineFriendRequest(sender, reciever)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	} 
+	
+	
+	@PutMapping(value="/removeFriend/{sender}/{reciever}")
+	public ResponseEntity<?> removeFriend(@NotBlank @Email @PathVariable String sender, @NotBlank @Email @PathVariable String reciever) {
+		if (service.removeFriend(sender, reciever)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	} 
+
+
 	@PostMapping(
 			value = "/add",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -89,6 +124,7 @@ public class UserController {
 		return new ResponseEntity<>(udto, HttpStatus.CONFLICT);
 	}
 	
+	
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -99,6 +135,7 @@ public class UserController {
 			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
 		return new ResponseEntity<>("User with given email doesnt exists.", HttpStatus.NOT_FOUND);
 	}
+	
 	
 	// helper method
 	public String trimEmail(String email) {

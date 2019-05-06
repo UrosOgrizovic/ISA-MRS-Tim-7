@@ -20,5 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Transactional
 	@Modifying
 	@Query(value="INSERT INTO user_friends VALUES (?1, ?2)", nativeQuery = true)
-	void addFriend(Long userId, Long friendId);
+	void addFriend(Long userId, Long friendId);	
+	
+	@Query(value="SELECT COUNT(*) FROM user_friends WHERE (user_id = ?1 AND friend_id = ?2) OR (user_id = ?2 AND friend_id = ?1)", nativeQuery = true)
+	Integer areFriends(Long userId, Long friendId);
 }
