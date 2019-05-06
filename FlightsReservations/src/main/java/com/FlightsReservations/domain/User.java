@@ -165,6 +165,4 @@ public class User extends AbstractUser implements UserDetails {
 		this.friends = friends;
 	}
 	
-	
-	
 }

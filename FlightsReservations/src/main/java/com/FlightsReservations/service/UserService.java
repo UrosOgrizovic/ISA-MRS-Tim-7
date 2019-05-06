@@ -87,6 +87,7 @@ public class UserService {
 		return repository.findById(id);
 	}
 	
+	
 	public List<UserDTO> findAll() {
 		List<UserDTO> dtos = new ArrayList<>();
 		for (User u : repository.findAll())
@@ -126,6 +127,7 @@ public class UserService {
 		}
 		return carReservationsDTO;
 	}
+
 	
 	
 	public List<RoomReservationDTO> getRoomReservations(String email) {
@@ -138,18 +140,17 @@ public class UserService {
 		}
 		return roomReservationsDTO;	
 	}
-
 	
 	
-	public List<FriendRequestDTO> getAllRequests(String email) {
+	
+	public List<FriendRequestDTO> getFriendRequests(String email) {
 		User u = repository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
-		if (u != null) {
-			for (FriendRequest fr : u.getRecievedRequests()) 
-				reqs.add(new FriendRequestDTO(fr));
-			
-			for (FriendRequest fr : u.getSentRequests()) 
-				reqs.add(new FriendRequestDTO(fr));
+		if (u != null && u.isEnabled()) {
+			u.getRecievedRequests().size();
+			u.getSentRequests().size();
+			for (FriendRequest fr : u.getRecievedRequests()) reqs.add(new FriendRequestDTO(fr));
+			for (FriendRequest fr : u.getSentRequests()) reqs.add(new FriendRequestDTO(fr));
 		}
 		return reqs;
 	}
@@ -178,7 +179,6 @@ public class UserService {
 			User r = repository.findByEmail(reciever);
 			User s = repository.findByEmail(sender);
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
-		
 			r.getFriends().add(s);
 			s.getFriends().add(r);
 			repository.save(s);
@@ -201,6 +201,7 @@ public class UserService {
 		}
 		return false;
 	}
+	
 	
 	
 	
@@ -231,6 +232,9 @@ public class UserService {
 		if (s == null || r == null)
 			return false;
 		
+		if (!s.isEnabled() || !r.isEnabled())
+			return false;
+		
 		// friend request exists
 		if (friendRequestsRepository.findFriendRequest(s.getId(), r.getId()) != null)
 			return false;
@@ -252,6 +256,9 @@ public class UserService {
 		User s = repository.findByEmail(sender);
 		User r = repository.findByEmail(reciever);
 		if (s == null || r == null)
+			return false;
+		
+		if (!s.isEnabled() || !r.isEnabled())
 			return false;
 		
 		// request exists
@@ -279,6 +286,9 @@ public class UserService {
 		if (s == null || r == null)
 			return false;
 		
+		if (!s.isEnabled() || !r.isEnabled())
+			return false;
+		
 		// request exists
 		FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 		if (fr == null)
@@ -299,6 +309,12 @@ public class UserService {
 		User r = repository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
+		
+		
+		// both users are enabled
+		if (!s.isEnabled() || !r.isEnabled())
+			return false;
+		
 		
 		// must be friends
 		if (repository.areFriends(s.getId(), r.getId()) == 0)

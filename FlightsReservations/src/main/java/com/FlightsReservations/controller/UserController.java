@@ -35,10 +35,7 @@ public class UserController {
 	@Autowired 
 	private UserService service;
 	
-	@GetMapping(
-			value = "/getAll",
-			produces = MediaType.APPLICATION_JSON_VALUE
-			) 
+	@GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	//@PreAuthorize("hasRole('ADMIN')")
 	public List<UserDTO> getAll()  {
 		return service.findAll();
@@ -50,12 +47,6 @@ public class UserController {
 		return service.findById(id);
 	}
 	
-	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('USER')")
-	public List<UserDTO> getFriends(@RequestBody @Valid String email) {
-		email = trimEmail(email);
-		return this.service.getFriends(email);
-	}
 	
 	@PostMapping(value = "/getCarReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('USER')")
@@ -65,11 +56,12 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/getRoomReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('USER')")
+	//@PreAuthorize("hasRole('USfriendRequestER')")
 	public List<RoomReservationDTO> getRoomReservations(@RequestBody @Valid String email) {
 		email = trimEmail(email);
 		return this.service.getRoomReservations(email);
 	}
+	
 	
 	@PutMapping(
 			value = "/addFriend/{userId}/{friendId}",
@@ -78,6 +70,19 @@ public class UserController {
 	public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
 		service.addFriend(userId, friendId);
 	}
+
+	
+	@GetMapping(value = "/getFriends/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<?> getFriends(@NotBlank @Email @PathVariable String email) {
+		return new ResponseEntity<>(service.getFriends(email), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(value = "/getFriendRequests/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getFriendRequests(@NotBlank @Email @PathVariable String email) {
+		return new ResponseEntity<>(service.getFriendRequests(email), HttpStatus.OK);
+	} 
 	
 	
 	@PutMapping(value="/friendRequest/send/{sender}/{reciever}")
@@ -112,28 +117,22 @@ public class UserController {
 	} 
 
 
-	@PostMapping(
-			value = "/add",
+	@PostMapping(value = "/add",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<UserDTO> addUser(@RequestBody @Valid RegistrationUserDTO user) {
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addUser(@RequestBody @Valid RegistrationUserDTO user) {
 		UserDTO udto = service.create(user);
 		if (udto != null) 
 			return new ResponseEntity<>(udto, HttpStatus.CREATED);
-		return new ResponseEntity<>(udto, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 	
 	
-	@PutMapping(
-			value = "/update",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<String> update(@RequestBody @Valid UserDTO user) {
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@RequestBody @Valid UserDTO user) {
 		if (service.update(user))
-			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
-		return new ResponseEntity<>("User with given email doesnt exists.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	
