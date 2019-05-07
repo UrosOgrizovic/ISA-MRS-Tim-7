@@ -35,11 +35,11 @@ function getAllCarReservations() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllCarReservationsLink,
-        method: "POST",
+        url: getAllCarReservationsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(carReservations) {
             displayCarReservations(carReservations);
         }, error: function(error) {
@@ -54,12 +54,14 @@ function getAllFlightReservations() {
     $("#all").remove();
     $("#error").remove();
     
+    var l = getAllFlightReservationsLink + "/" + email;
+    
     $.ajax({
-        url: getAllFlightReservationsLink,
-        method: "POST",
+        url: l,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(flightReservations) {
             displayFlightReservations(flightReservations);
         }, error: function(error) {
@@ -68,7 +70,7 @@ function getAllFlightReservations() {
         }
     });
 }
-}
+
 
 function getAllRoomReservations() {
     var email = $("#email").text();
@@ -76,11 +78,11 @@ function getAllRoomReservations() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllRoomReservationsLink,
-        method: "POST",
+        url: getAllRoomReservationsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(roomReservations) {
             displayRoomReservations(roomReservations);
         }, error: function(error) {
@@ -97,11 +99,11 @@ function getAllFriends() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllFriendsLink,
-        method: "POST",
+        url: getAllFriendsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(friends) {
             displayFriends(friends);
         }, error: function(error) {
@@ -249,7 +251,7 @@ function cancelCarReservation(id) {
     });
 }
 
-<<<<<<< HEAD
+
 /* flight reservations */
 
 function displayFlightReservations(flightReservations) {
