@@ -96,6 +96,7 @@ public class UserService {
 	}
 	
 	
+	
 	public List<UserDTO> getFriends(String email) {
 		
 		User u = repository.findByEmail(email);
@@ -112,9 +113,11 @@ public class UserService {
 	}
 	
 	
+	
 	public void addFriend(Long userId, Long friendId) {
 		repository.addFriend(userId, friendId);
 	}
+	
 	
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
@@ -143,17 +146,29 @@ public class UserService {
 	
 	
 	
-	public List<FriendRequestDTO> getFriendRequests(String email) {
+	public List<FriendRequestDTO> getSentFriendRequests(String email) {
+		User u = repository.findByEmail(email);
+		List<FriendRequestDTO> reqs = new ArrayList<>();
+		if (u != null && u.isEnabled()) {
+			u.getSentRequests().size();
+			for (FriendRequest fr : u.getSentRequests()) 
+				reqs.add(new FriendRequestDTO(fr));
+		}
+		return reqs;
+	}
+	
+	
+	public List<FriendRequestDTO> getRecievedFriendRequests(String email) {
 		User u = repository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
 		if (u != null && u.isEnabled()) {
 			u.getRecievedRequests().size();
-			u.getSentRequests().size();
-			for (FriendRequest fr : u.getRecievedRequests()) reqs.add(new FriendRequestDTO(fr));
-			for (FriendRequest fr : u.getSentRequests()) reqs.add(new FriendRequestDTO(fr));
+			for (FriendRequest fr : u.getRecievedRequests()) 
+				reqs.add(new FriendRequestDTO(fr));
 		}
 		return reqs;
 	}
+	
 	
 	
 

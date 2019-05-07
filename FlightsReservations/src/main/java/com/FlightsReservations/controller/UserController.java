@@ -79,9 +79,16 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(value = "/getFriendRequests/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getFriendRequests(@NotBlank @Email @PathVariable String email) {
-		return new ResponseEntity<>(service.getFriendRequests(email), HttpStatus.OK);
+	@GetMapping(value = "/getSentFriendRequests/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getSentFriendRequests(@NotBlank @Email @PathVariable String email) {
+		return new ResponseEntity<>(service.getSentFriendRequests(email), HttpStatus.OK);
+	} 
+	
+	
+	
+	@GetMapping(value = "/getRecievedFriendRequests/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getRecievedFriendRequests(@NotBlank @Email @PathVariable String email) {
+		return new ResponseEntity<>(service.getRecievedFriendRequests(email), HttpStatus.OK);
 	} 
 	
 	
