@@ -1,5 +1,10 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("A")
 public class Admin extends AbstractUser
 {
 	private AdminType type;

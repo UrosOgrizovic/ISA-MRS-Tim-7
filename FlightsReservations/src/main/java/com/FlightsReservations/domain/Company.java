@@ -1,6 +1,8 @@
 package com.FlightsReservations.domain;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +12,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="company_type", discriminatorType=DiscriminatorType.STRING)
 public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
