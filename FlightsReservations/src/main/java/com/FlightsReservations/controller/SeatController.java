@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.SeatDTO;
-import com.FlightsReservations.domain.enums.TypeClass;
+import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.service.SeatService;
 
 @RestController
@@ -29,40 +29,34 @@ public class SeatController {
 	private SeatService service;
 	
 	
-	@PostMapping(
-			value = "/{flightID}/{type}",
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/{flightID}/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(
 			@NotNull @Positive @PathVariable Long flightID,
-			@NotBlank @PathVariable TypeClass type) {
+			@NotBlank @PathVariable SeatType type) {
 		SeatDTO dto = service.add(flightID, type);
 		if (dto != null)
 			return new ResponseEntity<>(dto, HttpStatus.CREATED);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	
-	@PutMapping(
-			value = "/{flightID}/{seatNum}/{type}"
-			)
+	@PutMapping(value = "/{flightID}/{seatNum}/{type}")
 	public ResponseEntity<?> edit(
 			@NotNull @Positive @PathVariable Long flightID,
 			@NotNull @Positive @PathVariable Long seatNum,
-			@NotBlank @PathVariable TypeClass type) {
+			@NotBlank @PathVariable SeatType type) {
 		if (service.edit(flightID, seatNum, type)) 
-			return new ResponseEntity<>("", HttpStatus.OK);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	
-	@DeleteMapping(
-			value = "/{flightID}/{seatNum}"
-			)
+	@DeleteMapping(value = "/{flightID}/{seatNum}")
 	public ResponseEntity<?> delete(
 			@NotNull @Positive @PathVariable Long flightID,
 			@NotNull @Positive @PathVariable Long seatNum) {
 		if (service.delete(flightID, seatNum)) 
-			return new ResponseEntity<>("", HttpStatus.OK);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }	

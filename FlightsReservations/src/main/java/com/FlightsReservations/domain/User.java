@@ -38,19 +38,39 @@ public class User extends AbstractUser implements UserDetails {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
 	private List<Authority> authorities;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name="user_friends",
+	 joinColumns=@JoinColumn(name="user_id"),
+	 inverseJoinColumns=@JoinColumn(name="friend_id")
+	)
+	private List<User> friends;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name="user_friends",
+	 joinColumns=@JoinColumn(name="friend_id"),
+	 inverseJoinColumns=@JoinColumn(name="user_id")
+	)
+	private List<User> friendOf;
+	
 
 	@OneToMany(mappedBy = "owner")
-	private Set<AirReservation> airReservations = new HashSet<>();
+	private Set<FlightReservation> flightReservations = new HashSet<>();
+	
+	//@Column(nullable = false)
+	//private Integer flightBonusPoints;
 
 	public User() {
 		super();
 	}
 
 	public User(String firstName, String lastName, String email, String phone, String address, String password,
-			boolean enabled, Set<AirReservation> airReservations) {
+			boolean enabled, Integer flightBonusPoints) {
 		super(firstName, lastName, email, phone, address, password);
+		//this.flightBonusPoints = flightBonusPoints;
+		
 		this.enabled = enabled;
-		this.airReservations = airReservations;
+		
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -75,12 +95,12 @@ public class User extends AbstractUser implements UserDetails {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<AirReservation> getReservations() {
-		return airReservations;
+	public Set<FlightReservation> getReservations() {
+		return flightReservations;
 	}
 
-	public void setReservations(Set<AirReservation> airReservations) {
-		this.airReservations = airReservations;
+	public void setReservations(Set<FlightReservation> airReservations) {
+		this.flightReservations = airReservations;
 	}
 
 	@JsonIgnore
@@ -105,4 +125,12 @@ public class User extends AbstractUser implements UserDetails {
 	public boolean isEnabled() {
 		return this.enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "User [getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName() + ", getEmail()="
+				+ getEmail() + "]";
+	}
+
+	
 }

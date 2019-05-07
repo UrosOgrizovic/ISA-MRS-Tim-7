@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.AirlineDTO;
+import com.FlightsReservations.domain.dto.AirportDTO;
+import com.FlightsReservations.domain.dto.PricelistDTO;
 import com.FlightsReservations.service.AirlineService;
 
 @RestController
@@ -30,66 +32,80 @@ public class AirlineController {
 	private AirlineService service;
 	
 	
-	@GetMapping(
-			value = "/{name}",
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<?> findOne(@PathVariable String name) {
+	@GetMapping(value = "/{name}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> findOne(@NotBlank @PathVariable String name) {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.OK);
-		return new ResponseEntity<>("Airport with given name doesnt exists!", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	
-	@GetMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE
-			) 
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) 
 	public List<AirlineDTO> findAll() {
 		return service.findAll();
 	}
-		
+	
+	
 	@PostMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE
-			)
+			produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(@RequestBody @Valid AirlineDTO airline) {
 		AirlineDTO a = service.create(airline);
+		//System.out.println(airline.getName()+" added to the database");
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.CREATED);
-		return new ResponseEntity<>("Airline with given id already exists!", HttpStatus.CONFLICT);
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 	
 	
-	@PutMapping(
-			value = "/update",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<String> update(@RequestBody @Valid AirlineDTO airline) {
-		if (service.update(airline))
-			return new ResponseEntity<>("Update successfull.", HttpStatus.OK);
-		return new ResponseEntity<>("Airline with given id does not exists.", HttpStatus.NOT_FOUND);
+	@PutMapping(value = "/update/{airline}/{promo}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String promo) {
+		if (service.update(airline, promo))
+			return new ResponseEntity<>("OK", HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	
-	@PutMapping(
-			value = "/addAirport/{airline}/{airport}",
-			produces = MediaType.APPLICATION_JSON_VALUE
-			)
-	public ResponseEntity<?> update(@NotBlank @PathVariable String airline,
-			@NotBlank @PathVariable String airport) {
-		AirlineDTO dto = service.addAirport(airline, airport);
+	@PutMapping(value = "/addAirport/{airline}/{airport}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addAirport(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String airport) {
+		AirportDTO dto = service.addAirport(airline, airport);
 		if (dto != null) 
 			return new ResponseEntity<>(dto, HttpStatus.OK);
-		return new ResponseEntity<>("Bad input parameters!", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 	
-	//@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	//public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
-	//	Airline airline = service.rate(ro.getName(), ro.getScore()); 
-	//	if (airline != null)
-	//		return new ResponseEntity<>(airline, HttpStatus.OK);
-	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	//}
+	
+	@GetMapping(value="/airports/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAirports(@NotBlank @PathVariable String airline) {
+		List<AirportDTO> dtos = service.getAirports(airline); 
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(value="/pricelist/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getPricelist(@NotBlank @PathVariable String airline) {
+		PricelistDTO dto = service.getPricelist(airline); 
+		if (dto != null)
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	} 
+	
+	
+	@GetMapping(value="/flights/{airline}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getFlights(@NotBlank @PathVariable String airline) {
+		return new ResponseEntity<>(service.getFlights(airline), HttpStatus.OK);
+	}
+	
+	
+	@PostMapping(value="/pricelist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<?> setPricelist(@Valid @RequestBody PricelistDTO dto) {
+		if (service.setPricelist(dto))
+			return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+	
+	
 }

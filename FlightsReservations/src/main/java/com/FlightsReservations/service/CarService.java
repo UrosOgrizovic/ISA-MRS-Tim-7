@@ -25,7 +25,7 @@ public class CarService {
 			car.setManufacturer(c.getManufacturer());
 			car.setYearOfManufacture(c.getYearOfManufacture());
 			car.setName(c.getName());
-			System.out.println(car);
+			car.setPricePerHour(c.getPricePerHour());
 			repository.save(car);
 			return true;
 		}

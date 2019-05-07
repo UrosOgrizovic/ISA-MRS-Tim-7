@@ -67,20 +67,82 @@ public class RACSController {
 	@GetMapping(value="/searchCars", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
-		if (name.trim().isEmpty() ||
-				manufacturer.trim().isEmpty())
+		
+		/*
+		if (name.trim().isEmpty() || manufacturer.trim().isEmpty())
 			return new ResponseEntity<ArrayList<Car>>(HttpStatus.BAD_REQUEST);
+		*/
 		Collection<RACS> racss = service.findAll();
 		ArrayList<Car> matchingCars = new ArrayList<Car>();
-				
-		for (RACS r : racss) {
-			for (Car c : r.getCars()) {
-				if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && 
-						manufacturer.equals(c.getManufacturer())) {
-					matchingCars.add(c);
+		
+		if (yearOfManufacture != 0) {
+			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (yearOfManufacture == c.getYearOfManufacture()) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture()) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			} else {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			}
+		} else { // yearOfManufacture == 0
+			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						matchingCars.add(c);
+					}
+				}
+			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (manufacturer.equals(c.getManufacturer())) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (name.equals(c.getName())) {
+							matchingCars.add(c);
+						}
+					}
+				}
+			} else {
+				for (RACS r : racss) {
+					for (Car c : r.getCars()) {
+						if (name.equals(c.getName()) && manufacturer.equals(c.getManufacturer())) {
+							matchingCars.add(c);
+						}
+					}
 				}
 			}
 		}
+		
 		
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
 
@@ -96,14 +158,5 @@ public class RACSController {
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
 	}
-	
-	//@PutMapping(value="/rate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	//public ResponseEntity<?> rateRACS(@RequestBody RatingObject ro) {
-	//	RACS racs = service.rate(ro.getId(), ro.getScore()); 
-	//	if (racs != null)
-	//		return new ResponseEntity<>(racs, HttpStatus.OK);
-	//	return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	//}
-	
 	
 }

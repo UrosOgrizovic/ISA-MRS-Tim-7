@@ -55,7 +55,7 @@ function displayRACSS(racss) {
         text += "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownCarsButton\" data-toggle=\"dropdown\"aria-haspopup=\"true\" aria-expanded=\"false\">Cars</button>";
         text += "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownCarsButton\">";
         for (var car of racs.cars) {
-            var carText = car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture
+            var carText = car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour;
             text += "<a class=\"dropdown-item\" href=\"#\">" + carText + "</a>";
         }
         text += "</div></div></td>";

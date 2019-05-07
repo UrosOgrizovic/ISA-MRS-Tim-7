@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.dto.SeatDTO;
-import com.FlightsReservations.domain.enums.TypeClass;
+import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.SeatRepository;
 
@@ -21,7 +21,7 @@ public class SeatService {
 	private FlightRepository flightRepository;
 
 	
-	public SeatDTO add(Long flightId, TypeClass type) {
+	public SeatDTO add(Long flightId, SeatType type) {
 		Optional<Flight> of = flightRepository.findById(flightId);
 		if (of.isPresent()) {
 			Integer nextSeatNum = repository.maxSeatNumber(flightId) + 1;
@@ -33,11 +33,12 @@ public class SeatService {
 	}
 
 	
-	public boolean edit(Long flightID, Long seatNum, TypeClass type) {
+	public boolean edit(Long flightID, Long seatNum, SeatType type) {
 		Seat s = repository.findInFlight(flightID, seatNum);
 		if (s != null)
 			if (s.isAvailable()) {
 				s.setType(type);
+				repository.save(s);
 				return true;
 			}
 		return false;

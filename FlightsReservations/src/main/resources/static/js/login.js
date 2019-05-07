@@ -20,6 +20,7 @@ $(document).ready(function(){
             data: JSON.stringify(user),
             success: function(result) {
                 console.log(result);
+                localStorage.setItem("token", result.accessToken);
                 $(document.documentElement).append("<h3 id=\"loggedIn\">Logged in successfully as user with access token <strong>" + result.accessToken 
                 + "</strong> that expires in <strong>" + result.expiresIn + "<strong></h3>");
             }, error: function(error) {

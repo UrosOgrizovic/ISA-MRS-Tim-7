@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.service.UserService;
@@ -30,7 +31,6 @@ public class UserController {
 	
 	@Autowired 
 	private UserService service;
-	
 	
 	@GetMapping(
 			value = "/getAll",
@@ -46,7 +46,40 @@ public class UserController {
 	public Optional<User> loadUserById(@PathVariable Long id) {
 		return this.service.getRepository().findById(id);
 	}
-
+	
+	@PostMapping(value = "/getFriends", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<UserDTO> getFriends(@RequestBody @Valid String email) {
+		// remove whitespace
+		email = email.trim();
+		
+		int length = email.length();
+		// remove quotes
+		email = email.substring(1, length-1);
+		
+		return this.service.getFriends(email);
+	}
+	
+	@PostMapping(value = "/getCarReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<CarReservationDTO> getCarReservations(@RequestBody @Valid String email) {
+		// remove whitespace
+		email = email.trim();
+		
+		int length = email.length();
+		// remove quotes
+		email = email.substring(1, length-1);
+		
+		return this.service.getCarReservations(email);
+	}
+	
+	@PutMapping(
+			value = "/addFriend/{userId}/{friendId}",
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+		service.addFriend(userId, friendId);
+	}
 	
 	@PostMapping(
 			value = "/add",
@@ -59,8 +92,6 @@ public class UserController {
 			return new ResponseEntity<>(udto, HttpStatus.CREATED);
 		return new ResponseEntity<>(udto, HttpStatus.CONFLICT);
 	}
-	
-	
 	
 	@PutMapping(
 			value = "/update",
