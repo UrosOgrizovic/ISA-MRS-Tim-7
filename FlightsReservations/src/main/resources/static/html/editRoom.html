@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create/Add a hotel</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+		      rel="stylesheet"
+		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		      crossorigin="anonymous"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" >
+
+    </head>
+
+    <body>
+        <h1>Edit Hotel's info:</h1>
+        <h3> Leave the field blank if you don't want to change its value</h3> </td></tr>
+        <br><br><br>
+
+        <form method="post" name="editRoomForm" onsubmit="return create_hotel(this)" action="login.html"><!-- add action later-->
+            <table >
+                    <th> <label>Select ID of a hotel you want to edit:</label>
+                        <select name="hotelId">
+                                <option value="0">-</option>
+                                <option value="123" onselect="editHotelOne()">123</option>
+                                <option value="456" onselect="editHotelTwo()">456</option>
+                                <option value="789" onselect="editHotelThree()">789</option>
+                        </select>
+                    </th>
+                    <tr>
+
+                            <td> <label class="notNull"> Name : </label> </td>
+                            <td> <input type="text" name="name"></td>
+                    </tr>
+                    <tr>
+                            <td> <label class="notNull"> Address : </label></td><!-- edit later-->
+                            <td> <input type="text" name="address"> </td>
+                    </tr>
+                    <tr>
+                            <td> <label> Description: </label> </td>
+                            <td> <input type="text" name="promoDescription"> </td>
+                    </tr>
+                    <tr>
+                            <td> <label> Logo: </label> </td>
+                            <td> <input type="file" name="logoPath"> </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 align="center"><br> <input type="submit" value="Add Hotel" > </td>
+                    </tr>
+
+
+                    <!-- hotel administrator will modify other fields, pricelist, services, rooms... - add later-->
+            </table>
+
+        </form>
+    </body>
+</html>
