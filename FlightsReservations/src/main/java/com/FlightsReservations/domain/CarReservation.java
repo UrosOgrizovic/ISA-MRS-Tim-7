@@ -13,6 +13,9 @@ public class CarReservation extends Reservation {
 	@Column(nullable = false)
 	private Date startTime;
 	
+	@Column(nullable = false)
+	private Date endTime;
+	
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -28,9 +31,6 @@ public class CarReservation extends Reservation {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
-	@Column(nullable = false)
-	private Date endTime;
 
 	public Long getCarId() {
 		return carId;

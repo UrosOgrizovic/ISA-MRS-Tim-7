@@ -1,0 +1,48 @@
+.search-form {
+	margin-left: 5%;
+	margin-right: 20%;
+	margin-bottom: 1%;
+}
+
+.search-results {
+	float: left;
+	width: 70%;
+	margin-right: 5%;
+}
+
+.filter-window {
+	float:left;
+	margin-left:5%;
+	width:15%;
+	margin-right:5%;
+}
+
+.search-result {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+td {
+	text-align: center;
+}
+
+.xxl-text{
+	font-size: xx-large;
+}
+
+.xl-text{
+	font-size: x-large;
+}
+
+.button-width {
+	width: 100%;
+}
+
+.pagination {
+	margin-left: 5%;
+	float: left;
+}
+
+.modal {
+  overflow-y:auto;
+}

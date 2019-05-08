@@ -2,68 +2,55 @@ package com.FlightsReservations.domain.dto;
 
 import java.util.Date;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FlightSearchQueryDTO {
 	@NotBlank
-	private String startAirportName;
+	private String startCity;
 
 	@NotBlank
-	private String endAirportName;
-	
-	@Future
+	private String endCity;
+
+	@NotNull
 	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date takeOffTime;
-	
-	@Future
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date landingTime;
-	
+	private Date takeoffDate;
+
 	public FlightSearchQueryDTO() {
 		super();
 	}
 
-	public FlightSearchQueryDTO(String startAirportName, String endAirportName, Date takeOffTime, Date landingTime) {
+	public FlightSearchQueryDTO(String startCity, String endCity, Date takeoffDate) {
 		super();
-		this.startAirportName = startAirportName;
-		this.endAirportName = endAirportName;
-		this.takeOffTime = takeOffTime;
-		this.landingTime = landingTime;
+		this.startCity = startCity;
+		this.endCity = endCity;
+		this.takeoffDate = takeoffDate;
 	}
 
-	public String getStartAirportName() {
-		return startAirportName;
+	public String getStartCity() {
+		return startCity;
 	}
 
-	public void setStartAirport(String startAirportName) {
-		this.startAirportName = startAirportName;
+	public void setStartCity(String startCity) {
+		this.startCity = startCity;
 	}
 
-	public String getEndAirportName() {
-		return endAirportName;
+	public String getEndCity() {
+		return endCity;
 	}
 
-	public void setEndAirportName(String endAirportName) {
-		this.endAirportName = endAirportName;
+	public void setEndCity(String endCity) {
+		this.endCity = endCity;
 	}
 
-	public Date getTakeOffTime() {
-		return takeOffTime;
+	public Date getTakeoffDate() {
+		return takeoffDate;
 	}
 
-	public void setTakeOffTime(Date takeOffTime) {
-		this.takeOffTime = takeOffTime;
-	}
-
-	public Date getLandingTime() {
-		return landingTime;
-	}
-
-	public void setLandingTime(Date landingTime) {
-		this.landingTime = landingTime;
+	public void setTakeoffDate(Date takeoffDate) {
+		this.takeoffDate = takeoffDate;
 	}
 
 }
