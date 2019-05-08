@@ -1,32 +1,44 @@
 package com.FlightsReservations.domain;
 
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.FlightsReservations.domain.dto.AirlineAdminDTO;
 
+@Entity
 public class AirlineAdmin extends Admin
 {
-	private Set<Airline> airlineSet;//TODO: check if concurrent, edit later
+	@OneToOne
+	private Airline airline;//TODO: check if concurrent, edit later
 	
 	public AirlineAdmin() {
 		super();
 	}
 	
-	public AirlineAdmin(Long id, String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath, Set<Airline> airlineSet) 
+	public AirlineAdmin(String firstName, String lastName, String email, String phone, String address, String password,
+			String picturePath, Airline airline) 
 	{
-		super(id,  firstName, lastName, email, phone, address, password, picturePath);
-		this.airlineSet = airlineSet;
+		super(firstName, lastName, email, phone, address, password, picturePath);
+		this.airline = airline;
 	}
 
-	public Set<Airline> getAirlinelSet()
-	{
-		return airlineSet;
+	public AirlineAdmin(AirlineAdminDTO dto) {
+		this.setFirstName(dto.getFirstName());
+		this.setLastName(dto.getLastName());
+		this.setEmail(dto.getEmail());
+		this.setPassword(dto.getPassword());
+		this.setPhone(dto.getPhone());
+		this.setAddress(dto.getAddress());
 	}
 
-	public void setAirlinelSet(Set<Airline> airlineSet)
+	public Airline getAirline()
 	{
-		this.airlineSet = airlineSet;
+		return airline;
+	}
+
+	public void setAirline(Airline airline)
+	{
+		this.airline = airline;
 	}
 
 	

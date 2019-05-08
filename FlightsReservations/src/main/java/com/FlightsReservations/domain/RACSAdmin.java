@@ -1,32 +1,45 @@
 package com.FlightsReservations.domain;
 
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.FlightsReservations.domain.dto.RACSAdminDTO;
 
+@Entity
 public class RACSAdmin extends Admin
 {
-	private Set<RACS> racsSet;//TODO: check if concurrent, edit later
+	@OneToOne
+	private RACS racs;//TODO: check if concurrent, edit later
 	
 	public RACSAdmin() {
 		super();
 	}
 	
-	public RACSAdmin(Long id, String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath, Set<RACS> racsSet) 
+	public RACSAdmin(String firstName, String lastName, String email, String phone, String address, String password,
+			String picturePath, RACS racs) 
 	{
-		super(id,  firstName, lastName, email, phone, address, password, picturePath);
-		this.racsSet = racsSet;
+		super(firstName, lastName, email, phone, address, password, picturePath);
+		this.racs = racs;
+	}
+	
+	public RACSAdmin(RACSAdminDTO dto)
+	{ 
+			this.setFirstName(dto.getFirstName());
+			this.setLastName(dto.getLastName());
+			this.setEmail(dto.getEmail()); 
+			this.setPhone(dto.getPhone());
+			this.setAddress(dto.getAddress());
+			this.setPassword(dto.getPassword());
 	}
 
-	public Set<RACS> getHotelSet()
+	public RACS getRACS()
 	{
-		return racsSet;
+		return racs;
 	}
 
-	public void setHotelSet(Set<RACS> racsSet)
+	public void setRACS(RACS racs)
 	{
-		this.racsSet = racsSet;
+		this.racs = racs;
 	}
 
 	

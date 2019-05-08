@@ -1,23 +1,48 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Admin
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Column(nullable = false)
 	private String firstName;
+	
+	@Column(nullable = false)
 	private String lastName;
+	
+	@Column(nullable = false)
 	private String email; // unique
+	
+	@Column
 	private String phone;
+	
+	@Column
 	private String address;
+	
+	@Column(nullable = false)
 	private String password;
+	
+	@Column
 	private String picturePath;
 	
 	public Admin() {
 	}
 	
-	public Admin(Long id, String firstName, String lastName, String email, String phone, String address, String password,
+	public Admin(String firstName, String lastName, String email, String phone, String address, String password,
 			String picturePath) 
 	{
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

@@ -1,32 +1,45 @@
 package com.FlightsReservations.domain;
 
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.FlightsReservations.domain.dto.HotelAdminDTO;
 
+@Entity
 public class HotelAdmin extends Admin
 {
-	private Set<Hotel> hotelSet;//TODO: check if concurrent
+	@OneToOne
+	private Hotel hotel;//TODO: check if concurrent
 	
 	public HotelAdmin() {
 		super();
 	}
 	
-	public HotelAdmin(Long id, String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath, Set<Hotel> hotelSet) 
+	public HotelAdmin(String firstName, String lastName, String email, String phone, String address, String password,
+			String picturePath, Hotel hotel) 
 	{
-		super(id,  firstName, lastName, email, phone, address, password, picturePath);
-		this.hotelSet = hotelSet;
+		super(firstName, lastName, email, phone, address, password, picturePath);
+		this.hotel = hotel;
 	}
 
-	public Set<Hotel> getHotelSet()
-	{
-		return hotelSet;
+	public HotelAdmin(HotelAdminDTO dto) {
+		// 
+		this.setFirstName(dto.getFirstName());
+		this.setLastName(dto.getLastName());
+		this.setEmail(dto.getEmail()); 
+		this.setPhone(dto.getPhone());
+		this.setAddress(dto.getAddress());
+		this.setPassword(dto.getPassword());
 	}
 
-	public void setHotelSet(Set<Hotel> hotelSet)
+	public Hotel getHotel()
 	{
-		this.hotelSet = hotelSet;
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel)
+	{
+		this.hotel = hotel;
 	}
 
 	
