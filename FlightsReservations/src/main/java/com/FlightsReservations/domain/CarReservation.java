@@ -9,12 +9,9 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("CR")
 public class CarReservation extends Reservation {
-	
 	private Long carId;
 	
-	
 	private Date startTime;
-	
 	
 	private Date endTime;
 	

@@ -42,12 +42,21 @@ public class User extends AbstractUser implements UserDetails {
 	private List<Authority> authorities;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name="user_friends",
-	 joinColumns=@JoinColumn(name="user_id"),
-	 inverseJoinColumns=@JoinColumn(name="friend_id")
-	)
+	@JoinTable(
+			name="user_friends",
+	 		joinColumns=@JoinColumn(name="user_id"),
+	        inverseJoinColumns=@JoinColumn(name="friend_id"))
 	private List<User> friends;
 
+
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<FriendRequest> sentRequests;
+	
+	
+	@OneToMany(mappedBy = "reciever", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<FriendRequest> recievedRequests;
+	
+	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name="user_friends",
 	 joinColumns=@JoinColumn(name="friend_id"),
@@ -55,7 +64,7 @@ public class User extends AbstractUser implements UserDetails {
 	)
 	private List<User> friendOf;
 	
-
+	
 	@OneToMany(mappedBy = "owner")
 	private Set<FlightReservation> flightReservations = new HashSet<>();
 	
@@ -97,14 +106,6 @@ public class User extends AbstractUser implements UserDetails {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<FlightReservation> getReservations() {
-		return flightReservations;
-	}
-
-	public void setReservations(Set<FlightReservation> airReservations) {
-		this.flightReservations = airReservations;
-	}
-
 	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
@@ -134,5 +135,36 @@ public class User extends AbstractUser implements UserDetails {
 				+ getEmail() + "]";
 	}
 
+	public List<FriendRequest> getSentRequests() {
+		return sentRequests;
+	}
+
+	public void setSentRequests(List<FriendRequest> sentRequests) {
+		this.sentRequests = sentRequests;
+	}
+
+	public List<FriendRequest> getRecievedRequests() {
+		return recievedRequests;
+	}
+
+	public void setRecievedRequests(List<FriendRequest> recievedRequests) {
+		this.recievedRequests = recievedRequests;
+	}
+
+	public Set<FlightReservation> getFlightReservations() {
+		return flightReservations;
+	}
+
+	public void setFlightReservations(Set<FlightReservation> flightReservations) {
+		this.flightReservations = flightReservations;
+	}
+
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
 	
 }

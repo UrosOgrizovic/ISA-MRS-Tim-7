@@ -3,6 +3,7 @@ var getAllCarReservationsLink = "http://localhost:8080/users/getCarReservations"
 var getAllFlightReservationsLink = "http://localhost:8080/users/getFlightReservations";
 var getAllRoomReservationsLink = "http://localhost:8080/users/getRoomReservations";
 var cancelCarReservationLink = "http://localhost:8080/carReservations/cancel/";
+var cancelFlightReservationLink = "http://localhost:8080/flightReservations/cancel/";
 var cancelRoomReservationLink = "http://localhost:8080/roomReservations/cancel/";
 
 
@@ -15,12 +16,17 @@ $(document).ready(function(){
     $("#viewAllCarReservations").on('click', function(e) {
         e.preventDefault();
         getAllCarReservations();
-    })
+    });
 
+    $("#viewAllFlightReservations").on('click', function(e) {
+        e.preventDefault();
+        getAllFlightReservations();
+    });
+    
     $("#viewAllRoomReservations").on('click', function(e) {
         e.preventDefault();
         getAllRoomReservations();
-    })
+    });
 });
 
 function getAllCarReservations() {
@@ -29,11 +35,11 @@ function getAllCarReservations() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllCarReservationsLink,
-        method: "POST",
+        url: getAllCarReservationsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(carReservations) {
             displayCarReservations(carReservations);
         }, error: function(error) {
@@ -43,17 +49,40 @@ function getAllCarReservations() {
     });
 }
 
+function getAllFlightReservations() {
+	var email = $("#email").text();
+    $("#all").remove();
+    $("#error").remove();
+    
+    var l = getAllFlightReservationsLink + "/" + email;
+    
+    $.ajax({
+        url: l,
+        method: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        data: {},
+        success: function(flightReservations) {
+            displayFlightReservations(flightReservations);
+        }, error: function(error) {
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            console.log(error);
+        }
+    });
+}
+
+
 function getAllRoomReservations() {
     var email = $("#email").text();
     $("#all").remove();
     $("#error").remove();
     
     $.ajax({
-        url: getAllRoomReservationsLink,
-        method: "POST",
+        url: getAllRoomReservationsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(roomReservations) {
             displayRoomReservations(roomReservations);
         }, error: function(error) {
@@ -70,11 +99,11 @@ function getAllFriends() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllFriendsLink,
-        method: "POST",
+        url: getAllFriendsLink + "/" + email,
+        method: "GET",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(email),
+        data: {},
         success: function(friends) {
             displayFriends(friends);
         }, error: function(error) {
@@ -113,13 +142,15 @@ function displayFriends(friends) {
     
 }
 
+/* car reservations */
+
 function displayCarReservations(carReservations) {
     var text = "<table id=\"all\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
     text += "<caption>All car reservations</caption>"
     text += "<thead>";
     text += "<tr>";
     text += "<th>Price (USD)</th>";
-    text += "<th>Confirmed&nbsp<a title=\"Reservation cannot be cancelled less than two days before its start time\"><i class=\"fa fa-question-circle\" aria-hidden=\"true\"></i></a></th>";
+    text += "<th>Confirmed&nbsp<a title=\"Reservation cannot be canceled less than two days before its start time\"><i class=\"fa fa-question-circle\" aria-hidden=\"true\"></i></a></th>";
     
     text += "<th>Date of reservation</th>";
     text += "<th>Start time</th>";
@@ -220,6 +251,85 @@ function cancelCarReservation(id) {
     });
 }
 
+
+/* flight reservations */
+
+function displayFlightReservations(flightReservations) {
+    var text = "<table id=\"all\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
+    text += "<caption>All flight reservations</caption>"
+    text += "<thead>";
+    text += "<tr>";
+    text += "<th>Price (USD)</th>";
+    text += "<th>Confirmed&nbsp<a title=\"Reservation cannot be canceled less than three hours before its start time\"><i class=\"fa fa-question-circle\" aria-hidden=\"true\"></i></a></th>";
+    
+    text += "<th>Date of reservation</th>";
+    text += "<th>Flights</th>";
+    text += "</tr>";
+    text += "</thead><tbody>";
+    for (var fr of flightReservations) {
+        text += "<tr>";
+        
+        text += "<td>" + fr.totalPrice + "</td>";
+        console.log(fr.flights);
+        var currentTime = new Date();
+        var takeoffTime = fr.flights[0].takeoffTime;
+        var day = takeoffTime.substring(0, 2);
+        // months start at 0 in js, hence the - 1
+        var month = parseInt(takeoffTime.substring(3, 5)) - 1;
+        var year = takeoffTime.substring(6, 10);
+        var hour = takeoffTime.substring(11, 13);
+        var minute = takeoffTime.substring(14);
+        var startTimeDate = new Date(year, month, day, hour, minute);
+        var diff = startTimeDate - currentTime;
+        var oneHourInMillis = 3600000;
+        
+        if (diff <= 3 * oneHourInMillis) {
+            text += "<td>Can't be canceled</td>";
+        } else if (fr.confirmed) {
+            text += "<td>" + "<button class=\"btn btn-secondary\" onClick=\"cancelFlightReservation("+fr.id+")\">Cancel</button>" + "</td>";
+        } else {
+            text += "<td>Canceled</td>";
+        }
+        
+        text += "<td>" + fr.dateOfReservation + "</td>";
+        text += "<td><select class=\"form-control\">"
+        var lastStop = "";
+        for (var flight of fr.flights) {
+            
+            lastStop = flight.startAirport + " " + flight.takeoffTime;
+            for (var stop of flight.stops) {
+                text += "<option>Departure: " + lastStop + ", Arrival: " + stop + "</option>";
+                lastStop = stop;
+            }
+            text += "<option>Departure: " + lastStop + ", Arrival: "+ flight.endAirport + " " + flight.landingTime + " "  + "</option>";
+        }
+        
+        text += "</select><td>";
+        
+        text += "</tr>";
+    }
+    
+    text += "</tbody></table>";
+    $(document.documentElement).append(text);
+}
+
+function cancelFlightReservation(id) {
+    $.ajax({
+        url: cancelFlightReservationLink + id,
+        method: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: {},
+        success: function() {
+            getAllFlightReservations();
+            getAllRoomReservations();
+        }, error: function(error) {
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            console.log(error);
+        }
+    });
+}
+
 function cancelRoomReservation(id) {
     $.ajax({
         url: cancelRoomReservationLink + id,
@@ -228,6 +338,7 @@ function cancelRoomReservation(id) {
         contentType: "application/json",
         data: {},
         success: function() {
+            getAllFlightReservations();
             getAllRoomReservations();
         }, error: function(error) {
             $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
