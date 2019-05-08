@@ -7,13 +7,10 @@ import javax.persistence.Entity;
 
 @Entity
 public class RoomReservation extends Reservation {
-	@Column(nullable = false)
 	private Long roomId;
 
-	@Column(nullable = false)
 	private Date startTime;
 	
-	@Column(nullable = false)
 	private Date endTime;
 	
 	public Date getStartTime() {
