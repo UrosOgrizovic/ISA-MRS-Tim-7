@@ -11,6 +11,7 @@ import com.FlightsReservations.domain.HotelReservation;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
+import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
@@ -91,16 +92,19 @@ public class HotelService {
 		return dto;
 	}
 	
-	//public Hotel rate(Long id, float score) {
-	//	Hotel hotel = findOne(id);
-	//	if (hotel != null) {
-	//		float newAvgScore = hotel.getAverageScore() * hotel.getNumberOfVotes() + score;
-	//		int newNumberOfVotes = hotel.getNumberOfVotes() + 1;
-	//		hotel.setNumberOfVotes(newNumberOfVotes);
-	//		hotel.setAverageScore(newAvgScore / newNumberOfVotes);
-	//		repository.save(hotel);
-	//		return hotel;
-	//	}
-	//	return null;
-	//}
+	public boolean addRoom(RoomDTO room) {
+		Long hotelID = room.getHotel_id();
+		Hotel hotel = findOne(hotelID);
+		
+		if (hotel != null) {
+			Room r = new Room(
+					room.getOverallRating(),
+					room.getOverNightStay(),
+					hotel);
+			hotel.getRoomConfiguration().add(r);
+			repository.save(hotel);
+			return true;
+		}
+		return false;
+	}
 }
