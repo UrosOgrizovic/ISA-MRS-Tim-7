@@ -2,18 +2,14 @@ package com.FlightsReservations.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 public class CarReservation extends Reservation {
-	@Column(nullable = false)
 	private Long carId;
 	
-	@Column(nullable = false)
 	private Date startTime;
 	
-	@Column(nullable = false)
 	private Date endTime;
 	
 	public Date getStartTime() {
