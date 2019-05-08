@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@DiscriminatorValue("H")
 public class Hotel extends Company
 {
 	@NotNull
