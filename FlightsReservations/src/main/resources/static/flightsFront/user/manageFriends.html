@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+		<script src="js/manageFriends.js"></script>
+
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/manageFriends.css">
+		<title>Manage friends</title>
+	</head>
+	<body>
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="navbar-brand">Bookr</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="userHomepage.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="airlinesHomepage.html">Airlines</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="hotelsHomepage.html">Hotels</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="RACSHomepage.html">Rent-a-car services</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="flightsHomepage.html">Flights</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="manageFriends.html">Friends</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class = "manageFriendsInterface">
+			<!-- SEARCH FORM -->
+			<div class="form-group searchForm">
+				<label for="searchInput"> Search friends </label>
+				<input type="text" class="form-control" id="searchInput">
+				<button type="button" class="btn btn-primary" id="searchBtn">Search</button>
+			</div>
+
+			<!-- TABLE SELECTOR -->
+			<label for="tableSelector"> Choose view </label>
+			<select id="tableSelector" class="form-control tableSelector">
+				<option selected>Friends</option>
+				<option>Sent requests</option>
+				<option>Recieved requests</option>
+			</select>
+			
+			<!-- FRIENDS TABLE -->
+			<table id="friendsTable" class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Surname</th>
+						<th scope="col">Email</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			
+			<!-- SENT REQUESTS TABLE -->
+			<table id="sentRequestsTable" class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">To</th>
+						<th scope="col">Date sent</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+
+			<!-- RECIEVED REQUESTS TABLE -->
+			<table id="recievedRequestsTable" class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">From</th>
+						<th scope="col">Date recieved</th>
+						<th scope="col"></th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	</body>
+</html>
