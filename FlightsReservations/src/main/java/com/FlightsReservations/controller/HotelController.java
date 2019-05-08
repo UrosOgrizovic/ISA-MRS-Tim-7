@@ -53,7 +53,7 @@ public class HotelController {
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
 	}
-	
+	/*
 	@PutMapping(value = "/addRoom", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addRoom(@RequestBody @Valid RoomDTO room) {
@@ -61,4 +61,5 @@ public class HotelController {
 			return new ResponseEntity<>(room, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	*/
 }

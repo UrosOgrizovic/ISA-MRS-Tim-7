@@ -91,7 +91,7 @@ public class HotelService {
 		
 		return dto;
 	}
-	
+	/*
 	public boolean addRoom(RoomDTO room) {
 		Long hotelID = room.getHotel_id();
 		Hotel hotel = findOne(hotelID);
@@ -107,4 +107,5 @@ public class HotelService {
 		}
 		return false;
 	}
+	*/
 }
