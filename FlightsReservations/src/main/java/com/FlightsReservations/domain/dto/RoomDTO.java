@@ -4,26 +4,33 @@ public class RoomDTO {
 	private double overallRating;
 	private double overNightStay;
 	private Long hotel_id;
-	public double getOverallRating() {
+	public double getOverallRating() 
+	{
 		return overallRating;
 	}
-	public void setOverallRating(double overallRating) {
+	public void setOverallRating(double overallRating) 
+	{
 		this.overallRating = overallRating;
 	}
-	public double getOverNightStay() {
+	public double getOverNightStay() 
+	{
 		return overNightStay;
 	}
-	public void setOverNightStay(double overNightStay) {
+	public void setOverNightStay(double overNightStay) 
+	{
 		this.overNightStay = overNightStay;
 	}
-	public Long getHotel_id() {
+	public Long getHotel_id() 
+	{
 		return hotel_id;
 	}
-	public void setHotel_id(Long hotel_id) {
+	public void setHotel_id(Long hotel_id) 
+	{
 		this.hotel_id = hotel_id;
 	}
 	
-	public RoomDTO() {
+	public RoomDTO() 
+	{
 		super();
 	}
 }

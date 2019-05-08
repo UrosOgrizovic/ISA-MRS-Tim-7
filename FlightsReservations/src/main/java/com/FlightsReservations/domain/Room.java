@@ -27,39 +27,49 @@ public class Room {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Hotel hotel;
 	
-	public Room() {
+	public Room() 
+	{
 		super();
 	}
-	public Room(@NotNull double overallRating, @NotNull double overNightStay, Hotel hotel) {
+	public Room(double overallRating, double overNightStay, Hotel hotel) 
+	{
 		super();
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
 	}
-	public Hotel getHotel() {
+	public Hotel getHotel() 
+	{
 		return hotel;
 	}
-	public void setHotel(Hotel hotel) {
+	public void setHotel(Hotel hotel) 
+	{
 		this.hotel = hotel;
 	}
 	
-	public double getOverallRating() {
+	public double getOverallRating() 
+	{
 		return overallRating;
 	}
-	public void setOverallRating(double overallRating) {
+	public void setOverallRating(double overallRating) 
+	{
 		this.overallRating = overallRating;
 	}
-	public double getOverNightStay() {
+	public double getOverNightStay() 
+	{
 		return overNightStay;
 	}
-	public void setOverNightStay(double overNightStay) {
+	public void setOverNightStay(double overNightStay) 
+	{
 		this.overNightStay = overNightStay;
 	}
 	
-	public Long getId() {
+	public Long getId() 
+	{
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Long id) 
+	{
 		this.id = id;
 	}
 	
