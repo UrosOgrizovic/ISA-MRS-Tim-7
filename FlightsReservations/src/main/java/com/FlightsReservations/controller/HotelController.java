@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.service.HotelService;
 
