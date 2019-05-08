@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
+import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.RoomReservationDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
@@ -47,18 +48,27 @@ public class UserController {
 		return service.findById(id);
 	}
 	
-	
-	@PostMapping(value = "/getCarReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/getCarReservations/{email}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	//@PreAuthorize("hasRole('USER')")
-	public List<CarReservationDTO> getCarReservations(@RequestBody @Valid String email) {
-		email = trimEmail(email);
+	public List<CarReservationDTO> getCarReservations(@PathVariable String email) {
+		email = email.trim();
+
 		return this.service.getCarReservations(email);
 	}
 	
-	@PostMapping(value = "/getRoomReservations", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	//@PreAuthorize("hasRole('USfriendRequestER')")
-	public List<RoomReservationDTO> getRoomReservations(@RequestBody @Valid String email) {
-		email = trimEmail(email);
+	@GetMapping(value = "/getFlightReservations/{email}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<FlightReservationDTO> getFlightReservations(@PathVariable String email) {
+		email = email.trim();
+		
+		return this.service.getFlightReservations(email);
+
+	}
+	
+	@GetMapping(value = "/getRoomReservations/{email}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('USER')")
+	public List<RoomReservationDTO> getRoomReservations(@PathVariable String email) {
+		email = email.trim();
 		return this.service.getRoomReservations(email);
 	}
 	
@@ -140,18 +150,5 @@ public class UserController {
 		if (service.update(user))
 			return new ResponseEntity<>(HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-	
-	
-	// helper method
-	public String trimEmail(String email) {
-		// remove whitespace
-		email = email.trim();
-		
-		int length = email.length();
-		// remove quotes
-		email = email.substring(1, length-1);
-		
-		return email;
 	}
 }            

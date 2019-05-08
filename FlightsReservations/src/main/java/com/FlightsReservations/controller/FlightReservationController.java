@@ -40,7 +40,8 @@ public class FlightReservationController {
 
 	@PutMapping(value = "/cancel/{id}")
 	public ResponseEntity<?> cancel(@NotNull @Positive @PathVariable Long id) {
-		// To be implemented
-		return null;
+		if (service.cancel(id))
+			return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
 }

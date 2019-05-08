@@ -11,15 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.CarReservation;
+import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.FriendRequest;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
+import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FriendRequestDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.RoomReservationDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.repository.CarReservationRepository;
+import com.FlightsReservations.repository.FlightReservationRepository;
 import com.FlightsReservations.repository.FriendRequestRepository;
 import com.FlightsReservations.repository.RoomReservationRepository;
 import com.FlightsReservations.repository.UserRepository;
@@ -35,6 +38,9 @@ public class UserService {
 
 	@Autowired
 	private CarReservationRepository carReservationRepository;
+	
+	@Autowired
+	private FlightReservationRepository flightReservationRepository;
 	
 	@Autowired
 	private RoomReservationRepository roomReservationRepository;
@@ -102,7 +108,7 @@ public class UserService {
 		User u = repository.findByEmail(email);
 		
 		List<User> friends = repository.findFriends(u.getId());
-		List<UserDTO> friendsDTO = new ArrayList<UserDTO>();
+		List<UserDTO> friendsDTO = new ArrayList<>();
 		for (User user : friends) {
 			if (user.isEnabled()) {
 				UserDTO udto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
@@ -123,7 +129,7 @@ public class UserService {
 	public List<CarReservationDTO> getCarReservations(String email) {
 		User u = repository.findByEmail(email);
 		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
-		List<CarReservationDTO> carReservationsDTO = new ArrayList<CarReservationDTO>();
+		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
 			carReservationsDTO.add(crdto);
@@ -133,10 +139,24 @@ public class UserService {
 
 	
 	
+	public List<FlightReservationDTO> getFlightReservations(String email) {
+		System.out.println("EMAIL:" + email);
+		User u = repository.findByEmail(email);
+		System.out.println(u);
+		Collection<FlightReservation> flightReservations  = flightReservationRepository.findFlightReservationsOfUser(u.getId());
+		
+		List<FlightReservationDTO> flightReservationsDTO = new ArrayList<>();
+		for (FlightReservation fr : flightReservations) {
+			FlightReservationDTO frdto = new FlightReservationDTO(fr);
+			flightReservationsDTO.add(frdto);
+		}
+		return flightReservationsDTO;
+	}
+	
 	public List<RoomReservationDTO> getRoomReservations(String email) {
 		User u = repository.findByEmail(email);
 		Collection<RoomReservation> roomReservations = roomReservationRepository.findRoomReservationsOfUser(u.getId());
-		List<RoomReservationDTO> roomReservationsDTO = new ArrayList<RoomReservationDTO>();
+		List<RoomReservationDTO> roomReservationsDTO = new ArrayList<>();
 		for (RoomReservation rr : roomReservations) {
 			RoomReservationDTO rrdto = new RoomReservationDTO(rr);
 			roomReservationsDTO.add(rrdto);
