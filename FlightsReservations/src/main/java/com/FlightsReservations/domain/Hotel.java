@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorValue("H")
 public class Hotel extends Company
 {
-	@NotNull
+	@OneToMany
 	private ArrayList<PricelistItem> pricelist;
 	
 	

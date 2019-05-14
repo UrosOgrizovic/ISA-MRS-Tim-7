@@ -69,7 +69,7 @@ public class HotelService {
 	}	
 	
 	
-	public HotelDTO addAirport(String hotelName, String roomName) {
+	public HotelDTO addRoom(String hotelName, String roomName) {
 		Hotel hotel = repository.findByName(hotelName);
 		Room room = roomRepository.findByName(roomName);
 		
