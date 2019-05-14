@@ -17,6 +17,8 @@ public class Room {
 	private Long id;
 
 	@NotNull
+	private String name;
+	@NotNull
 	private double overallRating;
 	
 	@NotNull
@@ -32,8 +34,9 @@ public class Room {
 	public Room() {
 		super();
 	}
-	public Room(@NotNull double overallRating, @NotNull double overNightStay, Hotel hotel) {
+	public Room(@NotNull String name, @NotNull double overallRating, @NotNull double overNightStay, Hotel hotel) {
 		super();
+		this.name = name;
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
@@ -43,6 +46,13 @@ public class Room {
 	}
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public double getOverallRating() {
