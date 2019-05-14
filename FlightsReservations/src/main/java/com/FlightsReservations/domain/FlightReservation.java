@@ -36,8 +36,8 @@ public class FlightReservation extends Reservation {
 		super();
 	}
 
-	public FlightReservation(Date dateOfReservation, Float discount, Float price, User owner, Boolean confirmed) {
-		super(dateOfReservation, discount, price, confirmed, owner);
+	public FlightReservation(Date dateOfReservation, Float price, User owner, Boolean confirmed) {
+		super(dateOfReservation, price, confirmed, owner);
 	}
 
 	public Set<Passenger> getPassengers() {

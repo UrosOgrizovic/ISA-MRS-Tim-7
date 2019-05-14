@@ -7,5 +7,4 @@ import com.FlightsReservations.domain.Car;
 
 
 public interface CarRepository extends JpaRepository<Car, Long> {
-
 }
