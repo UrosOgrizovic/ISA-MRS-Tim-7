@@ -71,10 +71,10 @@ public class Room {
 		this.hotel = hotel;
 	}
 	
-<<<<<<< HEAD
 	public double getOverallRating() 
 	{
-=======
+		return this.overallRating;
+	}
 	public String getName() {
 		return name;
 	}
@@ -82,10 +82,6 @@ public class Room {
 		this.name = name;
 	}
 	
-	public double getOverallRating() {
->>>>>>> master
-		return overallRating;
-	}
 	public void setOverallRating(double overallRating) 
 	{
 		this.overallRating = overallRating;
