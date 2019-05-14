@@ -195,20 +195,28 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label for="searchAirportName"> Name </label>
+							<select id="add-passenger-type" class="form-control">
+								<option selected>Invite registered user</option>
+								<option>Add unregistered user</option>
+							</select>
+
+							<div id="unregistered-user">
+							<label for="passengerName"> Name </label>
 							<input type="text" class="form-control" id="passengerName">
-
-							<label for="searchAirportName"> Surname </label>
+							<label for="passengerSurname"> Surname </label>
 							<input type="text" class="form-control" id="passengerSurname">
-
-							<label for="searchAirportName"> Passport </label>
-							<input type="text" class="form-control" id="passengerPassport">	
+							</div>
+							<div id="registered-user">
+								<label for="friendEmail"> Email </label>
+								<input type="text" class="form-control" id="friendEmail">
+							</div>
+							<label for="passengerPassport"> Passport </label>
+							<input type="text" class="form-control" id="passengerPassport">
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 						data-dismiss="modal" id="closeAddAirportModal">Close</button>
-						<button type="button" class="btn btn-primary" id="invitePassenger">Invite</button>
 						<button type="button" class="btn btn-primary" id="autoPassenger">Auto</button>
 						<button type="button" class="btn btn-primary" id="addPassenger">Add</button>
 					</div>
