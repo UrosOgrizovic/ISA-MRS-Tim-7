@@ -42,8 +42,10 @@ public class FlightReservationService {
 		User owner = userRepository.findByEmail(dto.getOwnerEmail());
 
 		Float total = (float) 0;
-		Float discount = (float) 0;
-		FlightReservation reservation = new FlightReservation(new Date(), discount, total, owner, true);
+		
+		//TODO: check if flight is on discount. If yes, then total = total - total*discount/100
+		
+		FlightReservation reservation = new FlightReservation(new Date(), total, owner, true);
 
 		Seat seat;
 		Passenger passenger;

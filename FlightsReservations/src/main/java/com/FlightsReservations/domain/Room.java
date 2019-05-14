@@ -27,6 +27,8 @@ public class Room {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Hotel hotel;
 	
+	//TODO: add list of discounts (see Car class for inspiration)
+	
 	public Room() {
 		super();
 	}
