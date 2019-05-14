@@ -85,15 +85,40 @@ public class CarService {
 			e.printStackTrace();
 		}
 		
+		double totalPrice = 0;
+		double pph = 0;
+		Date dtoStartTime = new Date();
+		Date dtoEndTime = new Date();
 		ArrayList<DiscountCarDTO> discountCars = new ArrayList<DiscountCarDTO>();
 		for (Car c : cars) {
+			totalPrice = 0;
+			pph = c.getPricePerHour();
 			Set<Discount> carDiscounts = c.getDiscounts();
 			for (Discount d : carDiscounts) {
 				if (! (endDate.before(d.getStartTime()) && startDate.after(d.getEndTime()))) {
+					// after, after
+					if (d.getStartTime().after(startDate) && d.getEndTime().after(endDate)) {
+						dtoStartTime = d.getStartTime();
+						dtoEndTime = endDate;
+					// after, before
+					} else if (d.getStartTime().after(startDate) && d.getEndTime().before(endDate)) {
+						dtoStartTime = d.getStartTime();
+						dtoEndTime = d.getEndTime();
+					// before, after
+					} else if (d.getStartTime().before(startDate) && d.getEndTime().after(endDate)) {
+						dtoStartTime = startDate;
+						dtoEndTime = endDate;
+					// before, before
+					} else {
+						dtoStartTime = startDate;
+						dtoEndTime = d.getEndTime();
+					}
+					int hoursBetween = (int) (dtoEndTime.getTime() - dtoStartTime.getTime()) / 3600000;
+					double newPPH = pph - pph * d.getDiscountValue() / 100;
+					totalPrice += newPPH * hoursBetween;
 					
-				
-				
-					discountCars.add(new DiscountCarDTO(c));
+					
+					discountCars.add(new DiscountCarDTO(c, totalPrice, dtoStartTime, dtoEndTime));
 				}
 			}
 			

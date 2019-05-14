@@ -1,17 +1,28 @@
 package com.FlightsReservations.domain.dto;
 
-import java.util.Set;
+import java.util.Date;
 
 import com.FlightsReservations.domain.Car;
-import com.FlightsReservations.domain.Discount;
 
 public class DiscountCarDTO {
+	private Long id;
+	
+
 	private String manufacturer;
 	private String name;
 	private int yearOfManufacture;
 	private String color;
-	private double pricePerHour;
-	private Set<Discount> discounts;
+	private double totalPrice;
+	private Date startTime;
+	private Date endTime;
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getManufacturer() {
 		return manufacturer;
 	}
@@ -36,39 +47,51 @@ public class DiscountCarDTO {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	public double getPricePerHour() {
-		return pricePerHour;
+	
+	public double getTotalPrice() {
+		return totalPrice;
 	}
-	public void setPricePerHour(double pricePerHour) {
-		this.pricePerHour = pricePerHour;
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
-	public Set<Discount> getDiscounts() {
-		return discounts;
+	public Date getStartTime() {
+		return startTime;
 	}
-	public void setDiscounts(Set<Discount> discounts) {
-		this.discounts = discounts;
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
-	public DiscountCarDTO(String manufacturer, String name, int yearOfManufacture, String color, double pricePerHour,
-			Set<Discount> discounts) {
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	
+	public DiscountCarDTO() {
 		super();
+	}
+	public DiscountCarDTO(Long id, String manufacturer, String name, int yearOfManufacture, String color, double totalPrice,
+			Date startTime, Date endTime) {
+		super();
+		this.id = id;
 		this.manufacturer = manufacturer;
 		this.name = name;
 		this.yearOfManufacture = yearOfManufacture;
 		this.color = color;
-		this.pricePerHour = pricePerHour;
-		this.discounts = discounts;
-	}
-	public DiscountCarDTO() {
-		super();
+		this.totalPrice = totalPrice;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 	
-	public DiscountCarDTO(Car car) {
+	public DiscountCarDTO(Car car, double totalPrice, Date startTime, Date endTime) {
+		this.id = car.getId();
 		this.manufacturer = car.getManufacturer();
 		this.name = car.getName();
 		this.yearOfManufacture = car.getYearOfManufacture();
 		this.color = car.getColor();
-		this.pricePerHour = car.getPricePerHour();
-		this.discounts = car.getDiscounts();
+		this.totalPrice = totalPrice;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 	
 	

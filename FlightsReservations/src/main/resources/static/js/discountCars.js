@@ -1,31 +1,43 @@
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
+var carReservationLink = "/carReservations";
 
 var rps = localStorage.getItem("reservationPeriodStart");
-var rpsDate = rps.split(" ")[0].split("-")[0];
-if (rpsDate.length == 1) rpsDate = "0" + rpsDate;
-var rpsMonth = rps.split(" ")[0].split("-")[1];
-if (rpsMonth.length == 1) rpsMonth = "0" + rpsMonth;
-var rpsYear = rps.split(" ")[0].split("-")[2];
-var rpsHours = rps.split(" ")[1].split(":")[0];
-var rpsMinutes = rps.split(" ")[1].split(":")[1];
+var reservationPeriodStart = dateFormatter(rps);
+var stringReservationPeriodStart = dateToString(rps);
 
-var reservationPeriodStart = new Date(rpsYear, rpsMonth, rpsDate, rpsHours, rpsMinutes);
-var stringReservationPeriodStart = rpsDate + "-" + rpsMonth + "-" + rpsYear + " " + rpsHours + ":" + rpsMinutes;
 
 var rpe = localStorage.getItem("reservationPeriodEnd");
-var rpeDate = rpe.split(" ")[0].split("-")[0];
-if (rpeDate.length == 1) rpeDate = "0" + rpeDate;
-var rpeMonth = rpe.split(" ")[0].split("-")[1];
-if (rpeMonth.length == 1) rpeMonth = "0" + rpeMonth;
-var rpeYear = rpe.split(" ")[0].split("-")[2];
-var rpeHours = rpe.split(" ")[1].split(":")[0];
-var rpeMinutes = rpe.split(" ")[1].split(":")[1];
+var reservationPeriodEnd = dateFormatter(rpe);
+var stringReservationPeriodEnd = dateToString(rpe);
 
-var reservationPeriodEnd = new Date(rpeYear, rpeMonth, rpeDate, rpeHours, rpeMinutes);
-var stringReservationPeriodEnd = rpeDate + "-" + rpeMonth + "-" + rpeYear + " " + rpeHours + ":" + rpeMinutes;
+// used for converting reservationPeriodStart and reservationPeriodEnd to Date of desired format
+function dateFormatter(obj) {
+    var objDate = obj.split(" ")[0].split("-")[0];
+    if (objDate.length == 1) objDate = "0" + objDate;
+    var objMonth = obj.split(" ")[0].split("-")[1];
+    if (objMonth.length == 1) objMonth = "0" + objMonth;
+    var objYear = obj.split(" ")[0].split("-")[2];
+    var objHours = obj.split(" ")[1].split(":")[0];
+    var objMinutes = obj.split(" ")[1].split(":")[1];
+    return new Date(objYear, objMonth, objDate, objHours, objMinutes);
+}
+
+// used for converting reservationPeriodStart and reservationPeriodEnd to string
+function dateToString(obj) {
+    var objDate = obj.split(" ")[0].split("-")[0];
+    if (objDate.length == 1) objDate = "0" + objDate;
+    var objMonth = obj.split(" ")[0].split("-")[1];
+    if (objMonth.length == 1) objMonth = "0" + objMonth;
+    var objYear = obj.split(" ")[0].split("-")[2];
+    var objHours = obj.split(" ")[1].split(":")[0];
+    var objMinutes = obj.split(" ")[1].split(":")[1];
+
+    return objDate + "-" + objMonth + "-" + objYear + " " + objHours + ":" + objMinutes;
+}
 
 $(document).ready(function() {
     $("#discountCars").remove();
+    $("#error").remove();
     
     $.ajax({
         url: getAllDiscountCarsForPeriod + "/" + stringReservationPeriodStart + "/" + stringReservationPeriodEnd,
@@ -50,9 +62,9 @@ function displayDiscountCars(cars) {
     text += "<th>Name</th>";
     text += "<th>Year of manufacture</th>";
     text += "<th>Color</th>";
-    text += "<th>Price per hour</th>";
-    text += "<th>Discount value</th>";
-    text += "<th>Price per hour with discount</th>";
+    text += "<th>Total reservation price</th>";
+    text += "<th>Start time</th>";
+    text += "<th>End time</th>";
     text += "<th>Fast book</th>";
     
     text += "</tr>";
@@ -64,16 +76,20 @@ function displayDiscountCars(cars) {
         text += "<td>"+car.name+"</td>";
         text += "<td>"+car.yearOfManufacture+"</td>";
         text += "<td>"+car.color+"</td>";
-        var pph = car.pricePerHour;
-        text += "<td>"+pph+"</td>";
-        for (var discount of car.discounts) {
-            if (! (reservationPeriodStart >= discount.endTime && reservationPeriodEnd <= discount.startTime) ) {
-                var dv = discount.discountValue;
-                text += "<td>"+dv+"</td>";
-                pph = pph - (pph * dv / 100);
-                text += "<td>"+pph+"</td>";        
-            }
-        }
+        text += "<td>"+car.totalPrice+"</td>";
+        var start = car.startTime.split("+")[0];
+       
+        var end = car.endTime.split("+")[0];
+        var startTimeString = discountDateToString(start);
+        var endTimeString = discountDateToString(end);
+        text += "<td>"+startTimeString+"</td>";
+        text += "<td>"+endTimeString+"</td>";
+        var obj = {};
+        obj.carId = car.id;
+        obj.startTime = startTimeString;
+        obj.endTime = endTimeString;
+        localStorage.setItem("fastBookCarStartTime", startTimeString);
+        localStorage.setItem("fastBookCarEndTime", endTimeString);
         text += "<td><button class=\"btn btn-primary\" onclick=\"fastBook("+car.id+")\" >Fast book this car</button></td>";
         
         text += "</tr>";
@@ -82,6 +98,39 @@ function displayDiscountCars(cars) {
     $(document.documentElement).append(text);
 }
 
+
+
+// used to convert date to string in displayDiscountCars
+function discountDateToString(obj) {
+    var time = obj.split("T")[1].substring(0, 5);
+    var date = obj.split("T")[0];
+    return date.substring(8)+"-"+date.substring(5,8)+date.substring(0,4)+" "+time;
+}
+
 function fastBook(carId) {
-    //TODO: implement fast book - what period should the car be booked for?
+    var carReservationRequestDTO = {};
+    carReservationRequestDTO.ownerEmail = localStorage.getItem("email");
+    carReservationRequestDTO.carId = carId;
+    
+    carReservationRequestDTO.startTime = localStorage.getItem("fastBookCarStartTime");
+    carReservationRequestDTO.endTime = localStorage.getItem("fastBookCarEndTime");
+    
+    
+    
+    $.ajax({
+        url: carReservationLink,
+        method: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(carReservationRequestDTO),
+        success: function(carReservationDTO) {
+            location.replace("/html/userHomepage.html");
+        }, error: function(error) {
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            console.log(error);
+        }
+    });
+    
+    
+    
 }
