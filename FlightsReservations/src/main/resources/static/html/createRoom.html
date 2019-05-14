@@ -13,35 +13,49 @@
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
         <link rel="stylesheet" href=".\..\css\table.css">
         <link rel="stylesheet" href=".\..\css\imageButton.css">
-        <script src=".\..\js\createHotel.js"></script>
+        <script src=".\..\js\createRoom.js"></script>
 
 
     </head>
 
     <body>
         <br><br><br>
-        <form id="createRoomForm"><!-- onsubmit="return createHotel(this)" action="login.html" onsubmit="createHotel()"-->
+        <form id="createRoomForm">
         <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
                 <th colspan=2> Add a new room to the hotel:</th>
                 <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
                 <tr>
-                    <td> <label> Name* : </label> </td>
-                    <td> <input type="text" name="name"> </td>
+                    <td> <label> Room number* : </label> </td>
+                    <td> <input type="text" name="number"> </td>
                 </tr>
                 <tr>
-                    <td> <label> Type* : </label></td><!-- edit later-->
-                    <td> <input type="text" name="type"> </td>
+                    <td> <label> Floor number* : </label></td><!-- edit later-->
+                    <td> <input type="text" name="floor"> </td>
                 </tr>
                 <tr>
-                    <td> <label> One night stay price*: </label> </td><!-- ONLY FLOAT NUMBERS -->
+                    <td> <label> One night stay price* : </label> </td><!-- ONLY FLOAT NUMBERS -->
                     <td> <input type="text" name="overnightStay"> </td>
                 </tr>
+                
+                <tr>
+                    <td><label> Type* : </label></td>
+                    <td> <select name="type">
+                    		<option value="">Select room type</option>
+                            <option value="One-bed room">One-bed room</option>
+                            <option value="Two-beds room">Two-beds room</option>
+                            <option value="Three-beds room">Three-beds room</option>
+                            <option value="One room apartment">One room apartment</option>
+                            <option value="Two rooms apartment">Two rooms apartment</option>
+                        </select>
+                    </td>
+                </tr>
+                
                 <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
                 <tr>
-                    <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
+                	<td>
                     </td>
                     <td align="center">
-                    	<button type="submit" class="btn btn-primary" name="createHotel" onClick="create_hotel()" id="submitButton" >Add Room</button>
+                    	<button type="submit" class="btn btn-primary" name="createRoom" onClick="create_room()" id="submitButton" >Add Room</button>
                     	                                                   
                         <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
                     </td>

@@ -17,8 +17,11 @@ public class Room {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	private String name;
+	@NotNull
+	private int number;
+	
+	@NotNull
+	private int floor;
 	
 	@NotBlank
 	private String type;
@@ -46,11 +49,11 @@ public class Room {
 		this.hotel = hotel;
 	}
 	
-	public Room(Long id, String name, String type, double overallRating,
+	public Room(Long id, int number, String type, double overallRating,
 			double overNightStay, Hotel hotel) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.number = number;
 		this.type = type;
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
@@ -90,13 +93,13 @@ public class Room {
 	{
 		this.id = id;
 	}
-	public String getName() 
+	public int getNumber() 
 	{
-		return name;
+		return number;
 	}
-	public void setName(String name) 
+	public void setNumber(int number) 
 	{
-		this.name = name;
+		this.number = number;
 	}
 	public String getType() 
 	{
@@ -106,6 +109,15 @@ public class Room {
 	{
 		this.type = type;
 	}
+	public int getFloor()
+	{
+		return floor;
+	}
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
+	}
+	
 	
 	
 	

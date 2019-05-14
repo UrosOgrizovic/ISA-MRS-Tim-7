@@ -51,8 +51,7 @@ public class HotelService {
 	}
 	
 	public boolean addRoom(RoomDTO room) {
-		Long hotelID = room.getHotel_id();
-		Hotel hotel = findOne(hotelID);
+		Hotel hotel = room.getHotel();
 		
 		if (hotel != null) {
 			Room r = new Room(
