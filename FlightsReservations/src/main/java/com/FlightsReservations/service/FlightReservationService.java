@@ -100,16 +100,33 @@ public class FlightReservationService {
 		reservation.setPrice(total);
 		reservation = repository.save(reservation);
 		
+		sendReservationEmail(reservation);
+		
 		for (FlightInvite invite : reservation.getInvites())
-			sendEmail(invite);
+			sendInviteEmail(invite);
 	
 		return new FlightReservationDTO(reservation);
 	}
 	
-	private void sendEmail(FlightInvite invite) {
+	private void sendInviteEmail(FlightInvite invite) {
 		try {
-			emailService.sendEmail("ivkovicdjordje1997@gmail.com", "ISA SUBJECT", 
-					"ISA TEXT <a href='http://localhost:8080/flightsReservations/approve/1/petarpetrovic@gmail.com'>approve</a>");;
+			String subject = "New trip invite!";
+			String text = "User " + invite.getReservation().getOwner().getEmail() + " invited you to a trip!\n" + 
+			              "Click here to see trip details: (to be implemented)\n" +
+					      "If you accept invite click here: http://localhost:8080/flightsReservations/approve/1/petarpetrovic@gmail.com";
+			emailService.sendEmail("ivkovicdjordje1997@gmail.com", subject, text);
+		} catch (MailException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void sendReservationEmail(FlightReservation reservation) {
+		String subject = "You created new reservation!";
+		String text = "Reservation details: (to be implemented)";
+		try {
+			emailService.sendEmail("ivkovicdjordje1997@gmail.com", subject, text);
 		} catch (MailException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
