@@ -2,7 +2,12 @@ var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";
 
+var token = localStorage.getItem("token");
+
 $(document).ready(function(){
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
     $("#viewAllRACS").on('click', function(e) {
         
         e.preventDefault();
@@ -16,6 +21,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: {},
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(racss) {
                 displayRACSS(racss);
             }, error: function(error) {
@@ -174,6 +180,7 @@ function rateRACS(el) {
         data: JSON.stringify(obj),
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(racs) {
             displayRACSRating(racs);
         },
@@ -194,6 +201,7 @@ function searchRACSByName() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(racss) {
             
             displayRACSS(racss);

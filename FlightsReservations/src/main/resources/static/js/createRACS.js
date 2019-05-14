@@ -1,6 +1,11 @@
 var addRACSLink = "/racss/add";
 
+var token = localStorage.getItem("token");
+
 $(document).ready(function(){
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
     $("#createRACSForm").on('submit', function(e) {
         e.preventDefault();
         
@@ -23,6 +28,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(racs),
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
                 console.log(result);
                 $(document.documentElement).append("<h3 id=\"addedSuccessfully\">Rent-a-car service addedd successfully</h3>");

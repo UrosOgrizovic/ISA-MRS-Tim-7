@@ -1,7 +1,12 @@
 var getAllHotelsLink = "/hotels/getAll";
 var rateLink = "/companies/rate";
 
+var token = localStorage.getItem("token");
+
 $(document).ready(function(){
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
     $("#viewAllHotels").on('click', function(e) {
         e.preventDefault();
         
@@ -14,6 +19,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: {},
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(hotels) {
                 displayHotels(hotels);
             }, error: function(error) {
@@ -163,6 +169,7 @@ function rateHotel(el) {
         data: JSON.stringify(obj),
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(hotel) {
             displayHotelRating(hotel);
         },

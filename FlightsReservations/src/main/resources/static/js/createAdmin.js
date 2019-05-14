@@ -1,7 +1,12 @@
 var my_url = "http://localhost:8080";
 
+var token = localStorage.getItem("token");
+
 function validate_inputs(myForm)
 {
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
     console.log(myForm);
     //alert(""+myForm.adminType.type);
     if(myForm.adminType.value==0)
@@ -104,6 +109,7 @@ function create_admin()
             data: JSON.stringify(admin),
             cache: false,
             crossDomain: true,
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) { },
             })
     }

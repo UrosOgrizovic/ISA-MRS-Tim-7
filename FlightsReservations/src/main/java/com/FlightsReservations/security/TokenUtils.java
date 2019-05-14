@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.common.TimeProvider;
 import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.Authority;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,15 +43,15 @@ public class TokenUtils {
 
 	// Functions for generating new JWT token
 
-	public String generateToken(String email) {
+	public String generateToken(User user) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(email)
+				.setSubject(user.getEmail())
 				.setAudience(generateAudience())
 				.setIssuedAt(timeProvider.now())
 				.setExpiration(generateExpirationDate())
-//				.claim("username", user.getEmail())
-//				.claim("roles", user.getAuthorities())
+				.claim("username", user.getEmail())
+				.claim("roles", user.getAuthorities())
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 	
@@ -174,6 +176,7 @@ public class TokenUtils {
 		String authHeader = getAuthHeaderFromHeader(request);
 
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			System.out.println(authHeader.substring(7));
 			return authHeader.substring(7);
 		}
 

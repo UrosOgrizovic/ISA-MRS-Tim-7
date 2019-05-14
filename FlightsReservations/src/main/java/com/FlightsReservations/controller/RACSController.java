@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class RACSController {
 	@Autowired
 	private RACSService service;
 	
-	//@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
 		return service.findAll();
@@ -68,10 +69,6 @@ public class RACSController {
 	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
-		/*
-		if (name.trim().isEmpty() || manufacturer.trim().isEmpty())
-			return new ResponseEntity<ArrayList<Car>>(HttpStatus.BAD_REQUEST);
-		*/
 		Collection<RACS> racss = service.findAll();
 		ArrayList<Car> matchingCars = new ArrayList<Car>();
 		

@@ -4,13 +4,18 @@ var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+var token = localStorage.getItem("token");
 
 $(document).ready(function(){
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
 	$.ajax({
 		url: "http://localhost:8080/racss/getAll",
 		method: "GET",
 		dataType: "json",
-		crossDomain: true,
+        crossDomain: true,
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
 			for (var i = 0; i < result.length; i++) {
                 mapa[result[i].id] = result[i];
@@ -61,7 +66,8 @@ function updateRACS() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "text",	
-		data: JSON.stringify(mapa[key]),
+        data: JSON.stringify(mapa[key]),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
             
 		}, error: function(err) {
@@ -147,7 +153,8 @@ function addCarToRACS() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "json",	
-		data: JSON.stringify(newCar),
+        data: JSON.stringify(newCar),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(car) {
             
             $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture + " " + car.pricePerHour+"</option>");
@@ -166,6 +173,7 @@ function removeCarFromRACS() {
         data: {},
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(allCars) {
             carIdSelect.empty();
             carSelect.empty();
@@ -199,6 +207,7 @@ function updateCar() {
         data: JSON.stringify(editedCar),
         contentType: "application/json",
         dataType: "text",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(result) {
             location.reload();
         },

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Authority;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.FriendRequest;
@@ -21,6 +22,7 @@ import com.FlightsReservations.domain.dto.FriendRequestDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.RoomReservationDTO;
 import com.FlightsReservations.domain.dto.UserDTO;
+import com.FlightsReservations.repository.AuthorityRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
 import com.FlightsReservations.repository.FriendRequestRepository;
@@ -46,12 +48,19 @@ public class UserService {
 	private RoomReservationRepository roomReservationRepository;
 	
 	@Autowired
+	private AuthorityRepository authorityRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	
 	public UserDTO create(RegistrationUserDTO t) {
 		if (repository.findByEmail(t.getEmail()) == null) {
 			User u = new User();
+			ArrayList<Authority> authorities = new ArrayList<Authority>();
+			for (String a : t.getAuthorities()) {
+				authorities.add(authorityRepository.findByName(a));
+			}
 			u.setFirstName(t.getFirstName());
 			u.setLastName(t.getLastName());
 			u.setEmail(t.getEmail());
@@ -59,6 +68,7 @@ public class UserService {
 			u.setPhone(t.getPhone());
 			u.setPassword(passwordEncoder.encode(t.getPassword()));
 			u.setEnabled(true);
+			u.setAuthorities(authorities);
 			repository.save(u);
 			return new UserDTO(u);
 		}

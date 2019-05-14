@@ -4,7 +4,12 @@ var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+var token = localStorage.getItem("token");
+
 $(document).ready(function(){
+    if (!localStorage.getItem("loggedIn")) {
+        location.replace("/html/login.html");
+    }
     // Initialize a new plugin instance for all
     // e.g. $('input[type="range"]') elements.
     $('input[type="range"]').rangeslider({
@@ -28,7 +33,8 @@ $(document).ready(function(){
 		url: "http://localhost:8080/racss/getAll",
 		method: "GET",
 		dataType: "json",
-		crossDomain: true,
+        crossDomain: true,
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
             if (result != null && result.length != 0 && result != undefined) {
                 for (var i = 0; i < result.length; i++) {
@@ -79,8 +85,8 @@ function reserveCar() {
     }
     
     var carReservation = {};
-    //TODO: remove hardcoded owner email and discount after implementing spring security
-    carReservation.ownerEmail = "user@example.com";
+    
+    carReservation.ownerEmail = localStorage.getItem("email");
     carReservation.carId = carIdSelect.val();
     var startDate = $("#startDate").val();
     var endDate = $("#endDate").val();
@@ -95,9 +101,9 @@ function reserveCar() {
 
     carReservation.startTime = startDate + " " + startTime + ":00";
     carReservation.endTime = endDate + " " + endTime + ":00";
-    carReservation.discount = 10;
+    carReservation.discount = 0;
     
-    console.log(carReservation);
+    $("#error").remove();
 
     $.ajax({
 		url: "http://localhost:8080/carReservations",
@@ -105,12 +111,14 @@ function reserveCar() {
 		dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(carReservation),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			$(document.documentElement).append("<h3>Reservation successful</h3>");
+            
+            location.replace("/html/userProfilePage.html");
         },
         error: function(err) {
             console.log(err);
-            $(document.documentElement).append("<h3>Error</h3>");
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
         }
     });	
 
