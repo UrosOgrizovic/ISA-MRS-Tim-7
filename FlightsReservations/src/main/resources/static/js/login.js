@@ -9,7 +9,6 @@ $(document).ready(function(){
         user.email = document.getElementById("email").value;
         user.password = document.getElementById("password").value;
 
-        $("#loggedIn").remove();
         $("#error").remove();
         console.clear();
         $.ajax({
@@ -21,8 +20,7 @@ $(document).ready(function(){
             success: function(result) {
                 console.log(result);
                 localStorage.setItem("token", result.accessToken);
-                $(document.documentElement).append("<h3 id=\"loggedIn\">Logged in successfully as user with access token <strong>" + result.accessToken 
-                + "</strong> that expires in <strong>" + result.expiresIn + "<strong></h3>");
+                location.replace("/html/userHomepage.html");
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");
                 console.log(error);

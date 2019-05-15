@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -17,11 +18,17 @@ public class Hotel extends Company
 {
 	@OneToMany
 	private ArrayList<PricelistItem> pricelist;
+	
+	
 	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "hotel_id")
 	private Set<Room> roomConfiguration;
-		
+	
+	@NotNull
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
+	private Set<HotelReservation> reservations;
+	
 	public Hotel() {
 		super();
 	}
@@ -50,4 +57,13 @@ public class Hotel extends Company
 		this.roomConfiguration = roomConfiguration;
 	}
 
+	public Set<HotelReservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<HotelReservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	
 }

@@ -25,17 +25,6 @@ public class RoomReservationRequestDTO {
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
 	
-	@NotNull
-	private Float discount;
-
-	public Float getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(Float discount) {
-		this.discount = discount;
-	}
-
 	public Date getStartTime() {
 		return startTime;
 	}

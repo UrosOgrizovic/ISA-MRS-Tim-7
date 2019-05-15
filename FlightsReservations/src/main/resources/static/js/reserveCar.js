@@ -97,8 +97,6 @@ function reserveCar() {
     carReservation.endTime = endDate + " " + endTime + ":00";
     carReservation.discount = 10;
     
-    console.log(carReservation);
-
     $.ajax({
 		url: "http://localhost:8080/carReservations",
 		method: "POST",
