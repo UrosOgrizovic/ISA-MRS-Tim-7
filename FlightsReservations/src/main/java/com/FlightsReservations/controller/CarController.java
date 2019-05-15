@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Car;
+import com.FlightsReservations.domain.dto.CreateCarDiscountDTO;
+import com.FlightsReservations.domain.dto.DiscountCarDTO;
 import com.FlightsReservations.service.CarService;
 
 @RestController
@@ -47,6 +49,19 @@ public class CarController {
 		if (service.update(car))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Car with given id does not exist", HttpStatus.NOT_FOUND);
+	}
+	
+	@PutMapping(value = "/addDiscountToCar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> addDiscountToCar(@Valid @RequestBody CreateCarDiscountDTO discount) {
+		String success = service.addDiscountToCar(discount);
+		if (success.equals("Success"))
+			return new ResponseEntity<>("Discount succesffully added", HttpStatus.OK);
+		return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+	}
+
+	@GetMapping(value = "/getAllDiscountCarsForPeriod/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(@PathVariable String startTime, @PathVariable String endTime) {
+		return service.getAllDiscountCarsForPeriod(startTime, endTime);
 	}
 	
 }

@@ -1,12 +1,15 @@
 package com.FlightsReservations.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.Car;
+import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.repository.RACSRepository;
@@ -19,6 +22,14 @@ public class RACSService {
 	
 
 	public RACS create(RACS t) {
+		Set<Car> cars = t.getCars();
+		if (cars != null) {
+			for (Car c : cars) {
+				if (c.getDiscounts() == null)
+					c.setDiscounts(new HashSet<Discount>());
+			}
+		}
+		
 		return repository.save(t);
 	}
 
