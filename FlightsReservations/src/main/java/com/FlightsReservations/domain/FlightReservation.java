@@ -24,6 +24,9 @@ public class FlightReservation extends Reservation {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<FlightInvite> invites = new HashSet<>();
 
 	@ManyToMany
 	@JoinTable(
@@ -55,6 +58,13 @@ public class FlightReservation extends Reservation {
 	public void setFlights(Set<Flight> flights) {
 		this.flights = flights;
 	}
- 
 
+	public Set<FlightInvite> getInvites() {
+		return invites;
+	}
+
+	public void setInvites(Set<FlightInvite> invites) {
+		this.invites = invites;
+	}
+	
 }
