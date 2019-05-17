@@ -3,9 +3,7 @@ var loginLink2 = "/auth/login";
 
 $(document).ready(function() {
     // no user should be logged in while on this page
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("expiresIn");
+    localStorage.clear();
     localStorage.setItem("loggedIn", false);
 
     $("#login_form").on('submit', function(e) {
@@ -25,6 +23,7 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(user),
             success: function(result) {
+                //console.log(result);
                 localStorage.setItem("token", result.accessToken);
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);
