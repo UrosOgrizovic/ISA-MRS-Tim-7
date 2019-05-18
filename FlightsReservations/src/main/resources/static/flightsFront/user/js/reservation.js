@@ -7,8 +7,7 @@ var sc = null;
 var pricelist = null;
 var totalPrice = 0;
 
-var ownerEmail = "markomarkovic@gmail.com" 
-
+var ownerEmail = "markomarkovic@gmail.com"
 
 $(document).ready(function(){
 	$("#flightSelector").change(changeFlight);
@@ -188,7 +187,7 @@ function addPassengerModal() {
 
 
 function updatePassengerModal() {
-	var type = $("#add-passenger-type").val();
+	var type = $("#addPassengerType").val();
 	if (type == "Invite registered user") {
 		$("#registered-user").show();
 		$("#unregistered-user").hide();
