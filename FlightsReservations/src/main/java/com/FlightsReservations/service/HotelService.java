@@ -11,7 +11,6 @@ import com.FlightsReservations.domain.HotelReservation;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
-import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
