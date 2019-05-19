@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.HotelAdmin;
 
 @Repository

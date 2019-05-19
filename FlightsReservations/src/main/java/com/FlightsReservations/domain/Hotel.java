@@ -1,7 +1,6 @@
 package com.FlightsReservations.domain;
 
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,9 +15,8 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorValue("H")
 public class Hotel extends Company
 {
-	@OneToMany
-	private ArrayList<PricelistItem> pricelist;
-	
+	@OneToMany(mappedBy = "hotel")
+	private Set<PricelistItem> pricelist;
 	
 	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -39,11 +37,11 @@ public class Hotel extends Company
 	}
 
 
-	public ArrayList<PricelistItem> getPricelist() {
+	public Set<PricelistItem> getPricelist() {
 		return pricelist;
 	}
 
-	public void setPricelist(ArrayList<PricelistItem> pricelist) {
+	public void setPricelist(Set<PricelistItem> pricelist) {
 		this.pricelist = pricelist;
 	}
 
