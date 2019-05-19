@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 @DiscriminatorValue("R")
@@ -28,6 +29,17 @@ public class RACS extends Company {
 	private Set<Car> cars = new HashSet<>();	
 	
 	private ArrayList<String> branchOffices;
+	
+	@Version
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	
 	public ArrayList<PricelistItem> getPricelist() {
 		return pricelist;

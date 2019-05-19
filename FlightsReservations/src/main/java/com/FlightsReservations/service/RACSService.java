@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Discount;
@@ -15,12 +16,13 @@ import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.repository.RACSRepository;
 
 @Component
+@Transactional(readOnly = true)
 public class RACSService {
 
 	@Autowired
 	RACSRepository repository;
 	
-
+	@Transactional(readOnly = false)
 	public RACS create(RACS t) {
 		Set<Car> cars = t.getCars();
 		if (cars != null) {
@@ -33,6 +35,7 @@ public class RACSService {
 		return repository.save(t);
 	}
 
+	@Transactional(readOnly = false)
 	public boolean update(RACS t) {
 		RACS r = findOne(t.getId());
 		if (r != null) {
@@ -51,7 +54,7 @@ public class RACSService {
 		return false;
 	}
 	
-
+	@Transactional(readOnly = false)
 	public boolean addCar(CarDTO car) {
 		Long racsID = car.getRacs_id();
 		RACS racs = findOne(racsID);
@@ -88,7 +91,8 @@ public class RACSService {
 			return null;
 		}
 	}
-
+	
+	@Transactional(readOnly = false)
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
