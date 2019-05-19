@@ -57,7 +57,9 @@ function create_hotel()
                     name : myForm.name.value,
                     longitude : myForm.longitude.value,
                     latitude : myForm.latitude.value,
-                    promoDescription : myForm.promoDescription.value
+                    promoDescription : myForm.promoDescription.value,
+                    overallRating : 0.0,
+                    numberOfVotes: 0.0
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set

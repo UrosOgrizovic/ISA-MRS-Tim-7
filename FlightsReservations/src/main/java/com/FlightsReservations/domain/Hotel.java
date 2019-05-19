@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("H")
@@ -18,12 +18,15 @@ public class Hotel extends Company
 	@OneToMany(mappedBy = "hotel")
 	private Set<PricelistItem> pricelist;
 	
-	@NotNull
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "hotel_id")
 	private Set<Room> roomConfiguration;
 	
-	@NotNull
+	/*
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "admin")
+	private HotelAdmin admin;
+	*/
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<HotelReservation> reservations;
 	

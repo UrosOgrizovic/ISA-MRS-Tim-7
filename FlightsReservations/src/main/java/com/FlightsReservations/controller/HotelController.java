@@ -36,6 +36,7 @@ public class HotelController {
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HotelDTO> add(@RequestBody @Valid HotelDTO hotel) {
+		System.out.println("Usao kontroler");
 		HotelDTO h = service.create(hotel);
 		if (h != null) {
 			return new ResponseEntity<>(h, HttpStatus.CREATED);

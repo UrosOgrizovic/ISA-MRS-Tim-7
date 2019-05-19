@@ -24,7 +24,9 @@ public class HotelService {
 	private RoomRepository roomRepository;
 
 	public HotelDTO create(HotelDTO t) {
-		Hotel a = repository.findByName(t.getName());
+		System.out.println("Usao servis");
+		Hotel a = null;// = repository.findByName(t.getName());
+		System.out.println("Usao servis2");
 		if (a == null) {
 			a = new Hotel(
 					t.getName(), 
@@ -33,6 +35,7 @@ public class HotelService {
 					t.getPromoDescription(), 
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);
+			
 			return createDTO(a);
 		}
 		return null;
