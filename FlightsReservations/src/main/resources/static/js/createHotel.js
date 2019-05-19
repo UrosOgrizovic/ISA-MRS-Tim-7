@@ -17,9 +17,16 @@ function validate_inputs(myForm)
 
     }
 
-    if(myForm.address.value.trim()=="")
+    if(myForm.longitude.value.trim()=="")
     {
-        alert("You must enter Hotel's address!");
+        alert("You must enter Hotel's longitude!");
+        return false;
+    }
+    
+
+    if(myForm.latitude.value.trim()=="")
+    {
+        alert("You must enter Hotel's latitude!");
         return false;
     }
 /*
@@ -52,15 +59,15 @@ function create_hotel()
                 {
                     id : 1,//Fix later
                     name : myForm.name.value,
-                    address : myForm.address.value,
-                    promoDescription : myForm.promoDescription.value,
+                    longitude : myForm.longitude.value,
+                    latitude : myForm.latitude.value,
+                    promoDescription : myForm.promoDescription.value
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set
                     overallRating : null,//double
                     additionalServices : null,//Set
                     */
-                    logoPath : ""//TODO: add uploaded image location
                 };
         //add image later
         //add administator later
@@ -68,7 +75,7 @@ function create_hotel()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotel/create",//link assigned to method in HotelController
+            url: "http://localhost:8080/hotels/add",//link assigned to method in HotelController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",

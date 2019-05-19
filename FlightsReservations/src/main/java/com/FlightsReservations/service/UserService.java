@@ -161,6 +161,7 @@ public class UserService {
 		return flightReservationsDTO;
 	}
 	
+	
 	public List<RoomReservationDTO> getRoomReservations(String email) {
 		User u = repository.findByEmail(email);
 		Collection<RoomReservation> roomReservations = roomReservationRepository.findRoomReservationsOfUser(u.getId());

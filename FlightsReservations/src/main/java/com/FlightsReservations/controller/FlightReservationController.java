@@ -1,6 +1,8 @@
 package com.FlightsReservations.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -28,9 +30,7 @@ public class FlightReservationController {
 	@Autowired
 	private FlightReservationService service;
 	
-	@PostMapping(
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
 		FlightReservationDTO fdto = service.create(dto);
 		if (fdto != null)
@@ -43,5 +43,13 @@ public class FlightReservationController {
 		if (service.cancel(id))
 			return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@PutMapping(value = "/acceptInvite/{inviteId}/{invitedEmail}")
+	public ResponseEntity<?> acceptInvite(@NotNull @Positive @PathVariable Long inviteId, @NotBlank @Email @PathVariable String invitedEmail) {
+		if (service.acceptInvite(inviteId, invitedEmail)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

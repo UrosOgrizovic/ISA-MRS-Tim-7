@@ -13,6 +13,11 @@ var email = parseJwt(token).sub;
 
 if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 
+window.setInputs = setInputs;
+window.reserveCar = reserveCar;
+window.compareCars = compareCars;
+window.checkDates = checkDates;
+
 $(document).ready(function(){
     
     // Initialize a new plugin instance for all
@@ -109,6 +114,7 @@ function reserveCar() {
     carReservation.discount = 0;
     
     $("#error").remove();
+
 
     $.ajax({
 		url: "http://localhost:8080/carReservations",

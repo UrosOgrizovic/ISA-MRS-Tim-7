@@ -12,7 +12,7 @@ $(document).ready(function() {
         user.email = document.getElementById("email").value;
         user.password = document.getElementById("password").value;
 
-        
+
         $("#error").remove();
         console.clear();
         $.ajax({
@@ -28,6 +28,7 @@ $(document).ready(function() {
                 localStorage.setItem("expiresIn", result.expiresIn);
                 localStorage.setItem("firstName", result.firstName);
                 location.replace("/html/userHomepage.html");        
+                location.replace("/html/userHomepage.html");
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");
                 console.log(error);

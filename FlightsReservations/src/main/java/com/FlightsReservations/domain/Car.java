@@ -1,6 +1,11 @@
 package com.FlightsReservations.domain;
 
+import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,11 +37,21 @@ public class Car {
 	@Column(nullable = false)
 	private double pricePerHour;
 	
+	@ElementCollection
+	private Set<Discount> discounts;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
+
+	public Set<Discount> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(Set<Discount> discounts) {
+		this.discounts = discounts;
+	}
 
 	public Long getId() {
 		return id;
@@ -114,6 +129,31 @@ public class Car {
 	public String toString() {
 		return "Car [id=" + id + ", manufacturer=" + manufacturer + ", name=" + name + ", yearOfManufacture="
 				+ yearOfManufacture + ", color=" + color + "]";
+	}
+	
+	public float getDiscountValueForPeriod(Date startTime, Date endTime) {
+		if (discounts != null) {
+			for (Discount d : discounts) {
+				if (d.getStartTime().compareTo(startTime) == 0 && d.getEndTime().compareTo(endTime) == 0) {
+					return d.getDiscountValue();
+				}
+			}
+			return 0;
+		}
+		return 0;
+	}
+	
+	public boolean checkIfAnyDiscountsForPeriod(Date startTime, Date endTime) {
+		if (discounts != null) {
+			for (Discount d : discounts) {
+				if ( (d.getStartTime().compareTo(startTime) == 0 || d.getStartTime().after(startTime)) && ( d.getEndTime().compareTo(endTime) == 0) || d.getEndTime().before(endTime)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
+		
 	}
 
 }

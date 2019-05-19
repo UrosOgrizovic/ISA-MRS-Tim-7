@@ -42,11 +42,13 @@ public class CarReservationService {
 		User owner = userRepository.findByEmail(dto.getOwnerEmail());
 		Car car = carRepository.findById(dto.getCarId()).get();
 		Float total = (float) car.getPricePerHour() * reservationDurationHours;
-		Float discount = dto.getDiscount();
 		
-		total = total - total*discount / 100;
+		float discount = car.getDiscountValueForPeriod(dto.getStartTime(), dto.getEndTime()); 
+		if (discount > 0) {
+			total = total - total * discount/100;
+		}
 		
-		CarReservation reservation = new CarReservation(new Date(), discount, total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
+		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
 		
 		reservation = repository.save(reservation);
 		return new CarReservationDTO(reservation);

@@ -2,9 +2,12 @@ package com.FlightsReservations.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("RR")
 public class RoomReservation extends Reservation {
 	private Long roomId;
 
@@ -38,9 +41,9 @@ public class RoomReservation extends Reservation {
 
 	public RoomReservation() {}
 
-	public RoomReservation(Date dateOfReservation, Float discount, Float price, Boolean confirmed, User owner,
+	public RoomReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
 			Long roomId, Date startTime, Date endTime) {
-		super(dateOfReservation, discount, price, confirmed, owner);
+		super(dateOfReservation, price, confirmed, owner);
 		this.roomId = roomId;
 		this.startTime = startTime;
 		this.endTime = endTime;

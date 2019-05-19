@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
+@DiscriminatorValue("FR")
 public class FlightReservation extends Reservation {
 
 	/*
@@ -22,6 +24,9 @@ public class FlightReservation extends Reservation {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<FlightInvite> invites = new HashSet<>();
 
 	@ManyToMany
 	@JoinTable(
@@ -34,8 +39,8 @@ public class FlightReservation extends Reservation {
 		super();
 	}
 
-	public FlightReservation(Date dateOfReservation, Float discount, Float price, User owner, Boolean confirmed) {
-		super(dateOfReservation, discount, price, confirmed, owner);
+	public FlightReservation(Date dateOfReservation, Float price, User owner, Boolean confirmed) {
+		super(dateOfReservation, price, confirmed, owner);
 	}
 
 	public Set<Passenger> getPassengers() {
@@ -53,6 +58,13 @@ public class FlightReservation extends Reservation {
 	public void setFlights(Set<Flight> flights) {
 		this.flights = flights;
 	}
- 
 
+	public Set<FlightInvite> getInvites() {
+		return invites;
+	}
+
+	public void setInvites(Set<FlightInvite> invites) {
+		this.invites = invites;
+	}
+	
 }

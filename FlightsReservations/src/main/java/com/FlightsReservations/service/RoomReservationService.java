@@ -40,11 +40,10 @@ public class RoomReservationService {
 		Room room = roomRepository.findById(dto.getRoomId()).get();
 		
 		Float total = (float) room.getOverNightStay() * reservationDurationDays;
-		Float discount = dto.getDiscount();
 		
-		total = total - total*discount / 100;
+		//TODO: check if room is on discount in reservation period. If yes, then total = total - total*discount/100
 		
-		RoomReservation reservation = new RoomReservation(new Date(), discount, total, (Boolean) true, owner, dto.getRoomId(), startTime, endTime);
+		RoomReservation reservation = new RoomReservation(new Date(), total, (Boolean) true, owner, dto.getRoomId(), startTime, endTime);
 		
 		reservation = repository.save(reservation);
 		return new RoomReservationDTO(reservation);

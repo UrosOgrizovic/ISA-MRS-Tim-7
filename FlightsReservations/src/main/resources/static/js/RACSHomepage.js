@@ -43,6 +43,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.star', function(el) {
         rateRACS(el.target);
+
     });
 });
 
@@ -59,6 +60,7 @@ function displayRACSS(racss) {
     text += "<th>Branch offices</th>";
     text += "<th>Average rating</th>";
     text += "<th>Your rating</th>";
+    
     text += "</tr>";
     text += "</thead><tbody>";
     

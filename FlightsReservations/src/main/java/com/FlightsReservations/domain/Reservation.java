@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="reservation_type", discriminatorType=DiscriminatorType.STRING)
 public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +30,6 @@ public class Reservation {
 	private Date dateOfReservation;
 
 	@Column(nullable = false)
-	private Float discount;
-
-	@Column(nullable = false)
 	private Float price;
 
 	@Column(nullable = false)
@@ -38,10 +38,9 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 	
-	public Reservation(Date dateOfReservation, Float discount, Float price, Boolean confirmed, User owner) {
+	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, User owner) {
 		super();
 		this.dateOfReservation = dateOfReservation;
-		this.discount = discount;
 		this.price = price;
 		this.confirmed = confirmed;
 		this.owner = owner;
@@ -65,14 +64,6 @@ public class Reservation {
 
 	public void setDateOfReservation(Date dateOfReservation) {
 		this.dateOfReservation = dateOfReservation;
-	}
-
-	public Float getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(Float discount) {
-		this.discount = discount;
 	}
 
 	public Float getPrice() {
@@ -101,7 +92,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", discount=" + discount
-				+ ", price=" + price + ", confirmed=" + confirmed + ", owner=" + owner + "]";
+		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price + 
+				", confirmed=" + confirmed + ", owner=" + owner + "]";
 	}
 }
