@@ -24,40 +24,38 @@
     <title>Edit Rent-A-Car Service Profile</title>
   </head>
   <body>
-    <div>
-        <select id="racs_id_select" class="form-control" style="visibility:hidden;"></select>
-        
-        <div class="column">
-            <label for="racs_name_select">Current rent-a-car service name</label>
-            <select class="form-control" id="racs_name_select">
-            </select>      
-            <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
-            
-            <label for="car_select">Choose car</label>
-            <select class="form-control" id="car_select">
-            </select>      
+    
+    <div id="nav-placeholder"></div>
 
-            
-           
-          
-        </div>
-
-        <div class="column">
-            
-            <label for="startDate">Start date of reservation:</label> <input id="startDate">
-            <label for="startTime" class="rangeLabel">Start time of reservation:</label> <input type="range" id="startTime" min="0" max="23" step="1">
-        </div>
+    <select id="racs_id_select" class="form-control" style="visibility:hidden;"></select>
+    
+    <div class="column">
+        <label for="racs_name_select">Current rent-a-car service name</label>
+        <select class="form-control" id="racs_name_select">
+        </select>      
+        <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
         
-        <div class="column">
-            
-            <label for="endDate">End date of reservation:</label> <input id="endDate">            
-            <label for="endTime" class="rangeLabel">End time of reservation:</label> <input type="range" id="endTime" min="0" max="23" step="1">
-            <input type="submit" class="btn btn-primary" onClick="reserveCar()" value="Reserve selected car"></button>
-        </div>
-        
-       
-        
+        <label for="car_select">Choose car</label>
+        <select class="form-control" id="car_select">
+        </select>      
     </div>
+
+    <div class="column">
+        
+        <label for="startDate">Start date of reservation:</label> <input id="startDate">
+        <label for="startTime" class="rangeLabel">Start time of reservation:</label> <input type="range" id="startTime" min="0" max="23" step="1">
+    </div>
+    
+    <div class="column">
+        
+        <label for="endDate">End date of reservation:</label> <input id="endDate">            
+        <label for="endTime" class="rangeLabel">End time of reservation:</label> <input type="range" id="endTime" min="0" max="23" step="1">
+        <input type="submit" class="btn btn-primary" onClick="reserveCar()" value="Reserve selected car"></button>
+    </div>
+    
+    
+        
+    
     
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

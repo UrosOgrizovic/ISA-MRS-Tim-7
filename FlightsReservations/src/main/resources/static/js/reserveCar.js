@@ -43,7 +43,11 @@ $(document).ready(function(){
         error: function(err) {
             console.log(err);
         }
-	});	
+    });
+    
+    $(function(){
+        $("#nav-placeholder").load("navbar.html");
+    });
 });
 
 function setInputs(){

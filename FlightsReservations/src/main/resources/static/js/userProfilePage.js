@@ -27,6 +27,10 @@ $(document).ready(function(){
         e.preventDefault();
         getAllRoomReservations();
     });
+
+    $(function(){
+        $("#nav-placeholder").load("navbar.html");
+    });
 });
 
 function getAllCarReservations() {
