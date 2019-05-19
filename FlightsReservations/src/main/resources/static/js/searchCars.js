@@ -3,11 +3,12 @@ var mapa;
 var emailSelect;
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+// everyone can search, so there's no role-checking here
 
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     $("#carSearchForm").on('submit', function(e) {
         e.preventDefault();
         

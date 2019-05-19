@@ -1,11 +1,10 @@
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
 function validate_inputs(myForm)
 {
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     console.log(myForm);
     if(myForm.name.value.trim()=="")
     {

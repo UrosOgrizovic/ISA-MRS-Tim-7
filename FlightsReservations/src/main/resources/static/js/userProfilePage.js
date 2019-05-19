@@ -9,6 +9,11 @@ var cancelRoomReservationLink = "http://localhost:8080/roomReservations/cancel/"
 var email = localStorage.getItem("email");
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+window.cancelCarReservation = cancelCarReservation;
+window.cancelFlightReservation = cancelFlightReservation;
+window.cancelRoomReservation = cancelRoomReservation;
 
 $(document).ready(function(){
     $("#viewAllFriends").on('click', function(e) {

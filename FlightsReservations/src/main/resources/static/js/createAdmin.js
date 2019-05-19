@@ -1,12 +1,11 @@
 var my_url = "http://localhost:8080";
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
 function validate_inputs(myForm)
 {
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     console.log(myForm);
     //alert(""+myForm.adminType.type);
     if(myForm.adminType.value==0)

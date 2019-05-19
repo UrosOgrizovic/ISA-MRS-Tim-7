@@ -2,11 +2,10 @@ var getAllHotelsLink = "/hotels/getAll";
 var rateLink = "/companies/rate";
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     $("#viewAllHotels").on('click', function(e) {
         e.preventDefault();
         

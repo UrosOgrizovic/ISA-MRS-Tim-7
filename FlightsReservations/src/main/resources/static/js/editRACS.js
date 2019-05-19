@@ -1,3 +1,4 @@
+import { checkRoleFromToken } from "./securityStuff.js";
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
@@ -5,11 +6,11 @@ var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
+if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
 	$.ajax({
 		url: "http://localhost:8080/racss/getAll",
 		method: "GET",

@@ -4,7 +4,6 @@ var loginLink2 = "/auth/login";
 $(document).ready(function() {
     // no user should be logged in while on this page
     localStorage.clear();
-    localStorage.setItem("loggedIn", false);
 
     $("#login_form").on('submit', function(e) {
         e.preventDefault();
@@ -27,7 +26,7 @@ $(document).ready(function() {
                 localStorage.setItem("token", result.accessToken);
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);
-                localStorage.setItem("loggedIn", true);
+                localStorage.setItem("firstName", result.firstName);
                 location.replace("/html/userHomepage.html");        
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");

@@ -150,9 +150,7 @@ public class UserService {
 	
 	
 	public List<FlightReservationDTO> getFlightReservations(String email) {
-		System.out.println("EMAIL:" + email);
 		User u = repository.findByEmail(email);
-		System.out.println(u);
 		Collection<FlightReservation> flightReservations  = flightReservationRepository.findFlightReservationsOfUser(u.getId());
 		
 		List<FlightReservationDTO> flightReservationsDTO = new ArrayList<>();

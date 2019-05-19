@@ -2,11 +2,10 @@ var getAllLink = "/flights";
 var rateLink = "/flights/rate";
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     $("#viewAllFlights").on('click', function(e) {
         
         e.preventDefault();

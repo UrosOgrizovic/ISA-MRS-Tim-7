@@ -34,8 +34,7 @@ public class RACSController {
 	@Autowired
 	private RACSService service;
 	
-	//@PreAuthorize("hasRole('ROLE_USER')")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
 		return service.findAll();
@@ -46,7 +45,7 @@ public class RACSController {
 		return service.findByName(value);
 	}
 	
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RACS> add(@RequestBody @Valid RACS racs) {
@@ -57,6 +56,7 @@ public class RACSController {
 		return new ResponseEntity<>(r, HttpStatus.CONFLICT);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -145,7 +145,8 @@ public class RACSController {
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
 
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/addCar",
 			consumes = MediaType.APPLICATION_JSON_VALUE,

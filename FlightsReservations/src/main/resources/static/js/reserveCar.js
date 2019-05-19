@@ -1,3 +1,5 @@
+import { checkRoleFromToken } from "./securityStuff.js";
+
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
@@ -5,11 +7,14 @@ var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+var email = parseJwt(token).sub;
+
+if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
     // Initialize a new plugin instance for all
     // e.g. $('input[type="range"]') elements.
     $('input[type="range"]').rangeslider({
@@ -86,7 +91,7 @@ function reserveCar() {
     
     var carReservation = {};
     
-    carReservation.ownerEmail = localStorage.getItem("email");
+    carReservation.ownerEmail = email;
     carReservation.carId = carIdSelect.val();
     var startDate = $("#startDate").val();
     var endDate = $("#endDate").val();

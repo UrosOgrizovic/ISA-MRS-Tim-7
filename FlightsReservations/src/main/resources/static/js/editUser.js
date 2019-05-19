@@ -2,11 +2,10 @@ var mapa;
 var emailSelect;
 
 var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
-    if (!localStorage.getItem("loggedIn")) {
-        location.replace("/html/login.html");
-    }
+    
 	mapa = new Map();
 	emailSelect = $("#emailSelect");
 	emailSelect.change(setInputs);
