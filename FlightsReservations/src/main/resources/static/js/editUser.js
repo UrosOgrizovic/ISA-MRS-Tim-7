@@ -1,6 +1,8 @@
+import {loadNavbar} from "./navbar.js"; 
 var mapa;
 var emailSelect;
 
+window.updateUser = updateUser;
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
@@ -23,7 +25,8 @@ $(document).ready(function(){
 			}
 			setInputs();
 		}
-	});	
+    });	
+    loadNavbar('profileHomepageNavItem');
 });
 
 function updateUser() {

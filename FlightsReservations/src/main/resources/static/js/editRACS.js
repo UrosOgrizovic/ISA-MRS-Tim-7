@@ -1,9 +1,16 @@
+import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken } from "./securityStuff.js";
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
+
+window.updateRACS = updateRACS;
+window.addCarToRACS = addCarToRACS;
+window.removeCarFromRACS = removeCarFromRACS;
+window.updateCar = updateCar;
+window.isNumber = isNumber;
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
@@ -18,17 +25,23 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			for (var i = 0; i < result.length; i++) {
-                mapa[result[i].id] = result[i];
-                nameSelect.append("<option>"+result[i].name+"</option>");
-                idSelect.append("<option>" + result[i].id + "</option>");
-			}
-			setInputs();
+            if (result != null && result.lenght > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    mapa[result[i].id] = result[i];
+                    nameSelect.append("<option>"+result[i].name+"</option>");
+                    idSelect.append("<option>" + result[i].id + "</option>");
+                }
+                setInputs();
+            }
+
+			
         },
         error: function(err) {
             console.log(err);
         }
-	});	
+    });	
+    
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function updateRACS() {

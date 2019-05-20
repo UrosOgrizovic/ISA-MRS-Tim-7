@@ -22,7 +22,7 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(user),
             success: function(result) {
-                //console.log(result);
+                //console.log(result.email);
                 localStorage.setItem("token", result.accessToken);
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);

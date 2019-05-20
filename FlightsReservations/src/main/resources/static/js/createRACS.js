@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken } from "./securityStuff.js";
 var addRACSLink = "/racss/add";
 
@@ -40,4 +41,6 @@ $(document).ready(function(){
         });
 
     });
+
+    loadNavbar('RACSHomepageNavItem');
 });

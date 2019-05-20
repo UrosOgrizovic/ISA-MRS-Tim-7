@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken } from "./securityStuff.js";
 
 var mapa = new Map();
@@ -6,6 +7,7 @@ var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
@@ -27,7 +29,7 @@ $(document).ready(function(){
         onInit : function() {
             this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() + ":00" );
         },
-        onSlide : function( position, value ) {
+        onSlide : function(position, value ) {
             this.output.html( value );
         }
     });
@@ -59,7 +61,9 @@ $(document).ready(function(){
         error: function(err) {
             console.log(err);
         }
-	});	
+    });
+    
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function setInputs(){

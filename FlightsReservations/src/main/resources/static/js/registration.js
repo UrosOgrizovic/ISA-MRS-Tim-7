@@ -15,7 +15,6 @@ $(document).ready(function(){
             user.phone = document.getElementById("phone").value;
             user.password = document.getElementById("password").value;
 
-            console.log(user);
             $.ajax({
                 url: "http://localhost:8080/users/add",
                 method: "POST",

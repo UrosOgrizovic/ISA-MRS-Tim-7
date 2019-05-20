@@ -1,6 +1,12 @@
+import {loadNavbar} from "./navbar.js"; 
 var searchUrl = "http://localhost:8080/racss/searchCars";
 var mapa;
 var emailSelect;
+
+
+window.mapa = mapa;
+window.emailSelect = emailSelect;
+window.isNumber = isNumber;
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
@@ -34,6 +40,7 @@ $(document).ready(function(){
         });
     });
     
+    loadNavbar('RACSHomepageNavItem');
     
 });
 
