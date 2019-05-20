@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="css/reservation.css">
 		<script src="js/searchFlights.js"></script>
 		<script src="js/showSearchResults.js"></script>
-		<script src="js/reservation.js"></script>
+		<script src="js/reservation2.js"></script>
 		<title>Flights Homepage</title>
 	</head>
 	<body>
@@ -149,27 +149,35 @@
 					<div class="modal-body">
 						<div class="wrapper">
 							<div class="container">
-								<label for="exampleFormControlSelect1">Select flight</label>
-								<select class="form-control" id="flightSelector">
-								</select>
-								<div id="seat-map">
-								</div>
-								<div class="booking-details">
-									<h2> Total cost: <span id="price"> </span></h2>
-									<div id="legend"></div>
-								</div>
 								<table id="passengerTable" class="table">
 									<thead class="thead-light">
 										<tr>
-											<th scope="col">Seat number</th>
 											<th scope="col">Name</th>
 											<th scope="col">Surname</th>
 											<th scope="col">Passport</th>
+											<th scope="col">Flight 1 seat</th>
+											<th scope="col" id = "flightTwoHeader">Flight 2 seat</th>
+											<th scope="col">Remove</th>
 										</tr>
 									</thead>
 									<tbody>
 									</tbody>
 								</table>
+
+								<table id="inviteTable" class="table">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">Email</th>
+											<th scope="col">Flight 1 seat</th>
+											<th scope="col" id = "flightTwoHeaderInv">Flight 2 seat</th>
+											<th scope="col">Cancel invite</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+
+								<button type="button" class="btn btn-primary" id="createPassenger">Add passenger</button>
 							</div>
 						</div>
 					</div>
@@ -182,9 +190,9 @@
 			</div>
 		</div>
 		<!-- ADD PASSENGER MODAL -->
-		<div class="modal fade modal" id="addPassengerModal" tabindex="-1"
+		<div class="modal fade bd-example-modal-lg modal" id="addPassengerModal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Add passenger</h5>
@@ -195,7 +203,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<select id="add-passenger-type" class="form-control">
+							<select id="addPassengerType" class="form-control">
 								<option selected>Invite registered user</option>
 								<option>Add unregistered user</option>
 							</select>
@@ -205,14 +213,22 @@
 							<input type="text" class="form-control" id="passengerName">
 							<label for="passengerSurname"> Surname </label>
 							<input type="text" class="form-control" id="passengerSurname">
+							<label for="passengerPassport"> Passport </label>
+							<input type="text" class="form-control" id="passengerPassport">
 							</div>
 							<div id="registered-user">
 								<label for="friendEmail"> Email </label>
 								<input type="text" class="form-control" id="friendEmail">
 							</div>
-							<label for="passengerPassport"> Passport </label>
-							<input type="text" class="form-control" id="passengerPassport">
 						</div>
+
+						<label for = "seatMapSelector"> Choose seat </label>
+						<select id = "seatMapSelector" class="form-control">
+						</select>
+
+						<div id="seatMap"></div>
+						<div id="legend"></div>
+
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"

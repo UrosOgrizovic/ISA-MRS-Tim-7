@@ -1,4 +1,4 @@
-var airline = "airline1";
+var airline = "airserbia";
 var stops = [];
 var availableStops = [];
 var flights = null;

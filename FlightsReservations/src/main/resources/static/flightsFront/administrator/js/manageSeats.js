@@ -74,6 +74,7 @@ function showSeatModal(flightId) {
 	$("#seatModal").modal("show");
 }
 
+
 function refreshSeatModal() {
 	$('.seatCharts-row').remove();
 	$('.seatCharts-legendItem').remove();
@@ -140,9 +141,9 @@ function renderSeats(seats, seatStructure, price) {
 				category: 'BUSINESS',
 				},
 			u: {
-		        classes: 'unavailable',
-		        category: 'Unavailable'
-			    }
+				classes: 'unavailable',
+				category: 'Unavailable'
+				}
 		
 		},
 		naming : {
@@ -193,10 +194,10 @@ function updateSeatTable(seat) {
 			<td>${seat.settings.label}</td>
 			<td>
 				<select class="form-control input-sm" id="newSeatType">
-      				<option id="first">FIRST</option>
-      				<option id="business">BUSINESS</option>
-      				<option id="economy">ECONOMY</option>
-    			</select>
+					<option id="first">FIRST</option>
+					<option id="business">BUSINESS</option>
+					<option id="economy">ECONOMY</option>
+				</select>
 			</td>
 		</tr>`;
 	$("#seatTable tbody").append(html);

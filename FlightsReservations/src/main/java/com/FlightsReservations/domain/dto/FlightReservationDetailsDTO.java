@@ -14,7 +14,7 @@ public class FlightReservationDetailsDTO {
 	@NotNull
 	@Valid
 	private List<PassengerDTO> passengers;
-
+	
 	@NotNull 
 	@Valid
 	private List<FlightInviteDTO> invites;
