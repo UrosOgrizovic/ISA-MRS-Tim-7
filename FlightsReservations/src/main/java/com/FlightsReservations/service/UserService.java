@@ -275,7 +275,7 @@ public class UserService {
 		if (friendRequestsRepository.findFriendRequest(s.getId(), r.getId()) != null)
 			return false;
 		
-		// not friends
+		// not friends already
 		if (repository.areFriends(s.getId(), r.getId()) > 0)
 			return false;
 		
