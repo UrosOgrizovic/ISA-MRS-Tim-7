@@ -23,7 +23,8 @@ $(document).ready(function(){
                 contentType: "application/json",
                 data: JSON.stringify(user),
                 success: function(result) {
-                                    
+                    //TODO: write "Click on link in email to activate your account"
+                    location.replace("/html/login.html");
                 }, error: function(error) {
                     console.log(error);
                 }

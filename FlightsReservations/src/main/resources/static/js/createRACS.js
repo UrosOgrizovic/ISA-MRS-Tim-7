@@ -1,7 +1,13 @@
 import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 var addRACSLink = "/racss/add";
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){
+    
     $("#createRACSForm").on('submit', function(e) {
         e.preventDefault();
         
@@ -24,6 +30,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(racs),
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
                 console.log(result);
                 $(document.documentElement).append("<h3 id=\"addedSuccessfully\">Rent-a-car service addedd successfully</h3>");
