@@ -7,7 +7,7 @@ var sc = null;
 var pricelist = null;
 var totalPrice = 0;
 
-var ownerEmail = "markomarkovic@gmail.com"
+var ownerEmail = localstorage.getItem("email");
 
 $(document).ready(function(){
 	$("#flightSelector").change(changeFlight);

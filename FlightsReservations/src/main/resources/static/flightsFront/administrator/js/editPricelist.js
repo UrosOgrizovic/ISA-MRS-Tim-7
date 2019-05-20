@@ -1,4 +1,4 @@
-var airline = "airline1";
+var airline = "airserbia";
 
 $(document).ready(function(){
 	// get pricelist for airline

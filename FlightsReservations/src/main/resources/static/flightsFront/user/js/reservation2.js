@@ -1,10 +1,15 @@
+var currentUserEmail = localStorage.getItem("email");
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 var reservation = null;
 var resultIndex = null;
 var flightIndex = null;
 var selectedSeat = null;
 var seatMap = null;
 var currentlySelectedData = [];
-var currentUserEmail = "markomarkovic@gmail.com"; 
+
+
 var takenOne = false;
 var takenTwo = false;
 var totalPrice = 0;
@@ -311,6 +316,7 @@ function addPassenger() {
 		});
 		refreshInviteTable();
 	}
+	$("#addPassengerModal").modal("toggle");
 }
 
 
@@ -384,8 +390,7 @@ function sendReservationRequest() {
 		contentType: "application/json",
 		data: JSON.stringify(reservation),
 		success: function(result) {
-			alert("Success.")
-			console.log(result)
+			$("#reservationModal").modal("toggle");
 		},
 		error: function(error) {
 			alert("Error", error);

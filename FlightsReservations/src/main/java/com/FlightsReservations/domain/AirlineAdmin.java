@@ -9,7 +9,7 @@ import com.FlightsReservations.domain.dto.AirlineAdminDTO;
 public class AirlineAdmin extends Admin
 {
 	@OneToOne
-	private Airline airline;//TODO: check if concurrent, edit later
+	private Airline airline;
 	
 	public AirlineAdmin() {
 		super();
