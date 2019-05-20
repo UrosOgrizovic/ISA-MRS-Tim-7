@@ -1,5 +1,5 @@
 // get airline that current admin manages (mock but should be from storage)
-var airline = "airline1";
+var airline = "airserbia";
 
 $(document).ready(function(){
 	$("#addAirportBtn").click(addAirport);

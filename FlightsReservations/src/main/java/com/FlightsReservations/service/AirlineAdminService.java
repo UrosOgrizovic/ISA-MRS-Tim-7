@@ -5,12 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.AirlineAdmin;
+import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
+import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.repository.AirlineAdminRepository;
+import com.FlightsReservations.repository.UserRepository;
 
 @Component
 public class AirlineAdminService {
@@ -19,6 +24,8 @@ public class AirlineAdminService {
 	@Autowired
 	AirlineAdminRepository repository;//TODO: will be deleted
 	
+	@Autowired
+	UserRepository userRepository;
 	
 	public AirlineAdminDTO create(AirlineAdminDTO dto) {
 		AirlineAdmin a = repository.findByEmail(dto.getEmail());
@@ -28,7 +35,6 @@ public class AirlineAdminService {
 			return createDTO(a);
 		}
 		return null;
-
 	}
 
 	public boolean update(AirlineAdminDTO dto) {
@@ -74,6 +80,12 @@ public class AirlineAdminService {
 		//Airline al = a.getAirline();
 		//dto.setAirline(al.getName());
 	return dto;
+	}
+
+	public AirlineDTO getAirline(@NotBlank String adminEmail) {
+		User u = userRepository.findByEmail(adminEmail);
+		AirlineAdmin aa = repository.findById(u.getId()).get();
+		return new AirlineDTO(aa.getAirline());
 	}
 
 }
