@@ -11,12 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+
 @Entity
 @DiscriminatorValue("R")
 public class RACS extends Company {
 	
 
-	private ArrayList<PricelistItem> pricelist;
+	private ArrayList<RACSPricelistItem> pricelist;
 	
 	
 	/* orphanRemoval = true - guarantees that when a car is removed from  
@@ -29,10 +30,10 @@ public class RACS extends Company {
 	
 	private ArrayList<String> branchOffices;
 	
-	public ArrayList<PricelistItem> getPricelist() {
+	public ArrayList<RACSPricelistItem> getPricelist() {
 		return pricelist;
 	}
-	public void setPricelist(ArrayList<PricelistItem> pricelist) {
+	public void setPricelist(ArrayList<RACSPricelistItem> pricelist) {
 		this.pricelist = pricelist;
 	}
 	public Set<Car> getCars() {

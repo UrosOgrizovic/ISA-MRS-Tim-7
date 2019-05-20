@@ -1,4 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
@@ -36,6 +37,8 @@ function dateToString(obj) {
     return objDate + "-" + objMonth + "-" + objYear + " " + objHours + ":" + objMinutes;
 }
 
+var token = localStorage.getItem("token");
+if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 window.fastBook = fastBook;
 
 $(document).ready(function() {
@@ -128,6 +131,9 @@ function fastBook(carId) {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(carReservationRequestDTO),
+        headers: {
+            "Authorization": "Bearer " + token
+        },
         success: function(carReservationDTO) {
             location.replace("/html/userHomepage.html");
         }, error: function(error) {
