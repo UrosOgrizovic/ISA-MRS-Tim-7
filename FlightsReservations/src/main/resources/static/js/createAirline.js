@@ -1,6 +1,10 @@
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 function validate_inputs(myForm)
 {
+    
     console.log(myForm);
     if(myForm.name.value.trim()=="")
     {
@@ -68,6 +72,7 @@ function create_airline()
             data: JSON.stringify(airline),
             cache: false,
             crossDomain: true,
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) { },
             })
     }

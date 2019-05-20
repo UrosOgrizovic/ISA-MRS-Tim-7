@@ -7,13 +7,15 @@ var sc = null;
 var pricelist = null;
 var totalPrice = 0;
 
-var ownerEmail = "" 
+var ownerEmail = "markomarkovic@gmail.com" 
 
 
 $(document).ready(function(){
 	$("#flightSelector").change(changeFlight);
 	$("#addPassenger").click(addPassengerAndUpdateTable);
 	$("#makeReservation").click(makeReservation);
+	$("#add-passenger-type").change(updatePassengerModal);
+	$("#autoPassenger").click(autoPassenger);
 
 	pricelist = new Object();
 	pricelist.first = 400;
@@ -56,11 +58,13 @@ function prepareReservationData(index) {
 	reservationState.passengers = [];
 	reservationState.flights = [];
 	reservationState.reservedSeats = [];
+	reservationState.invites = [];
 
 	for (var i = 0; i < searchResults[index].length; i++) { 
 		reservationState.flights.push(searchResults[index][i].id);
 		reservationState.passengers.push([]);
 		reservationState.reservedSeats.push([]);
+		reservationState.invites.push([]);
 	}
 }
 
@@ -177,12 +181,31 @@ function addPassengerModal() {
 	$("#passengerName").val("");
 	$("#passengerSurname").val("");
 	$("#passengerPassport").val("");	
+	$("#friendEmail").val("");
+	updatePassengerModal();
 	$("#addPassengerModal").modal("toggle");
 }
 
 
+function updatePassengerModal() {
+	var type = $("#add-passenger-type").val();
+	if (type == "Invite registered user") {
+		$("#registered-user").show();
+		$("#unregistered-user").hide();
+		$("#autoPassenger").prop("disabled", true);
+	} else {
+		$("#registered-user").hide();
+		$("#unregistered-user").show();
+		$("#autoPassenger").prop("disabled", false);
+	}
+}
+
+
 function addPassengerAndUpdateTable() {
-	createPassenger();
+	if ($("#add-passenger-type").val() == "Invite registered user")
+		inviteFriend();
+	else
+		createPassenger();
 	updatePassengerTable();
 	//updateTotalPrice();
 	$("#addPassengerModal").modal("toggle");
@@ -203,16 +226,59 @@ function createPassenger() {
 		reservationState.reservedSeats[flightIndex].push(seatIndex);
 		sc.status(selectedSeat.settings.id, 'selected');
 		updatePrice("+");
-		
 	}
 }
 
 
+function inviteFriend() {
+	// if are friends
+	// 	add to request
+	var invite = new Object();
+	invite.friendEmail = $("#friendEmail").val().trim();
+	invite.passport = $("#passengerPassport").val().trim();
+	invite.seatNumber = selectedSeat.settings.label;
+
+	var flightIndex = $("#flightSelector").val();
+	$.ajax({
+		url: "http://localhost:8080/users/getFriends/" + ownerEmail,
+		method: "GET",
+		dataType: "json",
+		success: function(friends) {
+			var found = false;
+			friends.forEach(function(friend){
+				if (friend.email == invite.friendEmail) {
+					console.log(friend.email, invite.friendEmail);
+					reservationState.invites[flightIndex].push(invite);
+					reservationState.reservedSeats[flightIndex].push(invite.seatNumber);
+					sc.status(selectedSeat.settings.id, 'selected');
+					updatePrice("+");
+					found = true;
+					return;
+				}
+			});
+
+			if (!found)
+				alert("NOT FRIENDS!");
+
+		},
+		error: function(message) {
+			alert("GET FRIENDS BAD REQUEST!")
+		}
+	});
+
+
+
+}
+
+
+function autoPassenger() {
+	alert("To implement when security is done.");
+}
+
+
 function validatePassenger(passenger) {
-	console.log(passenger);
 	for (var property in passenger) {
 	    if (passenger.hasOwnProperty(property)) {
-	    	console.log(property);
 	        if (passenger[property] == "")
 	        	return false;
 	    }
@@ -290,19 +356,20 @@ function updatePrice(operation) {
 
 function makeReservation() {
 	var request = new Object();
-	request.ownerEmail = "mmarkovic@gmail.com";
+	request.ownerEmail = "markomarkovic@gmail.com";
 	request.flights = [];
 
 	for (var i = 0; i < searchResults[resultIndex].length; i++) {
 		var f = new Object();
 		f.flightId = searchResults[resultIndex][i].id;
 		f.passengers = reservationState.passengers[i];
-		f.invites = [];
+		f.invites = reservationState.invites[i];
 		request.flights.push(f);
 	}
+		
 
 	console.log(request);
-	
+
 	$.ajax({
 		url: "http://localhost:8080/flightReservations",
 		method: "POST",

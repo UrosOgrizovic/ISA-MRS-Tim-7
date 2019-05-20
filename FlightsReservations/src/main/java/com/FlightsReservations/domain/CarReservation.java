@@ -2,7 +2,6 @@ package com.FlightsReservations.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

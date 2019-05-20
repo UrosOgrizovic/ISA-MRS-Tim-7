@@ -1,4 +1,4 @@
-var airline = "airserbia";
+var airline = "airline1";
 
 $(document).ready(function(){
 	$.ajax({
