@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class RACSController {
 	@Autowired
 	private RACSService service;
 	
-	//@PreAuthorize("hasRole('USER')")
+	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
 		return service.findAll();
@@ -44,7 +45,7 @@ public class RACSController {
 		return service.findByName(value);
 	}
 	
-	//@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RACS> add(@RequestBody @Valid RACS racs) {
@@ -55,6 +56,7 @@ public class RACSController {
 		return new ResponseEntity<>(r, HttpStatus.CONFLICT);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -68,10 +70,6 @@ public class RACSController {
 	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
-		/*
-		if (name.trim().isEmpty() || manufacturer.trim().isEmpty())
-			return new ResponseEntity<ArrayList<Car>>(HttpStatus.BAD_REQUEST);
-		*/
 		Collection<RACS> racss = service.findAll();
 		ArrayList<Car> matchingCars = new ArrayList<Car>();
 		
@@ -147,7 +145,8 @@ public class RACSController {
 		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
 
 	}
-	
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/addCar",
 			consumes = MediaType.APPLICATION_JSON_VALUE,

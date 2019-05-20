@@ -2,6 +2,7 @@ package com.FlightsReservations.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -9,6 +10,7 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Authority;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.User;
