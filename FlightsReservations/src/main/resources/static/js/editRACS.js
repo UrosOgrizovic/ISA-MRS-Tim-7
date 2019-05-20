@@ -1,9 +1,15 @@
+import {loadNavbar} from "./navbar.js"; 
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+window.updateRACS = updateRACS;
+window.addCarToRACS = addCarToRACS;
+window.removeCarFromRACS = removeCarFromRACS;
+window.updateCar = updateCar;
+window.isNumber = isNumber;
 
 $(document).ready(function(){
 	$.ajax({
@@ -24,9 +30,7 @@ $(document).ready(function(){
         }
     });	
     
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function updateRACS() {

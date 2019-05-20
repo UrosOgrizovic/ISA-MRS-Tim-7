@@ -1,6 +1,5 @@
+import {loadNavbar} from "./navbar.js";
 $(document).ready(function(){
-	    
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('userHomepageNavItem');
+    
 });

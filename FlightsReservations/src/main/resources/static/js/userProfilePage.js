@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 var getAllFriendsLink = "http://localhost:8080/users/getFriends";
 var getAllCarReservationsLink = "http://localhost:8080/users/getCarReservations";
 var getAllFlightReservationsLink = "http://localhost:8080/users/getFlightReservations";
@@ -28,9 +29,7 @@ $(document).ready(function(){
         getAllRoomReservations();
     });
 
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('profileHomepageNavItem');
 });
 
 function getAllCarReservations() {

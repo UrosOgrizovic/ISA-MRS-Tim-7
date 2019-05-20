@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
@@ -35,6 +36,8 @@ function dateToString(obj) {
     return objDate + "-" + objMonth + "-" + objYear + " " + objHours + ":" + objMinutes;
 }
 
+window.fastBook = fastBook;
+
 $(document).ready(function() {
     $("#discountCars").remove();
     $("#error").remove();
@@ -52,6 +55,8 @@ $(document).ready(function() {
             console.log(error);
         }
     });
+
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function displayDiscountCars(cars) {

@@ -1,6 +1,11 @@
+import {loadNavbar} from "./navbar.js"; 
 var searchUrl = "http://localhost:8080/racss/searchCars";
 var mapa;
 var emailSelect;
+
+window.mapa = mapa;
+window.emailSelect = emailSelect;
+window.isNumber = isNumber;
 
 $(document).ready(function(){
     $("#carSearchForm").on('submit', function(e) {
@@ -27,9 +32,7 @@ $(document).ready(function(){
         });
     });
     
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('RACSHomepageNavItem');
     
 });
 

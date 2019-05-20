@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 var addRACSLink = "/racss/add";
 
 $(document).ready(function(){
@@ -34,7 +35,5 @@ $(document).ready(function(){
 
     });
 
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('RACSHomepageNavItem');
 });

@@ -1,5 +1,8 @@
+import {loadNavbar} from "./navbar.js"; 
 var mapa;
 var emailSelect;
+
+window.updateUser = updateUser;
 
 $(document).ready(function(){
 	mapa = new Map();
@@ -18,7 +21,8 @@ $(document).ready(function(){
 			}
 			setInputs();
 		}
-	});	
+    });	
+    loadNavbar('profileHomepageNavItem');
 });
 
 function updateUser() {

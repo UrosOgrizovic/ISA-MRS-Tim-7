@@ -1,6 +1,10 @@
+import {loadNavbar} from "./navbar.js"; 
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";
+
+window.rateRACS = rateRACS;
+window.searchRACSByName = searchRACSByName;
 
 $(document).ready(function(){
     $("#viewAllRACS").on('click', function(e) {
@@ -24,10 +28,7 @@ $(document).ready(function(){
             }
         });
     });
-
-    $(function(){
-        $("#nav-placeholder").load("navbar.html");
-    });
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function displayRACSS(racss) {
