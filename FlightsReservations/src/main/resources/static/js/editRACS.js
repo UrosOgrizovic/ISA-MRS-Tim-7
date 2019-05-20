@@ -25,12 +25,16 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			for (var i = 0; i < result.length; i++) {
-                mapa[result[i].id] = result[i];
-                nameSelect.append("<option>"+result[i].name+"</option>");
-                idSelect.append("<option>" + result[i].id + "</option>");
-			}
-			setInputs();
+            if (result != null && result.lenght > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    mapa[result[i].id] = result[i];
+                    nameSelect.append("<option>"+result[i].name+"</option>");
+                    idSelect.append("<option>" + result[i].id + "</option>");
+                }
+                setInputs();
+            }
+
+			
         },
         error: function(err) {
             console.log(err);

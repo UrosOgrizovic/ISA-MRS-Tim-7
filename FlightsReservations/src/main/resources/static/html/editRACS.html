@@ -21,50 +21,56 @@
           <select id="racs_id_select" class="form-control" style="display:none;"></select>
 
           <div class="column">
-            <label for="racs_name_select">Current rent-a-car service name</label>
+            <label for="racs_name_select">Choose rent-a-car service</label>
             <select class="form-control" id="racs_name_select">
             </select>      
+
             <select id="car_id_select" class="form-control" style="display:none;"></select>
             
+            
+    
+            
+            <form method="PUT">
+                <label for="name">New rent-a-car service name</label>
+                <input type="text" class="form-control" id="name"/>
+                <label for="address">New rent-a-car service longitude</label>
+                <input type="text" class="form-control" id="longitude"/>
+                <label for="address">New rent-a-car service latitude</label>
+                <input type="text" class="form-control" id="latitude"/>
+                <label for="description">New rent-a-car service description</label>
+                <input type="text" class="form-control"  id="description"/>
+                <label for="description">New rent-a-car service average score</label>
+                <input type="text" class="form-control"  id="averageScore"/>
+                <label for="description">New rent-a-car service number of votes</label>
+                <input type="text" class="form-control"  id="numberOfVotes"/>
+                
+                <button type="submit" class="btn btn-primary" onClick="updateRACS()">Update rent-a-car service</button>
+            </form>
+            
+          </div>
+        <div class="column">
             <label for="car_select">Choose car</label>
             <select class="form-control" id="car_select">
             </select>      
-
             
-            <button type="submit" class="btn btn-primary" onClick="removeCarFromRACS()">Remove selected car from rent-a-car service</button>
-    
-            <br>
-            <label>New car manufacturer</label>
-            <input type="text" class="form-control" id="editCarManufacturer"/>
-            <label>New car name</label>
-            <input type="text" class="form-control" id="editCarName"/>
-            <label>New car color</label>
-            <input type="text" class="form-control" id="editCarColor"/>
-            <label>New car year of manufacture</label>
-            <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="editCarYearOfManufacture"/>
-            <label>New car price per hour</label>
-            <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
-            <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
+            
+            <form method="PUT" >
+                <button type="submit" class="btn btn-primary" onClick="removeCarFromRACS()">Remove selected car from rent-a-car</button>
+                <label>New car manufacturer</label>
+                <input type="text" class="form-control" id="editCarManufacturer"/>
+                <label>New car name</label>
+                <input type="text" class="form-control" id="editCarName"/>
+                <label>New car color</label>
+                <input type="text" class="form-control" id="editCarColor"/>
+                <label>New car year of manufacture</label>
+                <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="editCarYearOfManufacture"/>
+                <label>New car price per hour</label>
+                <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
+                <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
+            </form>
+            
+        </div>
           
-          </div>
-
-        
-          <form class="column" method="PUT">
-            <label for="name">New rent-a-car service name</label>
-            <input type="text" class="form-control" id="name"/>
-            <label for="address">New rent-a-car service longitude</label>
-            <input type="text" class="form-control" id="longitude"/>
-            <label for="address">New rent-a-car service latitude</label>
-            <input type="text" class="form-control" id="latitude"/>
-            <label for="description">New rent-a-car service description</label>
-            <input type="text" class="form-control"  id="description"/>
-            <label for="description">New rent-a-car service average score</label>
-            <input type="text" class="form-control"  id="averageScore"/>
-            <label for="description">New rent-a-car service number of votes</label>
-            <input type="text" class="form-control"  id="numberOfVotes"/>
-            
-            <button type="submit" class="btn btn-primary" onClick="updateRACS()">Update rent-a-car service</button>
-          </form>
         
           <form method="PUT" class="column">
             <label>Car name: </label>

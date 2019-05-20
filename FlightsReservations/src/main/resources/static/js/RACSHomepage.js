@@ -12,8 +12,8 @@ if (token == null) location.replace("/html/login.html");
 
 // if user isn't admin
 if (!checkRoleFromToken(token, "ROLE_ADMIN")) {
-    document.getElementById("editRACS").style.visibility = "hidden";
-    document.getElementById("createRACS").style.visibility = "hidden";
+    document.getElementById("editRACS").style.display = "none";
+    document.getElementById("createRACS").style.display = "none";
 }
 
 // exposing function to window object, because each module creates a scope to avoid name collisions
