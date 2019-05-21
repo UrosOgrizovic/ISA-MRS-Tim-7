@@ -21,7 +21,7 @@ INSERT INTO user_authority (user_id, authority_id) VALUES (2, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (2, 2);
 
 
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22);
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia");
 
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (1, 'airport1', 'city1', 'state1', 55.659, 44.332);
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (2, 'airport2', 'city2', 'state2', 35.659, 64.332);
