@@ -41,9 +41,7 @@ public class CarReservationRequestDTO {
 		this.endTime = endTime;
 	}
 
-	public CarReservationRequestDTO() {
-		super();
-	}
+	public CarReservationRequestDTO() {}
 
 	public String getOwnerEmail() {
 		return ownerEmail;

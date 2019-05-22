@@ -15,7 +15,21 @@ public class DiscountCarDTO {
 	private double totalPrice;
 	private Date startTime;
 	private Date endTime;
+	private double initialPrice;
+	private float discountValue;
 	
+	public double getInitialPrice() {
+		return initialPrice;
+	}
+	public void setInitialPrice(double initialPrice) {
+		this.initialPrice = initialPrice;
+	}
+	public float getDiscountValue() {
+		return discountValue;
+	}
+	public void setDiscountValue(float discountValue) {
+		this.discountValue = discountValue;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -71,7 +85,7 @@ public class DiscountCarDTO {
 		super();
 	}
 	public DiscountCarDTO(Long id, String manufacturer, String name, int yearOfManufacture, String color, double totalPrice,
-			Date startTime, Date endTime) {
+			Date startTime, Date endTime, double initialPrice, float discountValue) {
 		super();
 		this.id = id;
 		this.manufacturer = manufacturer;
@@ -81,9 +95,11 @@ public class DiscountCarDTO {
 		this.totalPrice = totalPrice;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.initialPrice = initialPrice;
+		this.discountValue = discountValue;
 	}
 	
-	public DiscountCarDTO(Car car, double totalPrice, Date startTime, Date endTime) {
+	public DiscountCarDTO(Car car, double totalPrice, Date startTime, Date endTime, double initialPrice, float discountValue) {
 		this.id = car.getId();
 		this.manufacturer = car.getManufacturer();
 		this.name = car.getName();
@@ -92,6 +108,8 @@ public class DiscountCarDTO {
 		this.totalPrice = totalPrice;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.initialPrice = initialPrice;
+		this.discountValue = discountValue;
 	}
 	
 	

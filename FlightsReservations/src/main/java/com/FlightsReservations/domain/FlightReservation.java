@@ -34,13 +34,25 @@ public class FlightReservation extends Reservation {
 	@ManyToMany
 	@JoinTable(name = "reservations_flights", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"))
 	private Set<Flight> flights = new HashSet<>();
+	
+	//TODO: remove confirmed if unnecessary
+	private Boolean confirmed;
+
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
+	}
 
 	public FlightReservation() {
 		super();
 	}
 
 	public FlightReservation(Date dateOfReservation, Float price, User owner, Boolean confirmed) {
-		super(dateOfReservation, price, confirmed, owner);
+		super(dateOfReservation, price, owner);
+		this.confirmed = confirmed;
 	}
 
 	public Set<Passenger> getPassengers() {

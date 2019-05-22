@@ -9,7 +9,6 @@ public class CarReservationDTO {
 	private Long id;
 	private Float price;
 	private String ownerEmail;
-	private Boolean confirmed;
 	
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date dateOfReservation;
@@ -60,14 +59,6 @@ public class CarReservationDTO {
 		this.ownerEmail = ownerEmail;
 	}
 
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
-
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
-	}
-
 	public Date getDateOfReservation() {
 		return dateOfReservation;
 	}
@@ -76,23 +67,20 @@ public class CarReservationDTO {
 		this.dateOfReservation = dateOfReservation;
 	}
 
-	public CarReservationDTO() {
-		super();
-	}
+	public CarReservationDTO() {}
 
-	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime) {
+	public CarReservationDTO(Long id, Float price, String ownerEmail, Date dateOfReservation, Date startTime, Date endTime) {
 		super();
 		this.id = id;
 		this.price = price;
 		this.ownerEmail = ownerEmail;
-		this.confirmed = confirmed;
 		this.dateOfReservation = dateOfReservation;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
 	
 	public CarReservationDTO(CarReservation reservation) {
-		this(reservation.getId(), reservation.getPrice(), reservation.getOwner().getEmail(), reservation.getConfirmed(), 
+		this(reservation.getId(), reservation.getPrice(), reservation.getOwner().getEmail(), 
 				reservation.getDateOfReservation(), reservation.getStartTime(), reservation.getEndTime());
 	}
 }

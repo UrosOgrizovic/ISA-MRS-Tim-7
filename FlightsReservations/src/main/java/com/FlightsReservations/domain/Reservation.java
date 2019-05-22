@@ -32,17 +32,17 @@ public class Reservation {
 	@Column(nullable = false)
 	private Float price;
 
+	/*
 	@Column(nullable = false)
 	private Boolean confirmed;
-	
+	*/
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 	
-	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, User owner) {
+	public Reservation(Date dateOfReservation, Float price, User owner) {
 		super();
 		this.dateOfReservation = dateOfReservation;
 		this.price = price;
-		this.confirmed = confirmed;
 		this.owner = owner;
 	}
 
@@ -74,14 +74,6 @@ public class Reservation {
 		this.price = price;
 	}
 
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
-
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
-	}
-
 	public User getOwner() {
 		return owner;
 	}
@@ -93,6 +85,6 @@ public class Reservation {
 	@Override
 	public String toString() {
 		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price + 
-				", confirmed=" + confirmed + ", owner=" + owner + "]";
+				", owner=" + owner + "]";
 	}
 }

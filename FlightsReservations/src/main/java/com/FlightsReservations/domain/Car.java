@@ -41,7 +41,6 @@ public class Car {
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
-	//@JsonIgnoreProperties(ignoreUnknown=true, value={"hibernateLazyInitializer", "handler", "created"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
 

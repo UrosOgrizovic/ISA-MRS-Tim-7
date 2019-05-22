@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Car;
@@ -29,7 +30,13 @@ public class CarReservationService {
 	@Autowired
 	private CarRepository carRepository;
 	
-	public CarReservationDTO create(CarReservationRequestDTO dto) {
+	@Autowired
+	private EmailService emailService;
+	
+	@Autowired
+	private Environment env;
+	
+	public CarReservationDTO create(CarReservationRequestDTO dto, String previousReservationDetails) {
 		if (!creatingSemanticValidation(dto))
 			return null;
 
@@ -46,8 +53,12 @@ public class CarReservationService {
 			total = total - total * discount/100;
 		}
 		
-		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
+		CarReservation reservation = new CarReservation(new Date(), total, owner, dto.getCarId(), startTime, endTime);
 		
+		String carReservationDetails = "Car reservation: Start time: " + startTime + ", end time: " + endTime
+				+ ", price: " + total;
+		
+		sendEmailWithReservationDetails(owner, previousReservationDetails, carReservationDetails);
 		reservation = repository.save(reservation);
 		return new CarReservationDTO(reservation);
 	}
@@ -112,10 +123,18 @@ public class CarReservationService {
 			long diff = (cr.getStartTime().getTime() - now.getTime()) / (24 * 60 * 60 * 1000);
 			// reservation cannot be cancelled less than two days before the reservation starts
 			if (diff < 2) return false;
-			cr.setConfirmed(false);
+			cr.setOwner(null);
 			repository.save(cr);
 			return true;
 		}
 		return false;
+	}
+	
+	private void sendEmailWithReservationDetails(User owner, String previousReservationDetails, String carReservationDetails) {
+		String subject = "Reservation details";
+		String text = previousReservationDetails + "\n" + carReservationDetails;
+		//TODO: emailTo = owner.getUsername();
+		String emailTo = "katarinapreradov@gmail.com";
+		emailService.sendEmail(emailTo, subject, text);
 	}
 }

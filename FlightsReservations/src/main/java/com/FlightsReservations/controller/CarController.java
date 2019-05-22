@@ -59,9 +59,9 @@ public class CarController {
 		return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(value = "/getAllDiscountCarsForPeriod/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(@PathVariable String startTime, @PathVariable String endTime) {
-		return service.getAllDiscountCarsForPeriod(startTime, endTime);
+	@GetMapping(value = "/getAllDiscountCarsForPeriod/{startTime}/{endTime}/{city}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(@PathVariable String startTime, @PathVariable String endTime, @PathVariable String city) {
+		return service.getAllDiscountCarsForPeriod(startTime, endTime, city);
 	}
 	
 }

@@ -7,6 +7,10 @@ var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+var previousReservationDetails = localStorage.getItem("previousReservationDetails");
+// car reservation cannot be made on its own
+if (previousReservationDetails == null) history.go(-1);
+
 window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
@@ -121,7 +125,7 @@ function reserveCar() {
 
 
     $.ajax({
-		url: "http://localhost:8080/carReservations",
+		url: "http://localhost:8080/carReservations/" + previousReservationDetails,
 		method: "POST",
 		dataType: "json",
         contentType: "application/json",

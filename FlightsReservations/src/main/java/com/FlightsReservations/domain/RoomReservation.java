@@ -14,6 +14,17 @@ public class RoomReservation extends Reservation {
 	
 	private Date endTime;
 	
+	//TODO: remove confirmed if unnecessary
+	private Boolean confirmed;
+
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
+	}
+	
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -42,9 +53,10 @@ public class RoomReservation extends Reservation {
 
 	public RoomReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
 			Long roomId, Date startTime, Date endTime) {
-		super(dateOfReservation, price, confirmed, owner);
+		super(dateOfReservation, price, owner);
 		this.roomId = roomId;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.confirmed = confirmed;
 	}
 }

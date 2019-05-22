@@ -23,6 +23,7 @@ INSERT INTO user_authority (user_id, authority_id) VALUES (2, 2);
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia");
 
+
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (1, 'airport1', 'city1', 'state1', 55.659, 44.332);
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (2, 'airport2', 'city2', 'state2', 35.659, 64.332);
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (3, 'airport3', 'city3', 'state3', 22.659, 11.332);
@@ -32,3 +33,13 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 1);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
+
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("R", 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands");
+
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20);
+INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
+
+
+

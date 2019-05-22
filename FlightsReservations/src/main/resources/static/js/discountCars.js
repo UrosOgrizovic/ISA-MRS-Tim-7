@@ -3,14 +3,30 @@ import { checkRoleFromToken } from "./securityStuff.js";
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
+// for testing purposes
+localStorage.setItem("reservationPeriodStart", "01-06-2019 20:00");
+localStorage.setItem("reservationPeriodEnd", "01-12-2019 20:00");
+localStorage.setItem("reservationCity", "Amsterdam");
+localStorage.setItem("previousReservationDetails", "blabla");
+
+var reservationCity = localStorage.getItem("reservationCity");
+var previousReservationDetails = localStorage.getItem("previousReservationDetails");
+// car reservation cannot be made on its own
+if (previousReservationDetails == null) history.go(-1);
+
 var rps = localStorage.getItem("reservationPeriodStart");
-var reservationPeriodStart = dateFormatter(rps);
-var stringReservationPeriodStart = dateToString(rps);
-
-
 var rpe = localStorage.getItem("reservationPeriodEnd");
-var reservationPeriodEnd = dateFormatter(rpe);
-var stringReservationPeriodEnd = dateToString(rpe);
+
+if (rps != null && rpe != null) {
+    var reservationPeriodStart = dateFormatter(rps);
+    var stringReservationPeriodStart = dateToString(rps);
+    var reservationPeriodEnd = dateFormatter(rpe);
+    var stringReservationPeriodEnd = dateToString(rpe);
+} else if (rps == null) {
+    $(document.documentElement).append("<h3 id=\"discountCars\">reservationPeriodStart not set</h3>");    
+} else if (rpe == null) {
+    $(document.documentElement).append("<h3 id=\"discountCars\">reservationPeriodEnd not set</h3>");    
+}
 
 // used for converting reservationPeriodStart and reservationPeriodEnd to Date of desired format
 function dateFormatter(obj) {
@@ -39,26 +55,36 @@ function dateToString(obj) {
 
 var token = localStorage.getItem("token");
 if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
+
+
+
 window.fastBook = fastBook;
 
 $(document).ready(function() {
-    $("#discountCars").remove();
-    $("#error").remove();
     
-    $.ajax({
-        url: getAllDiscountCarsForPeriod + "/" + stringReservationPeriodStart + "/" + stringReservationPeriodEnd,
-        method: "GET",
-        dataType: "json",
-        contentType: "application/json",
-        data: {},
-        success: function(cars) {
-            displayDiscountCars(cars);
-        }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
-            console.log(error);
-        }
-    });
-
+    if (rps != null && rpe != null) {
+        $("#discountCars").remove();
+        $("#error").remove();
+        $.ajax({
+            url: getAllDiscountCarsForPeriod + "/" + stringReservationPeriodStart + "/" + stringReservationPeriodEnd + "/" + reservationCity,
+            method: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            data: {},
+            success: function(cars) {
+                if (cars != null && cars.length > 0) {
+                    displayDiscountCars(cars);
+                } else {
+                    $(document.documentElement).append("<h3 id=\"discountCars\">No cars to display</h3>");    
+                }
+            }, error: function(error) {
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                console.log(error);
+            }
+        });
+    
+    }
+    
     loadNavbar('RACSHomepageNavItem');
 });
 
@@ -84,7 +110,7 @@ function displayDiscountCars(cars) {
         text += "<td>"+car.name+"</td>";
         text += "<td>"+car.yearOfManufacture+"</td>";
         text += "<td>"+car.color+"</td>";
-        text += "<td>"+car.totalPrice+"</td>";
+        text += "<td>"+car.initialPrice.toString().strike() + "&nbsp&nbsp -" + car.discountValue + "%" + " = " + car.totalPrice+"</td>";
         var start = car.startTime.split("+")[0];
        
         var end = car.endTime.split("+")[0];
@@ -126,7 +152,7 @@ function fastBook(carId) {
     
     
     $.ajax({
-        url: carReservationLink,
+        url: carReservationLink + "/" + previousReservationDetails,
         method: "POST",
         dataType: "json",
         contentType: "application/json",

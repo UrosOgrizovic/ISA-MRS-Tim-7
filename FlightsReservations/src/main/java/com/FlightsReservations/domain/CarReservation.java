@@ -40,9 +40,9 @@ public class CarReservation extends Reservation {
 
 	public CarReservation() {}
 
-	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
+	public CarReservation(Date dateOfReservation, Float price, User owner,
 			Long carId, Date startTime, Date endTime) {
-		super(dateOfReservation, price, confirmed, owner);
+		super(dateOfReservation, price, owner);
 		this.carId = carId;
 		this.startTime = startTime;
 		this.endTime = endTime;

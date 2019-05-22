@@ -30,10 +30,10 @@ public class CarReservationController {
 	private CarReservationService service;
 	
 	@PreAuthorize("hasRole('ROLE_USER')")
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+	@PostMapping(value = "/{previousReservationDetails}", consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> create(@Valid @RequestBody CarReservationRequestDTO dto) {
-		CarReservationDTO cdto = service.create(dto);
+	public ResponseEntity<?> create(@Valid @RequestBody CarReservationRequestDTO dto, @PathVariable String previousReservationDetails) {
+		CarReservationDTO cdto = service.create(dto, previousReservationDetails);
 		if (cdto != null)
 			return new ResponseEntity<>(cdto, HttpStatus.CREATED);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
