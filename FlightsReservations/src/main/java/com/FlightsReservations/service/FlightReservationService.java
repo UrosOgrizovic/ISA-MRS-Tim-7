@@ -2,6 +2,7 @@ package com.FlightsReservations.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,9 @@ import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDetailsDTO;
 import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.domain.dto.PassengerDTO;
+import com.FlightsReservations.domain.dto.QuickFlightReservationDTO;
 import com.FlightsReservations.domain.enums.SeatType;
+import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.FlightInviteRepository;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
@@ -60,7 +63,7 @@ public class FlightReservationService {
 				for (PassengerDTO passengerDTO : detailDTO.getPassengers()) {
 					Seat s = findSeat(f, passengerDTO.getSeatNumber());
 					s.setAvailable(false);
-					r.setPrice(r.getPrice() + calculatePrice(s, f, r, owner));
+					r.setPrice(r.getPrice() + calculatePrice(s, f));
 					Passenger p= new Passenger(passengerDTO, s);
 					r.getPassengers().add(p);
 				}
@@ -69,7 +72,7 @@ public class FlightReservationService {
 					Seat s = findSeat(f, inviteDTO.getSeatNumber());
 					s.setAvailable(false);
 					FlightInvite i = new FlightInvite(r, inviteDTO.getFriendEmail(), s.getId());
-					r.setPrice(r.getPrice() + calculatePrice(s, f, r, owner));
+					r.setPrice(r.getPrice() + calculatePrice(s, f));
 					r.getInvites().add(i);
 					sendInviteEmail(owner, i);
 				}
@@ -81,26 +84,17 @@ public class FlightReservationService {
 	}
 	
 	// TODO: ADD ADDITIONAL DISCOUNT BASED ON USER POINTS
-	private Float calculatePrice(Seat s, Flight f, FlightReservation r, User owner) {
+	private float calculatePrice(Seat s, Flight f) {
 		SeatType t = s.getType(); 
 		AirlinePriceList pricelist = f.getAirline().getPricelist();
 		if (t.equals(SeatType.FIRST)) {
-			float base = (float) (pricelist.getFirst() + f.getPrice());
-			base = base - base*r.getDiscount();
-			// base = base - base * owner.getPoints();
-			return base;
+			return pricelist.getFirst() + f.getPrice();
 		}
 		else if (t.equals(SeatType.BUSINESS)) {
-			float base = (float) (pricelist.getBussines()+ f.getPrice());
-			base = base - base*r.getDiscount();
-			// base = base - base * owner.getPoints();
-			return base;
+			return pricelist.getBussines()+ f.getPrice();
 		}
 		else {
-			float base = (float) (pricelist.getEconomic() + f.getPrice());
-			base = base - base*r.getDiscount();
-			// base = base - base * owner.getPoints();
-			return base;
+			return pricelist.getEconomic() + f.getPrice();
 		}
 	}
 
@@ -289,4 +283,103 @@ public class FlightReservationService {
 		}
 		return false;
 	}
+
+	
+	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
+		if (verifyCreateQR(id, seatNum)) {
+			Flight f = flightRepository.findById(id).get();
+			FlightReservation r = new FlightReservation(new Date(), (float)0, null, false);
+			r.setDiscount(discount);
+			r.getFlights().add(f);
+			f.getReservations().add(r);
+			
+			Seat s = findSeat(f, seatNum);
+			s.setAvailable(false);
+			Passenger p = new Passenger();
+			p.setSeat(s);
+			r.getPassengers().add(p);
+			r.setPrice(calculatePrice(s, f));
+			repository.save(r);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public FlightReservationDTO takeQR(Long reservationId, String ownerEmail, String passport) {
+		if (verifyTakeQR(reservationId, ownerEmail, passport)) {
+			User owner = userRepository.findByEmail(ownerEmail);
+			FlightReservation r = repository.findById(reservationId).get();
+			r.setOwner(owner);
+			owner.getFlightReservations().add(r);
+			Passenger p = (Passenger) r.getPassengers().toArray()[0];
+			p.setName(owner.getFirstName());
+			p.setSurname(owner.getLastName());
+			p.setPassport(passport);
+			repository.save(r);
+			return new FlightReservationDTO(r);
+		}
+		return null;
+	}
+	
+	
+	private boolean verifyCreateQR(Long id, Integer seatNum) {
+		Optional<Flight> opt = flightRepository.findById(id);
+		if (!opt.isPresent())
+			return false;
+		
+		Seat s = findSeat(opt.get(), seatNum);
+		if (s == null)
+			return false;
+		
+		if (!s.isAvailable())
+			return false;
+		
+		return true;
+	}
+	
+	
+	private boolean verifyTakeQR(Long reservationId, String ownerEmail, String passport) {
+		Optional<FlightReservation> opt = repository.findById(reservationId);
+		if (!opt.isPresent())
+			return false;
+		
+		FlightReservation r = opt.get();
+		if (r.getDiscount() == 0)
+			return false;
+		
+		if (r.getPassengers().size() != 1)
+			return false;
+		
+		Passenger p = (Passenger) r.getPassengers().toArray()[0];
+		if (p.getSeat().isAvailable())
+			return false;
+	
+		User u = userRepository.findByEmail(ownerEmail);
+		if (u == null)
+			return false;
+		
+		List<PassengerDTO> passengers = new ArrayList<>();
+		PassengerDTO ps = new PassengerDTO((Passenger)r.getPassengers().toArray()[0]);
+		ps.setPassport(passport);
+		passengers.add(ps);
+		
+		Flight f = (Flight) r.getFlights().toArray()[0];
+		if (!verifyPassportUniqueness(f, passengers))
+			return false;
+		
+		return true;		
+	}
+	
+	public List<QuickFlightReservationDTO> getQuickReservations(String airlineName) {
+		List<QuickFlightReservationDTO> results = new ArrayList<>();
+		List<FlightReservation> quickReservations = repository.findQuickReservations();
+		for (FlightReservation fr : quickReservations) {
+			Flight f = (Flight) fr.getFlights().toArray()[0];
+			if (f.getAirline().getName().contentEquals(airlineName))
+				results.add(new QuickFlightReservationDTO(fr));
+		}
+		return results;
+	}
+	
 }

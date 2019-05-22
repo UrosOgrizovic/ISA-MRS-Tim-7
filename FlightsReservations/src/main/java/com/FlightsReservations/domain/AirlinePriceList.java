@@ -1,6 +1,5 @@
 package com.FlightsReservations.domain;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,41 +11,33 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class AirlinePriceList {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
-	
+
 	@Column(nullable = false)
-	private double bussines;
-	
+	private float bussines;
+
 	@Column(nullable = false)
-	private double economic;
-	
+	private float economic;
+
 	@Column(nullable = false)
-	private double first;
-	
+	private float first;
+
 	public AirlinePriceList() {
 		super();
 	}
 
-	public AirlinePriceList(Airline a, double bussines, double economic, double first) {
+	public AirlinePriceList(Airline airline, float bussines, float economic, float first) {
 		super();
-		this.airline = a;
+		this.airline = airline;
 		this.bussines = bussines;
 		this.economic = economic;
 		this.first = first;
-	}
-	
-	public Airline getAirline() {
-		return airline;
-	}
-
-	public void setAirline(Airline airline) {
-		this.airline = airline;
 	}
 
 	public Long getId() {
@@ -57,27 +48,36 @@ public class AirlinePriceList {
 		this.id = id;
 	}
 
-	public double getBussines() {
+	public Airline getAirline() {
+		return airline;
+	}
+
+	public void setAirline(Airline airline) {
+		this.airline = airline;
+	}
+
+	public float getBussines() {
 		return bussines;
 	}
 
-	public void setBussines(double bussines) {
+	public void setBussines(float bussines) {
 		this.bussines = bussines;
 	}
 
-	public double getEconomic() {
+	public float getEconomic() {
 		return economic;
 	}
 
-	public void setEconomic(double economic) {
+	public void setEconomic(float economic) {
 		this.economic = economic;
 	}
 
-	public double getFirst() {
+	public float getFirst() {
 		return first;
 	}
 
-	public void setFirst(double first) {
+	public void setFirst(float first) {
 		this.first = first;
 	}
+
 }

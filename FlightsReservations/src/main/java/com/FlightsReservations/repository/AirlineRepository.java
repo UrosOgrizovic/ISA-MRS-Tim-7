@@ -15,4 +15,5 @@ public interface AirlineRepository extends JpaRepository<Airline, Long>{
 		nativeQuery = true
 		)
 	Object airlineHaveAirport(Long airlineID, Long airportID);
+	
 }
