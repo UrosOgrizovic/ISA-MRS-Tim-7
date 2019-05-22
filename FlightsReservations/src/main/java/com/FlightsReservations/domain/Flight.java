@@ -38,7 +38,7 @@ public class Flight {
 	private double flightDistance;
 
 	@Column(nullable = false)
-	private double price;
+	private float price;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
@@ -71,7 +71,7 @@ public class Flight {
 		super();
 	}
 
-	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, double price,
+	public Flight(Date takeoffTime, Date landingTime, int flightTime, double flightDistance, float price,
 			Airline airline, Airport start, Airport end, Set<Airport> stops, float averageScore, int numberOfVotes) {
 		super();
 		this.takeoffTime = takeoffTime;
@@ -183,11 +183,11 @@ public class Flight {
 		this.end = end;
 	}
 
-	public double getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 

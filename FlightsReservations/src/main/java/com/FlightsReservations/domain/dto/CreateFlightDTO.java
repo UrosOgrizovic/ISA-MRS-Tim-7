@@ -43,7 +43,7 @@ public class CreateFlightDTO {
 
 	@NotNull
 	@PositiveOrZero
-	private Double price;
+	private float price;
 
 	@NotNull
 	private Set<String> stopNames;
@@ -159,11 +159,11 @@ public class CreateFlightDTO {
 		this.airlineName = airlineName;
 	}
 
-	public Double getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 

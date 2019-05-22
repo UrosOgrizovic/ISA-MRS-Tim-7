@@ -5,6 +5,8 @@ $(document).ready(function(){
 	$("#createSeatBtn").click(createSeat);
 	$("#updateSeatBtn").click(updateSeat);
 	$("#deleteSeatBtn").click(deleteSeat);
+	$("#quickSeatBtn").click(toggleQuickSeatModal);
+	$("#makeQuickRes").click(makeQuickReservation);
 });
 
 function createSeat() {
@@ -14,8 +16,7 @@ function createSeat() {
 		method: "POST",
 		dataType: "json",
 		success: function(result) {
-			currentFlight.seats.push(result);
-			showSeatModal(flightId);
+			refreshFlight(flightId);
 		},
 		error: function() {
 			alert("Error.");
@@ -32,11 +33,7 @@ function updateSeat() {
 		url: "http://localhost:8080/seats/" + flightId + "/" + seatNum + "/" + type,
 		method: "PUT",
 		success: function() {
-			for (var i = 0; i < currentFlight.seats.length; i++)
-				if (currentFlight.seats[i].seatNum == seatNum) {
-					currentFlight.seats[i].typeClass = type;
-					showSeatModal(flightId);
-				}
+			refreshFlight(flightId);
 		},
 		error: function() {
 			alert("Bad request!");
@@ -52,11 +49,7 @@ function deleteSeat() {
 		url: "http://localhost:8080/seats/" + flightId + "/" + seatNum,
 		method: "DELETE",
 		success: function() {
-			for (var i = 0; i < currentFlight.seats.length; i++)
-				if (currentFlight.seats[i].seatNum == seatNum) {
-					currentFlight.seats.splice(i,1);
-					showSeatModal(flightId);
-				}
+			refreshFlight(flightId);
 		},
 		error: function() {
 			alert("Bad request!");
@@ -68,6 +61,9 @@ function deleteSeat() {
 function showSeatModal(flightId) {
 	refreshSeatModal();
 	currentFlight = getFlight(flightId);
+	currentFlight.seats.sort(function(a,b){
+		return a.seatNum - b.seatNum;
+	})
 	var seatStructure = createSeatStructure(currentFlight.seats);
 	renderSeats(currentFlight.seats, seatStructure, currentFlight.price);
 	updateSeatButtons(true);
@@ -89,6 +85,7 @@ function getFlight(flightId) {
 			return flights[i];
 	return null;
 }
+
 
 function createSeatStructure(seats) {
 	var seatStructure = [];
@@ -211,4 +208,46 @@ function refreshSeatTable() {
 function updateSeatButtons(state) {
 	$("#updateSeatBtn").attr("disabled", state);
 	$("#deleteSeatBtn").attr("disabled", state);
+	$("#quickSeat").attr("disabled", state);
+}
+
+function toggleQuickSeatModal() {
+	$("#quickReservaitonModal").modal("toggle");
+};
+
+
+function makeQuickReservation() {
+	id = currentFlight.id;
+	seatNum = selectedSeat.settings.label;
+	discount = $("#discount").val().trim();
+
+	$.ajax({
+		url: `http://localhost:8080/flightReservations/quickReservation/${id}/${seatNum}/${discount}`,
+		method: "POST",
+		success: function() {
+			toggleQuickSeatModal();
+			refreshFlight(id);
+		}, 
+		error: function() {
+			alert("Making quick reservation failed.");
+		}
+	});
+}
+
+
+function refreshFlight(id) {
+	$.ajax({
+		url: `http://localhost:8080/flights/${id}`,
+		method: "GET",
+		dataType: "json",
+		success: function(flight) {
+			for(var i = 0; i < flights.length; i++)
+				if(flights[i].id == flight.id)
+					flights[i] = flight;
+			showSeatModal(id);
+		},
+		error: function() {
+			alert("Getting updated flight failed.");
+		}
+	});
 }
