@@ -26,7 +26,6 @@ import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.domain.dto.PassengerDTO;
 import com.FlightsReservations.domain.dto.QuickFlightReservationDTO;
 import com.FlightsReservations.domain.enums.SeatType;
-import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.FlightInviteRepository;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
@@ -288,7 +287,7 @@ public class FlightReservationService {
 	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
 		if (verifyCreateQR(id, seatNum)) {
 			Flight f = flightRepository.findById(id).get();
-			FlightReservation r = new FlightReservation(new Date(), (float)0, null, false);
+			FlightReservation r = new FlightReservation(new Date(), (float)0, null, true);
 			r.setDiscount(discount);
 			r.getFlights().add(f);
 			f.getReservations().add(r);
@@ -357,7 +356,7 @@ public class FlightReservationService {
 	
 		User u = userRepository.findByEmail(ownerEmail);
 		if (u == null)
-			return false;
+			return false;	
 		
 		List<PassengerDTO> passengers = new ArrayList<>();
 		PassengerDTO ps = new PassengerDTO((Passenger)r.getPassengers().toArray()[0]);

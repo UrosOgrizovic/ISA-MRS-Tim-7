@@ -93,7 +93,7 @@ function finishReservation() {
 	passport = $("#passport").val().trim();
 
 	$.ajax({
-		url: `http://localhost:8080/flightReservations/quickTickets/${selectedTicketId}/${ownerEmail}/${passport}`,
+		url: `http://localhost:8080/flightReservations/quickReservation/${selectedTicketId}/${ownerEmail}/${passport}`,
 		method: "PUT",
 		dataType: "json",
 		success: function(result) {
@@ -103,5 +103,4 @@ function finishReservation() {
 			alert("Making quick reservation failed!");
 		}
 	});
-
 }

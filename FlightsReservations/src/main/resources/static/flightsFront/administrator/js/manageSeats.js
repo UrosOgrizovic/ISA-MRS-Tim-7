@@ -80,13 +80,7 @@ function refreshSeatModal() {
 }
 
 function getFlight(flightId) {
-	$(document).ready(function(){
-	$("#createSeatBtn").click(createSeat);
-	$("#updateSeatBtn").click(updateSeat);
-	$("#deleteSeatBtn").click(deleteSeat);
-	$("#quickSeatBtn").click(toggleQuickSeatModal);
-	$("#makeQuickRes").click(makeQuickReservation);
-});for(var i = 0; i < flights.length; i++)
+	for(var i = 0; i < flights.length; i++)
 		if(flights[i].id == flightId)
 			return flights[i];
 	return null;
@@ -226,6 +220,7 @@ function makeQuickReservation() {
 	id = currentFlight.id;
 	seatNum = selectedSeat.settings.label;
 	discount = $("#discount").val().trim();
+
 	$.ajax({
 		url: `http://localhost:8080/flightReservations/quickReservation/${id}/${seatNum}/${discount}`,
 		method: "POST",
