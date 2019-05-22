@@ -163,7 +163,6 @@
 									<tbody>
 									</tbody>
 								</table>
-
 								<table id="inviteTable" class="table">
 									<thead class="thead-light">
 										<tr>
@@ -176,7 +175,6 @@
 									<tbody>
 									</tbody>
 								</table>
-
 								<button type="button" class="btn btn-primary" id="createPassenger">Add passenger</button>
 							</div>
 						</div>
@@ -207,34 +205,69 @@
 								<option selected>Invite registered user</option>
 								<option>Add unregistered user</option>
 							</select>
-
 							<div id="unregistered-user">
-							<label for="passengerName"> Name </label>
-							<input type="text" class="form-control" id="passengerName">
-							<label for="passengerSurname"> Surname </label>
-							<input type="text" class="form-control" id="passengerSurname">
-							<label for="passengerPassport"> Passport </label>
-							<input type="text" class="form-control" id="passengerPassport">
+								<label for="passengerName"> Name </label>
+								<input type="text" class="form-control" id="passengerName">
+								<label for="passengerSurname"> Surname </label>
+								<input type="text" class="form-control" id="passengerSurname">
+								<label for="passengerPassport"> Passport </label>
+								<input type="text" class="form-control" id="passengerPassport">
 							</div>
 							<div id="registered-user">
 								<label for="friendEmail"> Email </label>
 								<input type="text" class="form-control" id="friendEmail">
 							</div>
 						</div>
-
 						<label for = "seatMapSelector"> Choose seat </label>
 						<select id = "seatMapSelector" class="form-control">
 						</select>
-
 						<div id="seatMap"></div>
 						<div id="legend"></div>
-
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 						data-dismiss="modal" id="closeAddAirportModal">Close</button>
 						<button type="button" class="btn btn-primary" id="autoPassenger">Auto</button>
 						<button type="button" class="btn btn-primary" id="addPassenger">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="continueReservationModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Continue reservation?</h5>
+						<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="exampleRadios" id="reserveHotel" value="hotel" checked>
+							<label class="form-check-label" for="exampleRadios1">
+								Reserve hotel.
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="exampleRadios" id="reserveCars" value="cars" checked>
+							<label class="form-check-label" for="exampleRadios1">
+								Reserve cars.
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="exampleRadios" id="noThanks" value="cars" checked>
+							<label class="form-check-label" for="exampleRadios1">
+								No, thanks.
+							</label>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+						data-dismiss="modal" id="continueReservationModal">Close</button>
+						<button type="button" class="btn btn-primary" id="continueReservationBtn">Continue</button>
 					</div>
 				</div>
 			</div>

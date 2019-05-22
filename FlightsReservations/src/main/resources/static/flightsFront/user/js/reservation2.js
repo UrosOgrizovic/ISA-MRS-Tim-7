@@ -10,6 +10,9 @@ var seatMap = null;
 var currentlySelectedData = [];
 
 
+var reservationReturn = null;
+
+
 var takenOne = false;
 var takenTwo = false;
 var totalPrice = 0;
@@ -20,6 +23,7 @@ $(document).ready(function(){
 	$("#seatMapSelector").change(prepareSeatMap);
 	$("#addPassenger").click(addPassenger);
 	$("#makeReservation").click(sendReservationRequest);
+	$("#continueReservationBtn").click(continueReservation)
 });
 
 
@@ -390,10 +394,31 @@ function sendReservationRequest() {
 		contentType: "application/json",
 		data: JSON.stringify(reservation),
 		success: function(result) {
+			console.log(result);
+			reservationReturn = result;
 			$("#reservationModal").modal("toggle");
+			$("#continueReservationModal").modal("toggle");
 		},
 		error: function(error) {
 			alert("Error", error);
 		}
 	});
+}
+
+function continueReservation() {
+	var lastAirport = reservationReturn.flights[reservationReturn.flights.length-1].endAirport;
+	$.ajax({
+		url: `http://localhost:8080/airports/${lastAirport}`,
+		method: "GET",
+		dataType: "json",
+		success: function(airport) {
+			localStorage.setItem("reservationCity", airport.city);
+
+			if ($("#reserveHotel").is(":checked")) {	
+				window.location.replace("http://localhost:8080/showHotelsInCity.html");
+			} else if ($("#reserveCars").is(":checked")) {
+				window.location.replace("http://localhost:8080/showRACSInCity.html");
+			}
+		}
+	});	
 }
