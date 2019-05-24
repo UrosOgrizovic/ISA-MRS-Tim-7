@@ -12,6 +12,8 @@ import javax.persistence.Id;
 @Entity
 @DiscriminatorValue("A")
 public class Admin extends AbstractUser {
+	private static final long serialVersionUID = -6075524980472282776L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

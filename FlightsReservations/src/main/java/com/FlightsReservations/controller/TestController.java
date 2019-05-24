@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 	
+	
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping(value = "/user")
 	public String user() {
