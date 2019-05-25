@@ -24,18 +24,19 @@ public class HotelService {
 	private RoomRepository roomRepository;
 
 	public HotelDTO create(HotelDTO t) {
-		System.out.println("Usao servis");
-		Hotel a = null;// = repository.findByName(t.getName());
-		System.out.println("Usao servis2");
+		System.out.println("Usao u servis1");
+		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
 		if (a == null) {
+			System.out.println("Usao u servis2");
 			a = new Hotel(
 					t.getName(), 
 					t.getLongitude(), 
 					t.getLatitude(), 
-					t.getPromoDescription(), 
+					t.getCity(),
+					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);
-			
+			System.out.println("Usao u servis3");
 			return createDTO(a);
 		}
 		return null;
@@ -47,6 +48,7 @@ public class HotelService {
 			h.setName(t.getName());
 			h.setLongitude(t.getLongitude());
 			h.setLatitude(t.getLatitude());
+			h.setCity(t.getCity());
 			h.setPromoDescription(t.getPromoDescription());
 			h.setAverageScore(t.getAverageScore());
 			h.setNumberOfVotes(t.getNumberOfVotes());

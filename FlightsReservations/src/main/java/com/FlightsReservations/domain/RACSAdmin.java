@@ -18,7 +18,7 @@ public class RACSAdmin extends Admin
 	public RACSAdmin(String firstName, String lastName, String email, String phone, String address, String password,
 			String picturePath, RACS racs) 
 	{
-		super(firstName, lastName, email, phone, address, password, picturePath);
+		super(firstName, lastName, email, phone, address, password, picturePath, "RENTACAR");
 		this.racs = racs;
 	}
 	
@@ -30,6 +30,7 @@ public class RACSAdmin extends Admin
 			this.setPhone(dto.getPhone());
 			this.setAddress(dto.getAddress());
 			this.setPassword(dto.getPassword());
+			this.setType(AdminType.RENTACAR);
 	}
 
 	public RACS getRACS()

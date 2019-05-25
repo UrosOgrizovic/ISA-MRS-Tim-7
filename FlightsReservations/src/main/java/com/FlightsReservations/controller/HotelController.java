@@ -36,9 +36,11 @@ public class HotelController {
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HotelDTO> add(@RequestBody @Valid HotelDTO hotel) {
-		System.out.println("Usao kontroler");
+		System.out.println("Usao u kontroler1");
 		HotelDTO h = service.create(hotel);
+		System.out.println("Usao u kontroler2");
 		if (h != null) {
+			System.out.println("Usao u kontroler3");
 			return new ResponseEntity<>(h, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(h, HttpStatus.CONFLICT);//TODO: finish later - same id?

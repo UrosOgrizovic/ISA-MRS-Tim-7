@@ -46,12 +46,13 @@ public class Company {
 		super();
 	}
 
-	public Company(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+	public Company(String name, Float longitude, Float latitude, String city, String promoDescription, float avarageScore,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
 		this.promoDescription = promoDescription;
 		this.averageScore = avarageScore;
 		this.numberOfVotes = numberOfVotes;

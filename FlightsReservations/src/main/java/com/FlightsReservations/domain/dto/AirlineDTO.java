@@ -20,6 +20,9 @@ public class AirlineDTO {
 	private Float latitude;
 	
 	@NotBlank
+	private String city;
+	
+	@NotBlank
 	private String promoDescription;
 
 	@NotNull
@@ -116,5 +119,17 @@ public class AirlineDTO {
 	public void setFlights(Set<FlightDTO> flights) {
 		this.flights = flights;
 	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+	
+	
 
 }

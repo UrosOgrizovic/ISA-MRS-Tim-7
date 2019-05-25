@@ -21,6 +21,9 @@ public class HotelDTO {
 	private Float latitude;
 	
 	@NotBlank
+	private String city;
+	
+	@NotBlank
 	private String promoDescription;
 
 	@NotNull
@@ -38,12 +41,13 @@ public class HotelDTO {
 		super();
 	}
 
-	public HotelDTO(String name, Float longitude, Float latitude, String promoDescription, float score,
+	public HotelDTO(String name, Float longitude, Float latitude, String city, String promoDescription, float score,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
 		this.promoDescription = promoDescription;
 		this.averageScore = score;
 		this.numberOfVotes = numberOfVotes;
@@ -58,7 +62,7 @@ public class HotelDTO {
 	}
 
 	public HotelDTO(Hotel h) {
-		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getPromoDescription(), h.getAverageScore(),
+		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getPromoDescription(), h.getAverageScore(),
 				h.getNumberOfVotes());
 	}
 
@@ -117,5 +121,22 @@ public class HotelDTO {
 	public void setRooms(Set<String> rooms) {
 		this.rooms = rooms;
 	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	public void setReservations(Set<HotelReservationDTO> reservations)
+	{
+		this.reservations = reservations;
+	}
+	
+	
 
 }
