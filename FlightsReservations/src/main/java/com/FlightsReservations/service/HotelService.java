@@ -86,7 +86,7 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		for (Room a : hotel.getRoomConfiguration()) 
+		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
 			dto.getRooms().add(a.getName());
 		for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));
