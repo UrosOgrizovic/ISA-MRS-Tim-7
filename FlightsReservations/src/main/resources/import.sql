@@ -32,3 +32,6 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 1);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
+
+#INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes) VALUES ("H", 2, 'Plaza Hotel', 26.921, 33.124, 'description1', 4.75, 22);
+#INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes) VALUES ("H", 3, 'Metropol Hotel', 26.921, 33.124, 'description1', 4.75, 22);

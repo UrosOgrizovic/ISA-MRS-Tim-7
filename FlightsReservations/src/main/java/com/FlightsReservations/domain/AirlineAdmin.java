@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
 public class AirlineAdmin extends Admin {
@@ -19,8 +20,9 @@ public class AirlineAdmin extends Admin {
 	}
 
 	public AirlineAdmin(String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath, Airline airline) {
-		super(firstName, lastName, email, phone, address, password, picturePath);
+			String picturePath, Airline airline) 
+	{
+		super(firstName, lastName, email, phone, address, password, picturePath, "AIRLINE");
 		this.airline = airline;
 	}
 
@@ -31,6 +33,7 @@ public class AirlineAdmin extends Admin {
 		this.setPassword(dto.getPassword());
 		this.setPhone(dto.getPhone());
 		this.setAddress(dto.getAddress());
+		this.setType(AdminType.AIRLINE);
 	}
 
 	public Airline getAirline() {

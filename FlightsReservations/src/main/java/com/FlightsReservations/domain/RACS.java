@@ -52,9 +52,9 @@ public class RACS extends Company {
 	public void setBranchOffices(ArrayList<String> branchOffices) {
 		this.branchOffices = branchOffices;
 	}
-	public RACS(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
-		super(name, longitude, latitude, promoDescription, avarageScore, numberOfVotes);
+		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
 	}
 	
 	public RACS() {

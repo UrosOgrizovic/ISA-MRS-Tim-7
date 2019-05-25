@@ -3,6 +3,12 @@ function validate_inputs(myForm)
 {
     console.log(myForm);
 
+    if(myForm.name.value.trim()=="")
+    {
+    	alert("You must enter Room's name!");
+    	return false;
+    }
+    
     if(isInteger(myForm.number.value))
     {
         alert("You must Room number must be a number!");
@@ -53,6 +59,7 @@ function create_room()
     {
         var room =
                 {
+        			name : myForm.name.value,
                     number : myForm.number.value,
                     floor : myForm.floor.value,
                     overnightStay : myForm.overnightStay.value,

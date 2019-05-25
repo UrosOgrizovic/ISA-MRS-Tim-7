@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.FlightsReservations.domain.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,7 +25,7 @@ public class Room {
 	private int floor;
 	
 	@NotBlank
-	private String type;
+	private RoomType type;
 
 	@NotNull
 	private String name;
@@ -43,21 +44,12 @@ public class Room {
 	{
 		super();
 	}
-	public Room(double overallRating, double overNightStay, Hotel hotel) 
-	{
-		super();
-		this.name = name;
-		this.overallRating = overallRating;
-		this.overNightStay = overNightStay;
-		this.hotel = hotel;
-	}
 	
-	public Room(Long id, int number, String type, double overallRating,
-			double overNightStay, Hotel hotel) {
-		super();
-		this.id = id;
+	public Room(int number, int floor, String name, String type, double overallRating, double overNightStay, Hotel hotel) 
+	{
 		this.number = number;
-		this.type = type;
+		this.floor = floor;
+		this.type = RoomType.valueOf(type);
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
@@ -111,11 +103,11 @@ public class Room {
 	{
 		this.number = number;
 	}
-	public String getType() 
+	public RoomType getType() 
 	{
 		return type;
 	}
-	public void setType(String type) 
+	public void setType(RoomType type) 
 	{
 		this.type = type;
 	}

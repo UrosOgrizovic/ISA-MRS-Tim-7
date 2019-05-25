@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
 public class HotelAdmin extends Admin
@@ -20,7 +21,7 @@ public class HotelAdmin extends Admin
 	public HotelAdmin(String firstName, String lastName, String email, String phone, String address, String password,
 			String picturePath, Hotel hotel) 
 	{
-		super(firstName, lastName, email, phone, address, password, picturePath);
+		super(firstName, lastName, email, phone, address, password, picturePath, "HOTEL");
 		this.hotel = hotel;
 	}
 
@@ -32,6 +33,7 @@ public class HotelAdmin extends Admin
 		this.setPhone(dto.getPhone());
 		this.setAddress(dto.getAddress());
 		this.setPassword(dto.getPassword());
+		this.setType(AdminType.HOTEL);
 	}
 
 	public Hotel getHotel()

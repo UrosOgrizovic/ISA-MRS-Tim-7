@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.HotelDTO;
+import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.service.HotelService;
+import com.FlightsReservations.service.RoomService;
 
 @RestController
 @RequestMapping("/hotels")
@@ -25,6 +27,8 @@ import com.FlightsReservations.service.HotelService;
 public class HotelController {
 	@Autowired
 	private HotelService service;
+	@Autowired
+	private RoomService roomService;
 	
 	//@PreAuthorize("hasRole('USER')")
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
@@ -52,7 +56,8 @@ public class HotelController {
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
 	}
-	/*
+	
+	
 	@PutMapping(value = "/addRoom", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addRoom(@RequestBody @Valid RoomDTO room) {
@@ -60,5 +65,5 @@ public class HotelController {
 			return new ResponseEntity<>(room, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
-	*/
+	
 }
