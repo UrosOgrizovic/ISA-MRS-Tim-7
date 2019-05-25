@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.common.TimeProvider;
-import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.AbstractUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +41,7 @@ public class TokenUtils {
 
 	// Functions for generating new JWT token
 
-	public String generateToken(User user) {
+	public String generateToken(AbstractUser user) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(user.getEmail())
@@ -86,7 +86,7 @@ public class TokenUtils {
 	// Functions for validating JWT token data
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		User user = (User) userDetails;
+		AbstractUser user = (AbstractUser) userDetails;
 		final String username = getEmailFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
 		

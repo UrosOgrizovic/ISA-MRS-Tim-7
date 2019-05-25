@@ -24,7 +24,9 @@ public class AirlineAdminDTO
 	@NotBlank
 	private String password;
 	
-	//private Airline airline;
+	@NotBlank
+	private String airlineName;
+	
 	
 	public AirlineAdminDTO(AirlineAdmin a)
 	{
@@ -34,6 +36,7 @@ public class AirlineAdminDTO
 		this.password = a.getPassword();
 		this.phone = a.getPhone();
 		this.address = a.getAddress();
+		this.airlineName = a.getAirline().getName();
 	}
 
 	public AirlineAdminDTO() {
@@ -98,7 +101,5 @@ public class AirlineAdminDTO
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
 }

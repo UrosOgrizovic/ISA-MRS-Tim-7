@@ -19,13 +19,16 @@ public class Airline extends Company {
 
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Flight> flights = new HashSet<>();
-
+	
 	@ManyToMany
 	@JoinTable(name = "airline_airports", joinColumns = @JoinColumn(name = "airline_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
 	private Set<Airport> airports = new HashSet<>();
-
+	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private AirlinePriceList pricelist;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private AirlineAdmin admin;
 
 	public Airline() {
 		super();
@@ -58,6 +61,14 @@ public class Airline extends Company {
 
 	public void setPricelist(AirlinePriceList pricelist) {
 		this.pricelist = pricelist;
+	}
+
+	public AirlineAdmin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(AirlineAdmin admin) {
+		this.admin = admin;
 	}
 
 }

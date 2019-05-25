@@ -9,6 +9,8 @@ import com.FlightsReservations.domain.enums.AdminType;
 @Entity
 public class RACSAdmin extends Admin
 {
+	private static final long serialVersionUID = -5528506607893893333L;
+	
 	@OneToOne
 	private RACS racs;//TODO: check if concurrent, edit later
 	

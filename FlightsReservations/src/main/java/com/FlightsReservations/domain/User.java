@@ -1,7 +1,5 @@
 package com.FlightsReservations.domain;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,35 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @DiscriminatorValue("U")
-public class User extends AbstractUser implements UserDetails {
+public class User extends AbstractUser {
 
-	// friends attribute will be added
+	private static final long serialVersionUID = -4209208559406236164L;
 
-	private static final long serialVersionUID = 1L;
-
-	private boolean enabled;
-
-	/*
-	 * so as to only allow refreshing a token that was created before the latest
-	 * password reset
-	 */
-
-	private Date lastPasswordResetDate;
-
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-	private List<Authority> authorities;
-	
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
-	}
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
@@ -81,56 +56,8 @@ public class User extends AbstractUser implements UserDetails {
 
 	public User(String firstName, String lastName, String email, String phone, String address, String password,
 			boolean enabled, Integer flightBonusPoints) {
-		super(firstName, lastName, email, phone, address, password);
+		super(firstName, lastName, email, phone, address, password, enabled);
 		//this.flightBonusPoints = flightBonusPoints;
-		
-		this.enabled = enabled;
-		
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.authorities;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.getEmail();
-	}
-
-	public Date getLastPasswordResetDate() {
-		return lastPasswordResetDate;
-	}
-
-	public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-		this.lastPasswordResetDate = lastPasswordResetDate;
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
 	}
 
 	@Override

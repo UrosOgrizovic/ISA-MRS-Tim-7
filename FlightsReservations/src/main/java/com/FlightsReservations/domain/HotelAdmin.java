@@ -9,6 +9,8 @@ import com.FlightsReservations.domain.enums.AdminType;
 @Entity
 public class HotelAdmin extends Admin
 {
+	private static final long serialVersionUID = 8652154069699301151L;
+	
 	@OneToOne
 	private Hotel hotel;//TODO: check if concurrent
 	
