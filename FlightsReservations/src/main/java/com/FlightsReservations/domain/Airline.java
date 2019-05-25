@@ -31,9 +31,9 @@ public class Airline extends Company {
 		super();
 	}
 
-	public Airline(String name, Float longitude, Float latitude, String city, String promoDescription, float avarageScore,
+	public Airline(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
-		super(name, longitude, latitude, city, promoDescription, avarageScore, numberOfVotes);
+		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
 	}
 
 	public Set<Flight> getFlights() {

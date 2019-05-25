@@ -29,16 +29,24 @@
                     <td> <input type="text" name="name"> </td>
                 </tr>
                 <tr>
-                    <td> <label> Latitude* : </label></td><!-- edit later-->
-                    <td> <input type="text" name="latitude"> </td>
+                    <td> <label> Longitude* : </label></td><!-- edit later-->
+                    <td> <input type="text" name="longitude" id="lng"> </td>
                 </tr>
                 <tr>
-                    <td> <label> Longitude* : </label></td><!-- edit later-->
-                    <td> <input type="text" name="longitude"> </td>
+                    <td> <label> Latitude* : </label></td><!-- edit later-->
+                    <td> <input type="text" name="latitude" id="lat"> </td>
+                </tr>
+                <tr>
+                	<td> <label> City* :</label></td>
+                	<td> <input type="text" name="city"> </td>
+                </tr>
+                <tr>
+                	<td> <label> State/Country* :</label></td>
+                	<td> <input type="text" name="state"> </td>
                 </tr>
                 
                 <tr>
-                    <td> <label> Description: </label> </td>
+                    <td> <label> Description*: </label> </td>
                     <td> <input type="text" name="promoDescription"> </td>
                 </tr>
                  <!--  fix later 
@@ -59,7 +67,7 @@
                     <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
                     </td>
                     <td align="center">
-                    	<button type="submit" class="btn btn-primary" name="createAirline" onClick="create_airline()" id="submitButton" >Add Hotel</button>
+                    	<button type="submit" class="btn btn-primary" name="createAirline" onClick="create_airline()" id="submitButton" >Add Airline</button>
                     	                                                   
                         <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
                     </td>

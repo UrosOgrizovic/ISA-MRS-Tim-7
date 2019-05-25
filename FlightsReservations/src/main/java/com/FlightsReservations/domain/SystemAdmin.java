@@ -3,6 +3,7 @@ package com.FlightsReservations.domain;
 import javax.persistence.Entity;
 
 import com.FlightsReservations.domain.dto.SystemAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
 public class SystemAdmin extends Admin

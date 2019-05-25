@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("H")
@@ -34,9 +33,9 @@ public class Hotel extends Company
 		super();
 	}
 
-	public Hotel(String name, Float longitude, Float latitude, String city, String promoDescription, float avarageScore,
+	public Hotel(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
-		super(name, longitude, latitude, city, promoDescription, avarageScore, numberOfVotes);
+		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
 	}
 
 

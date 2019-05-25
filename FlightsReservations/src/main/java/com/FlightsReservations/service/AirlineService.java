@@ -34,6 +34,7 @@ public class AirlineService {
 					t.getLongitude(), 
 					t.getLatitude(),
 					t.getCity(),
+					t.getState(),
 					t.getPromoDescription(), 
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);

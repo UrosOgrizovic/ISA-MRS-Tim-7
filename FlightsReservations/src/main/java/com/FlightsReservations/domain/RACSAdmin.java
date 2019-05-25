@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
 public class RACSAdmin extends Admin

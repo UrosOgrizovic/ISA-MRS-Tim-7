@@ -2,8 +2,8 @@ package com.FlightsReservations.domain.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import com.FlightsReservations.domain.AdminType;
 import com.FlightsReservations.domain.SystemAdmin;
+import com.FlightsReservations.domain.enums.AdminType;
 
 public class SystemAdminDTO 
 {

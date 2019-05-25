@@ -1,4 +1,4 @@
-package com.FlightsReservations.domain;
+package com.FlightsReservations.domain.enums;
 
 
 public enum AdminType { SYSTEM, AIRLINE, HOTEL, RENTACAR }; 

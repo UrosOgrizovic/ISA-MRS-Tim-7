@@ -8,9 +8,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.FlightsReservations.domain.AdminType;
 import com.FlightsReservations.domain.SystemAdmin;
 import com.FlightsReservations.domain.dto.SystemAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 import com.FlightsReservations.repository.SystemAdminRepository;
 
 @Component

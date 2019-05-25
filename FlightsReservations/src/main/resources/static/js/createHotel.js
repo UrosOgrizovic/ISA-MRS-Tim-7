@@ -34,6 +34,10 @@ function validate_inputs(myForm)
     {
     	alert("You must enter Hotel's city!");
     }
+    if(myForm.state.value.trim()=="")
+    {
+    	alert("You must enter Hotel's Country/State!");
+    }
 /*
     if(myForm.hotelAdministrator.value=="")//add hotel administrators first ??
     {
@@ -68,6 +72,7 @@ function create_hotel()
                     longitude : myForm.longitude.value,
                     latitude : myForm.latitude.value,
                     city : myForm.city.value,
+                    state : myForm.state.value,
                     promoDescription : myForm.promoDescription.value,
                     overallRating : 0.0,
                     numberOfVotes: 0.0

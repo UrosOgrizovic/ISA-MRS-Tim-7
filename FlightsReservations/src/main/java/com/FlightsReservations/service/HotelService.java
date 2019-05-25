@@ -11,6 +11,7 @@ import com.FlightsReservations.domain.HotelReservation;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
+import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
@@ -24,19 +25,17 @@ public class HotelService {
 	private RoomRepository roomRepository;
 
 	public HotelDTO create(HotelDTO t) {
-		System.out.println("Usao u servis1");
 		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
 		if (a == null) {
-			System.out.println("Usao u servis2");
 			a = new Hotel(
 					t.getName(), 
 					t.getLongitude(), 
 					t.getLatitude(), 
 					t.getCity(),
+					t.getState(),
 					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);
-			System.out.println("Usao u servis3");
 			return createDTO(a);
 		}
 		return null;
@@ -90,25 +89,29 @@ public class HotelService {
 		HotelDTO dto = new HotelDTO(hotel);
 		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
 			dto.getRooms().add(a.getName());
-		for (HotelReservation r : hotel.getReservations())
+		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));
 		
 		return dto;
 	}
-	/*
-	public boolean addRoom(RoomDTO room) {
-		Hotel hotel = room.getHotel();
+	
+	public boolean addRoom(RoomDTO dto) {
+		Hotel hotel = dto.getHotel();
 		
 		if (hotel != null) {
-			Room r = new Room(
-					room.getOverallRating(),
-					room.getOverNightStay(),
+			Room room = new Room(
+					dto.getNumber(),
+					dto.getFloor(),
+					dto.getName(),
+					dto.getType(),
+					dto.getOverallRating(),
+					dto.getOverNightStay(),
 					hotel);
-			hotel.getRoomConfiguration().add(r);
+			hotel.getRoomConfiguration().add(room);
+			roomRepository.save(room);
 			repository.save(hotel);
 			return true;
 		}
 		return false;
 	}
-	*/
 }

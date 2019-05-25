@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
+import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
 public class HotelAdmin extends Admin

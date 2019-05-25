@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.FlightsReservations.domain.enums.AdminType;
+
 
 @Entity
 @DiscriminatorValue("A")
