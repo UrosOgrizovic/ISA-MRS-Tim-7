@@ -1,28 +1,47 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+window.updateRACS = updateRACS;
+window.addCarToRACS = addCarToRACS;
+window.removeCarFromRACS = removeCarFromRACS;
+window.updateCar = updateCar;
+window.isNumber = isNumber;
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){
+    
 	$.ajax({
 		url: "http://localhost:8080/racss/getAll",
 		method: "GET",
 		dataType: "json",
-		crossDomain: true,
+        crossDomain: true,
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			for (var i = 0; i < result.length; i++) {
-                mapa[result[i].id] = result[i];
-                nameSelect.append("<option>"+result[i].name+"</option>");
-                idSelect.append("<option>" + result[i].id + "</option>");
-			}
-			setInputs();
+            if (result != null && result.lenght > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    mapa[result[i].id] = result[i];
+                    nameSelect.append("<option>"+result[i].name+"</option>");
+                    idSelect.append("<option>" + result[i].id + "</option>");
+                }
+                setInputs();
+            }
+
+			
         },
         error: function(err) {
             console.log(err);
         }
-	});	
+    });	
+    
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function updateRACS() {
@@ -61,7 +80,8 @@ function updateRACS() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "text",	
-		data: JSON.stringify(mapa[key]),
+        data: JSON.stringify(mapa[key]),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
             
 		}, error: function(err) {
@@ -147,7 +167,8 @@ function addCarToRACS() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "json",	
-		data: JSON.stringify(newCar),
+        data: JSON.stringify(newCar),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(car) {
             
             $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture + " " + car.pricePerHour+"</option>");
@@ -166,6 +187,7 @@ function removeCarFromRACS() {
         data: {},
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(allCars) {
             carIdSelect.empty();
             carSelect.empty();
@@ -199,6 +221,7 @@ function updateCar() {
         data: JSON.stringify(editedCar),
         contentType: "application/json",
         dataType: "text",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(result) {
             location.reload();
         },

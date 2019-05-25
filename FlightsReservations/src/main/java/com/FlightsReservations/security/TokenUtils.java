@@ -25,7 +25,7 @@ public class TokenUtils {
 	@Value("somesecret")
 	public String SECRET;
 
-	@Value("300")
+	@Value("3600")
 	private int EXPIRES_IN;
 
 	@Value("Authorization")
@@ -41,15 +41,14 @@ public class TokenUtils {
 
 	// Functions for generating new JWT token
 
-	public String generateToken(String email) {
+	public String generateToken(User user) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(email)
+				.setSubject(user.getEmail())
 				.setAudience(generateAudience())
 				.setIssuedAt(timeProvider.now())
 				.setExpiration(generateExpirationDate())
-//				.claim("username", user.getEmail())
-//				.claim("roles", user.getAuthorities())
+				.claim("roles", user.getAuthorities())
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 	

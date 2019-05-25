@@ -21,6 +21,12 @@ public class Company {
 	@Column(unique = true, nullable = false)
 	private String name;
 
+	@Column(unique = true, nullable = false)
+	private String city;
+	
+	@Column(unique = true, nullable = false)
+	private String state;
+	
 	@Column(nullable = false)
 	private Float longitude;
 
@@ -106,4 +112,22 @@ public class Company {
 	public void setNumberOfVotes(int numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	
 }

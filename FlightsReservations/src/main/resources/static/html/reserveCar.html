@@ -4,12 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="../css/reserveCar.css" />
 
@@ -24,44 +19,42 @@
     <title>Edit Rent-A-Car Service Profile</title>
   </head>
   <body>
-    <div>
-        <select id="racs_id_select" class="form-control" style="visibility:hidden;"></select>
-        
-        <div class="column">
-            <label for="racs_name_select">Current rent-a-car service name</label>
-            <select class="form-control" id="racs_name_select">
-            </select>      
-            <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
-            
-            <label for="car_select">Choose car</label>
-            <select class="form-control" id="car_select">
-            </select>      
+    
+    <div id="nav-placeholder"></div>
 
-            
-           
-          
-        </div>
-
-        <div class="column">
-            
-            <label for="startDate">Start date of reservation:</label> <input id="startDate">
-            <label for="startTime" class="rangeLabel">Start time of reservation:</label> <input type="range" id="startTime" min="0" max="23" step="1">
-        </div>
+    <select id="racs_id_select" class="form-control" style="visibility:hidden;"></select>
+    
+    <div class="column">
+        <label for="racs_name_select">Current rent-a-car service name</label>
+        <select class="form-control" id="racs_name_select">
+        </select>      
+        <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
         
-        <div class="column">
-            
-            <label for="endDate">End date of reservation:</label> <input id="endDate">            
-            <label for="endTime" class="rangeLabel">End time of reservation:</label> <input type="range" id="endTime" min="0" max="23" step="1">
-            <input type="submit" class="btn btn-primary" onClick="reserveCar()" value="Reserve selected car"></button>
-        </div>
-        
-       
-        
+        <label for="car_select">Choose car</label>
+        <select class="form-control" id="car_select">
+        </select>      
     </div>
+
+    <div class="column">
+        
+        <label for="startDate">Start date of reservation:</label> <input id="startDate">
+        <label for="startTime" class="rangeLabel">Start time of reservation:</label> <input type="range" id="startTime" min="0" max="23" step="1">
+    </div>
+    
+    <div class="column">
+        
+        <label for="endDate">End date of reservation:</label> <input id="endDate">            
+        <label for="endTime" class="rangeLabel">End time of reservation:</label> <input type="range" id="endTime" min="0" max="23" step="1">
+        <input type="submit" class="btn btn-primary" onClick="reserveCar()" value="Reserve selected car"></button>
+    </div>
+    
+    
+        
+    
     
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="../js/reserveCar.js" type="text/javascript"> </script>
+    <script src="../js/reserveCar.js" type="module"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.min.js" type="text/javascript"> </script>
     
   </body>

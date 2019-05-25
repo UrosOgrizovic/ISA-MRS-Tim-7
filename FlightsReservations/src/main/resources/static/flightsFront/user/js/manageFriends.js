@@ -1,4 +1,7 @@
-var email = "markomarkovic@gmail.com";
+var email = localStorage.getItem("email");
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 var friends = []
 var sentRequests = []
 var recievedRequests = []

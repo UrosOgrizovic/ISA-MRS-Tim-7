@@ -34,22 +34,17 @@ public class FlightInvite {
 	@Column(nullable = false)
 	private Long seatId;
 
-	@Column(nullable = false)
-	private String passport;
-
 	public FlightInvite() {
 		super();
 	}
 
-	public FlightInvite(FlightReservation reservation, String friendEmail, Long seatId, String passport) {
+	public FlightInvite(FlightReservation reservation, String friendEmail, Long seatId) {
 		super();
 		this.reservation = reservation;
 		this.friendEmail = friendEmail;
-
 		this.seatId = seatId;
-		this.passport = passport;
-
 		this.accepted = false;
+		
 		this.expirationDate = new Date();
 		Calendar c = Calendar.getInstance();
 		c.setTime(this.expirationDate);
@@ -103,14 +98,6 @@ public class FlightInvite {
 
 	public void setSeatId(Long seatId) {
 		this.seatId = seatId;
-	}
-
-	public String getPassport() {
-		return passport;
-	}
-
-	public void setPassport(String passport) {
-		this.passport = passport;
 	}
 
 }

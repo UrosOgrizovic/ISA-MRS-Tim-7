@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -296,5 +297,13 @@ public class FlightService {
 			return new FlightRatingDTO(flight.getId(), flight.getAverageScore());
 		}
 		return null;	
+	}
+
+
+	public FlightDTO getFlight(Long id) {
+		Optional<Flight> opt = repository.findById(id);
+		if (opt.isPresent())
+			return new FlightDTO(opt.get());
+		return null;
 	}
 }

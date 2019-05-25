@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,6 +16,15 @@ public class Room {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
+	private int number;
+	
+	@NotNull
+	private int floor;
+	
+	@NotBlank
+	private String type;
 
 	@NotNull
 	private String name;
@@ -29,25 +39,42 @@ public class Room {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Hotel hotel;
 	
-	//TODO: add list of discounts (see Car class for inspiration)
-	
-	public Room() {
+	public Room() 
+	{
 		super();
 	}
-	public Room(@NotNull String name, @NotNull double overallRating, @NotNull double overNightStay, Hotel hotel) {
+	public Room(double overallRating, double overNightStay, Hotel hotel) 
+	{
 		super();
 		this.name = name;
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
 	}
-	public Hotel getHotel() {
+	
+	public Room(Long id, int number, String type, double overallRating,
+			double overNightStay, Hotel hotel) {
+		super();
+		this.id = id;
+		this.number = number;
+		this.type = type;
+		this.overallRating = overallRating;
+		this.overNightStay = overNightStay;
+		this.hotel = hotel;
+	}
+	public Hotel getHotel() 
+	{
 		return hotel;
 	}
-	public void setHotel(Hotel hotel) {
+	public void setHotel(Hotel hotel) 
+	{
 		this.hotel = hotel;
 	}
 	
+	public double getOverallRating() 
+	{
+		return this.overallRating;
+	}
 	public String getName() {
 		return name;
 	}
@@ -55,24 +82,53 @@ public class Room {
 		this.name = name;
 	}
 	
-	public double getOverallRating() {
-		return overallRating;
-	}
-	public void setOverallRating(double overallRating) {
+	public void setOverallRating(double overallRating) 
+	{
 		this.overallRating = overallRating;
 	}
-	public double getOverNightStay() {
+	public double getOverNightStay() 
+	{
 		return overNightStay;
 	}
-	public void setOverNightStay(double overNightStay) {
+	public void setOverNightStay(double overNightStay) 
+	{
 		this.overNightStay = overNightStay;
 	}
 	
-	public Long getId() {
+	public Long getId() 
+	{
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Long id) 
+	{
 		this.id = id;
 	}
+	public int getNumber() 
+	{
+		return number;
+	}
+	public void setNumber(int number) 
+	{
+		this.number = number;
+	}
+	public String getType() 
+	{
+		return type;
+	}
+	public void setType(String type) 
+	{
+		this.type = type;
+	}
+	public int getFloor()
+	{
+		return floor;
+	}
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
+	}
+	
+	
+	
 	
 }
