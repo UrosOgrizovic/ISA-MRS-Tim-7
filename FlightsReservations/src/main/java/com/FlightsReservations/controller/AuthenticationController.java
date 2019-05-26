@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.UserTokenState;
 import com.FlightsReservations.security.TokenUtils;
 import com.FlightsReservations.security.auth.JwtAuthenticationRequest;
@@ -63,12 +63,12 @@ public class AuthenticationController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		// create token
-		User user = (User) authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getEmail());
+		AbstractUser user = (AbstractUser) authentication.getPrincipal();
+		String jwt = tokenUtils.generateToken(user);
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		// return token as response to signify successful authentication
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getEmail(), user.getFirstName()));
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -76,13 +76,13 @@ public class AuthenticationController {
 
 		String token = tokenUtils.getToken(request);
 		String username = this.tokenUtils.getEmailFromToken(token);
-	    User user = (User) this.userDetailsService.loadUserByUsername(username);
+	    AbstractUser user = (AbstractUser) this.userDetailsService.loadUserByUsername(username);
 
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
 			String refreshedToken = tokenUtils.refreshToken(token);
 			int expiresIn = tokenUtils.getExpiredIn();
 
-			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn, user.getEmail(), user.getFirstName()));
 		} else {
 			UserTokenState userTokenState = new UserTokenState();
 			return ResponseEntity.badRequest().body(userTokenState);

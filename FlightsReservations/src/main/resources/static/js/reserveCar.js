@@ -1,10 +1,27 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
+
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
 
+window.reserveCar = reserveCar;
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+var email = parseJwt(token).sub;
+
+if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
+
+window.setInputs = setInputs;
+window.reserveCar = reserveCar;
+window.compareCars = compareCars;
+window.checkDates = checkDates;
+
 $(document).ready(function(){
+    
     // Initialize a new plugin instance for all
     // e.g. $('input[type="range"]') elements.
     $('input[type="range"]').rangeslider({
@@ -12,7 +29,7 @@ $(document).ready(function(){
         onInit : function() {
             this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() + ":00" );
         },
-        onSlide : function( position, value ) {
+        onSlide : function(position, value ) {
             this.output.html( value );
         }
     });
@@ -28,7 +45,8 @@ $(document).ready(function(){
 		url: "http://localhost:8080/racss/getAll",
 		method: "GET",
 		dataType: "json",
-		crossDomain: true,
+        crossDomain: true,
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
             if (result != null && result.length != 0 && result != undefined) {
                 for (var i = 0; i < result.length; i++) {
@@ -43,7 +61,9 @@ $(document).ready(function(){
         error: function(err) {
             console.log(err);
         }
-	});	
+    });
+    
+    loadNavbar('RACSHomepageNavItem');
 });
 
 function setInputs(){
@@ -79,8 +99,8 @@ function reserveCar() {
     }
     
     var carReservation = {};
-    //TODO: remove hardcoded owner email and discount after implementing spring security
-    carReservation.ownerEmail = "user@example.com";
+    
+    carReservation.ownerEmail = email;
     carReservation.carId = carIdSelect.val();
     var startDate = $("#startDate").val();
     var endDate = $("#endDate").val();
@@ -95,20 +115,25 @@ function reserveCar() {
 
     carReservation.startTime = startDate + " " + startTime + ":00";
     carReservation.endTime = endDate + " " + endTime + ":00";
-    carReservation.discount = 10;
+    carReservation.discount = 0;
     
+    $("#error").remove();
+
+
     $.ajax({
 		url: "http://localhost:8080/carReservations",
 		method: "POST",
 		dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(carReservation),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			$(document.documentElement).append("<h3>Reservation successful</h3>");
+            
+            location.replace("/html/userProfilePage.html");
         },
         error: function(err) {
             console.log(err);
-            $(document.documentElement).append("<h3>Error</h3>");
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
         }
     });	
 

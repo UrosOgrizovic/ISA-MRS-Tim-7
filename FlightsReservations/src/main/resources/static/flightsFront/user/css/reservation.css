@@ -59,6 +59,11 @@ div.seatCharts-seat.available.business-class {
 		/* 	background: url(vip.png); */
 	background-color: #413cee;
 }
+div.seatCharts-seat.taken {
+		/* 	background: url(vip.png); */
+	background-color: #71100f;
+	pointer-events: none;
+}
 
 div.seatCharts-seat.focused {
 	background-color: #76B474;
@@ -78,9 +83,8 @@ div.seatCharts-container {
 	margin-left:5%;
 }
 div.seatCharts-legend {
-	padding-left: 0px;
-	position: absolute;
-	margin-top: 20px;
+	padding-left: 5px;
+	float: left;
 }
 ul.seatCharts-legendList {
 	padding-left: 0px;

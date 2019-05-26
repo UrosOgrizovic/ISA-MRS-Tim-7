@@ -1,8 +1,27 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";
 
+window.rateRACS = rateRACS;
+window.searchRACSByName = searchRACSByName;
+
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+// if user isn't admin
+if (!checkRoleFromToken(token, "ROLE_ADMIN")) {
+    document.getElementById("editRACS").style.display = "none";
+    document.getElementById("createRACS").style.display = "none";
+}
+
+// exposing function to window object, because each module creates a scope to avoid name collisions
+window.searchRACSByName = searchRACSByName;
+
+
 $(document).ready(function(){
+    
     $("#viewAllRACS").on('click', function(e) {
         
         e.preventDefault();
@@ -16,6 +35,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: {},
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(racss) {
                 displayRACSS(racss);
             }, error: function(error) {
@@ -23,6 +43,13 @@ $(document).ready(function(){
                 console.log(error);
             }
         });
+    });
+    
+    loadNavbar('RACSHomepageNavItem');
+
+    $(document).on('click', '.star', function(el) {
+        rateRACS(el.target);
+
     });
 });
 
@@ -118,16 +145,17 @@ function displayRACSS(racss) {
         one of them will be checked
          */
         var groupName = "rate" + racs.name;
+
         text += "<div class=\"rate\">" +
-        "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star5id+")\" value=\"5\" />" + 
+        "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
         "<label for=\""+star5id+"\">5 stars</label>" + 
-        "<input type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star4id+")\" value=\"4\" />" +
+        "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
         "<label for=\""+star4id+"\">4 stars</label>" +
-        "<input type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star3id+")\" value=\"3\" />" +
+        "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
         "<label for=\""+star3id+"\">3 stars</label>" +
-        "<input type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star2id+")\" value=\"2\" />" +
+        "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
         "<label for=\""+star2id+"\">2 stars</label>" +
-        "<input type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" onclick=\"rateRACS("+star1id+")\" value=\"1\" />" +
+        "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
         "<label for=\""+star1id+"\">1 star</label>" +
         "</div>";
     
@@ -173,6 +201,7 @@ function rateRACS(el) {
         data: JSON.stringify(obj),
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(racs) {
             displayRACSRating(racs);
         },
@@ -193,10 +222,9 @@ function searchRACSByName() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(racss) {
-            
             displayRACSS(racss);
-            
         }, error: function(error) {
             $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
             console.log(error);

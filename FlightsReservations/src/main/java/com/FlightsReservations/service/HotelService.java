@@ -25,13 +25,15 @@ public class HotelService {
 	private RoomRepository roomRepository;
 
 	public HotelDTO create(HotelDTO t) {
-		Hotel a = repository.findByName(t.getName());
+		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
 		if (a == null) {
 			a = new Hotel(
 					t.getName(), 
 					t.getLongitude(), 
 					t.getLatitude(), 
-					t.getPromoDescription(), 
+					t.getCity(),
+					t.getState(),
+					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);
 			return createDTO(a);
@@ -45,6 +47,7 @@ public class HotelService {
 			h.setName(t.getName());
 			h.setLongitude(t.getLongitude());
 			h.setLatitude(t.getLatitude());
+			h.setCity(t.getCity());
 			h.setPromoDescription(t.getPromoDescription());
 			h.setAverageScore(t.getAverageScore());
 			h.setNumberOfVotes(t.getNumberOfVotes());
@@ -84,28 +87,31 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		for (Room a : hotel.getRoomConfiguration()) 
+		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
 			dto.getRooms().add(a.getName());
-		for (HotelReservation r : hotel.getReservations())
+		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));
 		
 		return dto;
 	}
-	/*
-	public boolean addRoom(RoomDTO room) {
-		Long hotelID = room.getHotel_id();
-		Hotel hotel = findOne(hotelID);
+	
+	public boolean addRoom(RoomDTO dto) {
+		Hotel hotel = dto.getHotel();
 		
 		if (hotel != null) {
-			Room r = new Room(
-					room.getOverallRating(),
-					room.getOverNightStay(),
+			Room room = new Room(
+					dto.getNumber(),
+					dto.getFloor(),
+					dto.getName(),
+					dto.getType(),
+					dto.getOverallRating(),
+					dto.getOverNightStay(),
 					hotel);
-			hotel.getRoomConfiguration().add(r);
+			hotel.getRoomConfiguration().add(room);
+			roomRepository.save(room);
 			repository.save(hotel);
 			return true;
 		}
 		return false;
 	}
-	*/
 }

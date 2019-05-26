@@ -1,20 +1,22 @@
 package com.FlightsReservations.domain;
 
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+
+import com.FlightsReservations.domain.enums.AdminType;
 
 
 @Entity
 @DiscriminatorValue("A")
-public class Admin extends AbstractUser {
+public class Admin extends AbstractUser 
+{
+	private static final long serialVersionUID = -6075524980472282776L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -40,11 +42,14 @@ public class Admin extends AbstractUser {
 	@Column
 	private String picturePath;
 	
+	@Column
+	private AdminType type;
+	
 	public Admin() {
 	}
 	
 	public Admin(String firstName, String lastName, String email, String phone, String address, String password,
-			String picturePath) 
+			String picturePath, String type) 
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -53,6 +58,7 @@ public class Admin extends AbstractUser {
 		this.address = address;
 		this.password = password;
 		this.picturePath = picturePath;
+		this.type = AdminType.valueOf(type);
 	}
 	
 	public Long getId()
@@ -134,6 +140,16 @@ public class Admin extends AbstractUser {
 	public void setPicturePath(String picturePath) 
 	{
 		this.picturePath = picturePath;
+	}
+
+	public AdminType getType()
+	{
+		return type;
+	}
+
+	public void setType(AdminType type)
+	{
+		this.type = type;
 	}
 
 }

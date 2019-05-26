@@ -6,8 +6,8 @@ import javax.validation.constraints.Positive;
 
 public class FlightInviteDTO {
 	@NotBlank
-	private String friendUsername;
-	
+	private String friendEmail;
+
 	@NotNull
 	@Positive
 	private Integer seatNumber;
@@ -16,12 +16,12 @@ public class FlightInviteDTO {
 		super();
 	}
 
-	public String getFriendUsername() {
-		return friendUsername;
+	public String getFriendEmail() {
+		return friendEmail;
 	}
 
-	public void setFriendUsername(String friendUsername) {
-		this.friendUsername = friendUsername;
+	public void setFriendEmail(String friendEmail) {
+		this.friendEmail = friendEmail;
 	}
 
 	public Integer getSeatNumber() {

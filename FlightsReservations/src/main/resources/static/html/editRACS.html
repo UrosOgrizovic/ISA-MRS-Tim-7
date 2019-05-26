@@ -3,13 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="../css/editRACS.css" />
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/homepage.css" />
+    
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
 
@@ -18,56 +15,64 @@
   </head>
   <body>
     <div>
-        <select id="racs_id_select" class="form-control" style="visibility:hidden;"></select>
+        <div id="nav-placeholder"></div>
 
-        
-        <div class="column">
-            <label for="racs_name_select">Current rent-a-car service name</label>
+        <div class="text">
+          <select id="racs_id_select" class="form-control" style="display:none;"></select>
+
+          <div class="column">
+            <label for="racs_name_select">Choose rent-a-car service</label>
             <select class="form-control" id="racs_name_select">
             </select>      
-            <select id="car_id_select" class="form-control" style="visibility:hidden;"></select>
+
+            <select id="car_id_select" class="form-control" style="display:none;"></select>
             
+            
+    
+            
+            <form method="PUT">
+                <label for="name">New rent-a-car service name</label>
+                <input type="text" class="form-control" id="name"/>
+                <label for="address">New rent-a-car service longitude</label>
+                <input type="text" class="form-control" id="longitude"/>
+                <label for="address">New rent-a-car service latitude</label>
+                <input type="text" class="form-control" id="latitude"/>
+                <label for="description">New rent-a-car service description</label>
+                <input type="text" class="form-control"  id="description"/>
+                <label for="description">New rent-a-car service average score</label>
+                <input type="text" class="form-control"  id="averageScore"/>
+                <label for="description">New rent-a-car service number of votes</label>
+                <input type="text" class="form-control"  id="numberOfVotes"/>
+                
+                <button type="submit" class="btn btn-primary" onClick="updateRACS()">Update rent-a-car service</button>
+            </form>
+            
+          </div>
+        <div class="column">
             <label for="car_select">Choose car</label>
             <select class="form-control" id="car_select">
             </select>      
-
             
-            <button type="submit" class="btn btn-primary" onClick="removeCarFromRACS()">Remove selected car from rent-a-car service</button>
-    
             
-            <label>New car manufacturer</label>
-            <input type="text" class="form-control" id="editCarManufacturer"/>
-            <label>New car name</label>
-            <input type="text" class="form-control" id="editCarName"/>
-            <label>New car color</label>
-            <input type="text" class="form-control" id="editCarColor"/>
-            <label>New car year of manufacture</label>
-            <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="editCarYearOfManufacture"/>
-            <label>New car price per hour</label>
-            <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
-            <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
-          
+            <form method="PUT" >
+                <button type="submit" class="btn btn-primary" onClick="removeCarFromRACS()">Remove selected car from rent-a-car</button>
+                <label>New car manufacturer</label>
+                <input type="text" class="form-control" id="editCarManufacturer"/>
+                <label>New car name</label>
+                <input type="text" class="form-control" id="editCarName"/>
+                <label>New car color</label>
+                <input type="text" class="form-control" id="editCarColor"/>
+                <label>New car year of manufacture</label>
+                <input type="number" min="1950" value="1950" max="2019" maxlength="4" onkeypress="return isNumber(event)" class="form-control" id="editCarYearOfManufacture"/>
+                <label>New car price per hour</label>
+                <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="editCarPricePerHour"/>
+                <button type="submit" class="btn btn-primary" onClick="updateCar()">Update car</button>
+            </form>
+            
         </div>
-
+          
         
-        <form class="column" method="PUT">
-            <label for="name">New rent-a-car service name</label>
-            <input type="text" class="form-control" id="name"/>
-            <label for="address">New rent-a-car service longitude</label>
-            <input type="text" class="form-control" id="longitude"/>
-            <label for="address">New rent-a-car service latitude</label>
-            <input type="text" class="form-control" id="latitude"/>
-            <label for="description">New rent-a-car service description</label>
-            <input type="text" class="form-control"  id="description"/>
-            <label for="description">New rent-a-car service average score</label>
-            <input type="text" class="form-control"  id="averageScore"/>
-            <label for="description">New rent-a-car service number of votes</label>
-            <input type="text" class="form-control"  id="numberOfVotes"/>
-            
-            <button type="submit" class="btn btn-primary" onClick="updateRACS()">Update rent-a-car service</button>
-        </form>
-        
-        <form method="PUT" class="column">
+          <form method="PUT" class="column">
             <label>Car name: </label>
             <input type="text" class="form-control" id="carName"/>
             <label>Car manufacturer: </label>
@@ -79,22 +84,15 @@
             <label>Car price per hour: </label>
             <input type="number" min="1" value="50" max="10000" maxlength="5" onkeypress="return isNumber(event)" class="form-control" id="carPricePerHour"/>
             <button type="submit" class="btn btn-primary" onClick="addCarToRACS()">Add car to rent-a-car service</button>
-        </form>
-        
+          </form>
+      </div>
     </div>
     
-
-    <div>
-
-    </div>
     
-
-    
-
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script src="../js/editRACS.js" type="text/javascript"> </script>
+	<script src="../js/editRACS.js" type="module"> </script>
     
   </body>
 </html>

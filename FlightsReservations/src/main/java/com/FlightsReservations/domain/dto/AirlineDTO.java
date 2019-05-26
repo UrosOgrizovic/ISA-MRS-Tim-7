@@ -20,6 +20,12 @@ public class AirlineDTO {
 	private Float latitude;
 	
 	@NotBlank
+	private String city;
+	
+	@NotBlank
+	private String state;
+	
+	@NotBlank
 	private String promoDescription;
 
 	@NotNull
@@ -37,12 +43,14 @@ public class AirlineDTO {
 		super();
 	}
 
-	public AirlineDTO(String name, Float longitude, Float latitude, String promoDescription, float score,
+	public AirlineDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
 		this.promoDescription = promoDescription;
 		this.averageScore = score;
 		this.numberOfVotes = numberOfVotes;
@@ -57,7 +65,7 @@ public class AirlineDTO {
 	}
 
 	public AirlineDTO(Airline a) {
-		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getPromoDescription(), a.getAverageScore(),
+		this(a.getName(), a.getLongitude(), a.getLatitude(), a.getCity(), a.getState(), a.getPromoDescription(), a.getAverageScore(),
 				a.getNumberOfVotes());
 	}
 
@@ -116,5 +124,27 @@ public class AirlineDTO {
 	public void setFlights(Set<FlightDTO> flights) {
 		this.flights = flights;
 	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+	
+	
 
 }

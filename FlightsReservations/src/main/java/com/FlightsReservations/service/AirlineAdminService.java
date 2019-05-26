@@ -6,31 +6,40 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
 import com.FlightsReservations.repository.AirlineAdminRepository;
+import com.FlightsReservations.repository.AuthorityRepository;
+import com.FlightsReservations.repository.UserRepository;
 
-@Component
+@Service
 public class AirlineAdminService {
-
 	
 	@Autowired
-	AirlineAdminRepository repository;//TODO: will be deleted
+	AirlineAdminRepository repository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	AuthorityRepository authRepository;
 	
 	
 	public AirlineAdminDTO create(AirlineAdminDTO dto) {
 		AirlineAdmin a = repository.findByEmail(dto.getEmail());
 		if (a == null) {
 			a = new AirlineAdmin(dto);
+			a.setAuthorities(authRepository.findAll());
+			
 			repository.save(a);
 			return createDTO(a);
 		}
 		return null;
-
 	}
 
+	
 	public boolean update(AirlineAdminDTO dto) {
 		AirlineAdmin a = repository.findByEmail(dto.getEmail());
 		if (a != null) {
@@ -46,6 +55,7 @@ public class AirlineAdminService {
 		return false;
 	}
 
+	
 	public AirlineAdminDTO findOne(String email) {
 		// TODO Auto-generated method stub
 		AirlineAdmin a = repository.findByEmail(email);
@@ -54,11 +64,12 @@ public class AirlineAdminService {
 		return null;
 	}
 
+	
 	public void delete(String email) {
-		// TODO Auto-generated method stub
-				
+		// TODO Auto-generated method stub			
 	}
 
+	
 	public Collection<AirlineAdminDTO> findAll() {
 		List<AirlineAdmin> admins = repository.findAll();
 		Set<AirlineAdminDTO> dtos = new HashSet<>();
@@ -68,12 +79,10 @@ public class AirlineAdminService {
 		return dtos;
 	}
 	
-	private AirlineAdminDTO createDTO(AirlineAdmin a)
-	{
+	
+	private AirlineAdminDTO createDTO(AirlineAdmin a) {
 		AirlineAdminDTO dto = new AirlineAdminDTO(a);
-		//Airline al = a.getAirline();
-		//dto.setAirline(al.getName());
-	return dto;
+		return dto;
 	}
-
+	
 }

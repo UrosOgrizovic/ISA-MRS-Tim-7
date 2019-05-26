@@ -1,6 +1,10 @@
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 function validate_inputs(myForm)
 {
+    
     console.log(myForm);
     if(myForm.name.value.trim()=="")
     {
@@ -23,9 +27,18 @@ function validate_inputs(myForm)
         return false;
     }
     
+    if(myForm.city.value.trim()=="")
+    {
+    	alert("You must enter Airline's city!");
+    }
+    if(myForm.state.value.trim()=="")
+    {
+    	alert("You must enter Airline's Country/State!");
+    }
+    
     if(myForm.promoDescription.value.trim()=="")
     {
-        alert("You must enter Airline's location!");
+        alert("You must enter Airline's description!");
         return false;
     }
     
@@ -47,6 +60,8 @@ function create_airline()
                     name : myForm.name.value,
                     longitude : myForm.longitude.value,
                     latitude : myForm.latitude.value,
+                    city : myForm.city.value,
+                    state : myForm.state.value,
                     promoDescription : myForm.promoDescription.value,
                     averageScore: 0,//default value
                     numberOfVotes: 0//default value
@@ -68,6 +83,7 @@ function create_airline()
             data: JSON.stringify(airline),
             cache: false,
             crossDomain: true,
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) { },
             })
     }

@@ -21,6 +21,12 @@ public class Company {
 	@Column(unique = true, nullable = false)
 	private String name;
 
+	@Column(unique = true, nullable = false)
+	private String city;
+	
+	@Column(unique = true, nullable = false)
+	private String state;
+	
 	@Column(nullable = false)
 	private Float longitude;
 
@@ -40,12 +46,14 @@ public class Company {
 		super();
 	}
 
-	public Company(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+	public Company(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
 		this.promoDescription = promoDescription;
 		this.averageScore = avarageScore;
 		this.numberOfVotes = numberOfVotes;
@@ -106,4 +114,22 @@ public class Company {
 	public void setNumberOfVotes(int numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	
 }

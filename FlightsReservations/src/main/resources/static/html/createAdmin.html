@@ -31,6 +31,7 @@
                             <option value="1">Airline company Administrator</option>
                             <option value="2">Hotel Administrator</option>
                             <option value="3">Rent-A-Car service Administrator</option>
+                            <option value="4">System Administrator</option>
                         </select>
                     </td>    <!-- add a Hotel administrator selection-->
                 </tr>
@@ -59,14 +60,10 @@
                     <td> <label>  Password*: </label> </td>
                     <td> <input type="text" name="password"> </td>
                 </tr>
-                <tr>
-                    <td> <label> Profile Picture: </label> </td>
-                    <td> <input type="file" name="picturePath" class="imageButton"> </td>
-                </tr>
 
                 <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
                 <tr>
-                    <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
+                    <td>
                     </td>
                     <td align="center">
                     	<button type="submit" class="btn btn-primary" name="createHotel" onClick="create_admin()" id="submitButton" >Add Administrator</button>

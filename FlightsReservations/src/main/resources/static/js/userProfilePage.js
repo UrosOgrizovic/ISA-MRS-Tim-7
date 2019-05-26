@@ -1,3 +1,4 @@
+import {loadNavbar} from "./navbar.js"; 
 var getAllFriendsLink = "http://localhost:8080/users/getFriends";
 var getAllCarReservationsLink = "http://localhost:8080/users/getCarReservations";
 var getAllFlightReservationsLink = "http://localhost:8080/users/getFlightReservations";
@@ -6,6 +7,14 @@ var cancelCarReservationLink = "http://localhost:8080/carReservations/cancel/";
 var cancelFlightReservationLink = "http://localhost:8080/flightReservations/cancel/";
 var cancelRoomReservationLink = "http://localhost:8080/roomReservations/cancel/";
 
+var email = localStorage.getItem("email");
+
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+window.cancelCarReservation = cancelCarReservation;
+window.cancelFlightReservation = cancelFlightReservation;
+window.cancelRoomReservation = cancelRoomReservation;
 
 $(document).ready(function(){
     $("#viewAllFriends").on('click', function(e) {
@@ -27,10 +36,11 @@ $(document).ready(function(){
         e.preventDefault();
         getAllRoomReservations();
     });
+
+    loadNavbar('profileHomepageNavItem');
 });
 
 function getAllCarReservations() {
-    var email = $("#email").text();
     $("#all").remove();
     $("#error").remove();
     
@@ -40,6 +50,7 @@ function getAllCarReservations() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(carReservations) {
             displayCarReservations(carReservations);
         }, error: function(error) {
@@ -50,7 +61,6 @@ function getAllCarReservations() {
 }
 
 function getAllFlightReservations() {
-	var email = $("#email").text();
     $("#all").remove();
     $("#error").remove();
     
@@ -62,6 +72,7 @@ function getAllFlightReservations() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(flightReservations) {
             displayFlightReservations(flightReservations);
         }, error: function(error) {
@@ -73,7 +84,6 @@ function getAllFlightReservations() {
 
 
 function getAllRoomReservations() {
-    var email = $("#email").text();
     $("#all").remove();
     $("#error").remove();
     
@@ -83,6 +93,7 @@ function getAllRoomReservations() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(roomReservations) {
             displayRoomReservations(roomReservations);
         }, error: function(error) {
@@ -93,7 +104,6 @@ function getAllRoomReservations() {
 }
 
 function getAllFriends() {
-    var email = $("#email").text();
 
     $("#all").remove();
     $("#error").remove();
@@ -104,6 +114,7 @@ function getAllFriends() {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(friends) {
             displayFriends(friends);
         }, error: function(error) {
@@ -242,6 +253,7 @@ function cancelCarReservation(id) {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function() {
             getAllCarReservations();
         }, error: function(error) {
@@ -320,6 +332,7 @@ function cancelFlightReservation(id) {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function() {
             getAllFlightReservations();
             getAllRoomReservations();
@@ -337,6 +350,7 @@ function cancelRoomReservation(id) {
         dataType: "json",
         contentType: "application/json",
         data: {},
+        headers: { "Authorization": "Bearer " + token}, 
         success: function() {
             getAllFlightReservations();
             getAllRoomReservations();

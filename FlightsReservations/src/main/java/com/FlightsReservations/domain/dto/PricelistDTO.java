@@ -9,16 +9,16 @@ import com.FlightsReservations.domain.AirlinePriceList;
 public class PricelistDTO {
 	@NotNull
 	@PositiveOrZero
-	public double first;
-	
+	public float first;
+
 	@NotNull
 	@PositiveOrZero
-	public double business;
-	
+	public float business;
+
 	@NotNull
 	@PositiveOrZero
-	public double economic;
-	
+	public float economic;
+
 	@NotBlank
 	public String airline;
 
@@ -34,27 +34,27 @@ public class PricelistDTO {
 		airline = ap.getAirline().getName();
 	}
 
-	public double getFirst() {
+	public float getFirst() {
 		return first;
 	}
 
-	public void setFirst(double first) {
+	public void setFirst(float first) {
 		this.first = first;
 	}
 
-	public double getBusiness() {
+	public float getBusiness() {
 		return business;
 	}
 
-	public void setBusiness(double business) {
+	public void setBusiness(float business) {
 		this.business = business;
 	}
 
-	public double getEconomic() {
+	public float getEconomic() {
 		return economic;
 	}
 
-	public void setEconomic(double economic) {
+	public void setEconomic(float economic) {
 		this.economic = economic;
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.common.TimeProvider;
-import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.AbstractUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +25,7 @@ public class TokenUtils {
 	@Value("somesecret")
 	public String SECRET;
 
-	@Value("300")
+	@Value("3600")
 	private int EXPIRES_IN;
 
 	@Value("Authorization")
@@ -41,15 +41,14 @@ public class TokenUtils {
 
 	// Functions for generating new JWT token
 
-	public String generateToken(String email) {
+	public String generateToken(AbstractUser user) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(email)
+				.setSubject(user.getEmail())
 				.setAudience(generateAudience())
 				.setIssuedAt(timeProvider.now())
 				.setExpiration(generateExpirationDate())
-//				.claim("username", user.getEmail())
-//				.claim("roles", user.getAuthorities())
+				.claim("roles", user.getAuthorities())
 				.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 	}
 	
@@ -87,7 +86,7 @@ public class TokenUtils {
 	// Functions for validating JWT token data
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		User user = (User) userDetails;
+		AbstractUser user = (AbstractUser) userDetails;
 		final String username = getEmailFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
 		

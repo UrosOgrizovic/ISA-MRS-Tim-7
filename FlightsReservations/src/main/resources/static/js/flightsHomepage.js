@@ -1,7 +1,11 @@
 var getAllLink = "/flights";
 var rateLink = "/flights/rate";
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 $(document).ready(function(){
+    
     $("#viewAllFlights").on('click', function(e) {
         
         e.preventDefault();
@@ -15,6 +19,7 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             data: {},
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(flights) {
                 displayFlights(flights);
             }, error: function(error) {
@@ -147,6 +152,7 @@ function rateFlight(el) {
         data: JSON.stringify(obj),
         contentType: "application/json",
         dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
         success: function(flight) {
             displayFlightRating(flight);
         },

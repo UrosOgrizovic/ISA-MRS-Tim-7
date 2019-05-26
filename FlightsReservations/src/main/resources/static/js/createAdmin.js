@@ -1,7 +1,12 @@
-var my_url = "http://localhost:8080";
+var my_url = "http://localhost:8080/Admin";
+
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+var admin = {};
 
 function validate_inputs(myForm)
 {
+    var admin_type;
     console.log(myForm);
     //alert(""+myForm.adminType.type);
     if(myForm.adminType.value==0)
@@ -11,16 +16,24 @@ function validate_inputs(myForm)
     }
     else if(myForm.adminType.value==1)
     {
-    	my_url += "/airlineAdmin";
+    	my_url += "/airline/create";
+    	admin_type = "AIRLINE";
     }
     else if(myForm.adminType.value==2)
     {
-    	my_url += "/hotelAdmin";
+    	my_url += "/hotel/create";
+    	admin_type = "HOTEL";
     }
     else if(myForm.adminType.value==3)
     {
-    	my_url += "/racsAdmin";
+    	my_url += "/racs/create";
+    	admin_type = "RENTACAR";
     }
+    else if(myForm.adminType.value==4)
+    {
+    	my_url += "/system/create";
+    	admin_type = "SYSTEM";
+    }	
     
     if(myForm.firstName.value.trim()=="")
     {
@@ -77,15 +90,16 @@ function create_admin()
     }
     else
     {
-        var admin =
+        admin =
                 {
-                    id : 1,//Fix later
+                    //id : 1,//Fix later
                     firstName : myForm.firstName.value,
                     lastName : myForm.lastName.value,
                     email : myForm.email.value,
                     phone : myForm.phone.value,
                     address : myForm.address.value,
                     password : myForm.password.value,
+                    type : admin_type,
                     picturePath : ""//TODO: add uploaded image location
                     /* // this is a DTO => not all fields are necessary
                     hotelSet : null
@@ -104,6 +118,7 @@ function create_admin()
             data: JSON.stringify(admin),
             cache: false,
             crossDomain: true,
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) { },
             })
     }
