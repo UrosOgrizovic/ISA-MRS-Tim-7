@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,6 +31,7 @@ public class FlightReservationController {
 	@Autowired
 	private FlightReservationService service;
 	
+	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
 		FlightReservationDTO fdto = service.create(dto);
@@ -38,6 +40,7 @@ public class FlightReservationController {
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
 
+	
 	@PutMapping(value = "/cancel/{id}")
 	public ResponseEntity<?> cancel(@NotNull @Positive @PathVariable Long id) {
 		if (service.cancel(id))
@@ -52,4 +55,30 @@ public class FlightReservationController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	@PostMapping(value = "/quickReservation/{flightId}/{seatNum}/{discount}")
+	public ResponseEntity<?> createQuickReservation(@NotNull @PathVariable Long flightId, @NotNull @PathVariable Integer seatNum, @NotNull @PathVariable Float discount) {
+		if (service.createQuickReservation(flightId, seatNum, discount)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@PutMapping(value = "/quickReservation/{reservationId}/{ownerEmail}/{passport}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> takeQuickReservation(@NotNull @PathVariable Long reservationId, 
+			@NotBlank @Email @PathVariable String ownerEmail,
+			@NotBlank @PathVariable String passport) {
+		FlightReservationDTO r = service.takeQR(reservationId, ownerEmail, passport);
+		if (r != null)
+			return new ResponseEntity<>(r, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@GetMapping(value = "/quickReservations/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getQuickReservations(@PathVariable @NotBlank String airline) {
+		return new ResponseEntity<>(service.getQuickReservations(airline), HttpStatus.OK);
+	}
+	
 }

@@ -6,18 +6,19 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Version;
+
 
 @Entity
 @DiscriminatorValue("R")
 public class RACS extends Company {
 	
-
-	private ArrayList<PricelistItem> pricelist;
+	@ElementCollection
+	private Set<RACSPricelistItem> pricelist;
 	
 	
 	/* orphanRemoval = true - guarantees that when a car is removed from  
@@ -30,21 +31,10 @@ public class RACS extends Company {
 	
 	private ArrayList<String> branchOffices;
 	
-	@Version
-	private Long version;
-	
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-	
-	public ArrayList<PricelistItem> getPricelist() {
+	public Set<RACSPricelistItem> getPricelist() {
 		return pricelist;
 	}
-	public void setPricelist(ArrayList<PricelistItem> pricelist) {
+	public void setPricelist(Set<RACSPricelistItem> pricelist) {
 		this.pricelist = pricelist;
 	}
 	public Set<Car> getCars() {
@@ -63,59 +53,21 @@ public class RACS extends Company {
 	public void setBranchOffices(ArrayList<String> branchOffices) {
 		this.branchOffices = branchOffices;
 	}
-	public RACS(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+	public RACS(String name, Float longitude, Float latitude, String promoDescription, float averageScore,
 			int numberOfVotes) {
-		super(name, longitude, latitude, promoDescription, avarageScore, numberOfVotes);
+		super(name, longitude, latitude, promoDescription, averageScore, numberOfVotes);
 	}
 	
 	public RACS() {
 		super();
 	}
-	@Override
-	public int hashCode() {
-		
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((branchOffices == null) ? 0 : branchOffices.hashCode());
-		result = prime * result + ((cars == null) ? 0 : cars.hashCode());
-		result = prime * result + ((pricelist == null) ? 0 : pricelist.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		if (! super.equals(obj)) return false;
-		else {
-			RACS other = (RACS) obj;
-			if (branchOffices == null) {
-				if (other.branchOffices != null)
-					return false;
-			} else if (!branchOffices.equals(other.branchOffices))
-				return false;
-			if (cars == null) {
-				if (other.cars != null)
-					return false;
-			} else if (!cars.equals(other.cars))
-				return false;
-			if (pricelist == null) {
-				if (other.pricelist != null)
-					return false;
-			} else if (!pricelist.equals(other.pricelist))
-				return false;
-			return true;
-		}
-		
-	}
+	
+	
 	@Override
 	public String toString() {
 		return "RACS [getId()=" + getId() + ", getName()=" + getName() + ", getLongitude()=" + getLongitude()
 				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
-				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + "]";
+				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
 	
 	

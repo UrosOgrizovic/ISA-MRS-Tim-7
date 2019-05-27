@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Version;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,6 +22,12 @@ public class Company {
 	@Column(unique = true, nullable = false)
 	private String name;
 
+	@Column(unique = true, nullable = false)
+	private String city;
+	
+	@Column(unique = true, nullable = false)
+	private String state;
+	
 	@Column(nullable = false)
 	private Float longitude;
 
@@ -35,6 +42,19 @@ public class Company {
 
 	@Column(nullable = false)
 	private int numberOfVotes;
+	
+	@Version
+	@Column(nullable = false)
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
 
 	public Company() {
 		super();
@@ -106,4 +126,22 @@ public class Company {
 	public void setNumberOfVotes(int numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Car;
@@ -22,6 +23,9 @@ public class RACSService {
 	@Autowired
 	RACSRepository repository;
 	
+	@Autowired
+	CarService carService;
+	
 	@Transactional(readOnly = false)
 	public RACS create(RACS t) {
 		Set<Car> cars = t.getCars();
@@ -35,14 +39,17 @@ public class RACSService {
 		return repository.save(t);
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public boolean update(RACS t) {
 		RACS r = findOne(t.getId());
 		if (r != null) {
+			
 			r.setLongitude(t.getLongitude());
 			r.setLatitude(t.getLatitude());
 			r.setBranchOffices(t.getBranchOffices());
+			// Hibernate saves all modifications done to cars automatically
 			r.setCars(t.getCars());
+			
 			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
 			r.setPricelist(t.getPricelist());

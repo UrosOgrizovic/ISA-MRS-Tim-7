@@ -1,7 +1,13 @@
+import {loadNavbar} from "./navbar.js"; 
 var mapa;
 var emailSelect;
 
+window.updateUser = updateUser;
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 $(document).ready(function(){
+    
 	mapa = new Map();
 	emailSelect = $("#emailSelect");
 	emailSelect.change(setInputs);
@@ -10,7 +16,8 @@ $(document).ready(function(){
 		url: "http://localhost:8080/users/getAll",
 		method: "GET",
 		dataType: "json",
-		crossDomain: true,
+        crossDomain: true,
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
 			for (var i = 0; i < result.length; i++) {
 				mapa[result[i].email] = result[i];
@@ -18,7 +25,8 @@ $(document).ready(function(){
 			}
 			setInputs();
 		}
-	});	
+    });	
+    loadNavbar('profileHomepageNavItem');
 });
 
 function updateUser() {
@@ -38,7 +46,8 @@ function updateUser() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "json",	
-		data: JSON.stringify(mapa[key]),
+        data: JSON.stringify(mapa[key]),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
 			alert("Update successfull!");
 		}

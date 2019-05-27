@@ -1,8 +1,20 @@
+import {loadNavbar} from "./navbar.js"; 
 var searchUrl = "http://localhost:8080/racss/searchCars";
 var mapa;
 var emailSelect;
 
+
+window.mapa = mapa;
+window.emailSelect = emailSelect;
+window.isNumber = isNumber;
+
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
+// everyone can search, so there's no role-checking here
+
 $(document).ready(function(){
+    
     $("#carSearchForm").on('submit', function(e) {
         e.preventDefault();
         
@@ -19,6 +31,7 @@ $(document).ready(function(){
             method: "GET",
             dataType: "json",
             contentType: "application/json",
+            headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
                 displaySearchResults(result);
             }, error: function(error) {
@@ -27,6 +40,7 @@ $(document).ready(function(){
         });
     });
     
+    loadNavbar('RACSHomepageNavItem');
     
 });
 

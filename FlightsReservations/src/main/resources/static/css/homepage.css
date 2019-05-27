@@ -49,3 +49,28 @@ caption {
     font-weight: bolder;
     color: black;
 }
+
+.column {
+    float: left;
+    width: 30%;
+    padding: 10px;
+}
+
+.left {
+    float: left;
+    width: 30%;
+}
+
+.right {
+    float: right;
+    width: 60%;
+}
+
+button, input[type=submit] {
+    margin: 10px;
+}
+
+.form-control {
+    margin: 10px;
+    width: 300px;
+}

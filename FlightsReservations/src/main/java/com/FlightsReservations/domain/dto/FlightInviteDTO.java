@@ -8,9 +8,6 @@ public class FlightInviteDTO {
 	@NotBlank
 	private String friendEmail;
 
-	@NotBlank
-	private String passport;
-
 	@NotNull
 	@Positive
 	private Integer seatNumber;
@@ -33,14 +30,6 @@ public class FlightInviteDTO {
 
 	public void setSeatNumber(Integer seatNumber) {
 		this.seatNumber = seatNumber;
-	}
-
-	public String getPassport() {
-		return passport;
-	}
-
-	public void setPassport(String passport) {
-		this.passport = passport;
 	}
 
 }

@@ -1,7 +1,11 @@
 var mapa;
 var idSelect;
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 $(document).ready(function(){
+ 
 	mapa = new Map();
 	idSelect = $("#airlineId");
 	idSelect.change(setInputs);
@@ -9,7 +13,8 @@ $(document).ready(function(){
 	$.ajax({
 		url: "http://localhost:8080/airlines/getAll",
 		method: "GET",
-		dataType: "json",
+        dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
 			for (var i = 0; i < result.length; i++) {
 				mapa[result[i].id] = result[i];
@@ -36,7 +41,8 @@ function updateAirline() {
 		method: "PUT",
 		contentType: "application/json",
 		dataType: "json",	
-		data: JSON.stringify(mapa[key]),
+        data: JSON.stringify(mapa[key]),
+        headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
 			alert("Successfull update!");
 		}
