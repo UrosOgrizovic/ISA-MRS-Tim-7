@@ -10,8 +10,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.AirlinePriceList;
 import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.FlightInvite;
@@ -50,9 +53,12 @@ public class FlightReservationService {
 	private EmailService emailService;
 
 	public FlightReservationDTO create(FlightsReservationRequestDTO reservationDTO) {
+			
 		if (verifyCreateReservation(reservationDTO)) {
+			Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
 			User owner = userRepository.findByEmail(reservationDTO.getOwnerEmail());
-			FlightReservation r = new FlightReservation(new Date(), (float) 0, owner, true);
+			FlightReservation r = new FlightReservation(a,new Date(), (float) 0, owner, true);
+			a.getReservations().add(r);
 			
 			for (FlightReservationDetailsDTO detailDTO : reservationDTO.getFlights()) {
 				Flight f = flightRepository.findById(detailDTO.getFlightId()).get();
@@ -286,8 +292,10 @@ public class FlightReservationService {
 	
 	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
 		if (verifyCreateQR(id, seatNum)) {
+			Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
 			Flight f = flightRepository.findById(id).get();
-			FlightReservation r = new FlightReservation(new Date(), (float)0, null, true);
+			FlightReservation r = new FlightReservation(a, new Date(), (float)0, null, true);
+			a.getReservations().add(r);
 			r.setDiscount(discount);
 			r.getFlights().add(f);
 			f.getReservations().add(r);

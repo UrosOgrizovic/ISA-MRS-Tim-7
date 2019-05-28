@@ -1,5 +1,6 @@
 package com.FlightsReservations.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.AirportDTO;
 import com.FlightsReservations.domain.dto.PricelistDTO;
 import com.FlightsReservations.service.AirlineService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @RestController
 @RequestMapping("/airlines")
@@ -92,6 +94,28 @@ public class AirlineController {
 		if (service.setPricelist(dto))
 			return new ResponseEntity<>("", HttpStatus.OK);
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+	}
+
+	@GetMapping(value = "/reports/day", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getDayReport() {
+		return new ResponseEntity<>(service.getCountReport("dd-MM-yyyy"), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/reports/month", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getMonthReport() {
+		return new ResponseEntity<>(service.getCountReport("MM-yyyy"), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/reports/year", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getYearReport() {
+		return new ResponseEntity<>(service.getCountReport("yyyy"), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/reports/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getPeriodReport(
+			@PathVariable @NotBlank @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Belgrade/Europe") Date start,
+			@PathVariable @NotBlank @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Belgrade/Europe") Date end) {
+		return new ResponseEntity<>(service.getIncomeForPeriod(start, end), HttpStatus.OK);
 	}
 
 }
