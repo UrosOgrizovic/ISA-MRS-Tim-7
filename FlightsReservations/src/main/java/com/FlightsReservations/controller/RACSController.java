@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -154,6 +156,24 @@ public class RACSController {
 	public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO car) {
 		if (service.addCar(car))
 			return new ResponseEntity<>(car, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getRevenueForPeriod/{id}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getRevenueForPeriod(@PathVariable Long id, @PathVariable String startTime, @PathVariable String endTime) {
+		RACS racs = service.findOne(id);
+		if (racs != null)
+			return new ResponseEntity<>(service.getRevenueForPeriod(racs, startTime, endTime), HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getCarReservationsForRacs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getCarReservationsForRacs(@NotNull @Positive @PathVariable Long id) {
+		RACS racs = service.findOne(id);
+		if (racs != null)
+			return new ResponseEntity<>(service.getCarReservationsOfRacs(racs.getId()), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	

@@ -41,9 +41,30 @@ public class Car {
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
-	//@JsonIgnoreProperties(ignoreUnknown=true, value={"hibernateLazyInitializer", "handler", "created"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
+
+	@Column(nullable = false)
+	private float averageRating;
+	
+	@Column(nullable = false)
+	private int numberOfVotes;
+	
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public float getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
 
 	public Set<Discount> getDiscounts() {
 		return discounts;
@@ -110,7 +131,7 @@ public class Car {
 	}
 
 	public Car(String manufacturer,String name, int yearOfManufacture,
-			String color, RACS racs, double pricePerHour) {
+			String color, RACS racs, double pricePerHour, float averageRating, int numberOfVotes) {
 		super();
 		this.manufacturer = manufacturer;
 		this.name = name;
@@ -118,6 +139,8 @@ public class Car {
 		this.color = color;
 		this.racs = racs;
 		this.pricePerHour = pricePerHour;
+		this.averageRating = averageRating;
+		this.numberOfVotes = numberOfVotes;
 	}
 	
 	public Car() {

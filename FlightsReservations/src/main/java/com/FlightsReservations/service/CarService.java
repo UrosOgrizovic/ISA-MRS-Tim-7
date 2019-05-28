@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Discount;
+import com.FlightsReservations.domain.dto.CarRatingDTO;
 import com.FlightsReservations.domain.dto.CreateCarDiscountDTO;
 import com.FlightsReservations.domain.dto.DiscountCarDTO;
 import com.FlightsReservations.repository.CarRepository;
@@ -124,6 +125,19 @@ public class CarService {
 			
 		}
 		return discountCars;
+	}
+	
+	public CarRatingDTO rate(CarRatingDTO dto) {
+		Car c = repository.findById(dto.getCarId()).get();
+		if (c != null) {
+			float newAvgScore = c.getAverageRating() * c.getNumberOfVotes() + dto.getAverageScore();
+			int newNumberOfVotes = c.getNumberOfVotes() + 1;
+			c.setNumberOfVotes(newNumberOfVotes);
+			c.setAverageRating(newAvgScore / newNumberOfVotes);
+			repository.save(c);
+			return new CarRatingDTO(c.getAverageRating(), c.getId());
+		}
+		return null;
 	}
 	
 }

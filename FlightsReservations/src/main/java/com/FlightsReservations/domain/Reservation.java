@@ -16,6 +16,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -35,6 +36,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private Boolean confirmed;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private User owner;
 	
@@ -92,7 +94,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price + 
+		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation +", price=" + price + 
 				", confirmed=" + confirmed + ", owner=" + owner + "]";
 	}
 }
