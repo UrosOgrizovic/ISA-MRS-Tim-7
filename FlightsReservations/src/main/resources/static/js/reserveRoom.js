@@ -41,9 +41,9 @@ function validate_inputs(myForm)
     return true;
 }
 
-function create_room()
+function reserve_room()
 {
-    myForm = document.getElementById("createRoomForm");
+    myForm = document.getElementById("reserveRoomForm");
     if(!validate_inputs(myForm))
     {
         return;
@@ -66,7 +66,7 @@ function create_room()
                 };
         //add image later
         //add administator later
-
+        /*
          //$("#createHotel").click(function(){
             $.ajax(
             {
@@ -79,5 +79,6 @@ function create_room()
             crossDomain: true,
             success: function(result) { },
             })
+            */
     }
 }
