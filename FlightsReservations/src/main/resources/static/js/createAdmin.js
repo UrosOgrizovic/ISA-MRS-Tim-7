@@ -99,7 +99,6 @@ function create_admin()
                     phone : myForm.phone.value,
                     address : myForm.address.value,
                     password : myForm.password.value,
-                    type : admin_type,
                     picturePath : ""//TODO: add uploaded image location
                     /* // this is a DTO => not all fields are necessary
                     hotelSet : null
@@ -111,7 +110,7 @@ function create_admin()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: my_url + "/create",//link assigned to method in HotelController
+            url: my_url,//link assigned to method in HotelController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",

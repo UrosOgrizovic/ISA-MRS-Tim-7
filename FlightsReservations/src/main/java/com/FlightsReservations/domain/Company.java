@@ -21,10 +21,10 @@ public class Company {
 	@Column(unique = true, nullable = false)
 	private String name;
 
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String city;
 	
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String state;
 	
 	@Column(nullable = false)
