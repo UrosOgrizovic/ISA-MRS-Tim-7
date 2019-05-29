@@ -164,17 +164,19 @@ public class RACSController {
 	public ResponseEntity<?> getRevenueForPeriod(@PathVariable Long id, @PathVariable String startTime, @PathVariable String endTime) {
 		RACS racs = service.findOne(id);
 		if (racs != null)
-			return new ResponseEntity<>(service.getRevenueForPeriod(racs, startTime, endTime), HttpStatus.OK);
+			return new ResponseEntity<>(service.getRevenueForPeriod(racs.getId(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "getCarReservationsForRacs/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getCarReservationsForRacs(@NotNull @Positive @PathVariable Long id) {
+	@GetMapping(value = "getNumberOfCarReservationsOfRacsDaily/{id}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getNumberOfCarReservationsOfRacsDaily(@NotNull @Positive @PathVariable Long id, @PathVariable String startTime, @PathVariable String endTime) {
 		RACS racs = service.findOne(id);
 		if (racs != null)
-			return new ResponseEntity<>(service.getCarReservationsOfRacs(racs.getId()), HttpStatus.OK);
+			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacsDaily(racs.getId(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	
 	
 }
