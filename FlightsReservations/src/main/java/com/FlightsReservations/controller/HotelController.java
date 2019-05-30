@@ -1,5 +1,6 @@
 package com.FlightsReservations.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
+import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.service.HotelService;
 import com.FlightsReservations.service.RoomService;
 
@@ -47,6 +49,20 @@ public class HotelController {
 		return new ResponseEntity<>(h, HttpStatus.CONFLICT);//TODO: finish later - same id?
 	}
 	
+	@GetMapping(value= "/searchHotels", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<HotelDTO> > searchHotels(@RequestBody SearchHotelDTO hotel)
+	{
+		System.out.println("Usao u kontroler1");
+		Collection<HotelDTO> results = service.search(hotel);
+		System.out.println("Usao u kontroler2");
+		for(HotelDTO h : results)
+		{
+			System.out.println(h.getName() + "," + h.getCity() + "," + h.getState() + "," + Float.toString(h.getAverageScore() ) ); 
+		}
+		System.out.println("Usao u kontroler2");
+		return new ResponseEntity<Collection<HotelDTO> >(results, HttpStatus.OK);
+	}
+	
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -57,13 +73,14 @@ public class HotelController {
 		return new ResponseEntity<>("Hotel with given id does not exist", HttpStatus.NOT_FOUND);
 	}
 	
-	
+	/*
 	@PutMapping(value = "/addRoom", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addRoom(@RequestBody @Valid RoomDTO room) {
 		if (service.addRoom(room))
+			roomService.save(room);
 			return new ResponseEntity<>(room, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
-	
+	*/
 }

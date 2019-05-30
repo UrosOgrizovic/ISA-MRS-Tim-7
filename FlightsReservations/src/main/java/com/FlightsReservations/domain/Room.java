@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,17 +23,15 @@ public class Room {
 	private int number;
 	
 	@NotNull
-	private int floor;
+	private int numberOfGuests;
 	
 	@NotBlank
 	private RoomType type;
 
-	@NotNull
-	private String name;
-	@NotNull
+	@Column(nullable = false)
 	private double overallRating;
 	
-	@NotNull
+	@Column(nullable = false)
 	private double overNightStay;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
@@ -45,10 +44,10 @@ public class Room {
 		super();
 	}
 	
-	public Room(int number, int floor, String name, String type, double overallRating, double overNightStay, Hotel hotel) 
+	public Room(int number, int numberOfGuests, String type, double overallRating, double overNightStay, Hotel hotel) 
 	{
 		this.number = number;
-		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
 		this.type = RoomType.valueOf(type);
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
@@ -66,12 +65,6 @@ public class Room {
 	public double getOverallRating() 
 	{
 		return this.overallRating;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public void setOverallRating(double overallRating) 
@@ -111,13 +104,13 @@ public class Room {
 	{
 		this.type = type;
 	}
-	public int getFloor()
+	public int getNumberOfGuests()
 	{
-		return floor;
+		return numberOfGuests;
 	}
-	public void setFloor(int floor)
+	public void setNumberOfGuests(int numberOfGuests)
 	{
-		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
 	}
 	
 	

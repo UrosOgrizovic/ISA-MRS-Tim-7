@@ -37,7 +37,7 @@ public class HotelDTO {
 	@PositiveOrZero
 	private int numberOfVotes;
 
-	private Set<String> rooms = new HashSet<>();
+	private Set<Integer> rooms = new HashSet<>();
 	private Set<HotelReservationDTO> reservations = new HashSet<>();
 
 	public HotelDTO() {
@@ -118,11 +118,11 @@ public class HotelDTO {
 		this.reservations = reservations;
 	}
 
-	public Set<String> getRooms() {
+	public Set<Integer> getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(Set<String> rooms) {
+	public void setRooms(Set<Integer> rooms) {
 		this.rooms = rooms;
 	}
 
