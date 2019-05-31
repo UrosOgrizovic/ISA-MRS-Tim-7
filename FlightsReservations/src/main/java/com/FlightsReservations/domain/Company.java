@@ -22,10 +22,10 @@ public class Company {
 	@Column(unique = true, nullable = false)
 	private String name;
 
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String city;
 	
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String state;
 	
 	@Column(nullable = false)
@@ -60,12 +60,14 @@ public class Company {
 		super();
 	}
 
-	public Company(String name, Float longitude, Float latitude, String promoDescription, float avarageScore,
+	public Company(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
 		this.promoDescription = promoDescription;
 		this.averageScore = avarageScore;
 		this.numberOfVotes = numberOfVotes;

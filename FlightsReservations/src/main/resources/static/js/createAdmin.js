@@ -1,11 +1,12 @@
-var my_url = "http://localhost:8080";
+var my_url = "http://localhost:8080/Admin";
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
+var admin = {};
 
 function validate_inputs(myForm)
 {
-    
+    var admin_type;
     console.log(myForm);
     //alert(""+myForm.adminType.type);
     if(myForm.adminType.value==0)
@@ -15,16 +16,24 @@ function validate_inputs(myForm)
     }
     else if(myForm.adminType.value==1)
     {
-    	my_url += "/airlineAdmin";
+    	my_url += "/airline/create";
+    	admin_type = "AIRLINE";
     }
     else if(myForm.adminType.value==2)
     {
-    	my_url += "/hotelAdmin";
+    	my_url += "/hotel/create";
+    	admin_type = "HOTEL";
     }
     else if(myForm.adminType.value==3)
     {
-    	my_url += "/racsAdmin";
+    	my_url += "/racs/create";
+    	admin_type = "RENTACAR";
     }
+    else if(myForm.adminType.value==4)
+    {
+    	my_url += "/system/create";
+    	admin_type = "SYSTEM";
+    }	
     
     if(myForm.firstName.value.trim()=="")
     {
@@ -81,9 +90,9 @@ function create_admin()
     }
     else
     {
-        var admin =
+        admin =
                 {
-                    id : 1,//Fix later
+                    //id : 1,//Fix later
                     firstName : myForm.firstName.value,
                     lastName : myForm.lastName.value,
                     email : myForm.email.value,
@@ -101,7 +110,7 @@ function create_admin()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: my_url + "/create",//link assigned to method in HotelController
+            url: my_url,//link assigned to method in HotelController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",

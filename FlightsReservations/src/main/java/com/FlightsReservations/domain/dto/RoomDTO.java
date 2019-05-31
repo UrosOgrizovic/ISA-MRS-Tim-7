@@ -15,13 +15,17 @@ public class RoomDTO {
 	private int number;
 	
 	@NotNull
-	private int floor;
+	private int numberOfGuests;
+	
+	@NotBlank
+	private String name;
 	
 	@NotBlank
 	private String type;
 	
 	private Hotel hotel;
 	
+		
 	public double getOverallRating() 
 	{
 		return overallRating;
@@ -55,13 +59,13 @@ public class RoomDTO {
 	{
 		this.number = number;
 	}
-	public int getFloor()
+	public int getNumberOfGuests()
 	{
-		return floor;
+		return numberOfGuests;
 	}
-	public void setFloor(int floor)
+	public void setNumberOfGuests(int numberOfGuests)
 	{
-		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
 	}
 	public String getType()
 	{
@@ -75,4 +79,14 @@ public class RoomDTO {
 	{
 		super();
 	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	
 }

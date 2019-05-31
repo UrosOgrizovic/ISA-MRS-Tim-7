@@ -32,7 +32,9 @@ public class AirlineService {
 			a = new Airline(
 					t.getName(), 
 					t.getLongitude(), 
-					t.getLatitude(), 
+					t.getLatitude(),
+					t.getCity(),
+					t.getState(),
 					t.getPromoDescription(), 
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);

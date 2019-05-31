@@ -2,9 +2,10 @@ package com.FlightsReservations.domain.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import com.FlightsReservations.domain.AirlineAdmin;
+import com.FlightsReservations.domain.SystemAdmin;
+import com.FlightsReservations.domain.enums.AdminType;
 
-public class AirlineAdminDTO 
+public class SystemAdminDTO 
 {
 	@NotBlank
 	private String firstName;
@@ -24,26 +25,25 @@ public class AirlineAdminDTO
 	@NotBlank
 	private String password;
 	
-	@NotBlank
-	private String airlineName;
-	
-	
-	public AirlineAdminDTO(AirlineAdmin a)
+	public SystemAdminDTO(SystemAdmin a)
 	{
-		this.firstName = a.getFirstName();
-		this.lastName = a.getLastName();
-		this.email = a.getEmail();
-		this.password = a.getPassword();
-		this.phone = a.getPhone();
-		this.address = a.getAddress();
-		this.airlineName = a.getAirline().getName();
+		if(a.getType()==AdminType.SYSTEM)
+		{
+			this.firstName = a.getFirstName();
+			this.lastName = a.getLastName();
+			this.email = a.getEmail();
+			this.password = a.getPassword();
+			this.phone = a.getPhone();
+			this.address = a.getAddress();
+		}
+		
 	}
 
-	public AirlineAdminDTO() {
+	public SystemAdminDTO() {
 		super();
 	}
 
-	public AirlineAdminDTO(String firstName, String lastName,  String email,
+	public SystemAdminDTO(String firstName, String lastName,  String email,
 			 String phone,  String address,  String password) {
 		super();
 		this.firstName = firstName;
@@ -103,3 +103,4 @@ public class AirlineAdminDTO
 	}
 
 }
+

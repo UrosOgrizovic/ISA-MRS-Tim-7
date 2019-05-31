@@ -29,6 +29,15 @@ function validate_inputs(myForm)
         alert("You must enter Hotel's latitude!");
         return false;
     }
+    
+    if(myForm.city.value.trim()=="")
+    {
+    	alert("You must enter Hotel's city!");
+    }
+    if(myForm.state.value.trim()=="")
+    {
+    	alert("You must enter Hotel's Country/State!");
+    }
 /*
     if(myForm.hotelAdministrator.value=="")//add hotel administrators first ??
     {
@@ -55,13 +64,18 @@ function create_hotel()
     }
     else
     {
+    	console.log(myForm.city.value);
         var hotel =
                 {
                     id : 1,//Fix later
                     name : myForm.name.value,
                     longitude : myForm.longitude.value,
                     latitude : myForm.latitude.value,
-                    promoDescription : myForm.promoDescription.value
+                    city : myForm.city.value,
+                    state : myForm.state.value,
+                    promoDescription : myForm.promoDescription.value,
+                    overallRating : 0.0,
+                    numberOfVotes: 0.0
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set

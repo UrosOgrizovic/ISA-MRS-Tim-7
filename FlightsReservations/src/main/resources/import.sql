@@ -33,8 +33,13 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
 
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version, branch_offices) VALUES ("R", 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands", 1, null);
 
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 1);
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 1);
-INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
+--INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version, branch_offices) VALUES ("R", 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands", 1, null);
+
+--INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 1);
+--INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 1);
+--INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("H", 2, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska");
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("H", 3, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia");
+

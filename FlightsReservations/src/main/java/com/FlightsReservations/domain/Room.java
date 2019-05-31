@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.FlightsReservations.domain.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,17 +23,15 @@ public class Room {
 	private int number;
 	
 	@NotNull
-	private int floor;
+	private int numberOfGuests;
 	
 	@NotBlank
-	private String type;
+	private RoomType type;
 
-	@NotNull
-	private String name;
-	@NotNull
+	@Column(nullable = false)
 	private double overallRating;
 	
-	@NotNull
+	@Column(nullable = false)
 	private double overNightStay;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
@@ -43,21 +43,12 @@ public class Room {
 	{
 		super();
 	}
-	public Room(double overallRating, double overNightStay, Hotel hotel) 
-	{
-		super();
-		this.name = name;
-		this.overallRating = overallRating;
-		this.overNightStay = overNightStay;
-		this.hotel = hotel;
-	}
 	
-	public Room(Long id, int number, String type, double overallRating,
-			double overNightStay, Hotel hotel) {
-		super();
-		this.id = id;
+	public Room(int number, int numberOfGuests, String type, double overallRating, double overNightStay, Hotel hotel) 
+	{
 		this.number = number;
-		this.type = type;
+		this.numberOfGuests = numberOfGuests;
+		this.type = RoomType.valueOf(type);
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
@@ -74,12 +65,6 @@ public class Room {
 	public double getOverallRating() 
 	{
 		return this.overallRating;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public void setOverallRating(double overallRating) 
@@ -111,21 +96,21 @@ public class Room {
 	{
 		this.number = number;
 	}
-	public String getType() 
+	public RoomType getType() 
 	{
 		return type;
 	}
-	public void setType(String type) 
+	public void setType(RoomType type) 
 	{
 		this.type = type;
 	}
-	public int getFloor()
+	public int getNumberOfGuests()
 	{
-		return floor;
+		return numberOfGuests;
 	}
-	public void setFloor(int floor)
+	public void setNumberOfGuests(int numberOfGuests)
 	{
-		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
 	}
 	
 	

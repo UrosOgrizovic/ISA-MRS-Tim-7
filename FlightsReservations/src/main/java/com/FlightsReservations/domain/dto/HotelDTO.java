@@ -21,6 +21,12 @@ public class HotelDTO {
 	private Float latitude;
 	
 	@NotBlank
+	private String city;
+	
+	@NotBlank
+	private String state;
+	
+	@NotBlank
 	private String promoDescription;
 
 	@NotNull
@@ -31,19 +37,21 @@ public class HotelDTO {
 	@PositiveOrZero
 	private int numberOfVotes;
 
-	private Set<String> rooms = new HashSet<>();
+	private Set<Integer> rooms = new HashSet<>();
 	private Set<HotelReservationDTO> reservations = new HashSet<>();
 
 	public HotelDTO() {
 		super();
 	}
 
-	public HotelDTO(String name, Float longitude, Float latitude, String promoDescription, float score,
+	public HotelDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
 			int numberOfVotes) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
 		this.promoDescription = promoDescription;
 		this.averageScore = score;
 		this.numberOfVotes = numberOfVotes;
@@ -58,7 +66,7 @@ public class HotelDTO {
 	}
 
 	public HotelDTO(Hotel h) {
-		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getPromoDescription(), h.getAverageScore(),
+		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getState(), h.getPromoDescription(), h.getAverageScore(),
 				h.getNumberOfVotes());
 	}
 
@@ -110,12 +118,39 @@ public class HotelDTO {
 		this.reservations = reservations;
 	}
 
-	public Set<String> getRooms() {
+	public Set<Integer> getRooms() {
 		return rooms;
 	}
 
-	public void setRooms(Set<String> rooms) {
+	public void setRooms(Set<Integer> rooms) {
 		this.rooms = rooms;
 	}
+
+	public String getCity()
+	{
+		return city;
+	}
+
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+
+	public void setReservations(Set<HotelReservationDTO> reservations)
+	{
+		this.reservations = reservations;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+	
+	
 
 }
