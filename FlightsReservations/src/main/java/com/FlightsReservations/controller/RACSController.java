@@ -1,10 +1,10 @@
-package com.
-FlightsReservations.controller;
+package com.FlightsReservations.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -35,7 +36,6 @@ public class RACSController {
 	
 	@Autowired
 	private RACSService service;
-	
 	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
@@ -176,6 +176,17 @@ public class RACSController {
 			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacsDaily(racs.getId(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PutMapping(value = "addAdmin/{racsId}/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addAdmin(@PathVariable Long racsId, @PathVariable @Email String email) {
+		RACSAdminDTO dto = service.addAdmin(racsId, email);
+		if (dto != null)
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
 	
 	
 	

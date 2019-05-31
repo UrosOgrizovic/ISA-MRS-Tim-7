@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");

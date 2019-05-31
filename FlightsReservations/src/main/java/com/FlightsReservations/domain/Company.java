@@ -41,7 +41,13 @@ public class Company {
 
 	@Column(nullable = false)
 	private int numberOfVotes;
-
+	
+	//TODO: add admin field
+	/*
+	@Column(nullable = true)
+	private Admin admin;
+	*/
+	
 	public Company() {
 		super();
 	}
@@ -130,6 +136,6 @@ public class Company {
 	public void setState(String state) {
 		this.state = state;
 	}
-	
+
 	
 }

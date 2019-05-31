@@ -11,4 +11,5 @@ import com.FlightsReservations.domain.RACSAdmin;
 public interface RACSAdminRepository extends JpaRepository<RACSAdmin, Long>{
 	RACSAdmin findByEmail(String email);
 	Set<RACSAdmin> findByEmailIn(Set<String> racsAdmins);
+	void deleteByEmail(String email);
 }

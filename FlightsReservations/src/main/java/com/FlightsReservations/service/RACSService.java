@@ -1,9 +1,7 @@
 package com.FlightsReservations.service;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -13,22 +11,27 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.validation.constraints.Email;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Hours;
-import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.repository.CarReservationRepository;
+import com.FlightsReservations.repository.RACSAdminRepository;
 import com.FlightsReservations.repository.RACSRepository;
 
 @Component
+@Transactional(readOnly = false)
 public class RACSService {
 
 	@Autowired
@@ -37,6 +40,8 @@ public class RACSService {
 	@Autowired
 	CarReservationRepository carReservationRepository;
 	
+	@Autowired
+	RACSAdminRepository racsAdminRepository;
 
 	public RACS create(RACS t) {
 		Set<Car> cars = t.getCars();
@@ -62,6 +67,7 @@ public class RACSService {
 			r.setPricelist(t.getPricelist());
 			r.setAverageScore(t.getAverageScore());
 			r.setNumberOfVotes(t.getNumberOfVotes());
+			r.setAdmin(t.getAdmin());
 			repository.save(r);
 			return true;
 		}
@@ -220,7 +226,7 @@ public class RACSService {
 	    return cal.getTime(); 
 	}
 	
-	// returns different between default time zone and UTC
+	// returns difference between default time zone and UTC
 	public static long getCurrentTimeZoneOffsetInHours() {
 	    DateTimeZone tz = DateTimeZone.getDefault();
 	    Long instant = DateTime.now().getMillis();
@@ -229,5 +235,23 @@ public class RACSService {
 	    long hours = TimeUnit.MILLISECONDS.toHours( offsetInMilliseconds );
 
 	    return hours;
+	}
+
+	// add RACSAdmin to RACS
+	public RACSAdminDTO addAdmin(Long racsId, @Email String email) {
+		RACS racs = findOne(racsId);
+		RACSAdmin racsAdmin = racsAdminRepository.findByEmail(email);
+		if (racs != null && racsAdmin != null) {
+			
+				
+			racsAdmin.setRACS(racs);
+			
+			racs.setAdmin(racsAdmin);
+			repository.save(racs);
+			return new RACSAdminDTO(racsAdmin);
+				
+		}
+		
+		return null;
 	}
 }

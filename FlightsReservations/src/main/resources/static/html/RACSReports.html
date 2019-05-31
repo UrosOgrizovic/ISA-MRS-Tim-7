@@ -8,6 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
     <link rel="stylesheet" href="../css/homepage.css">
     <title>Rent-a-car services Homepage</title>
 </head>
@@ -15,33 +18,34 @@
     <div id="nav-placeholder"></div>
     
     <div class="text">
-        <a id="viewAllRACS" href="#">View all rent-a-car services</a>        
+        <a id="viewRACSAverageRating" href="#">View RACS average rating</a>        
     </div>
 
     <div class="text">
-        <a href="reserveCar.html">Reserve car</a>        
+        <a id="viewAverageRatingForEachCar" href="#">View average rating of each car from RACS</a>        
     </div>
 
     <div class="text">
-        <a id="editRACS" href="editRACS.html">Edit existing rent-a-car services</a>        
+        <a id="viewCarReservationCharts" href="#">View car reservation charts for the past two months</a>        
     </div>
 
-    <div class="text">
-        <a id="createRACS" href="createRACS.html">Create rent-a-car services</a>        
-    </div>
+    <div style="margin-top: 50px;">
+        <div class="column">
+            <label for="startDate">Start date of period:</label> <input id="startDate" style="width: 200px;">
+        </div>
+        <div class="column">
+                <label for="endDate">End date of period:</label> <input id="endDate">
+        </div>
 
-    <div class="text">
-        <a href="searchCars.html">Search RACS</a>        
+        <br><br><br><br>
+        <div class="text">
+            <a id="viewRACSRevenueForPeriod" href="#">View RACS revenue for period</a>        
+        </div>
     </div>
-
-    <div class="text">
-        <a id="RACSReports" href="RACSReports.html">See reports for RACS</a>        
-    </div>
-    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="../js/RACSHomepage.js" type="module"></script>
+    <script src="../js/RACSReports.js" type="module"></script>
     
 </body>
 </html>
