@@ -42,33 +42,30 @@ public class HotelService {
 		return null;
 	}
 	
-	public List<HotelDTO> search(SearchHotelDTO searchHotelDTO){
+	public List<HotelDTO> search(SearchHotelDTO searchDTO){
 		ArrayList<Hotel> hotels = (ArrayList<Hotel>) this.repository.findAll();
 		ArrayList<HotelDTO> results = new ArrayList<HotelDTO>();
-		
+
 		for(int i = 0;i<hotels.size();i++) {
-			if(!searchHotelDTO.getName().equalsIgnoreCase(hotels.get(i).getName()) || !searchHotelDTO.getName().equals("")){
+			
+			if(!searchDTO.getName().equalsIgnoreCase(hotels.get(i).getName()) && !searchDTO.getName().equals("")){
 				continue;
 			}
 			
-			if(!searchHotelDTO.getCity().equalsIgnoreCase(hotels.get(i).getCity()) || !searchHotelDTO.getCity().equals("")){
+			if(!searchDTO.getCity().equalsIgnoreCase(hotels.get(i).getCity()) && !searchDTO.getCity().equals("")){
 				continue;
 			}
 			
-			if(!searchHotelDTO.getState().equalsIgnoreCase(hotels.get(i).getState()) || !searchHotelDTO.getState().equals("")){
+			if(!searchDTO.getState().equalsIgnoreCase(hotels.get(i).getState()) && !searchDTO.getState().equals("")){
 				continue;
 			}
 			
-			if(Float.parseFloat(searchHotelDTO.getAverageScore()) > hotels.get(i).getAverageScore() || !searchHotelDTO.getAverageScore().equals("")){
+			if(!searchDTO.getAverageScore().equals("") && Float.parseFloat(searchDTO.getAverageScore()) > hotels.get(i).getAverageScore()){
 				continue;
 			}
-			System.out.println("Usao u servis for 1");
 			results.add(this.createDTO( (hotels.get(i) ) ) );
-			System.out.println("Usao u servis for 2");
 		}
-		
 		return results;
-		
 	}
 
 	public boolean update(HotelDTO t) {
@@ -128,13 +125,14 @@ public class HotelService {
 	public boolean addRoom(RoomDTO dto) {
 		Hotel hotel = dto.getHotel();
 		
-		if (hotel != null) {
+		if (hotel != null) { 
 			Room room = new Room(
 					dto.getNumber(),
 					dto.getNumberOfGuests(),
 					dto.getType(),
 					dto.getOverallRating(),
 					dto.getOverNightStay(),
+					dto.getFloor(),
 					hotel);
 			hotel.getRoomConfiguration().add(room);
 			roomRepository.save(room);

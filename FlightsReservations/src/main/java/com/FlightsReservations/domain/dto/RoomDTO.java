@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.enums.RoomType;
 
 public class RoomDTO {
 	@NotNull
@@ -15,17 +16,45 @@ public class RoomDTO {
 	private int number;
 	
 	@NotNull
+	private int floor;
+	
+	@NotNull
 	private int numberOfGuests;
 	
 	@NotBlank
-	private String name;
-	
-	@NotBlank
-	private String type;
+	private RoomType type;
 	
 	private Hotel hotel;
 	
+	public RoomDTO() 
+	{
+		super();
+	}
+	
+	public RoomDTO(double overallRating, double overNightStay, int number,
+			int floor, int numberOfGuests, RoomType type)
+	{
+		this.overallRating = overallRating;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
+		this.type = type;
+		this.hotel = null;
+	}
+	
 		
+	public RoomDTO(double overallRating, double overNightStay, int number,
+			int floor, int numberOfGuests, String name, RoomType type, Hotel hotel)
+	{
+		this.overallRating = overallRating;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
+		this.type = type;
+		this.hotel = hotel;
+	}
 	public double getOverallRating() 
 	{
 		return overallRating;
@@ -67,25 +96,24 @@ public class RoomDTO {
 	{
 		this.numberOfGuests = numberOfGuests;
 	}
-	public String getType()
+	public RoomType getType()
 	{
 		return type;
 	}
-	public void setType(String type)
+	public void setType(RoomType type)
 	{
 		this.type = type;
 	}
-	public RoomDTO() 
+
+	public int getFloor()
 	{
-		super();
+		return floor;
 	}
-	public String getName()
+
+
+	public void setFloor(int floor)
 	{
-		return name;
-	}
-	public void setName(String name)
-	{
-		this.name = name;
+		this.floor = floor;
 	}
 	
 	

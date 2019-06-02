@@ -25,6 +25,9 @@ public class Room {
 	@NotNull
 	private int numberOfGuests;
 	
+	@NotNull
+	private int floor;
+	
 	@NotBlank
 	private RoomType type;
 
@@ -44,15 +47,29 @@ public class Room {
 		super();
 	}
 	
-	public Room(int number, int numberOfGuests, String type, double overallRating, double overNightStay, Hotel hotel) 
+	public Room(int number, int numberOfGuests, RoomType type, double overallRating, double overNightStay, int floor, Hotel hotel) 
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
-		this.type = RoomType.valueOf(type);
+		this.type = type;
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
+		this.floor = floor;
 		this.hotel = hotel;
 	}
+	
+	
+	
+	public int getFloor()
+	{
+		return floor;
+	}
+
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
+	}
+
 	public Hotel getHotel() 
 	{
 		return hotel;

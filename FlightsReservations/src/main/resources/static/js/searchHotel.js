@@ -24,7 +24,13 @@ function validate_inputs(myForm)
 
 function search_hotel()
 {
-	var hotel;
+	var hotel =
+		 {
+			name 		: "",
+			city 		: "",
+			state		: "",
+			averageScore: ""
+		 }
 	myForm = document.getElementById("hotelSearchForm");
 	if(validate_inputs(myForm))
 	{
@@ -46,15 +52,41 @@ function search_hotel()
 		}
 	}
     $.ajax({
-        url: "http://localhost:8080/hotels/searchHotels"
-        method: "GET",
+        url: "http://localhost:8080/hotels/searchHotels" + "?name=" + hotel.name + "&city=" + hotel.city + "&state=" + hotel.state + "&averageScore=" + hotel.averageScore + "&searchHotel=", //+ myForm.searchHotel.value
+        method: "GET",				
         dataType: "json",
         contentType: "application/json",
         headers: { "Authorization": "Bearer " + token}, 
-        success: function(result) {
-            displaySearchResults(result);
+        success: function(hotels) {
+            display_search_results(hotels);
         }, error: function(error) {
             console.log(error);
         }
     });
+}
+
+function display_search_results(hotels)
+{
+	console.log("Pretraga uspjesna!");
+    var text = "<div id=\"foundHotels\"><h2>Search results: <h2><br>";
+    for (hotel of hotels) {
+        text += "<h3>"+ " " + hotel.name + " " + hotel.city + " " + hotel.state + " " + hotel.averageScore + " " + hotel.longitude + " " + hotel.latitude + "</h3><br>";
+    }
+    
+    text += "</div>";
+    console.log($(document.documentElement));
+    $(document.documentElement).append(text);
+    /*
+    var tabela = document.createElement("TABLE");
+    tabela.innerHTML = "<tr><td>My"+text+"</td></tr>";
+    document.body.appendChild(tabela);
+    //$(document).insertAdjacentHTML(text);
+    
+    
+    var row = document.getElementById("red"); // find row to copy
+    var table = document.getElementById("tabela"); // find table to append to
+    var clone = row.cloneNode(true); // copy children too
+    clone.id = "newID"; // change id or other attributes/contents
+    table.appendChild(clone); // add new row to end of table
+    */
 }
