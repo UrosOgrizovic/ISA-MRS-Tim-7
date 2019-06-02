@@ -41,7 +41,7 @@ public class CarReservation extends Reservation {
 
 	public CarReservation() {}
 
-	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
+	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner,
 			Long carId, Date startTime, Date endTime) {
 		super(dateOfReservation, price, confirmed, owner);
 		this.carId = carId;

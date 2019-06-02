@@ -5,8 +5,6 @@ import java.util.Collection;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +25,7 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
+import com.FlightsReservations.service.RACSAdminService;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -36,6 +35,9 @@ public class RACSController {
 	
 	@Autowired
 	private RACSService service;
+	
+	@Autowired
+	private RACSAdminService racsAdminService;
 	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
@@ -160,23 +162,34 @@ public class RACSController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "getRevenueForPeriod/{id}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getRevenueForPeriod(@PathVariable Long id, @PathVariable String startTime, @PathVariable String endTime) {
-		RACS racs = service.findOne(id);
+	@GetMapping(value = "getRevenueForPeriod/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getRevenueForPeriod(@PathVariable String email, @PathVariable String startTime, @PathVariable String endTime) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
 		if (racs != null)
 			return new ResponseEntity<>(service.getRevenueForPeriod(racs.getId(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "getNumberOfCarReservationsOfRacsDaily/{id}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getNumberOfCarReservationsOfRacsDaily(@NotNull @Positive @PathVariable Long id, @PathVariable String startTime, @PathVariable String endTime) {
-		RACS racs = service.findOne(id);
+	@GetMapping(value = "getNumberOfCarReservationsOfRacsDaily/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getNumberOfCarReservationsOfRacsDaily(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
 		if (racs != null)
 			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacsDaily(racs.getId(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAverageRatingForEachCarOfRacs(@PathVariable @Email String email) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
+		if (racs != null)
+			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racs), HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "addAdmin/{racsId}/{email}", produces = MediaType.APPLICATION_JSON_VALUE)

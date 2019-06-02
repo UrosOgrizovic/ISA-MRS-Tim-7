@@ -135,7 +135,7 @@ public class RACSService {
 		String moy = String.valueOf(dt.getMonthOfYear());
 		if (moy.length() == 1) moy = "0" + moy;
 		Date currentDay = parseDate(dt.getDayOfMonth() + "-" + moy + "-" + dt.getYear() + " 00:00");
-		
+		System.out.println(currentDay);
 		
 		float revenueForCurrentDay;
 		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
@@ -182,6 +182,8 @@ public class RACSService {
 		
 		int currentDayNumberOfCarReservations;
 		while (currentDay.compareTo(endDate) < 0) {
+			moy = String.valueOf(dt.getMonthOfYear());
+			if (moy.length() == 1) moy = "0" + moy;
 			currentDay = parseDate(dt.getDayOfMonth() + "-" + moy + "-" + dt.getYear() + " 00:00");
 			currentDayNumberOfCarReservations = 0;
 			for (CarReservation cr : carReservations) {
@@ -196,16 +198,15 @@ public class RACSService {
 			dateNumberOfReservations.put(currentDayAsString, currentDayNumberOfCarReservations);
 			dt = dt.plusDays(1);
 		}
+		
 		return dateNumberOfReservations;
 	}
 	
 	public Date parseDate(String time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		Date date = new Date();
 		
 		try {
-			date = sdf.parse(time);
-			return date;
+			return sdf.parse(time);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -253,5 +254,15 @@ public class RACSService {
 		}
 		
 		return null;
+	}
+
+	// <String, Float> - <car id: car manufacturer car name, average rating>
+	public HashMap<String, Float> getAverageRatingForEachCarOfRacs(RACS racs) {
+		Set<Car> cars = racs.getCars();
+		HashMap<String, Float> carNameAverageRating = new HashMap<String, Float>();
+		for (Car c : cars) {
+			carNameAverageRating.put("#" + c.getId() + ": " + c.getManufacturer() + " " + c.getName(), c.getAverageRating());
+		}
+		return carNameAverageRating;
 	}
 }

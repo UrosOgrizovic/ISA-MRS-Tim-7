@@ -8,8 +8,13 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="../css/homepage.css">
     <title>Rent-a-car services Homepage</title>
@@ -18,15 +23,18 @@
     <div id="nav-placeholder"></div>
     
     <div class="text">
-        <a id="viewRACSAverageRating" href="#">View RACS average rating</a>        
+        <a id="viewRACSAverageRating" href="#">View RACS average rating</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <p id="showRACSAverageRating" style="display: none;"></p>
     </div>
 
     <div class="text">
-        <a id="viewAverageRatingForEachCar" href="#">View average rating of each car from RACS</a>        
+        <a id="viewAverageRatingForEachCar" href="#">View average rating of each car from RACS</a>
+        <p id="showAverageRatingForEachCar" style="display: none;"></p>
     </div>
 
     <div class="text">
         <a id="viewCarReservationCharts" href="#">View car reservation charts for the past two months</a>        
+        <canvas id="showCarReservationCharts" style="display: none;"></canvas>
     </div>
 
     <div style="margin-top: 50px;">
@@ -40,6 +48,7 @@
         <br><br><br><br>
         <div class="text">
             <a id="viewRACSRevenueForPeriod" href="#">View RACS revenue for period</a>        
+            <canvas id="showRACSRevenueForPeriod" style="display: none;"></canvas>
         </div>
     </div>
 
