@@ -145,6 +145,16 @@ $(document).ready(function(){
 
 });
 
+/**
+ * 
+ * @param {*} data - values that will be plotted on the y axis
+ * @param {*} yAxisLabel - semantics of the data param
+ * @param {*} idOfParentElement - canvas on which to draw. All required canvases are defined in RACSReports.html.
+ * @param {*} xAxisStep - stepSize for x axis (see chart.js docs for stepSize explanation)
+ * @param {*} yAxisStep - stepSize for y axis
+ * @param {*} yAxisPadding - distance between max value and top of chart, because it's prettier if there's some space left above the max value
+ * @param {*} ceilToNearest - number to ceil to, because it's prettier to have the top of the chart at e.g. 10000 than to have it at 9232
+ */
 function makeDailyChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisStep, yAxisPadding, ceilToNearest) {
     
     var labels = Object.keys(data);
