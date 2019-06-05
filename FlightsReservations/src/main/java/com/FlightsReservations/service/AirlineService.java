@@ -140,26 +140,30 @@ public class AirlineService {
 	}
 	
 
-	public Integer getCountReport(String pattern) {
+	public Map<String,Integer> getCountReport(String pattern) {
 		// String pattern 
 		// --------------
 		// daily reports:   dd-MM-yyyy
 		// monthly reports: MM-yyyy
-		// year reports:    yyyy
+		// weekly reports:  W-MM-yyyy (W - week of month)
 		
-		Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
+		//Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
+		Airline a = repository.findByName("airline1");
 		Set<FlightReservation> reservations = a.getReservations();
 		reservations.size();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		String now = sdf.format(new Date());
+		Map<String, Integer> ret = new HashMap<>();
 		
-		int sold = 0;
-		for (FlightReservation r : reservations)
-			if (sdf.format(r.getDateOfReservation()).equals(now) && r.getOwner() != null) 
-				sold++;
-		
-		return sold;
+		for (FlightReservation r : reservations) {
+			String key = sdf.format(r.getDateOfReservation());
+			if (ret.containsKey(key))
+				ret.put(key, ret.get(key)+1);
+			else
+				ret.put(key, 0);
+		}
+			
+		return ret;
 	}
 	
 	

@@ -106,9 +106,9 @@ public class AirlineController {
 		return new ResponseEntity<>(service.getCountReport("MM-yyyy"), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/reports/year", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getYearReport() {
-		return new ResponseEntity<>(service.getCountReport("yyyy"), HttpStatus.OK);
+	@GetMapping(value = "/reports/week", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getWeekReport() {
+		return new ResponseEntity<>(service.getCountReport("W-MM-yyyy"), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/reports/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)

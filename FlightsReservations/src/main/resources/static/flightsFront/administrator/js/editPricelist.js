@@ -1,8 +1,10 @@
-var airline = "airline1";
+var airline = null;
 
 $(document).ready(function(){
 	// get pricelist for airline
 	// populate fields
+	checkAuth();
+	airline = JSON.parse(localStorage.getItem("admin")).airlineName;
 	
 	$.ajax({
 		url: "http://localhost:8080/airlines/pricelist/" + airline,
