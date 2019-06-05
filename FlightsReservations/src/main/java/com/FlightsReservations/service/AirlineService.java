@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -139,7 +141,6 @@ public class AirlineService {
 		return new ArrayList<>();
 	}
 	
-
 	public Map<String,Integer> getCountReport(String pattern) {
 		// String pattern 
 		// --------------
@@ -147,8 +148,9 @@ public class AirlineService {
 		// monthly reports: MM-yyyy
 		// weekly reports:  W-MM-yyyy (W - week of month)
 		
-		//Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
-		Airline a = repository.findByName("airline1");
+		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Airline a = repository.findByName(admin.getAirline().getName());
+		
 		Set<FlightReservation> reservations = a.getReservations();
 		reservations.size();
 		
@@ -160,17 +162,29 @@ public class AirlineService {
 			if (ret.containsKey(key))
 				ret.put(key, ret.get(key)+1);
 			else
-				ret.put(key, 0);
+				ret.put(key, 1);
 		}
-			
 		return ret;
 	}
 	
 	
-	public Map<String, Float> getIncomeForPeriod(Date startDate, Date endDate) {
-		Map<String, Float> income = new HashMap<>();
+	public SortedMap<String, Float> getIncomeForPeriod(String startDateStr, String endDateStr) {
+		SortedMap<String, Float> income = new TreeMap<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		Date startDate;
+		Date endDate;
+		try {
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		} catch (Exception ex) {
+			return income;
+		}
+		
 		if (startDate.before(endDate)) {
-			Airline a = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication()).getAirline();
+			AirlineAdmin admin = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			Airline a = repository.findByName(admin.getAirline().getName());
+			
 			Set<FlightReservation> reservations = a.getReservations();
 			reservations.size();
 			
@@ -178,7 +192,7 @@ public class AirlineService {
 			cnt.setTime(startDate);
 			Calendar end = Calendar.getInstance();
 			end.setTime(endDate);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			end.add(Calendar.DATE, 1);
 			
 			while (cnt.getTime().before(end.getTime())) {
 				String cntStr = sdf.format(cnt.getTime());
@@ -195,7 +209,7 @@ public class AirlineService {
 		}
 		return income;
 	}
-	
+
 	
 	private AirlineDTO createDTO(Airline airline) {
 		AirlineDTO dto = new AirlineDTO(airline);

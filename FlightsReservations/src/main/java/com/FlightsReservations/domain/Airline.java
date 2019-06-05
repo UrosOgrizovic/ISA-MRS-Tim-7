@@ -24,7 +24,8 @@ public class Airline extends Company {
 	@JoinTable(name = "airline_airports", joinColumns = @JoinColumn(name = "airline_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
 	private Set<Airport> airports = new HashSet<>();
 
-	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany
+	@JoinTable(name = "airline_reservations", joinColumns = @JoinColumn(name = "airline_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"))
 	private Set<FlightReservation> reservations = new HashSet<>();
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

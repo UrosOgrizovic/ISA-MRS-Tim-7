@@ -11,15 +11,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("FR")
 public class FlightReservation extends Reservation {
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Airline airline;
+	@ManyToMany(mappedBy = "reservations",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Airline> airlines = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
@@ -37,9 +36,8 @@ public class FlightReservation extends Reservation {
 		super();
 	}
 
-	public FlightReservation(Airline airline, Date dateOfReservation, Float price, User owner, Boolean confirmed) {
+	public FlightReservation(Date dateOfReservation, Float price, User owner, Boolean confirmed) {
 		super(dateOfReservation, price, confirmed, owner);
-		this.airline = airline;
 	}
 
 	public Set<Passenger> getPassengers() {
@@ -74,12 +72,12 @@ public class FlightReservation extends Reservation {
 		this.discount = discount;
 	}
 
-	public Airline getAirline() {
-		return airline;
+	public Set<Airline> getAirlines() {
+		return airlines;
 	}
 
-	public void setAirline(Airline airline) {
-		this.airline = airline;
+	public void setAirlines(Set<Airline> airlines) {
+		this.airlines = airlines;
 	}
 
 }

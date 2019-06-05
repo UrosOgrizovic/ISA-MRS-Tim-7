@@ -6,10 +6,12 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import org.jboss.logging.FormatWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -110,11 +112,12 @@ public class AirlineController {
 	public ResponseEntity<?> getWeekReport() {
 		return new ResponseEntity<>(service.getCountReport("W-MM-yyyy"), HttpStatus.OK);
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/reports/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPeriodReport(
-			@PathVariable @NotBlank @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Belgrade/Europe") Date start,
-			@PathVariable @NotBlank @JsonFormat(pattern = "dd-MM-yyyy", timezone = "Belgrade/Europe") Date end) {
+			@PathVariable  @NotBlank String start,
+			@PathVariable @NotBlank String end) {				
 		return new ResponseEntity<>(service.getIncomeForPeriod(start, end), HttpStatus.OK);
 	}
 

@@ -19,6 +19,11 @@ function checkAuth() {
 	} else {
 		window.location = "http://localhost:8080/html/login.html";
 	}
-
-
 };
+
+
+function logout() {
+	localStorage.clear();
+	localStorage.setItem("lastPage", window.location.href);
+	window.location = "http://localhost:8080/html/login.html";
+}

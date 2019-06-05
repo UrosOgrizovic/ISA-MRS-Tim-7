@@ -12,11 +12,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.repository.AbstractUserRepository;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
 	protected final Log LOGGER = LogFactory.getLog(getClass());

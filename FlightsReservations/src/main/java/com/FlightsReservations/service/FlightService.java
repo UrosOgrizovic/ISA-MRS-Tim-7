@@ -99,14 +99,14 @@ public class FlightService {
 				toCombine.add(dtos);
 			}
 			List<List<FlightDTO>> results = combineAll(toCombine);
-			results = filterBadDates(results);
+			results = filterBadDatesAndDiffAirlines(results);
 			return results;
 		}
 		return null;
 	}
 
 	// remove flight results where landing time of first flight is after takeoff time of return flight
-	private List<List<FlightDTO>> filterBadDates(List<List<FlightDTO>> results) {
+	private List<List<FlightDTO>> filterBadDatesAndDiffAirlines(List<List<FlightDTO>> results) {
 		List<List<FlightDTO>> filtered = new ArrayList<>();
 		
 		Date landingTime;
@@ -122,8 +122,15 @@ public class FlightService {
 					landingTime = result.get(i).getLandingTime();
 				}
 			}
-			if (!flag)
-				filtered.add(result);
+			
+			if (!flag) {
+				if (result.size() == 2) {
+					if (result.get(0).getAirlineName().equals(result.get(1).getAirlineName()))
+						filtered.add(result);
+				}
+				else
+					filtered.add(result);
+			}
 		}
 		
 		return filtered;
