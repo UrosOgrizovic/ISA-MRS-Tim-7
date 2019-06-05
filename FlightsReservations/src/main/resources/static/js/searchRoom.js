@@ -2,6 +2,9 @@ var searchUrl = "http://localhost:8080/racss/searchCars";
 var mapa;
 var emailSelect;
 
+var token = localStorage.getItem("token");
+if (token == null) location.replace("/html/login.html");
+
 $(document).ready(function(){
     $("#carSearchForm").on('submit', function(e) {
         e.preventDefault();

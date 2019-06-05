@@ -46,7 +46,7 @@ public class AirlineController {
 		return service.findAll();
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(@RequestBody @Valid AirlineDTO airline) {
 		AirlineDTO a = service.create(airline);
 		if (a != null)

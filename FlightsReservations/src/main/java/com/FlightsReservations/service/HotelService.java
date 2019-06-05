@@ -12,6 +12,7 @@ import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
+import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
@@ -39,6 +40,35 @@ public class HotelService {
 			return createDTO(a);
 		}
 		return null;
+	}
+	
+	public List<HotelDTO> search(SearchHotelDTO searchHotelDTO){
+		ArrayList<Hotel> hotels = (ArrayList<Hotel>) this.repository.findAll();
+		ArrayList<HotelDTO> results = new ArrayList<HotelDTO>();
+		
+		for(int i = 0;i<hotels.size();i++) {
+			if(!searchHotelDTO.getName().equalsIgnoreCase(hotels.get(i).getName()) || !searchHotelDTO.getName().equals("")){
+				continue;
+			}
+			
+			if(!searchHotelDTO.getCity().equalsIgnoreCase(hotels.get(i).getCity()) || !searchHotelDTO.getCity().equals("")){
+				continue;
+			}
+			
+			if(!searchHotelDTO.getState().equalsIgnoreCase(hotels.get(i).getState()) || !searchHotelDTO.getState().equals("")){
+				continue;
+			}
+			
+			if(Float.parseFloat(searchHotelDTO.getAverageScore()) > hotels.get(i).getAverageScore() || !searchHotelDTO.getAverageScore().equals("")){
+				continue;
+			}
+			System.out.println("Usao u servis for 1");
+			results.add(this.createDTO( (hotels.get(i) ) ) );
+			System.out.println("Usao u servis for 2");
+		}
+		
+		return results;
+		
 	}
 
 	public boolean update(HotelDTO t) {
@@ -71,10 +101,10 @@ public class HotelService {
 		return dtos;
 	}	
 	
-	
+	/*
 	public HotelDTO addRoom(String hotelName, String roomName) {
 		Hotel hotel = repository.findByName(hotelName);
-		Room room = roomRepository.findByName(roomName);
+		Room room = roomRepository.findByHotelId(roomName);
 		
 		if (hotel != null && room != null) {
 			hotel.getRoomConfiguration().add(room);
@@ -83,12 +113,12 @@ public class HotelService {
 		}
 		return null;
 	}
-	
+	*/
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
 		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
-			dto.getRooms().add(a.getName());
+			dto.getRooms().add(a.getNumber());
 		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));
 		
@@ -101,8 +131,7 @@ public class HotelService {
 		if (hotel != null) {
 			Room room = new Room(
 					dto.getNumber(),
-					dto.getFloor(),
-					dto.getName(),
+					dto.getNumberOfGuests(),
 					dto.getType(),
 					dto.getOverallRating(),
 					dto.getOverNightStay(),
