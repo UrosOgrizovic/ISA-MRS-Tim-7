@@ -31,7 +31,7 @@ public class AirlineAdminController {
 		return new ResponseEntity<>("Airline admin already exists.", HttpStatus.BAD_REQUEST);
 	}
 	
-	@PreAuthorize("hasRole('admin')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAdmin() {
 		return new ResponseEntity<>(service.getAdminFromContext(), HttpStatus.OK);

@@ -82,13 +82,11 @@ public class AirlineAdminService {
 	
 	
 	private AirlineAdminDTO createDTO(AirlineAdmin a) {
-		AirlineAdminDTO dto = new AirlineAdminDTO(a);
-		return dto;
+		return new AirlineAdminDTO(a);
 	}
 
-
 	public AirlineAdminDTO getAdminFromContext() {
-		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication();
+		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return new AirlineAdminDTO(admin);
 	}
 	

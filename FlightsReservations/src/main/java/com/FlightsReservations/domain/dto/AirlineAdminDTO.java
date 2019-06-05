@@ -4,32 +4,29 @@ import javax.validation.constraints.NotBlank;
 
 import com.FlightsReservations.domain.AirlineAdmin;
 
-public class AirlineAdminDTO 
-{
+public class AirlineAdminDTO {
 	@NotBlank
 	private String firstName;
-	
+
 	@NotBlank
 	private String lastName;
-	
+
 	@NotBlank
 	private String email; // unique
-	
-	//@NotBlank //TODO: make a mandatory filed if necessary
+
+	// @NotBlank //TODO: make a mandatory filed if necessary
 	private String phone;
-	
-	//@NotBlank //TODO: make a mandatory filed if necessary
+
+	// @NotBlank //TODO: make a mandatory filed if necessary
 	private String address;
-	
+
 	@NotBlank
 	private String password;
-	
+
 	@NotBlank
 	private String airlineName;
-	
-	
-	public AirlineAdminDTO(AirlineAdmin a)
-	{
+
+	public AirlineAdminDTO(AirlineAdmin a) {
 		this.firstName = a.getFirstName();
 		this.lastName = a.getLastName();
 		this.email = a.getEmail();
@@ -43,8 +40,8 @@ public class AirlineAdminDTO
 		super();
 	}
 
-	public AirlineAdminDTO(String firstName, String lastName,  String email,
-			 String phone,  String address,  String password) {
+	public AirlineAdminDTO(String firstName, String lastName, String email, String phone, String address,
+			String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -100,6 +97,14 @@ public class AirlineAdminDTO
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getAirlineName() {
+		return airlineName;
+	}
+
+	public void setAirlineName(String airlineName) {
+		this.airlineName = airlineName;
 	}
 
 }
