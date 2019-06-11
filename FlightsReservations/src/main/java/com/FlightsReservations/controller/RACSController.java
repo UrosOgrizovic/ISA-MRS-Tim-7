@@ -172,14 +172,18 @@ public class RACSController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "getNumberOfCarReservationsOfRacsDaily/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getNumberOfCarReservationsOfRacsDaily(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime) {
+	@GetMapping(value = "getNumberOfCarReservationsOfRacs/{email}/{startTime}/{endTime}/{unit}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getNumberOfCarReservationsOfRacs(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime, @PathVariable String unit) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
 		RACS racs = service.findOne(racsAdmin.getRacs().getId());
 		if (racs != null)
-			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacsDaily(racs.getId(), startTime, endTime), HttpStatus.OK);
+			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racs.getId(), startTime, endTime, unit), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	
+	
+	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)

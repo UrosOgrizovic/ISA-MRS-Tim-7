@@ -167,7 +167,7 @@ public class RACSService {
 	}
 	
 	// <String, Integer> = <date of reservation, number of reservations for date>
-	public HashMap<String, Integer> getNumberOfCarReservationsOfRacsDaily(Long racsId, String startTime, String endTime) {
+	public HashMap<String, Integer> getNumberOfCarReservationsOfRacs(Long racsId, String startTime, String endTime, String unit) {
 		HashMap<String, Integer> dateNumberOfReservations = new HashMap<String, Integer>();
 		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
 		Date startDate = parseDate(startTime);
@@ -196,11 +196,14 @@ public class RACSService {
 			currentDayAsString = currentDayAsString.substring(0, 10);
 			
 			dateNumberOfReservations.put(currentDayAsString, currentDayNumberOfCarReservations);
-			dt = dt.plusDays(1);
+			if (unit.equalsIgnoreCase("day")) dt = dt.plusDays(1);
+			else if (unit.equalsIgnoreCase("week")) dt = dt.plusWeeks(1);
+			else if (unit.equalsIgnoreCase("month")) dt = dt.plusWeeks(4);
 		}
 		
 		return dateNumberOfReservations;
 	}
+	
 	
 	public Date parseDate(String time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -265,4 +268,6 @@ public class RACSService {
 		}
 		return carNameAverageRating;
 	}
+
+
 }

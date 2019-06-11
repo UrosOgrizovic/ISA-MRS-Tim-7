@@ -3,7 +3,7 @@ import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 
 var getRACSAverageRating = "/racsAdmin/getAverageRACSRating";
 var getRevenueForPeriod = "/racss/getRevenueForPeriod";
-var getNumberOfCarReservationsOfRacsDaily = "/racss/getNumberOfCarReservationsOfRacsDaily";
+var getNumberOfCarReservationsOfRacsLink = "/racss/getNumberOfCarReservationsOfRacs";
 var getAverageRatingForEachCarOfRacs = "/racss/getAverageRatingForEachCarOfRacs";
 
 var token = localStorage.getItem("token");
@@ -17,13 +17,12 @@ if (!checkRoleFromToken(token, "ROLE_ADMIN")) {
 }
 
 
-var today = new Date();
-var twoMonthsAgo = new Date();
-twoMonthsAgo.setMonth(today.getMonth() - 2);
+var today = new moment();
+var twoMonthsAgo = new moment();
+twoMonthsAgo.subtract(8, "weeks");
 
 var racsRevenuePeriodStartDate = twoMonthsAgo;
 var racsRevenuePeriodEndDate = today;
-
 
 $(document).ready(function(){
     loadNavbar('RACSHomepageNavItem');
@@ -78,22 +77,79 @@ $(document).ready(function(){
         });
     });
 
-    $("#viewCarReservationCharts").on('click', function(e) {
-        $("#showCarReservationCharts").css("display", "none");
+    $("#viewCarReservationChartsDaily").on('click', function(e) {
+        $("#showCarReservationChartsDaily").css("display", "none");
+        $("#showCarReservationChartsWeekly").css("display", "none");
+        $("#showCarReservationChartsMonthly").css("display", "none");
         e.preventDefault();
 
         $("#error").remove();
 
+        
+        $("#showCarReservationChartsDaily").css("display", "block");
+
         $.ajax({
-            url: getNumberOfCarReservationsOfRacsDaily + "/" + email + "/" + moment(twoMonthsAgo).format("DD-MM-YYYY HH:mm") + "/" + moment(today).format("DD-MM-YYYY HH:mm"),
+            url: getNumberOfCarReservationsOfRacsLink + "/" + email + "/" + moment(twoMonthsAgo).format("DD-MM-YYYY HH:mm") + "/" + moment(today).format("DD-MM-YYYY HH:mm") 
+            + "/" + "day",
             method: "GET",
             dataType: "json",
             contentType: "application/json",
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                $("#showCarReservationCharts").css("display", "block");
-                makeDailyChart(dateNumberOfReservations, "Number of reservations", "showCarReservationCharts", 1, 1, 2, 5);
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsDaily", 1, 1, 2, 5, "day");
+            }, error: function(error) {
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                console.log(error);
+            }
+        });
+    });
+
+    $("#viewCarReservationChartsWeekly").on('click', function(e) {
+        $("#showCarReservationChartsDaily").css("display", "none");
+        $("#showCarReservationChartsWeekly").css("display", "none");
+        $("#showCarReservationChartsMonthly").css("display", "none");
+        e.preventDefault();
+
+        $("#error").remove();
+
+       $("#showCarReservationChartsWeekly").css("display", "block");
+       $.ajax({
+            url: getNumberOfCarReservationsOfRacsLink + "/" + email + "/" + moment(twoMonthsAgo).format("DD-MM-YYYY HH:mm") + "/" + moment(today).format("DD-MM-YYYY HH:mm") 
+            + "/" + "week",
+            method: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            data: {},
+            headers: { "Authorization": "Bearer " + token}, 
+            success: function(dateNumberOfReservations) {
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsWeekly", 1, 1, 2, 5, "week");
+            }, error: function(error) {
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                console.log(error);
+            }
+        });
+    });
+
+    $("#viewCarReservationChartsMonthly").on('click', function(e) {
+        $("#showCarReservationChartsDaily").css("display", "none");
+        $("#showCarReservationChartsWeekly").css("display", "none");
+        $("#showCarReservationChartsMonthly").css("display", "none");
+        e.preventDefault();
+
+        $("#error").remove();
+
+       $("#showCarReservationChartsMonthly").css("display", "block");
+       $.ajax({
+            url: getNumberOfCarReservationsOfRacsLink + "/" + email + "/" + moment(twoMonthsAgo).format("DD-MM-YYYY HH:mm") + "/" + moment(today).format("DD-MM-YYYY HH:mm") 
+            + "/" + "month",
+            method: "GET",
+            dataType: "json",
+            contentType: "application/json",
+            data: {},
+            headers: { "Authorization": "Bearer " + token}, 
+            success: function(dateNumberOfReservations) {
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsMonthly", 1, 1, 2, 5, "month");
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
@@ -113,11 +169,9 @@ $(document).ready(function(){
         if ($("#endDate").val() != null && $("#endDate").val() != "")
             racsRevenuePeriodEndDate = $("#endDate").val();
         
-        console.log(moment(racsRevenuePeriodStartDate).format("DD-MM-YYYY HH:mm"));
-        console.log(moment(racsRevenuePeriodEndDate).format("DD-MM-YYYY HH:mm"));
-
         $.ajax({
-            url: getRevenueForPeriod + "/" + email + "/" + moment(racsRevenuePeriodStartDate).format("DD-MM-YYYY HH:mm") + "/" + moment(racsRevenuePeriodEndDate).format("DD-MM-YYYY HH:mm"),
+            url: getRevenueForPeriod + "/" + email + "/" + moment(racsRevenuePeriodStartDate).format("DD-MM-YYYY HH:mm") + "/"
+             + moment(racsRevenuePeriodEndDate).format("DD-MM-YYYY HH:mm"),
             method: "GET",
             dataType: "json",
             contentType: "application/json",
@@ -125,8 +179,7 @@ $(document).ready(function(){
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dayRevenue) {
                 $("#showRACSRevenueForPeriod").css("display", "block");
-                makeDailyChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000);
-                console.log(dayRevenue);
+                makeChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000, "day");
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
@@ -134,8 +187,6 @@ $(document).ready(function(){
         });
     });
     
-    
-
     $("#startDate").datepicker({
         uiLibrary: 'bootstrap'
     });
@@ -154,9 +205,11 @@ $(document).ready(function(){
  * @param {*} yAxisStep - stepSize for y axis
  * @param {*} yAxisPadding - distance between max value and top of chart, because it's prettier if there's some space left above the max value
  * @param {*} ceilToNearest - number to ceil to, because it's prettier to have the top of the chart at e.g. 10000 than to have it at 9232
+ * @param {*} unit - day, month or week
  */
-function makeDailyChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisStep, yAxisPadding, ceilToNearest) {
+function makeChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisStep, yAxisPadding, ceilToNearest, unit) {
     
+    console.log(idOfParentElement);
     var labels = Object.keys(data);
     var newLabel;
     var maxYAxisValue = 0;
@@ -175,8 +228,10 @@ function makeDailyChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisSte
     }
     
     var timeFormat = "DD/MM/YYYY";
-    var startDate = moment(moment(labels[0], timeFormat).subtract(6, 'days')).format(timeFormat);
-    var endDate = moment(moment(labels[labels.length - 1], timeFormat).add(6, 'days')).format(timeFormat);
+    var startDate = moment(moment(getMinMaxDate(labels, "min"), timeFormat)).format(timeFormat);
+    var endDate = moment(moment(getMinMaxDate(labels, "max"), timeFormat)).format(timeFormat);
+    
+    
     
     
 
@@ -200,9 +255,9 @@ function makeDailyChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisSte
                     type: "time",
                     time: {
                         format: timeFormat,
-                        unit: 'day',
+                        unit: unit,
                         stepSize: xAxisStep,
-                        minUnit: 'day',
+                        minUnit: unit,
                         min: startDate,
                         max: endDate,
                         tooltipFormat: 'll'
@@ -236,6 +291,37 @@ function makeDailyChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisSte
         }
     });
 }
+
+// dates have to be changed from DD-MM-YYYY to MM-DD-YYYY, because js reads dates like Americans do
+function getMinMaxDate(dateStrings, minOrMax) {
+    var dates = [];
+    var maxDate = new Date();
+    var minDate = new Date();
+    
+    maxDate.setFullYear(maxDate.getFullYear() - 100);
+    minDate.setFullYear(minDate.getFullYear() + 100);
+
+    for (var d of dateStrings) {
+        dates.push(moment(d, "DD-MM-YYYY").toDate());
+    }
+
+    for (var d of dates) {
+        if (d < minDate) {
+            minDate = d;
+        }
+        if (d > maxDate) {
+            maxDate = d;
+        }
+    }
+
+    if (minOrMax == "min") {
+        return minDate;
+    } else {
+        return maxDate;
+    }
+}
+
+
 
 function displayCars(cars) {
     cars = sortCars(cars);
