@@ -10,18 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Authority;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.FriendRequest;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.dto.AbstractUserDTO;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FriendRequestDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.RoomReservationDTO;
-import com.FlightsReservations.domain.dto.UserDTO;
+import com.FlightsReservations.repository.AbstractUserRepository;
 import com.FlightsReservations.repository.AuthorityRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
@@ -33,7 +35,10 @@ import com.FlightsReservations.repository.UserRepository;
 public class UserService {
 
 	@Autowired
-	private UserRepository repository;
+	private AbstractUserRepository abstractUserRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private FriendRequestRepository friendRequestsRepository;
@@ -54,8 +59,8 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	
-	public UserDTO create(RegistrationUserDTO t) {
-		if (repository.findByEmail(t.getEmail()) == null) {
+	public AbstractUserDTO create(RegistrationUserDTO t) {
+		if (abstractUserRepository.findByEmail(t.getEmail()) == null) {
 			User u = new User();
 			ArrayList<Authority> authorities = new ArrayList<Authority>();
 			for (String a : t.getAuthorities()) {
@@ -69,59 +74,64 @@ public class UserService {
 			u.setPassword(passwordEncoder.encode(t.getPassword()));
 			u.setEnabled(true);
 			u.setAuthorities(authorities);
-			repository.save(u);
-			return new UserDTO(u);
+			abstractUserRepository.save(u);
+			return new AbstractUserDTO(u);
 		}
 		return null;
 	}
 
 	
-	public boolean update(UserDTO t) {
-		User u = repository.findByEmail(t.getEmail());
+	public boolean update(AbstractUserDTO t) {
+		AbstractUser u = abstractUserRepository.findByEmail(t.getEmail());
 		if (u != null) {
 			u.setFirstName(t.getFirstName());
 			u.setLastName(t.getLastName());
 			u.setPhone(t.getPhone());
 			u.setAddress(t.getAddress());
 			u.setEnabled(t.isEnabled());
-			repository.save(u);
+			abstractUserRepository.save(u);
 			return true;
 		}
 		return false;
 	}
 
 	
-	public UserDTO findOne(String email) {
-		User u = repository.findByEmail(email);
+	public AbstractUserDTO findOne(String email) {
+		AbstractUser u = abstractUserRepository.findByEmail(email);
 		if (u != null)
-			return new UserDTO(u);
+			return new AbstractUserDTO(u);
 		return null;
 	}
 	
 	
-	public Optional<User> findById(Long id) {
-		return repository.findById(id);
+	public Optional<AbstractUser> findById(Long id) {
+		return abstractUserRepository.findById(id);
 	}
 	
 	
-	public List<UserDTO> findAll() {
-		List<UserDTO> dtos = new ArrayList<>();
-		for (User u : repository.findAll())
-			dtos.add(new UserDTO(u));
+	public List<AbstractUserDTO> findAll() {
+		List<AbstractUserDTO> dtos = new ArrayList<>();
+		for (AbstractUser u : abstractUserRepository.findAll())
+			dtos.add(new AbstractUserDTO(u));
 		return dtos;
 	}
 	
 	
 	
-	public List<UserDTO> getFriends(String email) {
+	public List<AbstractUserDTO> getFriends(String email) {
 		
-		User u = repository.findByEmail(email);
+		AbstractUser abstractUser = abstractUserRepository.findByEmail(email);
 		
-		List<User> friends = repository.findFriends(u.getId());
-		List<UserDTO> friendsDTO = new ArrayList<>();
+		ArrayList<String> types = new ArrayList<String>();
+		abstractUser.getAuthorities().forEach(auth -> types.add(auth.getAuthority()));
+		
+		if (types.contains("A")) return null;
+		User u = (User) abstractUser;
+		List<User> friends = userRepository.findFriends(u.getId());
+		List<AbstractUserDTO> friendsDTO = new ArrayList<>();
 		for (User user : friends) {
 			if (user.isEnabled()) {
-				UserDTO udto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
+				AbstractUserDTO udto = new AbstractUserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
 				friendsDTO.add(udto);
 			}
 		}
@@ -131,14 +141,24 @@ public class UserService {
 	
 	
 	public void addFriend(Long userId, Long friendId) {
-		repository.addFriend(userId, friendId);
+		userRepository.addFriend(userId, friendId);
 	}
 	
 	
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
-		User u = repository.findByEmail(email);
-		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
+		AbstractUser u = abstractUserRepository.findByEmail(email);
+		
+		ArrayList<String> types = new ArrayList<String>();
+		
+		u.getAuthorities().forEach(auth -> types.add(auth.getAuthority()));
+		for (int i = 0; i < types.size(); i++) {
+			if (types.get(i).contains("USER")) types.set(i, "U");
+			else if (types.get(i).contains("ADMIN")) types.set(i, "A");
+			
+		}
+		
+		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId(), types.get(types.size()-1));
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
@@ -150,7 +170,7 @@ public class UserService {
 	
 	
 	public List<FlightReservationDTO> getFlightReservations(String email) {
-		User u = repository.findByEmail(email);
+		AbstractUser u = abstractUserRepository.findByEmail(email);
 		Collection<FlightReservation> flightReservations  = flightReservationRepository.findFlightReservationsOfUser(u.getId());
 		
 		List<FlightReservationDTO> flightReservationsDTO = new ArrayList<>();
@@ -163,7 +183,7 @@ public class UserService {
 	
 	
 	public List<RoomReservationDTO> getRoomReservations(String email) {
-		User u = repository.findByEmail(email);
+		AbstractUser u = abstractUserRepository.findByEmail(email);
 		Collection<RoomReservation> roomReservations = roomReservationRepository.findRoomReservationsOfUser(u.getId());
 		List<RoomReservationDTO> roomReservationsDTO = new ArrayList<>();
 		for (RoomReservation rr : roomReservations) {
@@ -176,7 +196,7 @@ public class UserService {
 	
 	
 	public List<FriendRequestDTO> getSentFriendRequests(String email) {
-		User u = repository.findByEmail(email);
+		User u = userRepository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
 		if (u != null && u.isEnabled()) {
 			u.getSentRequests().size();
@@ -188,7 +208,7 @@ public class UserService {
 	
 	
 	public List<FriendRequestDTO> getRecievedFriendRequests(String email) {
-		User u = repository.findByEmail(email);
+		User u = userRepository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
 		if (u != null && u.isEnabled()) {
 			u.getRecievedRequests().size();
@@ -203,14 +223,14 @@ public class UserService {
 
 	public boolean sendFriendRequest(String sender, String reciever) {
 		if (verifyFriendRequest(sender, reciever)) {
-			User s = repository.findByEmail(sender);
-			User r = repository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
 			FriendRequest fr = new FriendRequest(s, r, new Date());
 			s.getSentRequests().add(fr);
 			r.getRecievedRequests().add(fr);
 			friendRequestsRepository.save(fr);
-			repository.save(s);
-			repository.save(r);
+			abstractUserRepository.save(s);
+			abstractUserRepository.save(r);
 			return true;
 		}
 		return false;
@@ -220,13 +240,13 @@ public class UserService {
 	
 	public boolean approveFriendRequest(String sender, String reciever) {
 		if (verifyApproveRequest(sender, reciever)) {
-			User r = repository.findByEmail(reciever);
-			User s = repository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 			r.getFriends().add(s);
 			s.getFriends().add(r);
-			repository.save(s);
-			repository.save(r);
+			abstractUserRepository.save(s);
+			abstractUserRepository.save(r);
 			friendRequestsRepository.delete(fr);
 			return true;
 		}
@@ -237,8 +257,8 @@ public class UserService {
 	
 	public boolean declineFriendRequest(String sender, String reciever) {
 		if(verifyDeclineRequest(sender, reciever)) {
-			User r = repository.findByEmail(reciever);
-			User s = repository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 			friendRequestsRepository.delete(fr);
 			return true;
@@ -251,12 +271,12 @@ public class UserService {
 	
 	public boolean removeFriend(String user, String userToRemove) {
 		if (verifyRemoveFriend(user, userToRemove)) {
-			User s = repository.findByEmail(user);
-			User r = repository.findByEmail(userToRemove);
+			User s = userRepository.findByEmail(user);
+			User r = userRepository.findByEmail(userToRemove);
 			s.getFriends().remove(r);
 			r.getFriends().remove(s);
-			repository.save(s);
-			repository.save(r);
+			abstractUserRepository.save(s);
+			abstractUserRepository.save(r);
 			return true;
 		}
 		return false;
@@ -271,8 +291,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = repository.findByEmail(sender);
-		User r = repository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -284,7 +304,7 @@ public class UserService {
 			return false;
 		
 		// not friends already
-		if (repository.areFriends(s.getId(), r.getId()) > 0)
+		if (userRepository.areFriends(s.getId(), r.getId()) > 0)
 			return false;
 		
 		return true;
@@ -297,8 +317,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = repository.findByEmail(sender);
-		User r = repository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -325,8 +345,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = repository.findByEmail(sender);
-		User r = repository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -349,8 +369,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = repository.findByEmail(sender);
-		User r = repository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -361,7 +381,7 @@ public class UserService {
 		
 		
 		// must be friends
-		if (repository.areFriends(s.getId(), r.getId()) == 0)
+		if (userRepository.areFriends(s.getId(), r.getId()) == 0)
 			return false;
 		
 		return true;

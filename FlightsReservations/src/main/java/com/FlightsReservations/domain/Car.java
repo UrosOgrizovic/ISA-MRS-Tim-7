@@ -41,6 +41,7 @@ public class Car {
 	private Set<Discount> discounts;
 	
 	@Version
+	@Column(nullable = false)
 	private Long version;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion

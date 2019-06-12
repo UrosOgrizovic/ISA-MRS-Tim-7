@@ -13,8 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.User;
-import com.FlightsReservations.repository.UserRepository;
+import com.FlightsReservations.repository.AbstractUserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -22,14 +23,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
 	@Autowired
-	private UserRepository repository;
+	private AbstractUserRepository abstractUserRepository;
 	
-	public UserRepository getRepository() {
-		return repository;
+	public AbstractUserRepository getRepository() {
+		return abstractUserRepository;
 	}
 
-	public void setRepository(UserRepository repository) {
-		this.repository = repository;
+	public void setRepository(AbstractUserRepository repository) {
+		this.abstractUserRepository = repository;
 	}
 
 	@Autowired
@@ -40,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User user = repository.findByEmail(email);
+		AbstractUser user = abstractUserRepository.findByEmail(email);
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
 		} else {
@@ -70,7 +71,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		// hash password before inserting into db
 		user.setPassword(passwordEncoder.encode(newPassword));
-		repository.save(user);
+		abstractUserRepository.save(user);
 	}
 
 }

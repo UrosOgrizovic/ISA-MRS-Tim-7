@@ -14,6 +14,7 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
 import com.FlightsReservations.repository.RACSRepository;
 
 @Component
@@ -21,7 +22,7 @@ import com.FlightsReservations.repository.RACSRepository;
 public class RACSService {
 
 	@Autowired
-	RACSRepository repository;
+	RACSRepository racsRepository;
 	
 	@Autowired
 	CarService carService;
@@ -36,26 +37,20 @@ public class RACSService {
 			}
 		}
 		
-		return repository.save(t);
+		return racsRepository.save(t);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public boolean update(RACS t) {
+	public boolean update(UpdateRACSDTO t) {
 		RACS r = findOne(t.getId());
 		if (r != null) {
-			
 			r.setLongitude(t.getLongitude());
 			r.setLatitude(t.getLatitude());
-			r.setBranchOffices(t.getBranchOffices());
-			// Hibernate saves all modifications done to cars automatically
-			r.setCars(t.getCars());
-			
 			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
-			r.setPricelist(t.getPricelist());
 			r.setAverageScore(t.getAverageScore());
 			r.setNumberOfVotes(t.getNumberOfVotes());
-			repository.save(r);
+			racsRepository.save(r);
 			return true;
 		}
 		return false;
@@ -76,7 +71,7 @@ public class RACSService {
 					car.getPricePerHour());
 
 			racs.getCars().add(c);
-			repository.save(racs);
+			racsRepository.save(racs);
 			return true;
 		}
 		return false;
@@ -85,7 +80,7 @@ public class RACSService {
 
 	public RACS findOne(Long id) {
 		try {
-			return repository.findById(id).get();
+			return racsRepository.findById(id).get();
 		} catch (NoSuchElementException e) {
 			return null;
 		}
@@ -93,7 +88,7 @@ public class RACSService {
 	
 	public Collection<RACS> findByName(String name) {
 		try {
-			return repository.findByName(name);
+			return racsRepository.findByName(name);
 		} catch (NoSuchElementException e) {
 			return null;
 		}
@@ -101,10 +96,10 @@ public class RACSService {
 	
 	@Transactional(readOnly = false)
 	public void delete(Long id) {
-		repository.deleteById(id);
+		racsRepository.deleteById(id);
 	}
 
 	public Collection<RACS> findAll() {
-		return repository.findAll();
+		return racsRepository.findAll();
 	}
 }

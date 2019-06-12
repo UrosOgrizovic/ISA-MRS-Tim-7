@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -60,7 +61,7 @@ public class RACSController {
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@RequestBody @Valid RACS racs) {
+	public ResponseEntity<String> update(@RequestBody @Valid UpdateRACSDTO racs) {
 		if (service.update(racs))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Rent-a-car service with given id does not exist", HttpStatus.NOT_FOUND);

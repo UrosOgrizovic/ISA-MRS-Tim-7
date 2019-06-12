@@ -3,9 +3,9 @@ package com.FlightsReservations.domain.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.AbstractUser;
 
-public class UserDTO {
+public class AbstractUserDTO {
 	@NotBlank
 	private String firstName;
 	@NotBlank
@@ -19,11 +19,11 @@ public class UserDTO {
 	@NotNull
 	private boolean enabled;
 
-	public UserDTO() {
+	public AbstractUserDTO() {
 		super();
 	}
 
-	public UserDTO(String firstName, String lastName, String email, String phone, String address, boolean enabled) {
+	public AbstractUserDTO(String firstName, String lastName, String email, String phone, String address, boolean enabled) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -41,7 +41,7 @@ public class UserDTO {
 		this.enabled = enabled;
 	}
 
-	public UserDTO(User user) {
+	public AbstractUserDTO(AbstractUser user) {
 		this(
 			user.getFirstName(), 
 			user.getLastName(),
