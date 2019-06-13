@@ -6,7 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,11 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import org.springframework.lang.Nullable;
-
-import com.FlightsReservations.domain.dto.CompanyRatingDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -44,9 +42,8 @@ public class Reservation {
 	
 	// rating that user has given to airline, hotel or RACS
 	// this column is nullable because user won't enter a rating when making the reservation, but rather later
-	@Embedded
-	
-	private CompanyRatingDTO companyRating;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Rating companyRating;
 	
 	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();
@@ -100,11 +97,11 @@ public class Reservation {
 		this.owner = owner;
 	}
 	
-	public CompanyRatingDTO getCompanyRating() {
+	public Rating getRating() {
 		return companyRating;
 	}
 
-	public void setCompanyRating(CompanyRatingDTO companyRating) {
+	public void setRating(Rating companyRating) {
 		this.companyRating = companyRating;
 	}
 

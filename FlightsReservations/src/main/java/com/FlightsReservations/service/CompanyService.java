@@ -12,7 +12,7 @@ import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.RoomReservation;
-import com.FlightsReservations.domain.dto.CompanyRatingDTO;
+import com.FlightsReservations.domain.dto.RatingDTO;
 import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.CompanyRepository;
@@ -45,8 +45,8 @@ public class CompanyService {
 	@Autowired
 	private CarRepository carRepository;
 	
-	public CompanyRatingDTO rate(CompanyRatingDTO dto) {
-		Company c = companyRepository.findByName(dto.getName());
+	public RatingDTO rate(RatingDTO dto) {
+		Company c = companyRepository.findByName(dto.getCompanyName());
 		
 		if (c != null) {
 			if (c instanceof Airline) {
@@ -100,7 +100,7 @@ public class CompanyService {
 			c.setNumberOfVotes(newNumberOfVotes);
 			c.setAverageScore(newAvgScore / newNumberOfVotes);
 			companyRepository.save(c);
-			return new CompanyRatingDTO(c.getName(), c.getAverageScore(), dto.getReservationId());
+			return new RatingDTO(c.getName(), c.getAverageScore(), dto.getReservationId());
 		}		
 		return null;
 	}

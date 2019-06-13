@@ -2,9 +2,10 @@ package com.FlightsReservations.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.FlightsReservations.domain.Seat;
-
+@Repository
 public interface SeatRepository extends JpaRepository<Seat, Long>{
 	
 	@Query(value = "SELECT * FROM seat WHERE flight_id = ?1 AND seat_number = ?2", nativeQuery = true)

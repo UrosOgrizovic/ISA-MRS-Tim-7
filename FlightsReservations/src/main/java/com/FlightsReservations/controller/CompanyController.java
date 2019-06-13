@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.dto.CompanyRatingDTO;
+import com.FlightsReservations.domain.dto.RatingDTO;
 import com.FlightsReservations.service.CompanyService;
 
 @RestController
@@ -29,7 +29,7 @@ public class CompanyController {
 			value = "/rate",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> rate(@Valid @RequestBody CompanyRatingDTO dto) {
+	public ResponseEntity<?> rate(@Valid @RequestBody RatingDTO dto) {
 		dto = service.rate(dto);
 		if (dto != null)
 			return new ResponseEntity<>(dto, HttpStatus.OK);

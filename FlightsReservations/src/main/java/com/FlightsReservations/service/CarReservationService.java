@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
+import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
 import com.FlightsReservations.repository.AbstractUserRepository;
@@ -47,10 +48,12 @@ public class CarReservationService {
 		}
 		
 		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime, car.getRACSBranchOffice().getId());
-		reservation.getCompanyRating().setReservationId(reservation.getId());
-		reservation.getCompanyRating().setName(car.getRACSBranchOffice().getName());
+		reservation.setRating(new Rating());
+		reservation.getRating().setReservation(reservation);
+		reservation.getRating().setCompanyBranchOfficeId(car.getRACSBranchOffice().getId());
 		
 		reservation = repository.save(reservation);
+		
 		return new CarReservationDTO(reservation);
 	}
 	

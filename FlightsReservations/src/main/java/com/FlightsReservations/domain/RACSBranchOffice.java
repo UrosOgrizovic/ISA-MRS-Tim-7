@@ -61,6 +61,10 @@ public class RACSBranchOffice {
 		this.cars = cars;
 		this.racs = racs;
 	}
+	
+	public RACSBranchOffice() {
+		super();
+	}
 	public Long getId() {
 		return id;
 	}

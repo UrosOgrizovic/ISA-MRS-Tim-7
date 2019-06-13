@@ -8,7 +8,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.lang.Nullable;
 
 @Embeddable
-public class CompanyRatingDTO {
+public class RatingDTO {
 
 	@Nullable
 	@Positive
@@ -28,22 +28,22 @@ public class CompanyRatingDTO {
 	@Nullable
 	private Long reservationId;
 	
-	public CompanyRatingDTO() {
+	public RatingDTO() {
 		super();
 	}
 
-	public CompanyRatingDTO(String name, float companyRating, Long reservationId) {
+	public RatingDTO(String name, float companyRating, Long reservationId) {
 		super();
 		this.companyRating = companyRating;
 		this.companyName = name;
 		this.reservationId = reservationId;
 	}
 
-	public String getName() {
+	public String getCompanyName() {
 		return companyName;
 	}
 
-	public void setName(String name) {
+	public void setCompanyName(String name) {
 		this.companyName = name;
 	}
 
