@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,10 +19,6 @@ public class RACS extends Company {
 	@JoinColumn(name = "racs_id")
 	private Set<RACSPricelistItem> pricelist;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "racs_id")
-	private Set<RACSBranchOffice> branchOffices;
-	
 	public Set<RACSPricelistItem> getPricelist() {
 		return pricelist;
 	}
@@ -29,12 +26,7 @@ public class RACS extends Company {
 		this.pricelist = pricelist;
 	}
 	
-	public Set<RACSBranchOffice> getBranchOffices() {
-		return branchOffices;
-	}
-	public void setBranchOffices(Set<RACSBranchOffice> branchOffices) {
-		this.branchOffices = branchOffices;
-	}
+	
 	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes) {
 		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
@@ -49,9 +41,5 @@ public class RACS extends Company {
 				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
 				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + "]";
 	}
-	
-	
-	
-		
 	
 }

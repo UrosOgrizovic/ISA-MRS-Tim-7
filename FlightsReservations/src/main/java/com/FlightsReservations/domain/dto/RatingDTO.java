@@ -23,7 +23,7 @@ public class RatingDTO {
 	private float flightRoomCarRating;
 
 	@Nullable
-	private String companyName;
+	private Long companyBranchOfficeId;
 
 	@Nullable
 	private Long reservationId;
@@ -32,19 +32,20 @@ public class RatingDTO {
 		super();
 	}
 
-	public RatingDTO(String name, float companyRating, Long reservationId) {
+	public RatingDTO(Long companyBranchOfficeId, float companyRating, Long reservationId, float flightRoomCarRating) {
 		super();
 		this.companyRating = companyRating;
-		this.companyName = name;
+		this.companyBranchOfficeId = companyBranchOfficeId;
 		this.reservationId = reservationId;
+		this.flightRoomCarRating = flightRoomCarRating;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public Long getCompanyBranchOfficeId() {
+		return companyBranchOfficeId;
 	}
 
-	public void setCompanyName(String name) {
-		this.companyName = name;
+	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
+		this.companyBranchOfficeId = companyBranchOfficeId;
 	}
 
 	public Long getReservationId() {
@@ -74,7 +75,7 @@ public class RatingDTO {
 	@Override
 	public String toString() {
 		return "CompanyRatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
-				+ ", name=" + companyName + ", reservationId=" + reservationId + "]";
+				+ ", name=" + companyBranchOfficeId + ", reservationId=" + reservationId + "]";
 	}
 
 	

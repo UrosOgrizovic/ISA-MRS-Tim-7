@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.FlightsReservations.domain.BranchOffice;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSBranchOffice;
@@ -72,10 +73,21 @@ public class RACSService {
 	public ArrayList<Car> searchAllCars(Collection<RACS> racss, String name, String manufacturer, int yearOfManufacture) {
 		ArrayList<Car> matchingCars = new ArrayList<Car>();
 		Set<RACSBranchOffice> branchOfficesOfRACS = new HashSet<RACSBranchOffice>();
+		Set<BranchOffice> branchOffices = new HashSet<BranchOffice>();
 		if (yearOfManufacture != 0) {
 			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
+					
+					;
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (yearOfManufacture == c.getYearOfManufacture()) {
@@ -87,7 +99,15 @@ public class RACSService {
 				}
 			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
@@ -99,7 +119,17 @@ public class RACSService {
 				}
 			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
+
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture()) {
@@ -111,7 +141,16 @@ public class RACSService {
 				}
 			} else {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
@@ -124,7 +163,16 @@ public class RACSService {
 		} else { // yearOfManufacture == 0
 			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							matchingCars.add(c);
@@ -133,7 +181,16 @@ public class RACSService {
 				}
 			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (manufacturer.equals(c.getManufacturer())) {
@@ -144,7 +201,16 @@ public class RACSService {
 				}
 			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (name.equals(c.getName())) {
@@ -155,7 +221,16 @@ public class RACSService {
 				}
 			} else {
 				for (RACS r : racss) {
-					branchOfficesOfRACS = r.getBranchOffices();
+					branchOffices = r.getBranchOffices();
+					
+					
+					RACSBranchOffice racsBranchOffice = new RACSBranchOffice();
+					for (BranchOffice bo : branchOffices) {
+						if (bo instanceof RACSBranchOffice) {
+							racsBranchOffice = (RACSBranchOffice) bo;
+							branchOfficesOfRACS.add(racsBranchOffice);
+						}
+					}
 					for (RACSBranchOffice rbo : branchOfficesOfRACS) {
 						for (Car c : rbo.getCars()) {
 							if (name.equals(c.getName()) && manufacturer.equals(c.getManufacturer())) {

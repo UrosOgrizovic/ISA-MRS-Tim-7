@@ -25,12 +25,12 @@ public class Rating {
 	@Column
 	@Min(value = 0)
 	@Max(value = 5)
-	private float flightRoomCarRating = 0;
+	private float flightRoomCarRating;
 	
 	@Column
 	@Min(value = 0)
 	@Max(value = 5)
-	private float companyRating = 0;
+	private float companyRating;
 	
 	@Column
 	private Long companyBranchOfficeId;
@@ -71,22 +71,23 @@ public class Rating {
 		return companyBranchOfficeId;
 	}
 
-	public void setCompanyBranchOfficeId(Long companyId) {
-		this.companyBranchOfficeId = companyId;
+	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
+		this.companyBranchOfficeId = companyBranchOfficeId;
 	}
 
-	public Rating(Long id, Reservation reservation, @Positive @Min(1) @Max(5) float flightRoomCarRating,
-			@Positive @Min(1) @Max(5) float companyRating, Long companyId) {
+	public Rating(Reservation reservation, @Positive @Min(1) @Max(5) float flightRoomCarRating,
+			@Positive @Min(1) @Max(5) float companyRating, Long companyBranchOfficeId) {
 		super();
-		this.id = id;
 		this.reservation = reservation;
 		this.flightRoomCarRating = flightRoomCarRating;
 		this.companyRating = companyRating;
-		this.companyBranchOfficeId = companyId;
+		this.companyBranchOfficeId = companyBranchOfficeId;
 	}
 
 	public Rating() {
 		super();
+		this.companyRating = 0;
+		this.flightRoomCarRating = 0;
 	}
 	
 	

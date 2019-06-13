@@ -36,7 +36,7 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
 
 -- RACS
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ('R', 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, 'Amsterdam', 'Netherlands', 0);
-INSERT INTO racsbranch_office (id, name, longitude, latitude, racs_id) VALUES (1, 'Driven Cleveland', 41.4993, 81.6944, 2);
+INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('RBO', 1, 'Driven Cleveland', 41.4993, 81.6944, 2);
 
 INSERT INTO racspricelist_item (id, name, price, racs_id) VALUES (1, 'Local taxes', 10, 2);
 INSERT INTO racspricelist_item (id, name, price, racs_id) VALUES (2, 'Collision damage waiver', 50, 2);

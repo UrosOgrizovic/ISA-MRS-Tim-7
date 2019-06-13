@@ -3,21 +3,27 @@ package com.FlightsReservations.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.AirlineBranchOffice;
+import com.FlightsReservations.domain.BranchOffice;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.Company;
 import com.FlightsReservations.domain.FlightReservation;
-import com.FlightsReservations.domain.Hotel;
-import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.HotelBranchOffice;
+import com.FlightsReservations.domain.RACSBranchOffice;
+import com.FlightsReservations.domain.Rating;
+import com.FlightsReservations.domain.Reservation;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.dto.RatingDTO;
+import com.FlightsReservations.repository.BranchOfficeRepository;
 import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.CompanyRepository;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
+import com.FlightsReservations.repository.RatingRepository;
+import com.FlightsReservations.repository.ReservationRepository;
 import com.FlightsReservations.repository.RoomRepository;
 import com.FlightsReservations.repository.RoomReservationRepository;
 
@@ -37,6 +43,9 @@ public class CompanyService {
 	private CarReservationRepository carReservationRepository;
 	
 	@Autowired
+	private BranchOfficeRepository branchOfficeRepository;
+	
+	@Autowired
 	private FlightRepository flightRepository;
 	
 	@Autowired
@@ -45,11 +54,31 @@ public class CompanyService {
 	@Autowired
 	private CarRepository carRepository;
 	
+	@Autowired
+	private RatingRepository ratingRepository;
+	
+	@Autowired
+	private ReservationRepository reservationRepository;
+	
 	public RatingDTO rate(RatingDTO dto) {
-		Company c = companyRepository.findByName(dto.getCompanyName());
+		BranchOffice bo = branchOfficeRepository.findById(dto.getCompanyBranchOfficeId()).get();
+		Company c = bo.getCompany();
+		Rating rating = ratingRepository.findByReservationId(dto.getReservationId());
+		Reservation reservation = reservationRepository.findById(dto.getReservationId()).get();
+		if (reservation.getRating().getCompanyRating() > 0) {
+			// company can't be rated multiple times for one reservation
+		} else {
+			float newAvgScore = c.getAverageScore() * c.getNumberOfVotes() + dto.getCompanyRating();
+			int newNumberOfVotes = c.getNumberOfVotes() + 1;
+			c.setNumberOfVotes(newNumberOfVotes);
+			c.setAverageScore(newAvgScore / newNumberOfVotes);
+			companyRepository.save(c);
+		}
 		
-		if (c != null) {
-			if (c instanceof Airline) {
+		if (reservation.getRating().getFlightRoomCarRating() > 0) {
+			// flight/room/car can't be rated multiple times for one reservation
+		} else {
+			if (bo instanceof AirlineBranchOffice) {
 				FlightReservation fr = flightReservationRepository.findById(dto.getReservationId()).get();
 				/* //TODO: fix flight reservation rating
 				// if flight has already been rated
@@ -70,7 +99,10 @@ public class CompanyService {
 					}
 				}
 				*/
-			} else if (c instanceof Hotel) {
+				//TODO: change
+				return null;
+				
+			} else if (bo instanceof HotelBranchOffice) {
 				RoomReservation rr = roomReservationRepository.findById(dto.getReservationId()).get();
 				if (rr.getRoomRating() > 0) {
 					return null;
@@ -83,7 +115,16 @@ public class CompanyService {
 				room.setAverageScore(newRoomAvgScore / newRoomNumberOfVotes);
 				roomRepository.save(room);
 				rr.setRoomRating(dto.getFlightRoomCarRating());
-			} else if (c instanceof RACS) {
+				if (rating == null) {
+					rating = new Rating(rr, dto.getFlightRoomCarRating(), dto.getCompanyRating(), dto.getCompanyBranchOfficeId());
+				} else {
+					
+				}
+				
+				ratingRepository.save(rating);
+				return new RatingDTO(bo.getId(), c.getAverageScore(), dto.getReservationId(), room.getAverageScore());
+				
+			} else if (bo instanceof RACSBranchOffice) {
 				CarReservation cr = carReservationRepository.findById(dto.getReservationId()).get();
 				if (cr.getCarRating() > 0) {
 					return null;
@@ -94,14 +135,22 @@ public class CompanyService {
 				car.setNumberOfVotes(newCarNumberOfVotes);
 				car.setAverageScore(newCarAvgScore / newCarNumberOfVotes);
 				cr.setCarRating(dto.getFlightRoomCarRating());
+				if (rating == null) {
+					rating = new Rating(cr, dto.getFlightRoomCarRating(), dto.getCompanyRating(), dto.getCompanyBranchOfficeId());
+				} else {
+					rating.setFlightRoomCarRating(dto.getFlightRoomCarRating());
+					rating.setCompanyRating(dto.getCompanyRating());
+				}
+				
+				ratingRepository.save(rating);
+				return new RatingDTO(bo.getId(), c.getAverageScore(), dto.getReservationId(), car.getAverageScore());
 			}
-			float newAvgScore = c.getAverageScore() * c.getNumberOfVotes() + dto.getCompanyRating();
-			int newNumberOfVotes = c.getNumberOfVotes() + 1;
-			c.setNumberOfVotes(newNumberOfVotes);
-			c.setAverageScore(newAvgScore / newNumberOfVotes);
-			companyRepository.save(c);
-			return new RatingDTO(c.getName(), c.getAverageScore(), dto.getReservationId());
-		}		
+		}
+		
+		
+		
+		
+		
 		return null;
 	}
 }
