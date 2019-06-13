@@ -1,9 +1,15 @@
+import {loadNavbar} from "./navbar.js";
+
 var loginLink1 = "/users/login";
 var loginLink2 = "/auth/login";
+
+var user = {};
 
 $(document).ready(function() {
     // no user should be logged in while on this page
     localStorage.clear();
+
+    loadNavbar('loginNavItem');
 
     $("#login_form").on('submit', function(e) {
         e.preventDefault();

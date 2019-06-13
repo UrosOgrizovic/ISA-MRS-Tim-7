@@ -7,7 +7,7 @@ import com.FlightsReservations.domain.Hotel;
 
 public class RoomDTO {
 	@NotNull
-	private double overallRating;
+	private float averageScore;
 	@NotNull
 	private double overNightStay;
 	
@@ -25,15 +25,25 @@ public class RoomDTO {
 	
 	private Hotel hotel;
 	
+	private int numberOfVotes;
+	
+	
+	
 		
-	public double getOverallRating() 
-	{
-		return overallRating;
+	public int getNumberOfVotes() {
+		return numberOfVotes;
 	}
-	public void setOverallRating(double overallRating) 
-	{
-		this.overallRating = overallRating;
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
 	}
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+	public float getAverageScore() 
+	{
+		return averageScore;
+	}
+	
 	public double getOverNightStay() 
 	{
 		return overNightStay;

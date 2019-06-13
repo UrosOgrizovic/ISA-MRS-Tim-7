@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,10 +42,27 @@ public class Car {
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
-	//@JsonIgnoreProperties(ignoreUnknown=true, value={"hibernateLazyInitializer", "handler", "created"})
 	@ManyToOne(fetch = FetchType.LAZY)
-	private RACS racs;
+	private RACSBranchOffice racsBranchOffice;
 
+	@Column(nullable = false)
+	private float averageScore;
+
+	@Column(nullable = false)
+	private int numberOfVotes;
+	
+	@Version
+	@Column(nullable = false)
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
 	public Set<Discount> getDiscounts() {
 		return discounts;
 	}
@@ -93,12 +111,12 @@ public class Car {
 		this.color = color;
 	}
 
-	public RACS getRacs() {
-		return racs;
+	public RACSBranchOffice getRACSBranchOffice() {
+		return racsBranchOffice;
 	}
 
-	public void setRacs(RACS racs) {
-		this.racs = racs;
+	public void setRACSBranchOffice(RACSBranchOffice racsBranchOffice) {
+		this.racsBranchOffice = racsBranchOffice;
 	}
 	
 	public double getPricePerHour() {
@@ -108,16 +126,34 @@ public class Car {
 	public void setPricePerHour(double pricePerHour) {
 		this.pricePerHour = pricePerHour;
 	}
+	
+	public float getAverageScore() {
+		return averageScore;
+	}
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
+	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
 
 	public Car(String manufacturer,String name, int yearOfManufacture,
-			String color, RACS racs, double pricePerHour) {
+			String color, RACSBranchOffice racsBranchOffice, double pricePerHour, float averageScore, int numberOfVotes) {
 		super();
 		this.manufacturer = manufacturer;
 		this.name = name;
 		this.yearOfManufacture = yearOfManufacture;
 		this.color = color;
-		this.racs = racs;
+		this.racsBranchOffice = racsBranchOffice;
 		this.pricePerHour = pricePerHour;
+		this.averageScore = averageScore;
+		this.numberOfVotes = numberOfVotes;
 	}
 	
 	public Car() {

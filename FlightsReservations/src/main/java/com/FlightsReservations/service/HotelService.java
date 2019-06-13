@@ -133,9 +133,10 @@ public class HotelService {
 					dto.getNumber(),
 					dto.getNumberOfGuests(),
 					dto.getType(),
-					dto.getOverallRating(),
+					dto.getAverageScore(),
 					dto.getOverNightStay(),
-					hotel);
+					hotel,
+					dto.getNumberOfVotes());
 			hotel.getRoomConfiguration().add(room);
 			roomRepository.save(room);
 			repository.save(hotel);

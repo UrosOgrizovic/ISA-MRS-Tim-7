@@ -1,8 +1,9 @@
+
 var mapa;
 var idSelect;
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+
 
 $(document).ready(function(){
  

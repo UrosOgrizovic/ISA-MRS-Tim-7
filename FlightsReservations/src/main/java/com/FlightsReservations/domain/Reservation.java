@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
+import org.springframework.lang.Nullable;
+
+import com.FlightsReservations.domain.dto.CompanyRatingDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -36,9 +40,15 @@ public class Reservation {
 	private Boolean confirmed;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private User owner;
+	private AbstractUser owner;
 	
-	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, User owner) {
+	// rating that user has given to airline, hotel or RACS
+	// this column is nullable because user won't enter a rating when making the reservation, but rather later
+	@Embedded
+	
+	private CompanyRatingDTO companyRating;
+	
+	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();
 		this.dateOfReservation = dateOfReservation;
 		this.price = price;
@@ -82,17 +92,26 @@ public class Reservation {
 		this.confirmed = confirmed;
 	}
 
-	public User getOwner() {
+	public AbstractUser getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(AbstractUser owner) {
 		this.owner = owner;
+	}
+	
+	public CompanyRatingDTO getCompanyRating() {
+		return companyRating;
+	}
+
+	public void setCompanyRating(CompanyRatingDTO companyRating) {
+		this.companyRating = companyRating;
 	}
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price + 
-				", confirmed=" + confirmed + ", owner=" + owner + "]";
+		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price
+				+ ", confirmed=" + confirmed + ", owner=" + owner + ", companyRating=" + companyRating + "]";
 	}
+
 }

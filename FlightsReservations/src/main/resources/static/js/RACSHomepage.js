@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";
@@ -8,10 +8,24 @@ window.rateRACS = rateRACS;
 window.searchRACSByName = searchRACSByName;
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
 
-// if user isn't admin
-if (!checkRoleFromToken(token, "ROLE_ADMIN")) {
+
+// everyone can access this page
+if (token != null) {
+
+    // if user isn't registered
+    if (!checkRoleFromToken(token, "ROLE_USER")) {
+        document.getElementById("reserveCar").style.display = "none";
+    }
+
+    // if user isn't admin
+    if (!checkRoleFromToken(token, "ROLE_ADMIN")) {
+        document.getElementById("editRACS").style.display = "none";
+        document.getElementById("createRACS").style.display = "none";
+    }
+
+} else {
+    document.getElementById("reserveCar").style.display = "none";
     document.getElementById("editRACS").style.display = "none";
     document.getElementById("createRACS").style.display = "none";
 }

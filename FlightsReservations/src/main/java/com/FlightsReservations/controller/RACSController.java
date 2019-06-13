@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
-import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -67,94 +66,12 @@ public class RACSController {
 	}
 	
 	@GetMapping(value="/searchCars", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
+	public ResponseEntity<ArrayList<Car>> searchAllCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
 		Collection<RACS> racss = service.findAll();
-		ArrayList<Car> matchingCars = new ArrayList<Car>();
 		
-		if (yearOfManufacture != 0) {
-			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (yearOfManufacture == c.getYearOfManufacture()) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture()) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			}
-		} else { // yearOfManufacture == 0
-			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						matchingCars.add(c);
-					}
-				}
-			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			}
-		}
-		
-		
-		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
+		return new ResponseEntity<ArrayList<Car>>(service.searchAllCars(racss, name, manufacturer, yearOfManufacture), HttpStatus.OK);
 
 	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping(
-			value = "/addCar",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO car) {
-		if (service.addCar(car))
-			return new ResponseEntity<>(car, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	}
-	
 }

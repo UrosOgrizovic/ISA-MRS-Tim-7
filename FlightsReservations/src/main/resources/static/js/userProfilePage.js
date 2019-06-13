@@ -1,4 +1,6 @@
 import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
+
 var getAllFriendsLink = "http://localhost:8080/users/getFriends";
 var getAllCarReservationsLink = "http://localhost:8080/users/getCarReservations";
 var getAllFlightReservationsLink = "http://localhost:8080/users/getFlightReservations";
@@ -10,7 +12,9 @@ var cancelRoomReservationLink = "http://localhost:8080/roomReservations/cancel/"
 var email = localStorage.getItem("email");
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
+
+if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 
 window.cancelCarReservation = cancelCarReservation;
 window.cancelFlightReservation = cancelFlightReservation;

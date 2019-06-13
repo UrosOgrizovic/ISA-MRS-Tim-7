@@ -9,14 +9,14 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
-import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
+import com.FlightsReservations.repository.AbstractUserRepository;
 import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
-import com.FlightsReservations.repository.UserRepository;
 
 @Service
 public class CarReservationService {
@@ -24,7 +24,7 @@ public class CarReservationService {
 	private CarReservationRepository repository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private AbstractUserRepository abstractUserRepository;
 	
 	@Autowired
 	private CarRepository carRepository;
@@ -37,7 +37,7 @@ public class CarReservationService {
 		Date endTime = dto.getEndTime();
 		
 		int reservationDurationHours = (int) ( (endTime.getTime() - startTime.getTime() ) / 3600000 );
-		User owner = userRepository.findByEmail(dto.getOwnerEmail());
+		AbstractUser owner = abstractUserRepository.findByEmail(dto.getOwnerEmail());
 		Car car = carRepository.findById(dto.getCarId()).get();
 		Float total = (float) car.getPricePerHour() * reservationDurationHours;
 		
@@ -46,7 +46,9 @@ public class CarReservationService {
 			total = total - total * discount/100;
 		}
 		
-		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
+		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime, car.getRACSBranchOffice().getId());
+		reservation.getCompanyRating().setReservationId(reservation.getId());
+		reservation.getCompanyRating().setName(car.getRACSBranchOffice().getName());
 		
 		reservation = repository.save(reservation);
 		return new CarReservationDTO(reservation);
@@ -54,7 +56,7 @@ public class CarReservationService {
 	
 	private boolean creatingSemanticValidation(CarReservationRequestDTO dto) {
 		// user with given email must exist
-		if (userRepository.findByEmail(dto.getOwnerEmail()) == null)
+		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null)
 			return false;
 		
 		// car with given id must exist 

@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
@@ -13,7 +13,7 @@ window.updateCar = updateCar;
 window.isNumber = isNumber;
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
 
 if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){

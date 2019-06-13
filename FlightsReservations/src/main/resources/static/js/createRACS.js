@@ -1,9 +1,9 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
 var addRACSLink = "/racss/add";
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
 
 if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){

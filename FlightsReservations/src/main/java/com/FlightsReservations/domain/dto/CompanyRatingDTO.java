@@ -1,45 +1,86 @@
 package com.FlightsReservations.domain.dto;
 
+import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.lang.Nullable;
+
+@Embeddable
 public class CompanyRatingDTO {
-	@NotNull
+
+	@Nullable
 	@Positive
 	@Min(value = 1)
 	@Max(value = 5)
-	private float averageScore;
+	private float companyRating;
+	
+	@Nullable
+	@Positive
+	@Min(value = 1)
+	@Max(value = 5)
+	private float flightRoomCarRating;
 
-	@NotBlank
-	private String name;
+	@Nullable
+	private String companyName;
 
+	@Nullable
+	private Long reservationId;
+	
 	public CompanyRatingDTO() {
 		super();
 	}
 
-	public CompanyRatingDTO(String name, float score) {
+	public CompanyRatingDTO(String name, float companyRating, Long reservationId) {
 		super();
-		this.averageScore = score;
-		this.name = name;
+		this.companyRating = companyRating;
+		this.companyName = name;
+		this.reservationId = reservationId;
 	}
 
 	public String getName() {
-		return name;
+		return companyName;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.companyName = name;
 	}
 
-	public float getaverageScore() {
-		return averageScore;
+	public Long getReservationId() {
+		return reservationId;
 	}
 
-	public void setaverageScore(float averageScore) {
-		this.averageScore = averageScore;
+	public void setReservationId(Long reservationId) {
+		this.reservationId = reservationId;
+	}
+	
+	public float getFlightRoomCarRating() {
+		return flightRoomCarRating;
 	}
 
+	public void setFlightRoomCarRating(float flightRoomCarRating) {
+		this.flightRoomCarRating = flightRoomCarRating;
+	}
+
+	public float getCompanyRating() {
+		return companyRating;
+	}
+	
+	public void setCompanyRating(float companyRating) {
+		this.companyRating = companyRating;
+	}
+
+	@Override
+	public String toString() {
+		return "CompanyRatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
+				+ ", name=" + companyName + ", reservationId=" + reservationId + "]";
+	}
+
+	
+
+	
+
+	
+	
 }

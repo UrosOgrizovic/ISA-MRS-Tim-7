@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
@@ -9,7 +9,7 @@ var carIdSelect = $("#car_id_select");
 
 window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+if (token == null || new Date(parseJwt(token).exp) < new Date()) location.replace("/html/login.html");
 
 var email = parseJwt(token).sub;
 

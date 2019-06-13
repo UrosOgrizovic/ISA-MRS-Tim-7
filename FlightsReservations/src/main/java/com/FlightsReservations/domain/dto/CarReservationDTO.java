@@ -10,6 +10,7 @@ public class CarReservationDTO {
 	private Float price;
 	private String ownerEmail;
 	private Boolean confirmed;
+	private Long racsBranchOfficeId;
 	
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date dateOfReservation;
@@ -19,6 +20,14 @@ public class CarReservationDTO {
 	
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
+	
+	public Long getRACSBranchOfficeId() {
+		return racsBranchOfficeId;
+	}
+
+	public void setRACSBranchOfficeId(Long racsBranchOfficeId) {
+		this.racsBranchOfficeId = racsBranchOfficeId;
+	}
 
 	public Date getStartTime() {
 		return startTime;
@@ -80,7 +89,7 @@ public class CarReservationDTO {
 		super();
 	}
 
-	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime) {
+	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime, Long racsBranchOfficeId) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -89,10 +98,11 @@ public class CarReservationDTO {
 		this.dateOfReservation = dateOfReservation;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.racsBranchOfficeId = racsBranchOfficeId;
 	}
 	
 	public CarReservationDTO(CarReservation reservation) {
 		this(reservation.getId(), reservation.getPrice(), reservation.getOwner().getEmail(), reservation.getConfirmed(), 
-				reservation.getDateOfReservation(), reservation.getStartTime(), reservation.getEndTime());
+				reservation.getDateOfReservation(), reservation.getStartTime(), reservation.getEndTime(), reservation.getRACSBranchOfficeId());
 	}
 }

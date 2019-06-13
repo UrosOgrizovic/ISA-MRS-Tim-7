@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
@@ -38,6 +38,10 @@ function dateToString(obj) {
 }
 
 var token = localStorage.getItem("token");
+
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
+
+
 if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 window.fastBook = fastBook;
 
