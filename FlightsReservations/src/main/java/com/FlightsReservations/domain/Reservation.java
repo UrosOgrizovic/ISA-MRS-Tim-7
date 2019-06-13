@@ -13,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -43,7 +42,7 @@ public class Reservation {
 	// rating that user has given to airline, hotel or RACS
 	// this column is nullable because user won't enter a rating when making the reservation, but rather later
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Rating companyRating;
+	private Rating rating;
 	
 	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();
@@ -98,17 +97,17 @@ public class Reservation {
 	}
 	
 	public Rating getRating() {
-		return companyRating;
+		return rating;
 	}
 
-	public void setRating(Rating companyRating) {
-		this.companyRating = companyRating;
+	public void setRating(Rating rating) {
+		this.rating = rating;
 	}
 
 	@Override
 	public String toString() {
 		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price
-				+ ", confirmed=" + confirmed + ", owner=" + owner + ", companyRating=" + companyRating + "]";
+				+ ", confirmed=" + confirmed + ", owner=" + owner + ", rating=" + rating + "]";
 	}
 
 }

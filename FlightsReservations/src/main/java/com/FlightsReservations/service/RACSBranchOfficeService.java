@@ -12,6 +12,7 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACSBranchOffice;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
 import com.FlightsReservations.repository.RACSBranchOfficeRepository;
 
 @Component
@@ -19,7 +20,7 @@ public class RACSBranchOfficeService {
 	@Autowired
 	RACSBranchOfficeRepository racsBranchOfficeRepository;
 	
-	public RACSBranchOffice create(RACSBranchOffice t) {
+	public RACSBranchOffice create(RACSBranchOfficeDTO t) {
 		Set<Car> cars = t.getCars();
 		if (cars != null) {
 			for (Car c : cars) {
@@ -27,7 +28,8 @@ public class RACSBranchOfficeService {
 					c.setDiscounts(new HashSet<Discount>());
 			}
 		}
-		return	racsBranchOfficeRepository.save(t);
+		RACSBranchOffice rbo = new RACSBranchOffice(t);
+		return	racsBranchOfficeRepository.save(rbo);
 	}
 	
 	public boolean update(RACSBranchOffice t) {
@@ -37,6 +39,7 @@ public class RACSBranchOfficeService {
 			r.setLatitude(t.getLatitude());
 			r.setCars(t.getCars());
 			r.setName(t.getName());
+			r.setCompany(t.getCompany());
 			racsBranchOfficeRepository.save(r);
 			return true;
 		}

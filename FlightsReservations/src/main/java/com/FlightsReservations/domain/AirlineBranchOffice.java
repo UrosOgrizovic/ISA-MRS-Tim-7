@@ -13,5 +13,4 @@ public class AirlineBranchOffice extends BranchOffice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//TODO: add reference to airline
 }

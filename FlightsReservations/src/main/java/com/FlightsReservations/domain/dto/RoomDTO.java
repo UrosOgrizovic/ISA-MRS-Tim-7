@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.HotelBranchOffice;
 
 public class RoomDTO {
 	@NotNull
@@ -23,9 +24,10 @@ public class RoomDTO {
 	@NotBlank
 	private String type;
 	
-	private Hotel hotel;
+	private HotelBranchOffice hotelBranchOffice;
 	
 	private int numberOfVotes;
+	
 	
 	
 	
@@ -52,13 +54,13 @@ public class RoomDTO {
 	{
 		this.overNightStay = overNightStay;
 	}
-	public Hotel getHotel() 
+	public HotelBranchOffice getHotelBranchOffice() 
 	{
-		return hotel;
+		return hotelBranchOffice;
 	}
-	public void setHotel(Hotel hotel) 
+	public void setHotelBranchOffice(HotelBranchOffice hotelBranchOffice) 
 	{
-		this.hotel = hotel;
+		this.hotelBranchOffice = hotelBranchOffice;
 	}
 	
 	public int getNumber()

@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.User;
@@ -44,6 +45,9 @@ public class RoomReservationService {
 		//TODO: check if room is on discount in reservation period. If yes, then total = total - total*discount/100
 		
 		RoomReservation reservation = new RoomReservation(new Date(), total, (Boolean) true, owner, dto.getRoomId(), startTime, endTime);
+		reservation.setRating(new Rating());
+		reservation.getRating().setReservation(reservation);
+		reservation.getRating().setCompanyBranchOfficeId(room.getHotelBranchOffice().getId());
 		
 		reservation = repository.save(reservation);
 		return new RoomReservationDTO(reservation);

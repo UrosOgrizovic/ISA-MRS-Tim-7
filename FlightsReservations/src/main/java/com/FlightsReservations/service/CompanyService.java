@@ -62,6 +62,7 @@ public class CompanyService {
 	
 	public RatingDTO rate(RatingDTO dto) {
 		BranchOffice bo = branchOfficeRepository.findById(dto.getCompanyBranchOfficeId()).get();
+		System.out.println(dto.getCompanyBranchOfficeId());
 		Company c = bo.getCompany();
 		Rating rating = ratingRepository.findByReservationId(dto.getReservationId());
 		Reservation reservation = reservationRepository.findById(dto.getReservationId()).get();
@@ -113,14 +114,16 @@ public class CompanyService {
 				int newRoomNumberOfVotes = room.getNumberOfVotes() + 1;
 				room.setNumberOfVotes(newRoomNumberOfVotes);
 				room.setAverageScore(newRoomAvgScore / newRoomNumberOfVotes);
-				roomRepository.save(room);
 				rr.setRoomRating(dto.getFlightRoomCarRating());
+				
 				if (rating == null) {
 					rating = new Rating(rr, dto.getFlightRoomCarRating(), dto.getCompanyRating(), dto.getCompanyBranchOfficeId());
 				} else {
-					
+					rating.setFlightRoomCarRating(dto.getFlightRoomCarRating());
+					rating.setCompanyRating(dto.getCompanyRating());
 				}
 				
+				roomRepository.save(room);
 				ratingRepository.save(rating);
 				return new RatingDTO(bo.getId(), c.getAverageScore(), dto.getReservationId(), room.getAverageScore());
 				
@@ -135,6 +138,7 @@ public class CompanyService {
 				car.setNumberOfVotes(newCarNumberOfVotes);
 				car.setAverageScore(newCarAvgScore / newCarNumberOfVotes);
 				cr.setCarRating(dto.getFlightRoomCarRating());
+				
 				if (rating == null) {
 					rating = new Rating(cr, dto.getFlightRoomCarRating(), dto.getCompanyRating(), dto.getCompanyBranchOfficeId());
 				} else {
@@ -142,6 +146,7 @@ public class CompanyService {
 					rating.setCompanyRating(dto.getCompanyRating());
 				}
 				
+				carRepository.save(car);
 				ratingRepository.save(rating);
 				return new RatingDTO(bo.getId(), c.getAverageScore(), dto.getReservationId(), car.getAverageScore());
 			}

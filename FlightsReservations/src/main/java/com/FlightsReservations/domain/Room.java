@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.enums.RoomType;
@@ -25,7 +24,6 @@ public class Room {
 	@NotNull
 	private int numberOfGuests;
 	
-	@NotBlank
 	private RoomType type;
 
 	@Column(nullable = false)
@@ -40,30 +38,30 @@ public class Room {
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Hotel hotel;
+	private HotelBranchOffice hotelBranchOffice;
 	
 	public Room() 
 	{
 		super();
 	}
 	
-	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes) 
+	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, HotelBranchOffice hotelBranchOffice, int numberOfVotes) 
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
 		this.type = RoomType.valueOf(type);
 		this.averageScore = averageScore;
 		this.overNightStay = overNightStay;
-		this.hotel = hotel;
+		this.hotelBranchOffice = hotelBranchOffice;
 		this.numberOfVotes = numberOfVotes;
 	}
-	public Hotel getHotel() 
+	public HotelBranchOffice getHotelBranchOffice() 
 	{
-		return hotel;
+		return hotelBranchOffice;
 	}
-	public void setHotel(Hotel hotel) 
+	public void setHotelBranchOffice(HotelBranchOffice hotelBranchOffice) 
 	{
-		this.hotel = hotel;
+		this.hotelBranchOffice = hotelBranchOffice;
 	}
 	
 	

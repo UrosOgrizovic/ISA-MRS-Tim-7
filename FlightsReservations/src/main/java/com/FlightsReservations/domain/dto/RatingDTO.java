@@ -1,13 +1,11 @@
 package com.FlightsReservations.domain.dto;
 
-import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
 import org.springframework.lang.Nullable;
 
-@Embeddable
 public class RatingDTO {
 
 	@Nullable

@@ -48,3 +48,5 @@ INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES 
 -- Hotel
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
+INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('HBO', 2, 'Drina 1', 24.372, 36.278, 3);
+INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_branch_office_id) VALUES (1, 4.35, 23, 3, 50, 30, 2);

@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,9 +16,6 @@ public class Hotel extends Company
 	@OneToMany(mappedBy = "hotel")
 	private Set<PricelistItem> pricelist;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "hotel_id")
-	private Set<Room> roomConfiguration;
 	
 	/*
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,15 +43,7 @@ public class Hotel extends Company
 		this.pricelist = pricelist;
 	}
 
-	public Set<Room> getRoomConfiguration()
-	{
-		return roomConfiguration;
-	}
-
-	public void setRoomConfiguration(Set<Room> roomConfiguration)
-	{
-		this.roomConfiguration = roomConfiguration;
-	}
+	
 
 	public Set<HotelReservation> getReservations() {
 		return reservations;
