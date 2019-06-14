@@ -1,17 +1,14 @@
 package com.FlightsReservations.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-import org.jboss.logging.FormatWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +22,6 @@ import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.AirportDTO;
 import com.FlightsReservations.domain.dto.PricelistDTO;
 import com.FlightsReservations.service.AirlineService;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @RestController
 @RequestMapping("/airlines")
@@ -113,11 +109,11 @@ public class AirlineController {
 		return new ResponseEntity<>(service.getCountReport("W-MM-yyyy"), HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	//@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value = "/reports/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPeriodReport(
 			@PathVariable  @NotBlank String start,
-			@PathVariable @NotBlank String end) {				
+			@PathVariable @NotBlank String end) {			
 		return new ResponseEntity<>(service.getIncomeForPeriod(start, end), HttpStatus.OK);
 	}
 

@@ -2,9 +2,8 @@ package com.FlightsReservations.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.common.DateIterator;
 import com.FlightsReservations.domain.Airline;
 import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.AirlinePriceList;
@@ -142,12 +142,10 @@ public class AirlineService {
 	}
 	
 	public Map<String,Integer> getCountReport(String pattern) {
-		// String pattern 
-		// --------------
 		// daily reports:   dd-MM-yyyy
 		// monthly reports: MM-yyyy
 		// weekly reports:  W-MM-yyyy (W - week of month)
-		
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Airline a = repository.findByName(admin.getAirline().getName());
 		
@@ -155,21 +153,30 @@ public class AirlineService {
 		reservations.size();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Map<String, Integer> ret = new HashMap<>();
+		LinkedHashMap<String, Integer> ret = new LinkedHashMap<>();		
+		DateIterator it = new DateIterator(new Date(), -45);
+		Date cntDate = null;
+		while ((cntDate = it.getCounter()) != null) {
+			String cntStr = sdf.format(cntDate.getTime());
+			if (!ret.containsKey(cntStr))
+				ret.put(cntStr, 0);
+			it.increment();
+		}
 		
 		for (FlightReservation r : reservations) {
-			String key = sdf.format(r.getDateOfReservation());
-			if (ret.containsKey(key))
-				ret.put(key, ret.get(key)+1);
-			else
-				ret.put(key, 1);
+			String rStr = sdf.format(r.getDateOfReservation());
+			if (ret.containsKey(rStr)) 
+				ret.put(rStr, ret.get(rStr) + 1);
 		}
+		
 		return ret;
 	}
 	
 	
-	public SortedMap<String, Float> getIncomeForPeriod(String startDateStr, String endDateStr) {
-		SortedMap<String, Float> income = new TreeMap<>();
+	public Map<String, Float> getIncomeForPeriod(String startDateStr, String endDateStr) {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+		LinkedHashMap<String, Float> income = new LinkedHashMap<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		
 		Date startDate;
@@ -182,40 +189,37 @@ public class AirlineService {
 		}
 		
 		if (startDate.before(endDate)) {
-			AirlineAdmin admin = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Airline a = repository.findByName(admin.getAirline().getName());
 			
 			Set<FlightReservation> reservations = a.getReservations();
 			reservations.size();
 			
-			Calendar cnt = Calendar.getInstance();
-			cnt.setTime(startDate);
-			Calendar end = Calendar.getInstance();
-			end.setTime(endDate);
-			end.add(Calendar.DATE, 1);
+			DateIterator it = new DateIterator(startDate, endDate);
+			Date cntDate = null;
+			while ((cntDate = it.getCounter()) != null) {
+				String cntStr = sdf.format(cntDate.getTime());
+				income.put(cntStr, (float) 0);
+				it.increment();
+			}
 			
-			while (cnt.getTime().before(end.getTime())) {
-				String cntStr = sdf.format(cnt.getTime());
-				
-				float inc = 0;
-				for (FlightReservation r : reservations) {
-					if (cntStr.equals(sdf.format(r.getDateOfReservation())) && r.getOwner() != null) {
-						inc = inc + r.getPrice();
-					}
+			for (FlightReservation r : reservations) {
+				String rStr = sdf.format(r.getDateOfReservation());
+				if (income.containsKey(rStr)) {
+					income.put(rStr, income.get(rStr) + r.getPrice());
 				}
-				income.put(cntStr, inc);
-				cnt.add(Calendar.DATE, 1);
 			}
 		}
+		
 		return income;
 	}
-
 	
 	private AirlineDTO createDTO(Airline airline) {
 		AirlineDTO dto = new AirlineDTO(airline);
 		
 		for (Airport a : airline.getAirports()) 
 			dto.getAirports().add(a.getName());
+		
 		for (Flight f : airline.getFlights())
 			dto.getFlights().add(new FlightDTO(f));
 		

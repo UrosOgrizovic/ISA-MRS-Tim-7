@@ -6,18 +6,17 @@ $(document).ready(function(){
 
 	$("#dateFrom").datepicker({
 		uiLibrary: "bootstrap4",
-		format: "dd-MM-yyyy",
+		format: "dd-mm-yyyy",
 	});
 
 	$("#dateTo").datepicker({
 		uiLibrary: "bootstrap4",
-		format: "dd-MM-yyyy",
+		format: "dd-mm-yyyy",
 	});
 
-
-	displayDailyChart(1, "daily");
-	displayDailyChart(1, "weekly");
-	displayDailyChart(1, "monthly");
+	getDaily();
+	getWeekly();
+	getMonthly();
 });
 
 
@@ -27,10 +26,34 @@ function getDaily() {
 		method: "GET",
 		data: "json",
 		success: function(result) {
-			displayDailyChart(result);
+			displayChart("daily", result, "Daily");
 		}
 	});
 }
+
+
+function getWeekly() {
+	$.ajax({
+		url: "http://localhost:8080/airlines/reports/week",
+		method: "GET",
+		data: "json",
+		success: function(result) {
+			displayChart("weekly", result, "Weekly");
+		}
+	});
+}
+
+function getMonthly() {
+	$.ajax({
+		url: "http://localhost:8080/airlines/reports/month",
+		method: "GET",
+		data: "json",
+		success: function(result) {
+			displayChart("monthly", result, "Monthly");
+		}
+	});
+}
+
 
 
 
@@ -43,48 +66,20 @@ function getIncome() {
 		method: "GET",
 		data: "json",
 		success: function(result) {
-			displayIncomeChart(result);
+			displayChart("income", result, "Income");
 		}
 	});
 }
 
 
-
-function displayDailyChart(data, id) {
+function displayChart(id, data, desc) {
 	var ctx = document.getElementById(id).getContext('2d');
-	var myChart = new Chart(ctx, {
-	    type: 'line',
-	    data: {
-	        labels: ["1"],
-	        datasets: [{
-	            label: '# of Votes',
-	            data: [12],
-	            fill: true
-	        }]
-	    },
-	    options: {
-	    	responsive: true,
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                }
-	            }]
-	        }
-	    }
-	});
-}
-
-
-
-function displayIncomeChart(data) {
-	var ctx = document.getElementById("income").getContext('2d');
 	var myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
 	        labels: Object.keys(data),
 	        datasets: [{
-	            label: 'Income',
+	            label: desc,
 	            data: Object.values(data),
 	            fill: true
 	        }]
