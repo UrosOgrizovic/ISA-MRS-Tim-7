@@ -1,13 +1,15 @@
 package com.FlightsReservations.domain.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.FlightsReservations.domain.BranchOffice;
+import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
+import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.RACSBranchOffice;
 import com.FlightsReservations.domain.RACSPricelistItem;
-
 
 public class RACSDTO {
 	private String name;
@@ -20,7 +22,26 @@ public class RACSDTO {
 	private int numberOfVotes;
 	private Set<RACSBranchOfficeDTO> branchOffices = new HashSet<RACSBranchOfficeDTO>();
 	private Set<RACSPricelistItemDTO> pricelist = new HashSet<RACSPricelistItemDTO>(); 
+	private RACSAdmin admin;
 	
+	public Set<RACSPricelistItemDTO> getPricelist() {
+		return pricelist;
+	}
+	public void setPricelist(Set<RACSPricelistItemDTO> pricelist) {
+		this.pricelist = pricelist;
+	}
+	public Set<RACSBranchOfficeDTO> getBranchOffices() {
+		return branchOffices;
+	}
+	public void setBranchOffices(Set<RACSBranchOfficeDTO> branchOffices) {
+		this.branchOffices = branchOffices;
+	}
+	public RACSAdmin getAdmin() {
+		return admin;
+	}
+	public void setAdmin(RACSAdmin admin) {
+		this.admin = admin;
+	}
 	public String getName() {
 		return name;
 	}
@@ -69,23 +90,15 @@ public class RACSDTO {
 	public void setNumberOfVotes(int numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
-	public Set<RACSBranchOfficeDTO> getBranchOffices() {
-		return branchOffices;
-	}
-	public void setBranchOffices(Set<RACSBranchOfficeDTO> branchOffices) {
-		this.branchOffices = branchOffices;
-	}
-	public Set<RACSPricelistItemDTO> getPricelist() {
-		return pricelist;
-	}
-	public void setPricelist(Set<RACSPricelistItemDTO> pricelist) {
-		this.pricelist = pricelist;
-	}
 	
-	public RACSDTO(String name, String city, String state, Float longitude, Float latitude, String promoDescription,
-			float averageScore, int numberOfVotes, Set<RACSBranchOfficeDTO> branchOffices,
-			Set<RACSPricelistItemDTO> pricelist) {
+	
+	public RACSDTO(Set<RACSPricelistItemDTO> pricelist, Set<CarDTO> cars, Set<RACSBranchOfficeDTO> branchOffices, RACSAdmin admin,
+			String name, String city, String state, Float longitude, Float latitude, String promoDescription,
+			float averageScore, int numberOfVotes) {
 		super();
+		this.pricelist = pricelist;
+		this.branchOffices = branchOffices;
+		this.admin = admin;
 		this.name = name;
 		this.city = city;
 		this.state = state;
@@ -124,7 +137,5 @@ public class RACSDTO {
 		this.promoDescription = r.getPromoDescription();
 		this.state = r.getState();
 	}
-	
-	
 	
 }

@@ -12,7 +12,7 @@ var rpe = localStorage.getItem("reservationPeriodEnd");
 var reservationPeriodEnd = dateFormatter(rpe);
 var stringReservationPeriodEnd = dateToString(rpe);
 
-// used for converting reservationPeriodStart and reservationPeriodEnd to Date of desired format
+// used for converting String to Date of desired format (dd-MM-yyyy HH:mm)
 function dateFormatter(obj) {
     var objDate = obj.split(" ")[0].split("-")[0];
     if (objDate.length == 1) objDate = "0" + objDate;
@@ -24,7 +24,7 @@ function dateFormatter(obj) {
     return new Date(objYear, objMonth, objDate, objHours, objMinutes);
 }
 
-// used for converting reservationPeriodStart and reservationPeriodEnd to string
+// used for converting Date to string (dd-MM-yyyy HH:mm)
 function dateToString(obj) {
     var objDate = obj.split(" ")[0].split("-")[0];
     if (objDate.length == 1) objDate = "0" + objDate;

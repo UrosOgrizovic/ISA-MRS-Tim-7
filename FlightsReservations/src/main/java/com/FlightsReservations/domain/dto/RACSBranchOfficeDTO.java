@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Company;
+import com.FlightsReservations.domain.RACSBranchOffice;
 
 public class RACSBranchOfficeDTO {
 
@@ -53,6 +54,9 @@ public class RACSBranchOfficeDTO {
 	}
 	public RACSBranchOfficeDTO() {
 		super();
+	}
+	public RACSBranchOfficeDTO(RACSBranchOffice rbo) {
+		// TODO Auto-generated constructor stub
 	}
 	
 }

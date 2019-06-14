@@ -1,18 +1,24 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.enums.AdminType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@DiscriminatorValue("RA")
 public class RACSAdmin extends Admin
 {
 	private static final long serialVersionUID = -5528506607893893333L;
 	
-	@OneToOne
-	private RACS racs;//TODO: check if concurrent, edit later
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE})
+	private RACS racs;
 	
 	public RACSAdmin() {
 		super();
@@ -34,6 +40,7 @@ public class RACSAdmin extends Admin
 			this.setAddress(dto.getAddress());
 			this.setPassword(dto.getPassword());
 			this.setType(AdminType.RENTACAR);
+			this.setRACS(dto.getRacs());
 	}
 
 	public RACS getRACS()

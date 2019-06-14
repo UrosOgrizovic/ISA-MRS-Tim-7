@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public void setRepository(AbstractUserRepository repository) {
 		this.abstractUserRepository = repository;
 	}
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 

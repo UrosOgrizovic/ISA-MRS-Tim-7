@@ -28,6 +28,7 @@ if (token != null) {
     document.getElementById("reserveCar").style.display = "none";
     document.getElementById("editRACS").style.display = "none";
     document.getElementById("createRACS").style.display = "none";
+    document.getElementById("RACSReports").style.display = "none";
 }
 
 // exposing function to window object, because each module creates a scope to avoid name collisions

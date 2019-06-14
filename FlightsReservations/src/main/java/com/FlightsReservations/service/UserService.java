@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -138,7 +139,18 @@ public class UserService {
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
 		User u = repository.findByEmail(email);
-		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
+		boolean isAdmin = false;
+		@SuppressWarnings("unchecked")
+		ArrayList<GrantedAuthority> authorities = (ArrayList<GrantedAuthority>) u.getAuthorities();
+		for (GrantedAuthority ga : authorities) {
+			if (ga.getAuthority().equals("ROLE_ADMIN"))
+				isAdmin = true;
+		}
+		Collection<CarReservation> carReservations;
+		if (isAdmin)
+			carReservations = carReservationRepository.findCarReservationsOfAdmin(u.getId());
+		else
+			carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
@@ -366,5 +378,8 @@ public class UserService {
 		
 		return true;
 	}
+
+
+	
 	
 }

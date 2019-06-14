@@ -16,6 +16,7 @@ public class CarDTO {
 	public void setAverageScore(float averageScore) {
 		this.averageScore = averageScore;
 	}
+	
 	public int getNumberOfVotes() {
 		return numberOfVotes;
 	}
