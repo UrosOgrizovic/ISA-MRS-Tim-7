@@ -71,7 +71,11 @@ function display_search_results(cars) {
         text += "<h3>"+ " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour + "</h3><br>";
     }
     text += "</div>";
-    $(document.documentElement).append(text);
+
+
+    var tabela = document.getElementById("tabela");
+    tabela.innerHTML = "<tr><td>My"+text+"</td></tr>";
+    document.body.appendChild(tabela);
 }
 
 // allow only numbers to be entered where required

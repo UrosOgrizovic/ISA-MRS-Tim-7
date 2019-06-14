@@ -1,3 +1,6 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
+
 var searchUrl = "http://localhost:8080/hotels/searchHotels";
 var mapa;
 var emailSelect;
@@ -68,21 +71,23 @@ function search_hotel()
 function display_search_results(hotels)
 {
 	console.log("Pretraga uspjesna!");
+	var results = document.getElementById("results");
     var text = "<div id=\"foundHotels\"><h2>Search results: <h2><br>";
     for (hotel of hotels) {
-        text += "<h3>"+ " " + hotel.name + " " + hotel.city + " " + hotel.state + " " + hotel.averageScore + " " + hotel.longitude + " " + hotel.latitude + "</h3><br>";
+        text += "<div ><table border=1><tr><td>"+ " " + hotel.name + " " + hotel.city + " " + hotel.state + " " + hotel.averageScore + " " + hotel.longitude + " " + hotel.latitude + "</tr></td></div><br>";
+        
     }
     
     text += "</div>";
+    /*
     console.log($(document.documentElement));
     $(document.documentElement).append(text);
-    /*
-    var tabela = document.createElement("TABLE");
-    tabela.innerHTML = "<tr><td>My"+text+"</td></tr>";
-    document.body.appendChild(tabela);
+    */
+    results.innerHTML = text;
+    document.body.appendChild(results);
     //$(document).insertAdjacentHTML(text);
     
-    
+    /*
     var row = document.getElementById("red"); // find row to copy
     var table = document.getElementById("tabela"); // find table to append to
     var clone = row.cloneNode(true); // copy children too
