@@ -98,4 +98,6 @@ public class User extends AbstractUser {
 		this.friends = friends;
 	}
 	
+	
+	
 }

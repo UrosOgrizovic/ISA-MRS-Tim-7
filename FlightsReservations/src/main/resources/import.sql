@@ -17,10 +17,7 @@ INSERT INTO users (user_type, id, address, email, first_name, last_name, passwor
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 6, 'adresa2', 'airlineadmin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 7, 'adresa3', 'airlineadmin2@example.com', 'Nikola2', 'Nikolic2', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
-UPDATE users SET airline_id = 1 WHERE id = 6;
-UPDATE company SET admin_id = 6 WHERE id = 1;
-UPDATE users SET airline_id = 4 WHERE id = 7;
-UPDATE company SET admin_id = 7 WHERE id = 4;
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("RA", 2, 'adresa2', 'admin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
 INSERT INTO authority (id, name) VALUES (1, 'ROLE_USER');
 INSERT INTO authority (id, name) VALUES (2, 'ROLE_ADMIN');
@@ -34,6 +31,14 @@ INSERT INTO user_authority (user_id, authority_id) VALUES (7, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (7, 2);
 
 
+UPDATE users SET airline_id = 1 WHERE id = 6;
+UPDATE company SET admin_id = 6 WHERE id = 1;
+UPDATE users SET airline_id = 4 WHERE id = 7;
+UPDATE company SET admin_id = 7 WHERE id = 4;
+
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia", 0);
+
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (1, 'airport1', 'city1', 'state1', 55.659, 44.332);
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (2, 'airport2', 'city2', 'state2', 35.659, 64.332);
 INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (3, 'airport3', 'city3', 'state3', 22.659, 11.332);
@@ -44,5 +49,13 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
 
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("H", 2, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska");
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("H", 3, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia");
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version, branch_offices) VALUES ("R", 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands", 0, null);
+
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 0, 4.35, 57);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0, 3.27, 44);
+INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
+

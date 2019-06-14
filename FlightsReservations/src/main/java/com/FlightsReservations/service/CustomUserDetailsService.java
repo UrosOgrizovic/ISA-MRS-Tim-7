@@ -40,6 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

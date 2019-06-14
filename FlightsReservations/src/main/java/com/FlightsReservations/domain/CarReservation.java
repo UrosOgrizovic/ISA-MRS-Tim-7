@@ -5,8 +5,9 @@ import java.util.Date;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+
 @Entity
-@DiscriminatorValue("CR")
+@DiscriminatorValue("CR") 
 public class CarReservation extends Reservation {
 	private Long carId;
 	
@@ -40,12 +41,22 @@ public class CarReservation extends Reservation {
 
 	public CarReservation() {}
 
-	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
+	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner,
 			Long carId, Date startTime, Date endTime) {
 		super(dateOfReservation, price, confirmed, owner);
 		this.carId = carId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+
+	@Override
+	public String toString() {
+		return "CarReservation [carId=" + carId + ", startTime=" + startTime + ", endTime=" + endTime + ", getId()="
+				+ getId() + ", getDateOfReservation()=" + getDateOfReservation() + ", getPrice()=" + getPrice()
+				+ ", getConfirmed()=" + getConfirmed() + ", getOwner()=" + getOwner() + "]";
+	}
+
+	
+	
 	
 }
