@@ -6,8 +6,8 @@ import com.FlightsReservations.domain.FriendRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class FriendRequestDTO {
-	private UserDTO sender;
-	private UserDTO reciever;
+	private AbstractUserDTO sender;
+	private AbstractUserDTO reciever;
 
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone = "Belgrade/Europe")
 	private Date dateSent;
@@ -16,7 +16,7 @@ public class FriendRequestDTO {
 		super();
 	}
 
-	public FriendRequestDTO(UserDTO sender, UserDTO reciever, Date dateSent) {
+	public FriendRequestDTO(AbstractUserDTO sender, AbstractUserDTO reciever, Date dateSent) {
 		super();
 		this.sender = sender;
 		this.reciever = reciever;
@@ -24,22 +24,22 @@ public class FriendRequestDTO {
 	}
 
 	public FriendRequestDTO(FriendRequest fr) {
-		this(new UserDTO(fr.getSender()), new UserDTO(fr.getReciever()), fr.getDateCreated());
+		this(new AbstractUserDTO(fr.getSender()), new AbstractUserDTO(fr.getReciever()), fr.getDateCreated());
 	}
 
-	public UserDTO getSender() {
+	public AbstractUserDTO getSender() {
 		return sender;
 	}
 
-	public void setSender(UserDTO sender) {
+	public void setSender(AbstractUserDTO sender) {
 		this.sender = sender;
 	}
 
-	public UserDTO getReciever() {
+	public AbstractUserDTO getReciever() {
 		return reciever;
 	}
 
-	public void setReciever(UserDTO reciever) {
+	public void setReciever(AbstractUserDTO reciever) {
 		this.reciever = reciever;
 	}
 

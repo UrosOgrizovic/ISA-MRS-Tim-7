@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,10 @@ public class Reservation {
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private AbstractUser owner;
+	
+	@Version
+	@Column(nullable = false)
+	private Long version;
 	
 	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();

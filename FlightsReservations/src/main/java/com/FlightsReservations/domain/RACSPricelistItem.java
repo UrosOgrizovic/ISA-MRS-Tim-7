@@ -2,6 +2,7 @@ package com.FlightsReservations.domain;
 
 import java.io.Serializable;
 
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,6 @@ public class RACSPricelistItem implements Serializable {
 
 	@NotBlank
 	private String name;
-	@NotNull
 	private double price;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
@@ -34,13 +34,11 @@ public class RACSPricelistItem implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
 	
-	
 	public RACSPricelistItem() {
 		super();
 	}
 	public RACSPricelistItem(Long id, @NotBlank String name, @NotNull double price, RACS racs) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.racs = racs;
@@ -52,12 +50,6 @@ public class RACSPricelistItem implements Serializable {
 	}
 	public void setRacs(RACS racs) {
 		this.racs = racs;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 	public String getName() {
 		return name;

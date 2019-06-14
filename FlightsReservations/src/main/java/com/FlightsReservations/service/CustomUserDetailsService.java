@@ -23,25 +23,25 @@ public class CustomUserDetailsService implements UserDetailsService {
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
 	@Autowired
-	private AbstractUserRepository repository;
+	private AbstractUserRepository abstractUserRepository;
 	
-	public AbstractUserRepository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(AbstractUserRepository repository) {
-		this.repository = repository;
-	}
-
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	public AbstractUserRepository getRepository() {
+		return abstractUserRepository;
+	}
+
+	public void setRepository(AbstractUserRepository repository) {
+		this.abstractUserRepository = repository;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		AbstractUser user = repository.findByEmail(email);
+		AbstractUser user = abstractUserRepository.findByEmail(email);
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
 		} else {
@@ -71,7 +71,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		// hash password before inserting into db
 		user.setPassword(passwordEncoder.encode(newPassword));
-		repository.save(user);
+		abstractUserRepository.save(user);
 	}
 
 }

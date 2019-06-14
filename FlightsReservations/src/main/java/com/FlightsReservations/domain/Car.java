@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,16 +40,29 @@ public class Car {
 	@ElementCollection
 	private Set<Discount> discounts;
 	
+	@Version
+	@Column(nullable = false)
+	private Long version;
+	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
-
+	
 	@Column(nullable = false)
 	private float averageRating;
 	
 	@Column(nullable = false)
 	private int numberOfVotes;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
 	
 	public int getNumberOfVotes() {
 		return numberOfVotes;

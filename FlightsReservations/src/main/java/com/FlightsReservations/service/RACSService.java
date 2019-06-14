@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Car;
@@ -25,18 +26,22 @@ import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
+import com.FlightsReservations.repository.RACSRepository;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.RACSAdminRepository;
-import com.FlightsReservations.repository.RACSRepository;
 
 @Component
 @Transactional(readOnly = false)
 public class RACSService {
 
 	@Autowired
-	RACSRepository repository;
+	RACSRepository racsRepository;
 	
+	@Autowired
+	CarService carService;
+
 	@Autowired
 	CarReservationRepository carReservationRepository;
 	
@@ -52,29 +57,26 @@ public class RACSService {
 			}
 		}
 		
-		return repository.save(t);
+		return racsRepository.save(t);
 	}
 
-	public boolean update(RACS t) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public boolean update(UpdateRACSDTO t) {
 		RACS r = findOne(t.getId());
 		if (r != null) {
 			r.setLongitude(t.getLongitude());
 			r.setLatitude(t.getLatitude());
-			r.setBranchOffices(t.getBranchOffices());
-			r.setCars(t.getCars());
 			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
-			r.setPricelist(t.getPricelist());
 			r.setAverageScore(t.getAverageScore());
 			r.setNumberOfVotes(t.getNumberOfVotes());
-			r.setAdmin(t.getAdmin());
-			repository.save(r);
+			racsRepository.save(r);
 			return true;
 		}
 		return false;
 	}
 	
-
+	@Transactional(readOnly = false)
 	public boolean addCar(CarDTO car) {
 		Long racsID = car.getRacs_id();
 		RACS racs = findOne(racsID);
@@ -91,7 +93,7 @@ public class RACSService {
 					car.getNumberOfVotes());
 
 			racs.getCars().add(c);
-			repository.save(racs);
+			racsRepository.save(racs);
 			return true;
 		}
 		return false;
@@ -100,7 +102,7 @@ public class RACSService {
 
 	public RACS findOne(Long id) {
 		try {
-			return repository.findById(id).get();
+			return racsRepository.findById(id).get();
 		} catch (NoSuchElementException e) {
 			return null;
 		}
@@ -108,18 +110,19 @@ public class RACSService {
 	
 	public Collection<RACS> findByName(String name) {
 		try {
-			return repository.findByName(name);
+			return racsRepository.findByName(name);
 		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}
-
+	
+	@Transactional(readOnly = false)
 	public void delete(Long id) {
-		repository.deleteById(id);
+		racsRepository.deleteById(id);
 	}
 
 	public Collection<RACS> findAll() {
-		return repository.findAll();
+		return racsRepository.findAll();
 	}
 
 	public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime, String endTime) {
@@ -251,7 +254,7 @@ public class RACSService {
 			racsAdmin.setRACS(racs);
 			
 			racs.setAdmin(racsAdmin);
-			repository.save(racs);
+			racsRepository.save(racs);
 			return new RACSAdminDTO(racsAdmin);
 				
 		}

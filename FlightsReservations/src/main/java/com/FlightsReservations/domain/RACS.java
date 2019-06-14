@@ -48,6 +48,7 @@ public class RACS extends Company {
 		return pricelist;
 	}
 	public void setPricelist(Set<RACSPricelistItem> pricelist) {
+		this.pricelist = pricelist;
 		this.pricelist.clear();
 		if (pricelist != null) {
 			this.pricelist.addAll(pricelist);
@@ -84,7 +85,7 @@ public class RACS extends Company {
 	public String toString() {
 		return "RACS [getId()=" + getId() + ", getName()=" + getName() + ", getLongitude()=" + getLongitude()
 				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
-				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + "]";
+				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
 	
 	
