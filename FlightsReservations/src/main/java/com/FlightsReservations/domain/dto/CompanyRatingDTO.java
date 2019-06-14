@@ -20,7 +20,7 @@ public class CompanyRatingDTO {
 		super();
 	}
 
-	public CompanyRatingDTO(String name, float score) {
+	public CompanyRatingDTO(String name, @NotNull @Positive @Min(1) @Max(5) float score) {
 		super();
 		this.averageScore = score;
 		this.name = name;

@@ -1,5 +1,7 @@
 package com.FlightsReservations.domain.dto;
 
+
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +20,7 @@ public class UserDTO {
 	private String address;
 	@NotNull
 	private boolean enabled;
-
+	
 	public UserDTO() {
 		super();
 	}
@@ -91,4 +93,5 @@ public class UserDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 }
