@@ -50,11 +50,14 @@
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#">Reservations</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+				<li class="nav-item">
+	                <a class="nav-link" href="airlineReports.html">Reports</a>
+	            </li>
 				<li class="nav-item"><a class="nav-link" href="#">My
 						profile</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
-			</ul>
+				 <li class="nav-item">
+	                <a class="nav-link" onclick="logout()">Logout</a>
+	            </li>			</ul>
 		</div>
 	</nav>
 
@@ -284,7 +287,8 @@
 				data-target="#createModal" id="createModalBtn">Create</button>
 		</span>
 	</div>
-	
+	<script src="../../js/ajaxSetup.js"></script>
+	<script src="js/authAdmin.js"></script>
 	<script src="js/jquery.seat-charts.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

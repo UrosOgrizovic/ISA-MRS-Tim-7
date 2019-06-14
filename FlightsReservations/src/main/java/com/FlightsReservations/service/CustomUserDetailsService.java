@@ -12,36 +12,39 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.AbstractUser;
-import com.FlightsReservations.domain.User;
 import com.FlightsReservations.repository.AbstractUserRepository;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
 	@Autowired
-	private AbstractUserRepository abstractUserRepository;
+	private AbstractUserRepository repository;
 	
+	public AbstractUserRepository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(AbstractUserRepository repository) {
+		this.repository = repository;
+	}
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	public AbstractUserRepository getRepository() {
-		return abstractUserRepository;
-	}
-
-	public void setRepository(AbstractUserRepository repository) {
-		this.abstractUserRepository = repository;
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		AbstractUser user = abstractUserRepository.findByEmail(email);
+		AbstractUser user = repository.findByEmail(email);
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
 		} else {
@@ -67,11 +70,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		LOGGER.debug("Changing password for user '" + username + "'");
 
-		User user = (User) loadUserByUsername(username);
+		AbstractUser user = (AbstractUser) loadUserByUsername(username);
 
 		// hash password before inserting into db
 		user.setPassword(passwordEncoder.encode(newPassword));
-		abstractUserRepository.save(user);
+		repository.save(user);
 	}
 
 }

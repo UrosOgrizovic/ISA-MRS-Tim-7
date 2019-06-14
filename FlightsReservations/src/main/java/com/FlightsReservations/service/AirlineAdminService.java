@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.AirlineAdmin;
@@ -81,8 +82,12 @@ public class AirlineAdminService {
 	
 	
 	private AirlineAdminDTO createDTO(AirlineAdmin a) {
-		AirlineAdminDTO dto = new AirlineAdminDTO(a);
-		return dto;
+		return new AirlineAdminDTO(a);
+	}
+
+	public AirlineAdminDTO getAdminFromContext() {
+		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new AirlineAdminDTO(admin);
 	}
 	
 }

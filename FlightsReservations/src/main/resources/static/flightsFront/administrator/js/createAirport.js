@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	checkAuth();
+	airline = JSON.parse(localStorage.getItem("admin")).airlineName;
+	
 	$("#createButton").click(createAirport);
 });
 

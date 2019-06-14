@@ -1,15 +1,26 @@
 package com.FlightsReservations.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.common.DateIterator;
 import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.AirlinePriceList;
 import com.FlightsReservations.domain.Airport;
 import com.FlightsReservations.domain.Flight;
+import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.dto.AirlineDTO;
 import com.FlightsReservations.domain.dto.AirportDTO;
 import com.FlightsReservations.domain.dto.FlightDTO;
@@ -130,13 +141,85 @@ public class AirlineService {
 		return new ArrayList<>();
 	}
 	
+	public Map<String,Integer> getCountReport(String pattern) {
+		// daily reports:   dd-MM-yyyy
+		// monthly reports: MM-yyyy
+		// weekly reports:  W-MM-yyyy (W - week of month)
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Airline a = repository.findByName(admin.getAirline().getName());
+		
+		Set<FlightReservation> reservations = a.getReservations();
+		reservations.size();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		LinkedHashMap<String, Integer> ret = new LinkedHashMap<>();		
+		DateIterator it = new DateIterator(new Date(), -45);
+		Date cntDate = null;
+		while ((cntDate = it.getCounter()) != null) {
+			String cntStr = sdf.format(cntDate.getTime());
+			if (!ret.containsKey(cntStr))
+				ret.put(cntStr, 0);
+			it.increment();
+		}
+		
+		for (FlightReservation r : reservations) {
+			String rStr = sdf.format(r.getDateOfReservation());
+			if (ret.containsKey(rStr)) 
+				ret.put(rStr, ret.get(rStr) + 1);
+		}
+		
+		return ret;
+	}
 	
+	
+	public Map<String, Float> getIncomeForPeriod(String startDateStr, String endDateStr) {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+		LinkedHashMap<String, Float> income = new LinkedHashMap<>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		
+		Date startDate;
+		Date endDate;
+		try {
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr);
+		} catch (Exception ex) {
+			return income;
+		}
+		
+		if (startDate.before(endDate)) {
+			AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Airline a = repository.findByName(admin.getAirline().getName());
+			
+			Set<FlightReservation> reservations = a.getReservations();
+			reservations.size();
+			
+			DateIterator it = new DateIterator(startDate, endDate);
+			Date cntDate = null;
+			while ((cntDate = it.getCounter()) != null) {
+				String cntStr = sdf.format(cntDate.getTime());
+				income.put(cntStr, (float) 0);
+				it.increment();
+			}
+			
+			for (FlightReservation r : reservations) {
+				String rStr = sdf.format(r.getDateOfReservation());
+				if (income.containsKey(rStr)) {
+					income.put(rStr, income.get(rStr) + r.getPrice());
+				}
+			}
+		}
+		
+		return income;
+	}
 	
 	private AirlineDTO createDTO(Airline airline) {
 		AirlineDTO dto = new AirlineDTO(airline);
 		
 		for (Airport a : airline.getAirports()) 
 			dto.getAirports().add(a.getName());
+		
 		for (Flight f : airline.getFlights())
 			dto.getFlights().add(new FlightDTO(f));
 		

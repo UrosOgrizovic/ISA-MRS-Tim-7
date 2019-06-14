@@ -10,8 +10,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.FlightsReservations.domain.Airline;
+import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.AirlinePriceList;
 import com.FlightsReservations.domain.Flight;
 import com.FlightsReservations.domain.FlightInvite;
@@ -26,6 +31,7 @@ import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.domain.dto.PassengerDTO;
 import com.FlightsReservations.domain.dto.QuickFlightReservationDTO;
 import com.FlightsReservations.domain.enums.SeatType;
+import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.FlightInviteRepository;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
@@ -48,8 +54,13 @@ public class FlightReservationService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private AirlineRepository airlineRepository;
+	
 
 	public FlightReservationDTO create(FlightsReservationRequestDTO reservationDTO) {
+		
 		if (verifyCreateReservation(reservationDTO)) {
 			User owner = userRepository.findByEmail(reservationDTO.getOwnerEmail());
 			FlightReservation r = new FlightReservation(new Date(), (float) 0, owner, true);
@@ -58,6 +69,8 @@ public class FlightReservationService {
 				Flight f = flightRepository.findById(detailDTO.getFlightId()).get();
 				r.getFlights().add(f);
 				f.getReservations().add(r);
+				f.getAirline().getReservations().add(r);
+				r.getAirlines().add(f.getAirline());
 				
 				for (PassengerDTO passengerDTO : detailDTO.getPassengers()) {
 					Seat s = findSeat(f, passengerDTO.getSeatNumber());
@@ -283,11 +296,16 @@ public class FlightReservationService {
 		return false;
 	}
 
-	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
 		if (verifyCreateQR(id, seatNum)) {
+			AirlineAdmin admin = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			Airline a = airlineRepository.findByName(admin.getAirline().getName());
+			
 			Flight f = flightRepository.findById(id).get();
 			FlightReservation r = new FlightReservation(new Date(), (float)0, null, true);
+			r.getAirlines().add(a);
+			a.getReservations().add(r);
 			r.setDiscount(discount);
 			r.getFlights().add(f);
 			f.getReservations().add(r);
@@ -310,6 +328,7 @@ public class FlightReservationService {
 			User owner = userRepository.findByEmail(ownerEmail);
 			FlightReservation r = repository.findById(reservationId).get();
 			r.setOwner(owner);
+			r.setDateOfReservation(new Date());
 			owner.getFlightReservations().add(r);
 			Passenger p = (Passenger) r.getPassengers().toArray()[0];
 			p.setName(owner.getFirstName());

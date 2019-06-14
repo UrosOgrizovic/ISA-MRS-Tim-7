@@ -1,9 +1,12 @@
-var airline = "airline1";
+var airline = null;
 var stops = [];
 var availableStops = [];
 var flights = null;
 
 $(document).ready(function(){
+	checkAuth();
+	airline = JSON.parse(localStorage.getItem("admin")).airlineName;
+
 	configureDatepickers();
 	getStops();
 	getFlights();

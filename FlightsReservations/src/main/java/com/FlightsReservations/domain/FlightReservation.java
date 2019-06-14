@@ -17,11 +17,8 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue("FR")
 public class FlightReservation extends Reservation {
 
-	/*
-	 * Be careful with reservation cancel. CascadeType for passengers, owner and
-	 * flight is set to ALL. If reservation is deleted after cancel then change
-	 * cascade type.
-	 */
+	@ManyToMany(mappedBy = "reservations",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Airline> airlines = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Passenger> passengers = new HashSet<>();
@@ -73,6 +70,14 @@ public class FlightReservation extends Reservation {
 
 	public void setDiscount(float discount) {
 		this.discount = discount;
+	}
+
+	public Set<Airline> getAirlines() {
+		return airlines;
+	}
+
+	public void setAirlines(Set<Airline> airlines) {
+		this.airlines = airlines;
 	}
 
 }
