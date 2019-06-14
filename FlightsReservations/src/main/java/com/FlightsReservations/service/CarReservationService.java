@@ -36,7 +36,7 @@ public class CarReservationService {
 	public CarReservationDTO create(CarReservationRequestDTO dto) {
 		if (!creatingSemanticValidation(dto))
 			return null;
-
+		
 		Date startTime = dto.getStartTime();
 		Date endTime = dto.getEndTime();
 		
@@ -57,10 +57,11 @@ public class CarReservationService {
 	}
 	
 	private boolean creatingSemanticValidation(CarReservationRequestDTO dto) {
-		// user with given email must exist
-		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null)
-			return false;
 		
+		// user with given email must exist
+		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null) {
+			return false;
+		}
 		// car with given id must exist 
 		if (carRepository.findById(dto.getCarId()) == null)
 			return false;

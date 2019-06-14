@@ -6,19 +6,22 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 
 
 @Entity
 @DiscriminatorValue("R")
 public class RACS extends Company {
 	
-	@ElementCollection
-	private Set<RACSPricelistItem> pricelist;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "racs_id")
+	private Set<RACSPricelistItem> pricelist = new HashSet<>();
 	
 	
 	/* orphanRemoval = true - guarantees that when a car is removed from  
@@ -31,11 +34,25 @@ public class RACS extends Company {
 	
 	private ArrayList<String> branchOffices;
 	
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	private RACSAdmin admin;
+	
+
+	public RACSAdmin getAdmin() {
+		return admin;
+	}
+	public void setAdmin(RACSAdmin admin) {
+		this.admin = admin;
+	}
 	public Set<RACSPricelistItem> getPricelist() {
 		return pricelist;
 	}
 	public void setPricelist(Set<RACSPricelistItem> pricelist) {
 		this.pricelist = pricelist;
+		this.pricelist.clear();
+		if (pricelist != null) {
+			this.pricelist.addAll(pricelist);
+		}
 	}
 	public Set<Car> getCars() {
 		return cars;
@@ -53,16 +70,16 @@ public class RACS extends Company {
 	public void setBranchOffices(ArrayList<String> branchOffices) {
 		this.branchOffices = branchOffices;
 	}
-	
-	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float averageScore,
-			int numberOfVotes) {
-		super(name, longitude, latitude, city, state, promoDescription, averageScore, numberOfVotes);
+	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
+			int numberOfVotes, Set<RACSPricelistItem> pricelist, RACSAdmin admin) {
+		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
+		this.pricelist = pricelist;
+		this.admin = admin;
 	}
 	
 	public RACS() {
 		super();
 	}
-	
 	
 	@Override
 	public String toString() {

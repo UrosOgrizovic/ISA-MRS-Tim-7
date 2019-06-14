@@ -25,6 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private AbstractUserRepository abstractUserRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
 	public AbstractUserRepository getRepository() {
 		return abstractUserRepository;
 	}
@@ -32,12 +38,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public void setRepository(AbstractUserRepository repository) {
 		this.abstractUserRepository = repository;
 	}
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private AuthenticationManager authenticationManager;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

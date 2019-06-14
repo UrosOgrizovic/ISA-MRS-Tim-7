@@ -1,20 +1,55 @@
 package com.FlightsReservations.domain;
 
-import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-@Embeddable
-public class RACSPricelistItem {
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class RACSPricelistItem implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1310671014090079791L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotBlank
 	private String name;
 	private double price;
+	
+	//@JsonIgnore is used so as to avoid infinite recursion
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	private RACS racs;
 	
 	public RACSPricelistItem() {
 		super();
 	}
-	public RACSPricelistItem(String name, double price) {
+	public RACSPricelistItem(Long id, @NotBlank String name, @NotNull double price, RACS racs) {
 		super();
 		this.name = name;
 		this.price = price;
+		this.racs = racs;
+	}
+	
+	
+	public RACS getRacs() {
+		return racs;
+	}
+	public void setRacs(RACS racs) {
+		this.racs = racs;
 	}
 	public String getName() {
 		return name;

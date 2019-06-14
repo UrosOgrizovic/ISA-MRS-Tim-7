@@ -1,38 +1,40 @@
 package com.FlightsReservations.service;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.repository.RACSAdminRepository;
 
 @Component
+@Transactional(readOnly = false)
 public class RACSAdminService {
 
 	
 	@Autowired
-	RACSAdminRepository repository;//TODO: will be deleted
-	
+	RACSAdminRepository racsAdminRepository;
 	
 	public RACSAdminDTO create(RACSAdminDTO dto) {
-		RACSAdmin a = repository.findByEmail(dto.getEmail());
+		RACSAdmin a = racsAdminRepository.findByEmail(dto.getEmail());
 		if (a == null) {
 			a = new RACSAdmin(dto);
-			repository.save(a);
+			racsAdminRepository.save(a);
 			return createDTO(a);
 		}
 		return null;
-
 	}
-
+	
+	public void save(RACSAdmin admin) {
+		racsAdminRepository.save(admin);
+	}
+	
 	public boolean update(RACSAdminDTO dto) {
-		RACSAdmin a = repository.findByEmail(dto.getEmail());
+		RACSAdmin a = racsAdminRepository.findByEmail(dto.getEmail());
 		if (a != null) {
 			a.setFirstName(dto.getFirstName() );
 			a.setLastName(dto.getLastName());
@@ -40,28 +42,28 @@ public class RACSAdminService {
 			a.setPassword(dto.getPassword());
 			a.setPhone(dto.getPhone());
 			a.setAddress(dto.getAddress());
-			repository.save(a);
+			a.setRACS(dto.getRacs());
+			racsAdminRepository.save(a);
 			return true;
 		}
 		return false;
 	}
 
 	public RACSAdminDTO findOne(String email) {
-		// TODO Auto-generated method stub
-		RACSAdmin a = repository.findByEmail(email);
+		RACSAdmin a = racsAdminRepository.findByEmail(email);
 		if(a != null)
 			return createDTO(a);
 		return null;
 	}
 
 	public void delete(String email) {
-		// TODO Auto-generated method stub
+		racsAdminRepository.deleteByEmail(email);
 				
 	}
 
-	public Collection<RACSAdminDTO> findAll() {
-		List<RACSAdmin> admins = repository.findAll();
-		Set<RACSAdminDTO> dtos = new HashSet<>();
+	public List<RACSAdminDTO> findAll() {
+		List<RACSAdmin> admins = racsAdminRepository.findAll();
+		List<RACSAdminDTO> dtos = new ArrayList<RACSAdminDTO>();
 
 		for (RACSAdmin a : admins)
 			dtos.add(createDTO(a));
@@ -71,9 +73,16 @@ public class RACSAdminService {
 	private RACSAdminDTO createDTO(RACSAdmin a)
 	{
 		RACSAdminDTO dto = new RACSAdminDTO(a);
-		//Airline al = a.getAirline();
-		//dto.setAirline(al.getName());
-	return dto;
+		return dto;
 	}
-
+	
+	public float getAverageRACSRating(String email) {
+		RACSAdmin a = racsAdminRepository.findByEmail(email);
+		
+		if (a.getEmail() != null) {
+			
+			return a.getRACS().getAverageScore();
+		}
+		return 0;
+	}
 }

@@ -11,7 +11,7 @@ INSERT INTO users (user_type, id, address, email, first_name, last_name, passwor
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 4, 'adresa1', 'petarpetrovic@gmail.com', 'Petar', 'Petrovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 5, 'adresa1', 'mirkomirkovic@gmail.com', 'Mirko', 'Mirkovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 
-INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("A", 2, 'adresa2', 'admin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("RA", 2, 'adresa2', 'admin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
 INSERT INTO authority (id, name) VALUES (1, 'ROLE_USER');
 INSERT INTO authority (id, name) VALUES (2, 'ROLE_ADMIN');
@@ -36,8 +36,8 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version, branch_offices) VALUES ("R", 2, 'Driven', 45.921, 55.124, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands", 0, null);
 
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 0);
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 0, 4.35, 57);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0, 3.27, 44);
 INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);

@@ -7,7 +7,23 @@ public class CarDTO {
 	private String color;
 	private Long racs_id;
 	private int pricePerHour;
+	private float averageRating;
+	private int numberOfVotes;
 	
+	
+	
+	public float getAverageRating() {
+		return averageRating;
+	}
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
 	public int getPricePerHour() {
 		return pricePerHour;
 	}
