@@ -1,4 +1,4 @@
-//import * as navbar from "./navbar.js"; 
+import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken } from "./securityStuff.js";
 
 var token = localStorage.getItem("token");
@@ -7,10 +7,10 @@ if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function ()
 		{
-			myForm = document.getElementById("createHotelForm");
+			var myForm = document.getElementById("createHotelForm");
 			console.log(myForm.hotelAdmin.value);
 
-		navbar.loadNavbar('hotelsHomepageNavItem');
+		loadNavbar('hotelsHomepageNavItem');
 		}
 	);
 
@@ -71,7 +71,7 @@ function validate_inputs(myForm)
 
 function create_hotel()
 {
-	myForm = document.getElementById("createHotelForm");
+	var myForm = document.getElementById("createHotelForm");
     if(!validate_inputs(myForm))
     {
         return;
@@ -115,19 +115,4 @@ function create_hotel()
             })
          })
     }
-}
-
-
-
-export function loadNavbar(id) {
-    $("#nav-placeholder").load("navbar.html", function() {
-        document.getElementById(id).classList.add('active');
-        
-        if (localStorage.getItem("token") != null) {            
-            document.getElementById("profileHomepageLink").innerHTML = localStorage.getItem("firstName");
-        } else {
-            document.getElementById("profileHomepageNavItem").display = "none";
-        }
-         
-    });
 }
