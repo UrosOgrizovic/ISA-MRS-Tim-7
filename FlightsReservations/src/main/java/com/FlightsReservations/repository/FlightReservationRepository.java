@@ -14,4 +14,5 @@ public interface FlightReservationRepository extends JpaRepository<FlightReserva
 	
 	@Query(value="SELECT r FROM FlightReservation r WHERE r.discount > 0 AND r.owner IS NULL")
 	List<FlightReservation> findQuickReservations();	
+	
 }

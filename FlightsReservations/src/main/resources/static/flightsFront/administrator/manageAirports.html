@@ -32,9 +32,13 @@
 				<li class="nav-item"><a class="nav-link" href="manageFlights.html">Flights</a></li>
 				<li class="nav-item"><a class="nav-link" href="managePricelist.html">Pricelist</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">Reservations</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+				<li class="nav-item">
+	                <a class="nav-link" href="airlineReports.html">Reports</a>
+	            </li>
 				<li class="nav-item"><a class="nav-link" href="#">My profile</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
+				 <li class="nav-item">
+	                <a class="nav-link" onclick="logout()">Logout</a>
+	            </li>
 			</ul>
 		</div>
 	</nav>
@@ -189,6 +193,9 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
+
+	<script src="../../js/ajaxSetup.js"></script>
+	<script src="js/authAdmin.js"></script>
 	<script src="js/map.js"></script>
 	<script src="js/addAirport.js"></script>
 	<script src="js/createAirport.js"></script>

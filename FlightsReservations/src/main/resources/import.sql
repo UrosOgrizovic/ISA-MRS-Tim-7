@@ -5,11 +5,17 @@
 -- Obe lozinke su hesovane pomocu BCrypt algoritma https://www.dailycred.com/article/bcrypt-calculator
 
 -- ALTER TABLE `users` ALTER `dtype` SET DEFAULT ""
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia");
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state) VALUES ("A", 4, 'airline2', 26.921, 33.124, 'description2', 4.75, 22, "Belgrade", "Serbia");
 
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 1, 'adresa1', 'user@example.com', 'Marko', 'Markovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 3, 'adresa1', 'markomarkovic@gmail.com', 'Marko', 'Markovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 4, 'adresa1', 'petarpetrovic@gmail.com', 'Petar', 'Petrovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 5, 'adresa1', 'mirkomirkovic@gmail.com', 'Mirko', 'Mirkovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
+
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("A", 2, 'adresa2', 'admin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 6, 'adresa2', 'airlineadmin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 7, 'adresa3', 'airlineadmin2@example.com', 'Nikola2', 'Nikolic2', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("RA", 2, 'adresa2', 'admin@example.com', 'Nikola', 'Nikolic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
@@ -19,6 +25,16 @@ INSERT INTO authority (id, name) VALUES (2, 'ROLE_ADMIN');
 INSERT INTO user_authority (user_id, authority_id) VALUES (1, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (2, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (2, 2);
+INSERT INTO user_authority (user_id, authority_id) VALUES (6, 1);
+INSERT INTO user_authority (user_id, authority_id) VALUES (6, 2);
+INSERT INTO user_authority (user_id, authority_id) VALUES (7, 1);
+INSERT INTO user_authority (user_id, authority_id) VALUES (7, 2);
+
+
+UPDATE users SET airline_id = 1 WHERE id = 6;
+UPDATE company SET admin_id = 6 WHERE id = 1;
+UPDATE users SET airline_id = 4 WHERE id = 7;
+UPDATE company SET admin_id = 7 WHERE id = 4;
 
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia", 0);

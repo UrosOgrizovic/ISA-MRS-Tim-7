@@ -1,6 +1,9 @@
-var airline = "airline1";
+var airline = null;
 
 $(document).ready(function(){
+	checkAuth();
+	airline = JSON.parse(localStorage.getItem("admin")).airlineName;
+
 	$.ajax({
 		url: "http://localhost:8080/airlines/" + airline,
 		method: "GET",

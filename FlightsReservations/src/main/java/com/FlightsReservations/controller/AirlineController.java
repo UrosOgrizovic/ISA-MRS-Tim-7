@@ -94,4 +94,27 @@ public class AirlineController {
 		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 	}
 
+	@GetMapping(value = "/reports/day", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getDayReport() {
+		return new ResponseEntity<>(service.getCountReport("dd-MM-yyyy"), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/reports/month", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getMonthReport() {
+		return new ResponseEntity<>(service.getCountReport("MM-yyyy"), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/reports/week", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getWeekReport() {
+		return new ResponseEntity<>(service.getCountReport("W-MM-yyyy"), HttpStatus.OK);
+	}
+	
+	//@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping(value = "/reports/{start}/{end}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getPeriodReport(
+			@PathVariable  @NotBlank String start,
+			@PathVariable @NotBlank String end) {			
+		return new ResponseEntity<>(service.getIncomeForPeriod(start, end), HttpStatus.OK);
+	}
+
 }
