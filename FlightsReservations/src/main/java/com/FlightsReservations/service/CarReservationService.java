@@ -2,42 +2,46 @@ package com.FlightsReservations.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
-import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
+import com.FlightsReservations.repository.AbstractUserRepository;
 import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
-import com.FlightsReservations.repository.UserRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class CarReservationService {
 	@Autowired
-	private CarReservationRepository repository;
+	private CarReservationRepository carReservationRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private AbstractUserRepository abstractUserRepository;
 	
 	@Autowired
 	private CarRepository carRepository;
 	
+	@Transactional(readOnly = false)
 	public CarReservationDTO create(CarReservationRequestDTO dto) {
 		if (!creatingSemanticValidation(dto))
 			return null;
-
+		
 		Date startTime = dto.getStartTime();
 		Date endTime = dto.getEndTime();
 		
 		int reservationDurationHours = (int) ( (endTime.getTime() - startTime.getTime() ) / 3600000 );
-		User owner = userRepository.findByEmail(dto.getOwnerEmail());
+		AbstractUser owner = abstractUserRepository.findByEmail(dto.getOwnerEmail());
 		Car car = carRepository.findById(dto.getCarId()).get();
 		Float total = (float) car.getPricePerHour() * reservationDurationHours;
 		
@@ -48,15 +52,16 @@ public class CarReservationService {
 		
 		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
 		
-		reservation = repository.save(reservation);
+		reservation = carReservationRepository.save(reservation);
 		return new CarReservationDTO(reservation);
 	}
 	
 	private boolean creatingSemanticValidation(CarReservationRequestDTO dto) {
-		// user with given email must exist
-		if (userRepository.findByEmail(dto.getOwnerEmail()) == null)
-			return false;
 		
+		// user with given email must exist
+		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null) {
+			return false;
+		}
 		// car with given id must exist 
 		if (carRepository.findById(dto.getCarId()) == null)
 			return false;
@@ -86,7 +91,11 @@ public class CarReservationService {
 		if (diffInDays > 7)
 			return false;
 		
-		//TODO: check that there are no other reservations for car id via transactions		
+		// no other reservations may exist for selected car and entered period
+		ArrayList<CarReservation> carReservationsForPeriod = (ArrayList<CarReservation>) carReservationRepository.findCarReservationsForPeriod(dto.getStartTime(), dto.getEndTime());
+		if (carReservationsForPeriod != null && carReservationsForPeriod.size() > 0) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -104,8 +113,9 @@ public class CarReservationService {
         return date;
     }
 	
+	@Transactional(readOnly = false)
 	public boolean cancel(Long id) {
-		CarReservation cr = repository.findById(id).get();
+		CarReservation cr = carReservationRepository.findById(id).get();
 		if (cr != null) {
 			Date now = new Date();
 			// difference between now (cancellation time) and reservation start time in days
@@ -113,7 +123,7 @@ public class CarReservationService {
 			// reservation cannot be cancelled less than two days before the reservation starts
 			if (diff < 2) return false;
 			cr.setConfirmed(false);
-			repository.save(cr);
+			carReservationRepository.save(cr);
 			return true;
 		}
 		return false;

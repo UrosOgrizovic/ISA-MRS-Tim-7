@@ -14,8 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -35,10 +37,15 @@ public class Reservation {
 	@Column(nullable = false)
 	private Boolean confirmed;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private User owner;
+	private AbstractUser owner;
 	
-	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, User owner) {
+	@Version
+	@Column(nullable = false)
+	private Long version;
+	
+	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();
 		this.dateOfReservation = dateOfReservation;
 		this.price = price;
@@ -82,17 +89,17 @@ public class Reservation {
 		this.confirmed = confirmed;
 	}
 
-	public User getOwner() {
+	public AbstractUser getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(AbstractUser owner) {
 		this.owner = owner;
 	}
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price + 
+		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation +", price=" + price + 
 				", confirmed=" + confirmed + ", owner=" + owner + "]";
 	}
 }

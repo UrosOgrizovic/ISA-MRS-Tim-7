@@ -1,10 +1,10 @@
-package com.
-FlightsReservations.controller;
+package com.FlightsReservations.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
+import com.FlightsReservations.domain.dto.RACSAdminDTO;
+import com.FlightsReservations.service.RACSAdminService;
 import com.FlightsReservations.service.RACSService;
 
 @RestController
@@ -34,6 +37,8 @@ public class RACSController {
 	@Autowired
 	private RACSService service;
 	
+	@Autowired
+	private RACSAdminService racsAdminService;
 	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public Collection<RACS> getAll() {
@@ -60,7 +65,7 @@ public class RACSController {
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@RequestBody @Valid RACS racs) {
+	public ResponseEntity<String> update(@RequestBody @Valid UpdateRACSDTO racs) {
 		if (service.update(racs))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Rent-a-car service with given id does not exist", HttpStatus.NOT_FOUND);
@@ -156,5 +161,51 @@ public class RACSController {
 			return new ResponseEntity<>(car, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getRevenueForPeriod/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getRevenueForPeriod(@PathVariable String email, @PathVariable String startTime, @PathVariable String endTime) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
+		if (racs != null)
+			return new ResponseEntity<>(service.getRevenueForPeriod(racs.getId(), startTime, endTime), HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getNumberOfCarReservationsOfRacs/{email}/{startTime}/{endTime}/{unit}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getNumberOfCarReservationsOfRacs(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime, @PathVariable String unit) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
+		if (racs != null)
+			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racs.getId(), startTime, endTime, unit), HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	
+	
+	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getAverageRatingForEachCarOfRacs(@PathVariable @Email String email) {
+		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
+		RACS racs = service.findOne(racsAdmin.getRacs().getId());
+		if (racs != null)
+			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racs), HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PutMapping(value = "addAdmin/{racsId}/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addAdmin(@PathVariable Long racsId, @PathVariable @Email String email) {
+		RACSAdminDTO dto = service.addAdmin(racsId, email);
+		if (dto != null)
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	}
+	
+	
+	
 	
 }

@@ -2,6 +2,7 @@ package com.FlightsReservations.domain.dto;
 
 import javax.validation.constraints.NotBlank;
 
+import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSAdmin;
 
 public class RACSAdminDTO 
@@ -24,6 +25,8 @@ public class RACSAdminDTO
 	@NotBlank
 	private String password;
 	
+	private RACS racs;
+	
 	public RACSAdminDTO(RACSAdmin a)
 	{
 		this.firstName = a.getFirstName();
@@ -32,6 +35,7 @@ public class RACSAdminDTO
 		this.password = a.getPassword();
 		this.phone = a.getPhone();
 		this.address = a.getAddress();
+		this.racs = a.getRACS();
 	}
 
 	public RACSAdminDTO() {
@@ -95,6 +99,20 @@ public class RACSAdminDTO
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public RACS getRacs() {
+		return racs;
+	}
+
+	public void setRacs(RACS racs) {
+		this.racs = racs;
+	}
+
+	@Override
+	public String toString() {
+		return "RACSAdminDTO [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone="
+				+ phone + ", address=" + address + ", password=" + password + ", racs=" + racs + "]";
 	}
 	
 	

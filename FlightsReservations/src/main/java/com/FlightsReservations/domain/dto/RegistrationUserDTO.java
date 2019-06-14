@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.FlightsReservations.domain.Authority;
 import com.FlightsReservations.domain.User;
 
-public class RegistrationUserDTO extends UserDTO {
+public class RegistrationUserDTO extends AbstractUserDTO {
 	@NotBlank
 	private String password;
 	@NotNull
