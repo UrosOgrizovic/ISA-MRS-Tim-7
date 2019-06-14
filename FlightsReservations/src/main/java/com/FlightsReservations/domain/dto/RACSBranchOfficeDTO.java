@@ -12,8 +12,16 @@ public class RACSBranchOfficeDTO {
 	private String name;
 	private Float longitude;
 	private Float latitude;
-	private Company company;
-	private Set<Car> cars = new HashSet<>();
+	private Set<CarDTO> cars = new HashSet<CarDTO>();
+	private String RACSCompanyName;
+	
+	
+	public String getRACSCompanyName() {
+		return RACSCompanyName;
+	}
+	public void setRACSCompanyName(String rACSCompanyName) {
+		RACSCompanyName = rACSCompanyName;
+	}
 	public String getName() {
 		return name;
 	}
@@ -32,31 +40,36 @@ public class RACSBranchOfficeDTO {
 	public void setLatitude(Float latitude) {
 		this.latitude = latitude;
 	}
-	public Company getCompany() {
-		return company;
-	}
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	public Set<Car> getCars() {
+	
+	public Set<CarDTO> getCars() {
 		return cars;
 	}
-	public void setCars(Set<Car> cars) {
+	public void setCars(Set<CarDTO> cars) {
 		this.cars = cars;
 	}
-	public RACSBranchOfficeDTO(String name, Float longitude, Float latitude, Company company, Set<Car> cars) {
+	public RACSBranchOfficeDTO(String name, Float longitude, Float latitude, Company company, Set<CarDTO> cars, String RACSCompanyName) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.company = company;
+		this.RACSCompanyName = RACSCompanyName;
 		this.cars = cars;
 	}
 	public RACSBranchOfficeDTO() {
 		super();
 	}
 	public RACSBranchOfficeDTO(RACSBranchOffice rbo) {
-		// TODO Auto-generated constructor stub
+		Set<Car> cars = rbo.getCars();
+		Set<CarDTO> cardtos = new HashSet<CarDTO>();
+		for (Car c : cars) { 
+			CarDTO cdto = new CarDTO(c);
+			cardtos.add(cdto);
+		}
+		this.cars = cardtos;
+		this.latitude = rbo.getLatitude();
+		this.longitude = rbo.getLongitude();
+		this.name = rbo.getName();
+		this.RACSCompanyName = rbo.getCompany().getName();
 	}
 	
 }

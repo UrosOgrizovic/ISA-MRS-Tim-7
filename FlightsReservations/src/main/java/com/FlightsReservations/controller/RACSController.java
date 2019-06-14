@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
+import com.FlightsReservations.domain.dto.RACSDTO;
 import com.FlightsReservations.service.RACSAdminService;
 import com.FlightsReservations.service.RACSService;
 
@@ -39,32 +40,37 @@ public class RACSController {
 	private RACSAdminService racsAdminService;
 	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
-	public Collection<RACS> getAll() {
+	public Collection<RACSDTO> getAll() {
 		return service.findAll();
 	}
 	
 	@GetMapping(value="/searchRACS/{value}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<RACS> searchRACS(@PathVariable String value) {
-		return service.findByName(value);
+	public ResponseEntity<RACSDTO> searchRACS(@PathVariable String value) {
+		RACSDTO rdto = service.findOne(value);
+		if (rdto != null) {
+			return new ResponseEntity<>(rdto, HttpStatus.FOUND);
+		}
+		return new ResponseEntity<>(rdto, HttpStatus.NOT_FOUND);
+		
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RACS> add(@RequestBody @Valid RACS racs) {
-		RACS r = service.create(racs);
-		if (r != null) {
-			return new ResponseEntity<>(r, HttpStatus.CREATED);
+	public ResponseEntity<RACSDTO> add(@RequestBody @Valid RACSDTO racsDTO) {
+		RACSDTO rdto = service.create(racsDTO);
+		if (rdto != null) {
+			return new ResponseEntity<>(rdto, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(r, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(rdto, HttpStatus.CONFLICT);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> update(@RequestBody @Valid RACS racs) {
-		if (service.update(racs))
+	public ResponseEntity<String> update(@RequestBody @Valid RACSDTO racsDTO) {
+		if (service.update(racsDTO))
 			return new ResponseEntity<>("Update successful", HttpStatus.OK);
 		return new ResponseEntity<>("Rent-a-car service with given id does not exist", HttpStatus.NOT_FOUND);
 	}
@@ -73,7 +79,7 @@ public class RACSController {
 	public ResponseEntity<ArrayList<Car>> searchAllCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
-		Collection<RACS> racss = service.findAll();
+		Collection<RACSDTO> racss = service.findAll();
 		
 		return new ResponseEntity<ArrayList<Car>>(service.searchAllCars(racss, name, manufacturer, yearOfManufacture), HttpStatus.OK);
 

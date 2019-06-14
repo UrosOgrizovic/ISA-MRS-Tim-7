@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.Car;
+import com.FlightsReservations.domain.Company;
 import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACSBranchOffice;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
+import com.FlightsReservations.repository.CompanyRepository;
 import com.FlightsReservations.repository.RACSBranchOfficeRepository;
 
 @Component
@@ -20,15 +22,42 @@ public class RACSBranchOfficeService {
 	@Autowired
 	RACSBranchOfficeRepository racsBranchOfficeRepository;
 	
+	@Autowired
+	CompanyRepository companyRepository;
+	
 	public RACSBranchOffice create(RACSBranchOfficeDTO t) {
-		Set<Car> cars = t.getCars();
+		Set<CarDTO> cars = t.getCars();
 		if (cars != null) {
-			for (Car c : cars) {
+			for (CarDTO c : cars) {
 				if (c.getDiscounts() == null)
 					c.setDiscounts(new HashSet<Discount>());
 			}
 		}
-		RACSBranchOffice rbo = new RACSBranchOffice(t);
+		RACSBranchOffice rbo = new RACSBranchOffice();
+		rbo.setName(t.getName());
+		Company c = companyRepository.findByName(t.getRACSCompanyName());
+		rbo.setCompany(c);
+		Set<Car> carsToBeAdded = new HashSet<Car>();
+		Set<CarDTO> cdtos = t.getCars();
+		
+		for (CarDTO cdto : cdtos) {
+			Car car = new Car();
+			car.setAverageScore(cdto.getAverageScore());
+			car.setColor(cdto.getColor());
+			car.setDiscounts(cdto.getDiscounts());
+			car.setManufacturer(cdto.getManufacturer());
+			car.setName(cdto.getName());
+			car.setNumberOfVotes(cdto.getNumberOfVotes());
+			car.setPricePerHour(cdto.getPricePerHour());
+			car.setRACSBranchOffice(racsBranchOfficeRepository.findByName(cdto.getRacsBranchOfficeName()));
+			car.setYearOfManufacture(cdto.getYearOfManufacture());
+			carsToBeAdded.add(car);
+			
+		}
+		rbo.setCars(carsToBeAdded);
+		rbo.setLatitude(t.getLatitude());
+		rbo.setLongitude(t.getLongitude());
+		
 		return	racsBranchOfficeRepository.save(rbo);
 	}
 	
@@ -47,7 +76,7 @@ public class RACSBranchOfficeService {
 	}
 	
 	public boolean addCar(CarDTO car) {
-		RACSBranchOffice racsBranchOffice = findOne(car.getRACSBranchOfficeId());
+		RACSBranchOffice racsBranchOffice = racsBranchOfficeRepository.findByName(car.getRacsBranchOfficeName());
 		
 		if (racsBranchOffice != null) {
 			Car c = new Car(
@@ -75,7 +104,7 @@ public class RACSBranchOfficeService {
 		}
 	}
 	
-	public Collection<RACSBranchOffice> findByName(String name) {
+	public RACSBranchOffice findByName(String name) {
 		try {
 			return racsBranchOfficeRepository.findByName(name);
 		} catch (NoSuchElementException e) {

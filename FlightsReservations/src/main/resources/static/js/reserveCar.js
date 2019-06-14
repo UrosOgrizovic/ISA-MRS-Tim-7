@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
 
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
@@ -9,7 +9,8 @@ var carIdSelect = $("#car_id_select");
 
 window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
-if (token == null || new Date(parseJwt(token).exp) < new Date()) location.replace("/html/login.html");
+
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
 
 var email = parseJwt(token).sub;
 
@@ -48,6 +49,7 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
+            console.log(result);
             if (result != null && result.length != 0 && result != undefined) {
                 for (var i = 0; i < result.length; i++) {
                     mapa[result[i].id] = result[i];

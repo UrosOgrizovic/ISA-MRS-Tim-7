@@ -58,7 +58,6 @@ public class Company {
 	private Set<BranchOffice> branchOffices;
 	
 	
-	
 	public Set<BranchOffice> getBranchOffices() {
 		return branchOffices;
 	}

@@ -3,6 +3,7 @@ package com.FlightsReservations.domain;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class Car {
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private RACSBranchOffice racsBranchOffice;
 
 	@Column(nullable = false)

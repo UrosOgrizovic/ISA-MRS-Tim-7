@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
 
 @Entity
 @DiscriminatorValue("RBO")
@@ -22,7 +21,7 @@ public class RACSBranchOffice extends BranchOffice {
 	*/
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "racs_branch_office_id")
-	private Set<Car> cars = new HashSet<>();	
+	private Set<Car> cars = new HashSet<Car>();	
 
 	public Set<Car> getCars() {
 		return cars;
@@ -40,14 +39,6 @@ public class RACSBranchOffice extends BranchOffice {
 	}
 	public RACSBranchOffice() {
 		super();
-	}
-	
-	public RACSBranchOffice(RACSBranchOfficeDTO t) {
-		this.setName(t.getName());
-		this.setCompany(t.getCompany());
-		this.setCars(t.getCars());
-		this.setLatitude(t.getLatitude());
-		this.setLongitude(t.getLongitude());
 	}
 	@Override
 	public String toString() {

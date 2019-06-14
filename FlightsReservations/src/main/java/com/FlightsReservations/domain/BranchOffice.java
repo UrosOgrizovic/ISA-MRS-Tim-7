@@ -1,5 +1,6 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -24,7 +25,7 @@ public class BranchOffice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	@Column(nullable = false)
@@ -34,7 +35,7 @@ public class BranchOffice {
 	private Float latitude;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Company company;
 
 	public Long getId() {

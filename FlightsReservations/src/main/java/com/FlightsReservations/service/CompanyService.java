@@ -62,7 +62,6 @@ public class CompanyService {
 	
 	public RatingDTO rate(RatingDTO dto) {
 		BranchOffice bo = branchOfficeRepository.findById(dto.getCompanyBranchOfficeId()).get();
-		System.out.println(dto.getCompanyBranchOfficeId());
 		Company c = bo.getCompany();
 		Rating rating = ratingRepository.findByReservationId(dto.getReservationId());
 		Reservation reservation = reservationRepository.findById(dto.getReservationId()).get();
