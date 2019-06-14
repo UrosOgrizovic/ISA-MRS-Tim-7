@@ -1,6 +1,20 @@
+//import * as navbar from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
+
+
+$(document).ready(function ()
+		{
+			myForm = document.getElementById("createHotelForm");
+			console.log(myForm.hotelAdmin.value);
+
+		navbar.loadNavbar('hotelsHomepageNavItem');
+		}
+	);
+
+
 
 function validate_inputs(myForm)
 {
@@ -57,7 +71,7 @@ function validate_inputs(myForm)
 
 function create_hotel()
 {
-    myForm = document.getElementById("createHotelForm");
+	myForm = document.getElementById("createHotelForm");
     if(!validate_inputs(myForm))
     {
         return;
@@ -86,18 +100,34 @@ function create_hotel()
         //add image later
         //add administator later
 
-         //$("#createHotel").click(function(){
+         $("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotels/add",//link assigned to method in HotelController
-            method: "POST",//POST request
-            dataType: 'json',//
-            contentType: "application/json",
-            data: JSON.stringify(hotel),
-            cache: false,
-            crossDomain: true,
-            headers: { "Authorization": "Bearer " + token}, 
-            success: function(result) { },
+	            url: "http://localhost:8080/hotels/add",//link assigned to method in HotelController
+	            method: "POST",//POST request
+	            dataType: 'json',//
+	            contentType: "application/json",
+	            data: JSON.stringify(hotel),
+	            cache: false,
+	            crossDomain: true,
+	            headers: { "Authorization": "Bearer " + token}, 
+	            success: function(result) { },
             })
+         })
     }
+}
+
+
+
+export function loadNavbar(id) {
+    $("#nav-placeholder").load("navbar.html", function() {
+        document.getElementById(id).classList.add('active');
+        
+        if (localStorage.getItem("token") != null) {            
+            document.getElementById("profileHomepageLink").innerHTML = localStorage.getItem("firstName");
+        } else {
+            document.getElementById("profileHomepageNavItem").display = "none";
+        }
+         
+    });
 }

@@ -1,5 +1,9 @@
 package com.FlightsReservations.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.dto.SystemAdminDTO;
+import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.service.AirlineAdminService;
 import com.FlightsReservations.service.HotelAdminService;
 import com.FlightsReservations.service.RACSAdminService;
@@ -76,4 +82,12 @@ public class AdminController
 			return new ResponseEntity<>(dto, HttpStatus.CREATED);
 		return new ResponseEntity<>("Admin already exists.", HttpStatus.BAD_REQUEST);
 	}
+    
+    @RequestMapping(value = "/hotel/lookup")
+    public ResponseEntity<Collection<HotelAdminDTO> > search()
+    {
+		
+    	Collection<HotelAdminDTO> results = hotelAdminService.searchAll();
+		return new ResponseEntity<Collection<HotelAdminDTO> >(results, HttpStatus.OK);
+    }
 }

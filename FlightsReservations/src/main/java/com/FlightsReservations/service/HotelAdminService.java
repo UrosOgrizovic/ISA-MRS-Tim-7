@@ -1,5 +1,6 @@
 package com.FlightsReservations.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +54,17 @@ public class HotelAdminService {
 			return createDTO(a);
 		return null;
 	}
+	
+	public Collection<HotelAdminDTO> searchAll()
+	{
+		List<HotelAdmin> admins = repository.findAll();
+		Collection<HotelAdminDTO> results = new ArrayList<HotelAdminDTO>();
+		for(HotelAdmin admin : admins)
+		{
+			results.add(createDTO(admin));
+		}
+		return results;
+	}
 
 	public void delete(String email) {
 		// TODO Auto-generated method stub
@@ -71,8 +83,7 @@ public class HotelAdminService {
 	private HotelAdminDTO createDTO(HotelAdmin a)
 	{
 		HotelAdminDTO dto = new HotelAdminDTO(a);
-		//Airline al = a.getAirline();
-		//dto.setAirline(al.getName());
+		dto.setHotel(a.getHotel().getName() );
 	return dto;
 	}
 

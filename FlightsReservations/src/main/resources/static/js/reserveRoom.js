@@ -50,7 +50,7 @@ function reserve_room()
     }
     else
     {
-        var room =
+        var reservation =
                 {
                     number : myForm.number.value,
                     numberOfGuests : myForm.numberOfGuests.value,
@@ -66,11 +66,11 @@ function reserve_room()
                 };
         //add image later
         //add administator later
-        /*
-         //$("#createHotel").click(function(){
+        
+         $("#reserverRoom").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotels/addRoom",//link assigned to method in RoomController
+            url: "http://localhost:8080/roomReservations/create",//link assigned to method in RoomController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",
