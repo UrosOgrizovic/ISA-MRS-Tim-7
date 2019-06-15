@@ -34,7 +34,7 @@ public class HotelAdminDTO
 		this.password = a.getPassword();
 		this.phone = a.getPhone();
 		this.address = a.getAddress();
-		this.hotel = a.getHotel().getName();
+		//this.hotel = a.getHotel().getName();
 	}
 
 	public HotelAdminDTO() {

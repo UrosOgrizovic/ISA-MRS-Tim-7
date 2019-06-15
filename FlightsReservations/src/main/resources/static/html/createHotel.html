@@ -9,12 +9,7 @@
 		
 		
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>    
-        <link
-		      rel="stylesheet"
-		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-		      crossorigin="anonymous"
-        />
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href=".\..\css\table.css">
         <script src=".\..\js\createHotel.js" type=module></script>
         <script src=".\..\flightsFront\administrator\js\map.js"></script>
@@ -65,25 +60,23 @@
                 -->
                 <tr>
                     <td><label> Administrator*: </label></td>
-                    <td> <select name="hotelAdmin">
-                            <option value="0">Allow Selection of Hotel Administrator</option>
+                    <td> <select name="hotelAdmin" id="admins">
                         </select>
                     </td>    <!-- add a Hotel administrator selection-->
                 </tr>
                 <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
                 <tr>
-                    <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
                     </td>
                     <td align="center">
-                    	<button type="submit" class="btn btn-primary" name="createHotel" onClick="create_hotel()" id="submitButton" >Add Hotel</button>
+                    	<button type="submit" class="btn btn-primary" name="createHotel" onclick="create_hotel()" id="submitButton" >Add Hotel</button>
                     	                                                   
                         <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
                     </td>
                 </tr>
                 <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
         </table>
-        <div class="map-div" id="map"></div>
-		<script src="https://maps.googleapis.com/maps/api/js"></script>
+        <!-- <div class="map-div" id="map"></div>
+		<script src="https://maps.googleapis.com/maps/api/js"></script>  -->
         </form>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>    
     <script

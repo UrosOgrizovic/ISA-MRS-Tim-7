@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.FlightsReservations.domain.dto.HotelDTO;
 
 @Entity
 @DiscriminatorValue("H")
@@ -21,11 +24,11 @@ public class Hotel extends Company
 	@JoinColumn(name = "hotel_id")
 	private Set<Room> roomConfiguration;
 	
-	/*
+	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "admin")
 	private HotelAdmin admin;
-	*/
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<HotelReservation> reservations;
 	
@@ -37,7 +40,18 @@ public class Hotel extends Company
 			int numberOfVotes) {
 		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
 	}
+	
+	public Hotel(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
+			int numberOfVotes, HotelAdmin hotelAdmin) {
+		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
+		this.admin = hotelAdmin;
+	}
 
+
+	public Hotel(HotelDTO dto)
+	{
+		super(dto.getName(), dto.getLongitude(), dto.getLatitude(), dto.getCity(), dto.getState(), dto.getPromoDescription(), dto.getAverageScore(), dto.getNumberOfVotes() );
+	}
 
 	public Set<PricelistItem> getPricelist() {
 		return pricelist;
@@ -65,5 +79,16 @@ public class Hotel extends Company
 		this.reservations = reservations;
 	}
 
+	public HotelAdmin getAdmin()
+	{
+		return admin;
+	}
+
+	public void setAdmin(HotelAdmin admin)
+	{
+		this.admin = admin;
+	}
+
+	
 	
 }

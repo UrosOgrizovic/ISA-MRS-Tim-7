@@ -1,5 +1,6 @@
 package com.FlightsReservations.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -88,6 +89,18 @@ public class AirlineAdminService {
 	public AirlineAdminDTO getAdminFromContext() {
 		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return new AirlineAdminDTO(admin);
+	}
+
+
+	public List<AirlineAdminDTO> searchAll()
+	{
+		List<AirlineAdmin> admins = repository.findAll();
+		List<AirlineAdminDTO> results = new ArrayList<AirlineAdminDTO>();
+		for(AirlineAdmin admin : admins)
+		{
+			results.add(createDTO(admin) );
+		}
+		return results;
 	}
 	
 }

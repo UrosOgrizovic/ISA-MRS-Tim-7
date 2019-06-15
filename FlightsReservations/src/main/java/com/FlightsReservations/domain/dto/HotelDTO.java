@@ -32,6 +32,8 @@ public class HotelDTO {
 	@NotNull
 	@PositiveOrZero
 	private float averageScore;
+	
+	private String hotelAdmin;
 
 	@NotNull
 	@PositiveOrZero
@@ -45,7 +47,7 @@ public class HotelDTO {
 	}
 
 	public HotelDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
-			int numberOfVotes) {
+			int numberOfVotes, String hotelAdmin) {
 		super();
 		this.name = name;
 		this.longitude = longitude;
@@ -55,6 +57,7 @@ public class HotelDTO {
 		this.promoDescription = promoDescription;
 		this.averageScore = score;
 		this.numberOfVotes = numberOfVotes;
+		this.hotelAdmin = hotelAdmin;
 	}
 
 	public int getNumberOfVotes() {
@@ -67,7 +70,7 @@ public class HotelDTO {
 
 	public HotelDTO(Hotel h) {
 		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getState(), h.getPromoDescription(), h.getAverageScore(),
-				h.getNumberOfVotes());
+				h.getNumberOfVotes(), h.getAdmin().getEmail());
 	}
 
 	public float getAverageScore() {
@@ -149,6 +152,16 @@ public class HotelDTO {
 	public void setState(String state)
 	{
 		this.state = state;
+	}
+
+	public String getHotelAdmin()
+	{
+		return hotelAdmin;
+	}
+
+	public void setHotelAdmin(String admin)
+	{
+		this.hotelAdmin = admin;
 	}
 	
 	

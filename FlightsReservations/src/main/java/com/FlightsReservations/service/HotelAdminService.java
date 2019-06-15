@@ -8,7 +8,10 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
@@ -19,6 +22,9 @@ public class HotelAdminService {
 	
 	@Autowired
 	HotelAdminRepository repository;//TODO: will be deleted
+	
+	@Autowired
+	HotelService hotelService;
 	
 	
 	public HotelAdminDTO create(HotelAdminDTO dto) {
@@ -41,7 +47,29 @@ public class HotelAdminService {
 			a.setPassword(dto.getPassword());
 			a.setPhone(dto.getPhone());
 			a.setAddress(dto.getAddress());
+			Hotel h = new Hotel(hotelService.findOne(dto.getHotel()) );
+			a.setHotel(h);
 			repository.save(a);
+			return true;
+		}
+		return false;
+		
+	}
+	
+	public boolean update(HotelAdmin t) {
+		HotelAdmin h = repository.findById(t.getId() ).get();
+		if (h != null) {
+			h.setEmail(t.getEmail() );
+			h.setAddress(t.getAddress());
+			h.setEnabled(t.isEnabled() );
+			h.setFirstName(t.getFirstName() );
+			h.setLastName(t.getLastName() );
+			h.setHotel(t.getHotel() );
+			h.setLastPasswordResetDate(t.getLastPasswordResetDate() );
+			h.setPassword(t.getPassword() );
+			h.setPhone(t.getPhone() );
+			h.setPicturePath(t.getPicturePath() );
+			repository.save(h);
 			return true;
 		}
 		return false;
@@ -55,13 +83,13 @@ public class HotelAdminService {
 		return null;
 	}
 	
-	public Collection<HotelAdminDTO> searchAll()
+	public List<HotelAdminDTO> lookupAll()
 	{
 		List<HotelAdmin> admins = repository.findAll();
-		Collection<HotelAdminDTO> results = new ArrayList<HotelAdminDTO>();
+		List<HotelAdminDTO> results = new ArrayList<HotelAdminDTO>();
 		for(HotelAdmin admin : admins)
 		{
-			results.add(createDTO(admin));
+			if(admin.getHotel()==null) results.add(createDTO(admin));//only admins who don't already have a hotel assigned
 		}
 		return results;
 	}
@@ -83,7 +111,8 @@ public class HotelAdminService {
 	private HotelAdminDTO createDTO(HotelAdmin a)
 	{
 		HotelAdminDTO dto = new HotelAdminDTO(a);
-		dto.setHotel(a.getHotel().getName() );
+		if(a.getHotel()!=null) dto.setHotel(a.getHotel().getName() );
+		else dto.setHotel("");
 	return dto;
 	}
 

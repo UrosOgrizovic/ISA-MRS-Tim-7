@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.HotelReservation;
 import com.FlightsReservations.domain.Room;
+import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
+import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
@@ -23,12 +26,18 @@ public class HotelService {
 	private HotelRepository repository;
 	
 	@Autowired
+	private HotelAdminService adminService;
+	
+	@Autowired
+	private HotelAdminRepository adminRepository;
+	
+	@Autowired
 	private RoomRepository roomRepository;
 
 	public HotelDTO create(HotelDTO t) {
-		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
-		if (a == null) {
-			a = new Hotel(
+		Hotel h = repository.findByName(t.getName());//TODO: check if already exists
+		if (h == null) {
+			h = new Hotel(
 					t.getName(), 
 					t.getLongitude(), 
 					t.getLatitude(), 
@@ -36,8 +45,22 @@ public class HotelService {
 					t.getState(),
 					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
-			repository.save(a);
-			return createDTO(a);
+			HotelAdmin ha = null;
+			if(t.getHotelAdmin()!="" && t.getHotelAdmin()!=null)
+			{
+				ha = adminRepository.findByEmail(t.getHotelAdmin() );
+				if(ha!=null)
+				{
+					
+					ha.setHotel(h);
+					adminService.update(ha);
+					h.setAdmin(ha);
+				}
+			}
+			
+			repository.save(h);
+			
+			return createDTO(h);
 		}
 		return null;
 	}
