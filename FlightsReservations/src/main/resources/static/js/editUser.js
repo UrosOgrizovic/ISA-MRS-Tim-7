@@ -20,11 +20,19 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			for (var i = 0; i < result.length; i++) {
-				mapa[result[i].email] = result[i];
-				emailSelect.append("<option>"+result[i].email+"</option>");
+			if (result != null && result.length > 0) {
+				for (var i = 0; i < result.length; i++) {
+					mapa[result[i].email] = result[i];
+					emailSelect.append("<option>"+result[i].email+"</option>");
+				}
+				setInputs();
+			} else {
+				toastr.info("No users to display");
 			}
-			setInputs();
+			
+		}, error: function (error) {
+			toastr.error("Could not get all users");
+			console.log(error);
 		}
     });	
     loadNavbar('profileHomepageNavItem');
@@ -50,7 +58,9 @@ function updateUser() {
         data: JSON.stringify(mapa[key]),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
-			alert("Update successfull!");
+			toastr.success("Update succesful");
+		}, error: function(error) {
+			toastr.error("Could not update user");
 		}
 	});
 }

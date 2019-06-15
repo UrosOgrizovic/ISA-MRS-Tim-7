@@ -32,10 +32,9 @@ $(document).ready(function(){
             data: JSON.stringify(racs),
             headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
-                console.log(result);
-                $(document.documentElement).append("<h3 id=\"addedSuccessfully\">Rent-a-car service addedd successfully</h3>");
+                toastr.success("Rent-a-car service successfully added");
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not add rent-a-car service");
                 console.log(error);
             }
         });

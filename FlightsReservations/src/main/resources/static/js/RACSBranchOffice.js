@@ -7,7 +7,7 @@ var branchOfficeCompanyName = document.getElementById("branch_office_company_nam
 
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
-var localStorageBranchOfficeName = localStorage.getItem("branchOfficeName")
+var localStorageBranchOfficeName = localStorage.getItem("branchOfficeName");
 var getRACSBranchOfficeLink = "/racssBranchOffices/findByName/" + localStorageBranchOfficeName;
 
 $(document).ready(function(){
@@ -20,7 +20,7 @@ $(document).ready(function(){
         crossDomain: true, 
 		success: function (result) {
             
-            if (result != null) {
+            if (result != null && result.length > 0) {
                 
                 branchOfficeName.innerHTML = result.name;
                 carsOfBranchOffice = result.cars;
@@ -32,10 +32,12 @@ $(document).ready(function(){
 
                 setInputs();
             }
-
+            else
+                toastr.info("No rent-a-car service branch office to display")
 			
         },
         error: function(err) {
+            toastr.error("Could not get rent-a-car service branch office")
             console.log(err);
         }
     });	
@@ -44,9 +46,6 @@ $(document).ready(function(){
 });
 
 function setInputs(){
-    
-	
-
     carSelect.empty();
     carIdSelect.empty();
 

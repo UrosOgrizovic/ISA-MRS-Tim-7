@@ -47,7 +47,7 @@ $(document).ready(function(){
                 $("#showRACSAverageRating").css("display", "inline-block");
                 $("#showRACSAverageRating").html("<h3>"+averageRating+"</h3>");
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not get average rating of rent-a-car service");
                 console.log(error);
             }
         });
@@ -68,10 +68,15 @@ $(document).ready(function(){
             headers: { "Authorization": "Bearer " + token}, 
             success: function(carNameAverageRating) {
                 $("#showAverageRatingForEachCar").css("display", "block");
-                displayCars(carNameAverageRating);
+                if (carNameAverageRating != null && carNameAverageRating.length > 0) {
+                    displayCars(carNameAverageRating);
+                } else {
+                    toastr.info("No average ratings to display");
+                }
+                
                 
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not show average rating for each car");
                 console.log(error);
             }
         });
@@ -97,9 +102,14 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsDaily", 1, 1, 2, 5, "day");
+                if (dateNumberOfReservations != null && dateNumberOfReservations.length > 0) {
+                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsDaily", 1, 1, 2, 5, "day");
+                } else {
+                    toastr.info("No car reservations to display graph for");
+                }
+                
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not display number of car reservations daily graph");
                 console.log(error);
             }
         });
@@ -123,9 +133,14 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsWeekly", 1, 1, 2, 5, "week");
+                if (dateNumberOfReservations != null && dateNumberOfReservations.length > 0) {
+                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsWeekly", 1, 1, 2, 5, "week");
+                } else {
+                    toastr.info("No car reservations to display graph for");
+                }
+                
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not display number of car reservations weekly graph");
                 console.log(error);
             }
         });
@@ -149,9 +164,14 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsMonthly", 1, 1, 2, 5, "month");
+                if (dateNumberOfReservations != null && dateNumberOfReservations.length > 0) {
+                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsMonthly", 1, 1, 2, 5, "month");
+                } else {
+                    toastr.info("No car reservations to display graph for");
+                }
+                
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not display number of car reservations monthly graph");
                 console.log(error);
             }
         });
@@ -178,10 +198,15 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dayRevenue) {
-                $("#showRACSRevenueForPeriod").css("display", "block");
-                makeChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000, "day");
+                if (dayRevenue != null && dayRevenue.length > 0) {
+                    $("#showRACSRevenueForPeriod").css("display", "block");
+                    makeChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000, "day");
+                } else {
+                    toastr.info("No revenue to display graph for");
+                }
+                
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+                toastr.error("Could not display revenue graph");                
                 console.log(error);
             }
         });

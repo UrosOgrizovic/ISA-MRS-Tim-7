@@ -1,11 +1,9 @@
 import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 var getAllLink = "/racss/getAll";
-var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";
 
 window.rateRACS = rateRACS;
-window.searchRACSByName = searchRACSByName;
 window.viewRACSBranchOffice = viewRACSBranchOffice;
 
 var token = localStorage.getItem("token");
@@ -32,10 +30,6 @@ if (token != null) {
     document.getElementById("RACSReports").style.display = "none";
 }
 
-// exposing function to window object, because each module creates a scope to avoid name collisions
-window.searchRACSByName = searchRACSByName;
-
-
 $(document).ready(function(){
     
     $("#viewAllRACS").on('click', function(e) {
@@ -53,11 +47,12 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(racss) {
-                console.log(racss);
-                displayRACSS(racss);
+                if (racss != null && racss.length > 0) 
+                    displayRACSS(racss);
+                else 
+                    toastr.info("No rent-a-car services to display")
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
-                console.log(error);
+                toastr.error("Could not display rent-a-car services");
             }
         });
     });
@@ -223,30 +218,9 @@ function rateRACS(el) {
             displayRACSRating(racs);
         },
         error: function(err) {
-            console.log(err);
+            toastr.error("Could not display rent-a-car service rating");
         }
     })
-}
-
-function searchRACSByName() {
-    $("#all").remove();
-    $("#error").remove();
-        
-    var RACSName = $("#searchRACSName").val();
-    $.ajax({
-        url: searchRACSByNameLink + "/" + RACSName,
-        method: "GET",
-        dataType: "json",
-        contentType: "application/json",
-        data: {},
-        headers: { "Authorization": "Bearer " + token}, 
-        success: function(racss) {
-            displayRACSS(racss);
-        }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
-            console.log(error);
-        }
-    });   
 }
 
 function viewRACSBranchOffice(boName) {

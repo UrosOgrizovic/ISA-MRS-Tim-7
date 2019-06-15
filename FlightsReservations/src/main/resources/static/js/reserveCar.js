@@ -136,11 +136,12 @@ function reserveCar() {
         data: JSON.stringify(carReservation),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            toastr.success("Reservation successful");
+            //toastr.success("Reservation successful");
+            localStorage.setItem("successMessageForToastr", "Reservation successful");
+            location.replace("/html/userHomepage.html");
         },
         error: function(err) {
-            console.log(err);
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Reservation for selected car already exists for selected period")
         }
     });	
 

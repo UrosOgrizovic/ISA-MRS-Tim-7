@@ -32,8 +32,14 @@ $(document).ready(function(){
             contentType: "application/json",
             headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
-                displaySearchResults(result);
+                if (result != null && result.length > 0) {
+                    displaySearchResults(result);
+                } else {
+                    toastr.info("No search results to display");
+                }
+                
             }, error: function(error) {
+                toastr.error("Could not display search results");
                 console.log(error);
             }
         });

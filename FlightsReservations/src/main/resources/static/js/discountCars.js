@@ -56,9 +56,14 @@ $(document).ready(function() {
         contentType: "application/json",
         data: {},
         success: function(cars) {
-            displayDiscountCars(cars);
+            if (cars != null && cars.length > 0) {
+                displayDiscountCars(cars);
+            } else {
+                toastr.info("No cars to display");
+            }
+            
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get cars for period");
             console.log(error);
         }
     });
@@ -135,13 +140,12 @@ function fastBook(carId) {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(carReservationRequestDTO),
-        headers: {
-            "Authorization": "Bearer " + token
-        },
+        headers: { "Authorization": "Bearer " + token },
         success: function(carReservationDTO) {
+            localStorage.setItem("successMessageForToastr", "Reservation successful");
             location.replace("/html/userHomepage.html");
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not fast book car");
             console.log(error);
         }
     });

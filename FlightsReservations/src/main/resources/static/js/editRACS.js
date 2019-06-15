@@ -33,10 +33,11 @@ $(document).ready(function(){
                 }
                 setInputs();
             }
-
-			
+            else
+                toastr.info("No rent-a-car services to display");
         },
         error: function(err) {
+            toastr.error("Could not display rent-a-car services");
             console.log(err);
         }
     });	
@@ -82,8 +83,9 @@ function updateRACS() {
         data: JSON.stringify(mapa[key]),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function(result) {
-            
+            toastr.success("Rent-a-car service has succesfully been updated");
 		}, error: function(err) {
+            toastr.error("Could not update rent-a-car service");
             console.log(err);
         }
 	});
@@ -169,9 +171,10 @@ function addCarToRACS() {
         data: JSON.stringify(newCar),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function(car) {
-            
+            toastr.success("Succesffully added car to rent-a-car service");
             $("#car_select").append("<option>"+"#"+car.id+" "+car.manufacturer+" "+car.name+" "+car.yearOfManufacture + " " + car.pricePerHour+"</option>");
 		}, error: function(error) {
+            toastr.error("Could not add car to rent-a-car service");
             console.log(error);
         }
 	});
@@ -190,15 +193,22 @@ function removeCarFromRACS() {
         success: function(allCars) {
             carIdSelect.empty();
             carSelect.empty();
-            allCars.sort();
-            var idx = 0;
-            for (var car of allCars) {
-                idx++;
-                carIdSelect.append("<option>"+car.id+"</option>");
-                carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
+            if (allCars != null) {
+            
+                allCars.sort();
+                var idx = 0;
+                for (var car of allCars) {
+                    idx++;
+                    carIdSelect.append("<option>"+car.id+"</option>");
+                    carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
+                }
+            } else {
+                toastr.info("No cars to display");
             }
+            
         },
         error: function(err) {
+            toastr.error("Could not remove car from rent-a-car service");
             console.log(err);
         }
     });
@@ -222,9 +232,11 @@ function updateCar() {
         dataType: "text",
         headers: { "Authorization": "Bearer " + token}, 
         success: function(result) {
+            toastr.success("Car has successfully been updated");
             location.reload();
         },
         error: function(err) {
+            toatr.error("Car could not be updated");
             console.log(err);
         }
     });

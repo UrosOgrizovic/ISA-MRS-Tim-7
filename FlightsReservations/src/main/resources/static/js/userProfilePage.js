@@ -58,7 +58,7 @@ function getAllCarReservations() {
         success: function(carReservations) {
             displayCarReservations(carReservations);
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get all car reservations");
             console.log(error);
         }
     });
@@ -80,7 +80,7 @@ function getAllFlightReservations() {
         success: function(flightReservations) {
             displayFlightReservations(flightReservations);
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get all flight reservations");
             console.log(error);
         }
     });
@@ -101,7 +101,7 @@ function getAllRoomReservations() {
         success: function(roomReservations) {
             displayRoomReservations(roomReservations);
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get all room reservations");            
             console.log(error);
         }
     });
@@ -122,7 +122,7 @@ function getAllFriends() {
         success: function(friends) {
             displayFriends(friends);
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get all friends");            
             console.log(error);
         }
     });
@@ -261,7 +261,7 @@ function cancelCarReservation(id) {
         success: function() {
             getAllCarReservations();
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not cancel car reservation");            
             console.log(error);
         }
     });
@@ -341,7 +341,7 @@ function cancelFlightReservation(id) {
             getAllFlightReservations();
             getAllRoomReservations();
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not cancel flight reservation");            
             console.log(error);
         }
     });
@@ -359,7 +359,7 @@ function cancelRoomReservation(id) {
             getAllFlightReservations();
             getAllRoomReservations();
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not cancel room reservation");            
             console.log(error);
         }
     });
