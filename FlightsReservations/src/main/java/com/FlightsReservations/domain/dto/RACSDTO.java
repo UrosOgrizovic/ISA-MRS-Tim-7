@@ -118,6 +118,7 @@ public class RACSDTO {
 		Set<BranchOffice> rbos = r.getBranchOffices();
 		Set<RACSBranchOfficeDTO> rbodtos = new HashSet<RACSBranchOfficeDTO>();
 		for (BranchOffice rbo : rbos) {
+			rbo.setCompany(r);
 			RACSBranchOfficeDTO rbodto = new RACSBranchOfficeDTO((RACSBranchOffice) rbo);
 			rbodtos.add(rbodto);
 		}

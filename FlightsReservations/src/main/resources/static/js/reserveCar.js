@@ -6,6 +6,7 @@ var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
+var allCarsOfRACS = [];
 
 window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
@@ -49,7 +50,7 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            console.log(result);
+            
             if (result != null && result.length != 0 && result != undefined) {
                 for (var i = 0; i < result.length; i++) {
                     mapa[result[i].id] = result[i];
@@ -75,9 +76,15 @@ function setInputs(){
     carIdSelect.empty();
 
     var idx = 0;
-    mapa[key].cars.sort(compareCars);
-    for (var car of mapa[key].cars) {
+    for (var bo of mapa[key].branchOffices) {
+        for (var car of bo.cars) {
+            allCarsOfRACS.push(car);
+        }
+    }
+    allCarsOfRACS.sort(compareCars);
+    for (var car of allCarsOfRACS) {
         idx++;
+        
         carIdSelect.append("<option>"+car.id+"</option>");
         carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
     }
@@ -121,7 +128,6 @@ function reserveCar() {
     
     $("#error").remove();
 
-
     $.ajax({
 		url: "http://localhost:8080/carReservations",
 		method: "POST",
@@ -130,8 +136,7 @@ function reserveCar() {
         data: JSON.stringify(carReservation),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            
-            location.replace("/html/userProfilePage.html");
+            toastr.success("Reservation successful");
         },
         error: function(err) {
             console.log(err);

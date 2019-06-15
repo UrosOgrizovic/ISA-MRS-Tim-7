@@ -5,6 +5,7 @@ package com.FlightsReservations.domain.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.User;
 
 public class UserDTO {
@@ -52,6 +53,10 @@ public class UserDTO {
 			user.getAddress(),
 			user.isEnabled()
 			);
+	}
+	
+	public UserDTO(AbstractUser abstractUser) {
+		this(abstractUser.getFirstName(), abstractUser.getLastName(), abstractUser.getEmail(), abstractUser.getPhone(), abstractUser.getAddress(), abstractUser.isEnabled());
 	}
 
 	public String getFirstName() {

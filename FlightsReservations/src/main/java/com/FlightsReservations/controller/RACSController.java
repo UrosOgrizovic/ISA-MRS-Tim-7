@@ -48,7 +48,7 @@ public class RACSController {
 	public ResponseEntity<RACSDTO> searchRACS(@PathVariable String value) {
 		RACSDTO rdto = service.findOne(value);
 		if (rdto != null) {
-			return new ResponseEntity<>(rdto, HttpStatus.FOUND);
+			return new ResponseEntity<>(rdto, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(rdto, HttpStatus.NOT_FOUND);
 		
@@ -89,9 +89,9 @@ public class RACSController {
 	@GetMapping(value = "getRevenueForPeriod/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getRevenueForPeriod(@PathVariable String email, @PathVariable String startTime, @PathVariable String endTime) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getRevenueForPeriod(racs.getId(), startTime, endTime), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getRevenueForPeriod(racsDTO.getName(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
@@ -99,9 +99,9 @@ public class RACSController {
 	@GetMapping(value = "getNumberOfCarReservationsOfRacs/{email}/{startTime}/{endTime}/{unit}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getNumberOfCarReservationsOfRacs(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime, @PathVariable String unit) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racs.getId(), startTime, endTime, unit), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racsDTO.getName(), startTime, endTime, unit), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
@@ -113,9 +113,9 @@ public class RACSController {
 	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAverageRatingForEachCarOfRacs(@PathVariable @Email String email) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racs), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racsDTO), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	

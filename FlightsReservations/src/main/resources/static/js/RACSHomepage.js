@@ -6,6 +6,7 @@ var rateLink = "/companies/rate";
 
 window.rateRACS = rateRACS;
 window.searchRACSByName = searchRACSByName;
+window.viewRACSBranchOffice = viewRACSBranchOffice;
 
 var token = localStorage.getItem("token");
 
@@ -52,6 +53,7 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(racss) {
+                console.log(racss);
                 displayRACSS(racss);
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
@@ -95,20 +97,20 @@ function displayRACSS(racss) {
         text += "<td><br><div class=\"dropdown\">";
         text += "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownCarsButton\" data-toggle=\"dropdown\"aria-haspopup=\"true\" aria-expanded=\"false\">Cars</button>";
         text += "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownCarsButton\">";
-        for (var car of racs.cars) {
-            var carText = car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour;
-            text += "<a class=\"dropdown-item\" href=\"#\">" + carText + "</a>";
+        for (var branchOffice of racs.branchOffices) {
+            for (var car of branchOffice.cars) {
+                var carText = car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour;
+                text += "<a class=\"dropdown-item\" href=\"#\">" + carText + "</a>";
+            }
         }
+        
         text += "</div></div></td>";
 
         text += "<td><br><div class=\"dropdown\">";
         text += "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownPricelistButton\" data-toggle=\"dropdown\"aria-haspopup=\"true\" aria-expanded=\"false\">Pricelist</button>";
         text += "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownPricelistButton\">";
         for (var item of racs.pricelist) {
-            var textItem = JSON.stringify(item, null, 4);
-            textItem = textItem.substring(1, textItem.length - 1);
-            textItem = textItem.split('"').join('') + "$";
-            text += "<a class=\"dropdown-item\" href=\"#\">" + textItem + "</a>";
+            text += "<a class=\"dropdown-item\" href=\"#\">" + item.name + " = " + item.price + "$" + "</a>";
         }
         text += "</div></div></td>";
 
@@ -116,7 +118,7 @@ function displayRACSS(racss) {
         text += "<button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownBOButton\" data-toggle=\"dropdown\"aria-haspopup=\"true\" aria-expanded=\"false\">Branch offices</button>";
         text += "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownBOButton\">";
         for (var bo of racs.branchOffices) {
-            text += "<a class=\"dropdown-item\" href=\"#\">" + bo + "</a>";
+            text += "<a class=\"dropdown-item\" href=\"#\" style=\"white-space: nowrap;\">" + bo.name + " <div onclick=\"viewRACSBranchOffice('"+bo.name+"')\" style=\"color: blue; font-weight: bold; font-size: 12px; display: inline; text-decoration: underline;\">GO</div>" + "</a>";
         }
         text += "</div></div></td>";
 
@@ -245,4 +247,9 @@ function searchRACSByName() {
             console.log(error);
         }
     });   
+}
+
+function viewRACSBranchOffice(boName) {
+    localStorage.setItem("branchOfficeName", boName);
+    location.replace("RACSBranchOffice.html");
 }

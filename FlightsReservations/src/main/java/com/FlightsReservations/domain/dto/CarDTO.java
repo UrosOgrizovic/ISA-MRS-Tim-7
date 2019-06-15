@@ -7,6 +7,7 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.Discount;
 
 public class CarDTO {
+	private Long id;
 	private String manufacturer;
 	private String name;
 	private int yearOfManufacture;
@@ -17,6 +18,13 @@ public class CarDTO {
 	private int numberOfVotes;
 	private Set<Discount> discounts = new HashSet<Discount>();
 	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public float getAverageScore() {
 		return averageScore;
 	}
@@ -73,7 +81,7 @@ public class CarDTO {
 		this.color = color;
 	}
 	public CarDTO(String manufacturer, String name, int yearOfManufacture, String color, String racsBranchOfficeName,
-			double pricePerHour, float averageScore, int numberOfVotes, Set<Discount> discounts) {
+			double pricePerHour, float averageScore, int numberOfVotes, Set<Discount> discounts, Long id) {
 		super();
 		this.manufacturer = manufacturer;
 		this.name = name;
@@ -84,11 +92,13 @@ public class CarDTO {
 		this.averageScore = averageScore;
 		this.numberOfVotes = numberOfVotes;
 		this.discounts = discounts;
+		this.id = id;
 	}
 	public CarDTO() {
 		super();
 	}
 	public CarDTO(Car c) {
+		this.id = c.getId();
 		this.averageScore = c.getAverageScore();
 		this.color = c.getColor();
 		this.discounts = c.getDiscounts();

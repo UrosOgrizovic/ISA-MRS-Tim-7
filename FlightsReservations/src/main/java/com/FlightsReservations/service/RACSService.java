@@ -531,7 +531,7 @@ public class RACSService {
 		return matchingCars;
 	}
 
-public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime, String endTime) {
+	public HashMap<String, Float> getRevenueForPeriod(String racsName, String startTime, String endTime) {
 		HashMap<String, Float> dayRevenue = new HashMap<String, Float>();
 		
 		Date startDate = parseDate(startTime);
@@ -547,7 +547,7 @@ public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime,
 		System.out.println(currentDay);
 		
 		float revenueForCurrentDay;
-		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
+		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsName);
 		while (currentDay.compareTo(endDate) < 0) {
 			moy = String.valueOf(dt.getMonthOfYear());
 			if (moy.length() == 1) moy = "0" + moy;
@@ -571,14 +571,15 @@ public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime,
 		return dayRevenue;
 	}
 	
-	public Collection<CarReservation> getCarReservationsOfRacs(Long id) {
-		return carReservationRepository.findCarReservationsOfRacs(id);
+	public Collection<CarReservation> getCarReservationsOfRacs(String racsName) {
+		RACS r = racsRepository.findByName(racsName);
+		return carReservationRepository.findCarReservationsOfRacs(r.getId());
 	}
 	
 	// <String, Integer> = <date of reservation, number of reservations for date>
-	public HashMap<String, Integer> getNumberOfCarReservationsOfRacs(Long racsId, String startTime, String endTime, String unit) {
+	public HashMap<String, Integer> getNumberOfCarReservationsOfRacs(String racsName, String startTime, String endTime, String unit) {
 		HashMap<String, Integer> dateNumberOfReservations = new HashMap<String, Integer>();
-		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
+		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsName);
 		Date startDate = parseDate(startTime);
 		Date endDate = parseDate(endTime);
 		
@@ -655,8 +656,6 @@ public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime,
 		RACS racs = racsRepository.findById(racsId).get();
 		RACSAdmin racsAdmin = racsAdminRepository.findByEmail(email);
 		if (racs != null && racsAdmin != null) {
-			
-				
 			racsAdmin.setRACS(racs);
 			
 			racs.setAdmin(racsAdmin);
@@ -669,15 +668,27 @@ public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime,
 	}
 
 	// <String, Float> - <car id: car manufacturer car name, average rating>
-	public HashMap<String, Float> getAverageRatingForEachCarOfRacs(RACS racs) {
+	public HashMap<String, Float> getAverageRatingForEachCarOfRacs(RACSDTO racsDTO) {
+		
+		Set<RACSBranchOfficeDTO> rbos = racsDTO.getBranchOffices();
 		Set<Car> cars = new HashSet<Car>();
-		Set<BranchOffice> bos = racs.getBranchOffices();
-		for (BranchOffice bo : bos) {
-			RACSBranchOffice rbo = (RACSBranchOffice) bo;
-			for (Car c : rbo.getCars()) {
+		for (RACSBranchOfficeDTO bo : rbos) {
+			Set<CarDTO> cardtos = bo.getCars();
+			for (CarDTO cdto : cardtos) {
+				Car c = new Car();
+				c.setAverageScore(cdto.getAverageScore());
+				c.setColor(cdto.getColor());
+				c.setDiscounts(cdto.getDiscounts());
+				c.setManufacturer(cdto.getManufacturer());
+				c.setName(cdto.getName());
+				c.setNumberOfVotes(cdto.getNumberOfVotes());
+				c.setPricePerHour(cdto.getPricePerHour());
+				c.setRACSBranchOffice(racsBranchOfficeRepository.findByName(cdto.getRacsBranchOfficeName()));
+				c.setYearOfManufacture(cdto.getYearOfManufacture());
 				cars.add(c);
 			}
 		}
+		
 		HashMap<String, Float> carNameAverageRating = new HashMap<String, Float>();
 		for (Car c : cars) {
 			carNameAverageRating.put("#" + c.getId() + ": " + c.getManufacturer() + " " + c.getName(), c.getAverageScore());

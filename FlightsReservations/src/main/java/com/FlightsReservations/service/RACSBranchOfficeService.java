@@ -104,9 +104,10 @@ public class RACSBranchOfficeService {
 		}
 	}
 	
-	public RACSBranchOffice findByName(String name) {
+	public RACSBranchOfficeDTO findByName(String name) {
 		try {
-			return racsBranchOfficeRepository.findByName(name);
+			return new RACSBranchOfficeDTO(racsBranchOfficeRepository.findByName(name));
+			
 		} catch (NoSuchElementException e) {
 			return null;
 		}

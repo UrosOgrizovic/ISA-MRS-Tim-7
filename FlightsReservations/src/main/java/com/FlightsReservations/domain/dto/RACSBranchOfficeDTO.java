@@ -61,7 +61,8 @@ public class RACSBranchOfficeDTO {
 	public RACSBranchOfficeDTO(RACSBranchOffice rbo) {
 		Set<Car> cars = rbo.getCars();
 		Set<CarDTO> cardtos = new HashSet<CarDTO>();
-		for (Car c : cars) { 
+		for (Car c : cars) {
+			c.setRACSBranchOffice(rbo);
 			CarDTO cdto = new CarDTO(c);
 			cardtos.add(cdto);
 		}
