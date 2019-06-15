@@ -7,7 +7,10 @@ var user = {};
 
 $(document).ready(function() {
     // no user should be logged in while on this page
+    
+    var temp = localStorage.getItem("lastPage");
     localStorage.clear();
+    localStorage.setItem("lastPage", temp);
 
     loadNavbar('loginNavItem');
 
@@ -33,8 +36,10 @@ $(document).ready(function() {
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);
                 localStorage.setItem("firstName", result.firstName);
-                location.replace("/html/userHomepage.html");        
-                location.replace("/html/userHomepage.html");
+                if (localStorage.getItem("lastPage") == null)
+                    location.replace("/html/userHomepage.html");
+                else 
+                    location.replace(localStorage.getItem("lastPage"))
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");
                 console.log(error);

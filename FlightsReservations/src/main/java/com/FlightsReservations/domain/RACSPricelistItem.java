@@ -2,6 +2,7 @@ package com.FlightsReservations.domain;
 
 import java.io.Serializable;
 
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,13 +36,11 @@ public class RACSPricelistItem implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private RACS racs;
 	
-	
 	public RACSPricelistItem() {
 		super();
 	}
 	public RACSPricelistItem(Long id, @NotBlank String name, @NotNull double price, RACS racs) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.racs = racs;
@@ -51,6 +50,13 @@ public class RACSPricelistItem implements Serializable {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public RACS getRacs() {
+		return racs;
+	}
+	public void setRacs(RACS racs) {
+		this.racs = racs;
 	}
 	public String getName() {
 		return name;
@@ -63,12 +69,6 @@ public class RACSPricelistItem implements Serializable {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public RACS getRacs() {
-		return racs;
-	}
-	public void setRacs(RACS racs) {
-		this.racs = racs;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;

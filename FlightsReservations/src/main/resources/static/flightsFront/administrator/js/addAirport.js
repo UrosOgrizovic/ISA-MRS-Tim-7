@@ -1,16 +1,13 @@
-// get airline that current admin manages (mock but should be from storage)
-var airline = "airline1";
+var airline = null;
 
 $(document).ready(function(){
+	checkAuth();
+	airline = JSON.parse(localStorage.getItem("admin")).airlineName;
 	$("#addAirportBtn").click(addAirport);
-	
-	// ajax call for all airports of that airline
-	// if success
-	// 		update table with results
-	getAirports(airline);	
+	getAirports();	
 });
 
-function getAirports(airline) {
+function getAirports() {
 	$.ajax({
 		url: "http://localhost:8080/airlines/airports/" + airline,
 		method: "GET",
@@ -26,10 +23,6 @@ function getAirports(airline) {
 }
 
 function addAirport() {
-	// get name from input
-	// if valid
-	// 		make ajax put request
-	// 		update table
 	var airport = $("#searchAirportName").val();
 	
 	if (airport != "") {

@@ -41,6 +41,10 @@ public class Car {
 	@ElementCollection
 	private Set<Discount> discounts;
 	
+	@Version
+	@Column(nullable = false)
+	private Long version;
+	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -52,16 +56,25 @@ public class Car {
 	@Column(nullable = false)
 	private int numberOfVotes;
 	
-	@Version
-	@Column(nullable = false)
-	private Long version;
-	
 	public Long getVersion() {
 		return version;
 	}
-
+	
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+	
+	
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
+	public float getAverageScore() {
+		return averageScore;
 	}
 	
 	public Set<Discount> getDiscounts() {
@@ -128,20 +141,8 @@ public class Car {
 		this.pricePerHour = pricePerHour;
 	}
 	
-	public float getAverageScore() {
-		return averageScore;
-	}
-
 	public void setAverageScore(float averageScore) {
 		this.averageScore = averageScore;
-	}
-
-	public int getNumberOfVotes() {
-		return numberOfVotes;
-	}
-
-	public void setNumberOfVotes(int numberOfVotes) {
-		this.numberOfVotes = numberOfVotes;
 	}
 
 	public Car(String manufacturer,String name, int yearOfManufacture,

@@ -16,24 +16,28 @@ import com.FlightsReservations.domain.FlightReservation;
 import com.FlightsReservations.domain.FriendRequest;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.User;
+import com.FlightsReservations.domain.dto.AbstractUserDTO;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FriendRequestDTO;
 import com.FlightsReservations.domain.dto.RegistrationUserDTO;
 import com.FlightsReservations.domain.dto.RoomReservationDTO;
-import com.FlightsReservations.domain.dto.UserDTO;
 import com.FlightsReservations.repository.AbstractUserRepository;
 import com.FlightsReservations.repository.AuthorityRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
 import com.FlightsReservations.repository.FriendRequestRepository;
 import com.FlightsReservations.repository.RoomReservationRepository;
+import com.FlightsReservations.repository.UserRepository;
 
 @Service
 public class UserService {
 
 	@Autowired
 	private AbstractUserRepository abstractUserRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private FriendRequestRepository friendRequestsRepository;
@@ -54,7 +58,7 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	
-	public UserDTO create(RegistrationUserDTO t) {
+	public AbstractUserDTO create(RegistrationUserDTO t) {
 		if (abstractUserRepository.findByEmail(t.getEmail()) == null) {
 			User u = new User();
 			ArrayList<Authority> authorities = new ArrayList<Authority>();
@@ -70,13 +74,13 @@ public class UserService {
 			u.setEnabled(true);
 			u.setAuthorities(authorities);
 			abstractUserRepository.save(u);
-			return new UserDTO(u);
+			return new AbstractUserDTO(u);
 		}
 		return null;
 	}
 
 	
-	public boolean update(UserDTO t) {
+	public boolean update(AbstractUserDTO t) {
 		AbstractUser u = abstractUserRepository.findByEmail(t.getEmail());
 		if (u != null) {
 			u.setFirstName(t.getFirstName());
@@ -91,37 +95,44 @@ public class UserService {
 	}
 
 	
-	public UserDTO findOne(String email) {
+	public AbstractUserDTO findOne(String email) {
 		AbstractUser u = abstractUserRepository.findByEmail(email);
 		if (u != null)
-			return new UserDTO(u);
+			return new AbstractUserDTO(u);
 		return null;
 	}
 	
 	
-	public User findById(Long id) {
-		return ((User) abstractUserRepository.findById(id).get());
+	
+	
+	public AbstractUser findById(Long id) {
+		return abstractUserRepository.findById(id).get();
 	}
 	
 	
-	public List<UserDTO> findAll() {
-		List<UserDTO> dtos = new ArrayList<>();
+	public List<AbstractUserDTO> findAll() {
+		List<AbstractUserDTO> dtos = new ArrayList<>();
 		for (AbstractUser u : abstractUserRepository.findAll())
-			dtos.add(new UserDTO(u));
+			dtos.add(new AbstractUserDTO(u));
 		return dtos;
 	}
 	
 	
 	
-	public List<UserDTO> getFriends(String email) {
+	public List<AbstractUserDTO> getFriends(String email) {
 		
-		AbstractUser u = abstractUserRepository.findByEmail(email);
+		AbstractUser abstractUser = abstractUserRepository.findByEmail(email);
 		
-		List<AbstractUser> friends = abstractUserRepository.findFriends(u.getId());
-		List<UserDTO> friendsDTO = new ArrayList<>();
-		for (AbstractUser user : friends) {
+		ArrayList<String> types = new ArrayList<String>();
+		abstractUser.getAuthorities().forEach(auth -> types.add(auth.getAuthority()));
+		
+		if (types.contains("A")) return null;
+		User u = (User) abstractUser;
+		List<User> friends = userRepository.findFriends(u.getId());
+		List<AbstractUserDTO> friendsDTO = new ArrayList<>();
+		for (User user : friends) {
 			if (user.isEnabled()) {
-				UserDTO udto = new UserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
+				AbstractUserDTO udto = new AbstractUserDTO(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getAddress(), true);
 				friendsDTO.add(udto);
 			}
 		}
@@ -138,6 +149,7 @@ public class UserService {
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
 		AbstractUser u = abstractUserRepository.findByEmail(email);
+		
 		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {

@@ -15,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,10 @@ public class Reservation {
 	// this column is nullable because user won't enter a rating when making the reservation, but rather later
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Rating rating;
+
+	@Version
+	@Column(nullable = false)
+	private Long version;
 	
 	public Reservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner) {
 		super();

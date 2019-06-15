@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.BranchOffice;
@@ -28,6 +29,8 @@ import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.RACSBranchOffice;
 import com.FlightsReservations.domain.RACSPricelistItem;
 import com.FlightsReservations.domain.dto.CarDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
+import com.FlightsReservations.repository.RACSRepository;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
 import com.FlightsReservations.domain.dto.RACSDTO;
@@ -36,7 +39,6 @@ import com.FlightsReservations.repository.CarReservationRepository;
 import com.FlightsReservations.repository.CompanyRepository;
 import com.FlightsReservations.repository.RACSAdminRepository;
 import com.FlightsReservations.repository.RACSBranchOfficeRepository;
-import com.FlightsReservations.repository.RACSRepository;
 
 @Component
 @Transactional(readOnly = false)
@@ -50,6 +52,7 @@ public class RACSService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
+
 
 	@Autowired
 	CarReservationRepository carReservationRepository;
@@ -115,47 +118,23 @@ public class RACSService {
 		
 	}
 
-	@Transactional(readOnly = false)
-	public boolean update(RACSDTO t) {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public boolean update(UpdateRACSDTO t) {
 		RACS r = racsRepository.findByName(t.getName());
 		if (r != null) {
 			r.setLongitude(t.getLongitude());
 			r.setLatitude(t.getLatitude());
-			Set<BranchOffice> rbos = new HashSet<BranchOffice>();
-			Set<RACSBranchOfficeDTO> rbodtos = t.getBranchOffices();
-			for (RACSBranchOfficeDTO rbodto : rbodtos) {
-				RACSBranchOffice rbo = new RACSBranchOffice();
-				
-				rbo.setCompany(companyRepository.findByName(rbodto.getRACSCompanyName()));
-				rbo.setLatitude(rbodto.getLatitude());
-				rbo.setLongitude(rbodto.getLongitude());
-				rbo.setName(rbodto.getName());
-				rbos.add(rbo);
-			}
-			r.setBranchOffices(rbos);
 			r.setPromoDescription(t.getPromoDescription());
 			r.setName(t.getName());
-			Set<RACSPricelistItem> plis = new HashSet<RACSPricelistItem>();
-			Set<RACSPricelistItemDTO> plidtos = t.getPricelist();
-			for (RACSPricelistItemDTO plidto : plidtos) {
-				RACSPricelistItem pli = new RACSPricelistItem();
-				pli.setName(plidto.getName());
-				pli.setPrice(plidto.getPrice());
-				pli.setRacs(racsRepository.findByName(plidto.getRacsName()));
-				plis.add(pli);
-			}
-			r.setPricelist(plis);
 			r.setAverageScore(t.getAverageScore());
 			r.setNumberOfVotes(t.getNumberOfVotes());
-			r.setAdmin(t.getAdmin());
-			racsRepository.save(r);
 			racsRepository.save(r);
 			return true;
 		}
 		return false;
 	}
 	
-
+	@Transactional(readOnly = false)
 	public boolean addCar(CarDTO car) {
 		RACSBranchOffice rbo = racsBranchOfficeRepository.findByName(car.getRacsBranchOfficeName());
 		
@@ -186,7 +165,9 @@ public class RACSService {
 			return new RACSDTO(r);
 		return null;
 	}
-
+	
+	
+	@Transactional(readOnly = false)
 	public void delete(Long id) {
 		racsRepository.deleteById(id);
 	}
@@ -529,6 +510,7 @@ public class RACSService {
 			}
 		}
 		return matchingCars;
+
 	}
 
 	public HashMap<String, Float> getRevenueForPeriod(String racsName, String startTime, String endTime) {

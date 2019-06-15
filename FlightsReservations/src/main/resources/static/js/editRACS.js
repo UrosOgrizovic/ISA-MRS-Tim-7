@@ -61,9 +61,8 @@ function updateRACS() {
     mapa[key].numberOfVotes = $("#numberOfVotes").val();
     var carsOfRacs = [];
     
-
+    var currentCar = {};
     $("#car_select > option").each(function() {
-        var currentCar = {};
         currentCar.manufacturer = this.text.split(" ")[1];
         currentCar.name = this.text.split(" ")[2];
         currentCar.color = this.text.split(" ")[3];

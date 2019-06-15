@@ -2,12 +2,14 @@ package com.FlightsReservations.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
@@ -20,9 +22,10 @@ import com.FlightsReservations.repository.CarRepository;
 import com.FlightsReservations.repository.CarReservationRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class CarReservationService {
 	@Autowired
-	private CarReservationRepository repository;
+	private CarReservationRepository carReservationRepository;
 	
 	@Autowired
 	private AbstractUserRepository abstractUserRepository;
@@ -30,6 +33,7 @@ public class CarReservationService {
 	@Autowired
 	private CarRepository carRepository;
 	
+	@Transactional(readOnly = false)
 	public CarReservationDTO create(CarReservationRequestDTO dto) {
 		if (!creatingSemanticValidation(dto))
 			return null;
@@ -51,9 +55,7 @@ public class CarReservationService {
 		reservation.setRating(new Rating());
 		reservation.getRating().setReservation(reservation);
 		reservation.getRating().setCompanyBranchOfficeId(car.getRACSBranchOffice().getId());
-		
-		reservation = repository.save(reservation);
-		
+		reservation = carReservationRepository.save(reservation);
 		return new CarReservationDTO(reservation);
 	}
 	
@@ -92,7 +94,11 @@ public class CarReservationService {
 		if (diffInDays > 7)
 			return false;
 		
-		//TODO: check that there are no other reservations for car id via transactions		
+		// no other reservations may exist for selected car and entered period
+		ArrayList<CarReservation> carReservationsForPeriod = (ArrayList<CarReservation>) carReservationRepository.findCarReservationsForPeriod(dto.getStartTime(), dto.getEndTime());
+		if (carReservationsForPeriod != null && carReservationsForPeriod.size() > 0) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -110,8 +116,9 @@ public class CarReservationService {
         return date;
     }
 	
+	@Transactional(readOnly = false)
 	public boolean cancel(Long id) {
-		CarReservation cr = repository.findById(id).get();
+		CarReservation cr = carReservationRepository.findById(id).get();
 		if (cr != null) {
 			Date now = new Date();
 			// difference between now (cancellation time) and reservation start time in days
@@ -119,7 +126,7 @@ public class CarReservationService {
 			// reservation cannot be cancelled less than two days before the reservation starts
 			if (diff < 2) return false;
 			cr.setConfirmed(false);
-			repository.save(cr);
+			carReservationRepository.save(cr);
 			return true;
 		}
 		return false;

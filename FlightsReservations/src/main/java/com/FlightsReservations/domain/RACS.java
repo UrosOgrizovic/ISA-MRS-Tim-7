@@ -57,7 +57,7 @@ public class RACS extends Company {
 	public String toString() {
 		return "RACS [getId()=" + getId() + ", getName()=" + getName() + ", getLongitude()=" + getLongitude()
 				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
-				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + "]";
+				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
 	
 }

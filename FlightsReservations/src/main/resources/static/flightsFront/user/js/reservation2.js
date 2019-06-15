@@ -9,9 +9,7 @@ var selectedSeat = null;
 var seatMap = null;
 var currentlySelectedData = [];
 
-
 var reservationReturn = null;
-
 
 var takenOne = false;
 var takenTwo = false;

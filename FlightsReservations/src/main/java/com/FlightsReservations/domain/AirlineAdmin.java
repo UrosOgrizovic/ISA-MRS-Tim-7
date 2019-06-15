@@ -14,7 +14,7 @@ import com.FlightsReservations.domain.enums.AdminType;
 public class AirlineAdmin extends Admin {
 	private static final long serialVersionUID = 5498946054745184534L;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Airline airline;
 
 	public AirlineAdmin() {
