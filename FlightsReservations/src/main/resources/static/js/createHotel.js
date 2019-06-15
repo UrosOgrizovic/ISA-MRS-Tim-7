@@ -128,7 +128,10 @@ function create_hotel()
 	            cache: false,
 	            crossDomain: true,
 	            headers: { "Authorization": "Bearer " + token}, 
-	            success: function(result) { },
+	            success: function(result) { console.log(result);},
+	            error: function(error) {
+	                console.log(error);
+	            }
             })
          })
     }
