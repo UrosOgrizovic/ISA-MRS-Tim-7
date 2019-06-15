@@ -106,9 +106,6 @@ public class RACSController {
 	}
 	
 	
-	
-	
-	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAverageRatingForEachCarOfRacs(@PathVariable @Email String email) {

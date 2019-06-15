@@ -1,9 +1,8 @@
 import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 var getAllLink = "/racss/getAll";
-var rateLink = "/companies/rate";
 
-window.rateRACS = rateRACS;
+
 window.viewRACSBranchOffice = viewRACSBranchOffice;
 
 var token = localStorage.getItem("token");
@@ -53,16 +52,14 @@ $(document).ready(function(){
                     toastr.info("No rent-a-car services to display")
             }, error: function(error) {
                 toastr.error("Could not display rent-a-car services");
+                console.log(error);
             }
         });
     });
     
     loadNavbar('RACSHomepageNavItem');
 
-    $(document).on('click', '.star', function(el) {
-        rateRACS(el.target);
-
-    });
+    
 });
 
 function displayRACSS(racss) {
@@ -76,8 +73,7 @@ function displayRACSS(racss) {
     text += "<th>Cars</th>";
     text += "<th>Pricelist</th>";
     text += "<th>Branch offices</th>";
-    text += "<th>Average rating</th>";
-    text += "<th>Your rating</th>";
+    
     
     text += "</tr>";
     text += "</thead><tbody>";
@@ -117,111 +113,15 @@ function displayRACSS(racss) {
         }
         text += "</div></div></td>";
 
-        // Average rating
-
-        text += "<td>";
-        var avgstar5id = "avgstar5" + racs.name;
-        var avgstar4id = "avgstar4" + racs.name;
-        var avgstar3id = "avgstar3" + racs.name;
-        var avgstar2id = "avgstar2" + racs.name;
-        var avgstar1id = "avgstar1" + racs.name;
-        /* each radio group has to have a different name, otherwise only one 
-        one of them will be checked
-         */
-        var groupName = "avg" + racs.name;
-        text += "<div class=\"rate\">" +
-        "<input type=\"radio\" id=\""+avgstar5id+"\" name=\""+groupName+"\" value=\"5\" />" + 
-        "<label for=\""+avgstar5id+"\">5 stars</label>" + 
-        "<input type=\"radio\" id=\""+avgstar4id+"\" name=\""+groupName+"\" value=\"4\" />" +
-        "<label for=\""+avgstar4id+"\">4 stars</label>" +
-        "<input type=\"radio\" id=\""+avgstar3id+"\" name=\""+groupName+"\" value=\"3\" />" +
-        "<label for=\""+avgstar3id+"\">3 stars</label>" +
-        "<input type=\"radio\" id=\""+avgstar2id+"\" name=\""+groupName+"\" value=\"2\" />" +
-        "<label for=\""+avgstar2id+"\">2 stars</label>" +
-        "<input type=\"radio\" id=\""+avgstar1id+"\" name=\""+groupName+"\" value=\"1\" />" +
-        "<label for=\""+avgstar1id+"\">1 star</label>" +
-        "<div id=\"avgscore"+racs.name+"\"></div>" +
-        "</div>";        
-
-        text += "</td>"; 
-
-        // Your rating
-
-        text += "<td>";
-        var star5id = "star5" + racs.name;
-        var star4id = "star4" + racs.name;
-        var star3id = "star3" + racs.name;
-        var star2id = "star2" + racs.name;
-        var star1id = "star1" + racs.name;
-        /* each radio group has to have a different name, otherwise only one 
-        one of them will be checked
-         */
-        var groupName = "rate" + racs.name;
-
-        text += "<div class=\"rate\">" +
-        "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
-        "<label for=\""+star5id+"\">5 stars</label>" + 
-        "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
-        "<label for=\""+star4id+"\">4 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
-        "<label for=\""+star3id+"\">3 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
-        "<label for=\""+star2id+"\">2 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
-        "<label for=\""+star1id+"\">1 star</label>" +
-        "</div>";
-    
-        text += "</td>"; 
-
         text += "</tr>";
     }
     text += "</tbody></table>";
     $(document.documentElement).append(text);
     
-    for (var racs of racss) {        
-        displayRACSRating(racs);
-    }
-}
-
-function displayRACSRating(racs) {
-    if (racs.averageScore >= 4.5) {
-        document.getElementById("avgstar5"+racs.name).checked = true;
-    } else if (racs.averageScore >= 3.5) {
-        document.getElementById("avgstar4"+racs.name).checked = true;
-    } else if (racs.averageScore >= 2.5) {
-        document.getElementById("avgstar3"+racs.name).checked = true;
-    } else if (racs.averageScore >= 1.5) {
-        document.getElementById("avgstar2"+racs.name).checked = true;
-    } else {
-        document.getElementById("avgstar1"+racs.name).checked = true;
-    }
-    document.getElementById("avgscore"+racs.name).innerHTML = "("+racs.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
-}
-
-function rateRACS(el) {
     
-    var arr = el.id.split("star");
-    var ratingRACSName = arr[1].split("");
-    
-    var obj = {};
-    obj.name = arr[1].substring(1);
-    obj.averageScore = parseFloat(ratingRACSName[0]);
-
-    $.ajax({
-        url: rateLink,
-        method: "PUT",
-        data: JSON.stringify(obj),
-        contentType: "application/json",
-        dataType: "json",
-        headers: { "Authorization": "Bearer " + token}, 
-        success: function(racs) {
-            displayRACSRating(racs);
-        },
-        error: function(err) {
-            toastr.error("Could not display rent-a-car service rating");
-        }
-    })
 }
+
+
 
 function viewRACSBranchOffice(boName) {
     localStorage.setItem("branchOfficeName", boName);

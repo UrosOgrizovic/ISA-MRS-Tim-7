@@ -18,6 +18,6 @@ public interface CarReservationRepository extends JpaRepository<CarReservation, 
 	@Query(value="SELECT * FROM reservation r WHERE r.reservation_type='CR' AND r.start_time >= ?1 AND r.end_time <= ?2", nativeQuery = true)
 	Collection<CarReservation> findCarReservationsForPeriod(Date startTime, Date endTime);
 	
-	@Query(value="SELECT * FROM reservation r WHERE r.reservation_type='CR' AND r.car_id IN (SELECT c.id FROM car c WHERE r.car_id = c.id AND ?1 = c.racs_id)", nativeQuery = true)
-	Collection<CarReservation> findCarReservationsOfRacs(Long racsId);
+	@Query(value="SELECT * FROM reservation r WHERE r.reservation_type='CR' AND r.car_id IN (SELECT c.id FROM car c WHERE r.car_id = c.id AND ?1 = c.racs_branch_office_id)", nativeQuery = true)
+	Collection<CarReservation> findCarReservationsOfRacsBranchOffice(Long racsBranchOfficeId);
 }

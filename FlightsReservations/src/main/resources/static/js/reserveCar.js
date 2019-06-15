@@ -138,7 +138,7 @@ function reserveCar() {
 		success: function (result) {
             //toastr.success("Reservation successful");
             localStorage.setItem("successMessageForToastr", "Reservation successful");
-            location.replace("/html/userHomepage.html");
+            location.replace("/html/userProfilePage.html");
         },
         error: function(err) {
             toastr.error("Reservation for selected car already exists for selected period")

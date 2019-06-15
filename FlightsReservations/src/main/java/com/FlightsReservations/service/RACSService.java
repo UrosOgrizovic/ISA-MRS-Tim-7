@@ -526,7 +526,6 @@ public class RACSService {
 		String moy = String.valueOf(dt.getMonthOfYear());
 		if (moy.length() == 1) moy = "0" + moy;
 		Date currentDay = parseDate(dt.getDayOfMonth() + "-" + moy + "-" + dt.getYear() + " 00:00");
-		System.out.println(currentDay);
 		
 		float revenueForCurrentDay;
 		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsName);
@@ -555,7 +554,12 @@ public class RACSService {
 	
 	public Collection<CarReservation> getCarReservationsOfRacs(String racsName) {
 		RACS r = racsRepository.findByName(racsName);
-		return carReservationRepository.findCarReservationsOfRacs(r.getId());
+		Set<BranchOffice> rbos = r.getBranchOffices();
+		Set<CarReservation> crs = new HashSet<CarReservation>();
+		for (BranchOffice bo : rbos) {
+			crs.addAll(carReservationRepository.findCarReservationsOfRacsBranchOffice(bo.getId()));
+		}
+		return crs;
 	}
 	
 	// <String, Integer> = <date of reservation, number of reservations for date>
@@ -654,19 +658,12 @@ public class RACSService {
 		
 		Set<RACSBranchOfficeDTO> rbos = racsDTO.getBranchOffices();
 		Set<Car> cars = new HashSet<Car>();
+		Set<Car> carsOfRBO = new HashSet<Car>();
+		RACSBranchOffice rbo = new RACSBranchOffice();
 		for (RACSBranchOfficeDTO bo : rbos) {
-			Set<CarDTO> cardtos = bo.getCars();
-			for (CarDTO cdto : cardtos) {
-				Car c = new Car();
-				c.setAverageScore(cdto.getAverageScore());
-				c.setColor(cdto.getColor());
-				c.setDiscounts(cdto.getDiscounts());
-				c.setManufacturer(cdto.getManufacturer());
-				c.setName(cdto.getName());
-				c.setNumberOfVotes(cdto.getNumberOfVotes());
-				c.setPricePerHour(cdto.getPricePerHour());
-				c.setRACSBranchOffice(racsBranchOfficeRepository.findByName(cdto.getRacsBranchOfficeName()));
-				c.setYearOfManufacture(cdto.getYearOfManufacture());
+			rbo = racsBranchOfficeRepository.findByName(bo.getName());
+			carsOfRBO = rbo.getCars();
+			for (Car c : carsOfRBO) {
 				cars.add(c);
 			}
 		}

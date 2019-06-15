@@ -143,7 +143,7 @@ function fastBook(carId) {
         headers: { "Authorization": "Bearer " + token },
         success: function(carReservationDTO) {
             localStorage.setItem("successMessageForToastr", "Reservation successful");
-            location.replace("/html/userHomepage.html");
+            location.replace("/html/userProfilePage.html");
         }, error: function(error) {
             toastr.error("Could not fast book car");
             console.log(error);

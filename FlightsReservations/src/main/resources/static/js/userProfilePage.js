@@ -8,6 +8,7 @@ var getAllRoomReservationsLink = "http://localhost:8080/users/getRoomReservation
 var cancelCarReservationLink = "http://localhost:8080/carReservations/cancel/";
 var cancelFlightReservationLink = "http://localhost:8080/flightReservations/cancel/";
 var cancelRoomReservationLink = "http://localhost:8080/roomReservations/cancel/";
+var rateLink = "/companies/rate";
 
 var email = localStorage.getItem("email");
 
@@ -19,8 +20,15 @@ if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 window.cancelCarReservation = cancelCarReservation;
 window.cancelFlightReservation = cancelFlightReservation;
 window.cancelRoomReservation = cancelRoomReservation;
+window.rateRACS = rateRACS;
+
+var msg = localStorage.getItem("successMessageForToastr");
 
 $(document).ready(function(){
+    if (msg != "" && msg != null) {
+        toastr.success(msg);
+    }
+    localStorage.setItem("successMessageForToastr", "");
     $("#viewAllFriends").on('click', function(e) {
         e.preventDefault();
         getAllFriends();
@@ -41,6 +49,10 @@ $(document).ready(function(){
         getAllRoomReservations();
     });
 
+    $(document).on('click', '.star', function(el) {
+        rateRACS(el.target);
+    });
+
     loadNavbar('profileHomepageNavItem');
 });
 
@@ -56,7 +68,12 @@ function getAllCarReservations() {
         data: {},
         headers: { "Authorization": "Bearer " + token}, 
         success: function(carReservations) {
-            displayCarReservations(carReservations);
+            if (carReservations != null && carReservations.length > 0) {
+                displayCarReservations(carReservations);
+            } else {
+                toastr.info("No car reservations to display");
+            }
+            
         }, error: function(error) {
             toastr.error("Could not get all car reservations");
             console.log(error);
@@ -78,7 +95,12 @@ function getAllFlightReservations() {
         data: {},
         headers: { "Authorization": "Bearer " + token}, 
         success: function(flightReservations) {
-            displayFlightReservations(flightReservations);
+            if (flightReservations != null && flightReservations.length > 0) {
+                displayFlightReservations(flightReservations);
+            } else {
+                toastr.info("No flight reservations to display");
+            }
+            
         }, error: function(error) {
             toastr.error("Could not get all flight reservations");
             console.log(error);
@@ -99,7 +121,12 @@ function getAllRoomReservations() {
         data: {},
         headers: { "Authorization": "Bearer " + token}, 
         success: function(roomReservations) {
-            displayRoomReservations(roomReservations);
+            if (roomReservations != null && roomReservations.length > 0) {
+                displayRoomReservations(roomReservations);
+            } else {
+                toastr.info("No room reservations to display");
+            }
+            
         }, error: function(error) {
             toastr.error("Could not get all room reservations");            
             console.log(error);
@@ -120,7 +147,11 @@ function getAllFriends() {
         data: {},
         headers: { "Authorization": "Bearer " + token}, 
         success: function(friends) {
-            displayFriends(friends);
+            if (friends != null && friends.length > 0) {
+                displayFriends(friends);
+            } else {
+                toastr.info("No friends to display");
+            }
         }, error: function(error) {
             toastr.error("Could not get all friends");            
             console.log(error);
@@ -170,6 +201,10 @@ function displayCarReservations(carReservations) {
     text += "<th>Date of reservation</th>";
     text += "<th>Start time</th>";
     text += "<th>End time</th>";
+    text += "<th>Average RACS rating</th>";
+    text += "<th>Your RACS rating</th>";
+    text += "<th>Average car rating</th>";
+    text += "<th>Your car rating</th>";
     text += "</tr>";
     text += "</thead><tbody>";
     for (var cr of carReservations) {
@@ -197,12 +232,83 @@ function displayCarReservations(carReservations) {
         text += "<td>" + cr.dateOfReservation + "</td>";
         text += "<td>" + cr.startTime + "</td>";
         text += "<td>" + cr.endTime + "</td>";
+
+
+
+
+
+
+
+
+
+        // RACS rating
+                
+
+        // Your rating
+
+        text += "<td>";
+        var star5id = "star5" + racs.name;
+        var star4id = "star4" + racs.name;
+        var star3id = "star3" + racs.name;
+        var star2id = "star2" + racs.name;
+        var star1id = "star1" + racs.name;
+        /* each radio group has to have a different name, otherwise only one 
+        one of them will be checked
+         */
+        var groupName = "rate" + racs.name;
+
+        text += "<div class=\"rate\">" +
+        "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
+        "<label for=\""+star5id+"\">5 stars</label>" + 
+        "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+        "<label for=\""+star4id+"\">4 stars</label>" +
+        "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+        "<label for=\""+star3id+"\">3 stars</label>" +
+        "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+        "<label for=\""+star2id+"\">2 stars</label>" +
+        "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+        "<label for=\""+star1id+"\">1 star</label>" +
+        "</div>";
+    
+        text += "</td>"; 
+
+
+        // car rating
+
+
         
         text += "</tr>";
     }
     
     text += "</tbody></table>";
     $(document.documentElement).append(text);
+    
+}
+
+
+function rateRACS(el) {
+    
+    var arr = el.id.split("star");
+    var ratingRACSName = arr[1].split("");
+    
+    var obj = {};
+    obj.name = arr[1].substring(1);
+    obj.averageScore = parseFloat(ratingRACSName[0]);
+
+    $.ajax({
+        url: rateLink,
+        method: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
+        success: function(racs) {
+            displayRACSRating(racs);
+        },
+        error: function(err) {
+            toastr.error("Could not display rent-a-car service rating");
+        }
+    })
 }
 
 function displayRoomReservations(roomReservations) {

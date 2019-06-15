@@ -26,11 +26,29 @@
     <div id="nav-placeholder"></div>
     
     <div class="text">
-        <a id="viewRACSAverageRating" href="#">View RACS average rating</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        <p id="showRACSAverageRating" style="display: none;"></p>
-    </div>
+        <a id="viewRACSAverageRating" href="#" style="float: left; margin-top: 10px">View RACS average rating</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <p id="showRACSAverageRating" style="display: none;">
+    
+            <p class="rate" style="display: none;">
+                <input type="radio" id="avgstar5" value="5" />
+                <label for="avgstar5id">5 stars</label>
 
-    <div class="text">
+                <label for="avgstar4id">4 stars</label>
+                <input type="radio" id="avgstar4id" value="4" />
+                
+                <label for="avgstar3id">3 stars</label>
+                <input type="radio" id="avgstar3id" value="3" />
+                
+                <label for="avgstar2id">2 stars</label>
+                <input type="radio" id="avgstar2id" value="2" />
+                
+                <label for="avgstar1id">1 star</label>
+                <input type="radio" id="avgstar1id" value="1" />
+                <div id="avgscore"></div>
+            </p>
+        </p>
+
+    <div class="text" style="margin-top: 40px;">
         <a id="viewAverageRatingForEachCar" href="#">View average rating of each car from RACS</a>
         <p id="showAverageRatingForEachCar" style="display: none;"></p>
     </div>
