@@ -6,11 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.Room;
-import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.domain.dto.SearchRoomDTO;
 import com.FlightsReservations.domain.enums.RoomType;
+import com.FlightsReservations.repository.HotelAdminRepository;
+import com.FlightsReservations.repository.HotelRepository;
 import com.FlightsReservations.repository.RoomRepository;
 
 @Service
@@ -18,6 +21,12 @@ public class RoomService
 {
 	@Autowired
 	RoomRepository repository;
+	
+	@Autowired
+	HotelAdminRepository hotelAdminRepository;
+	
+	@Autowired
+	HotelRepository hotelRepository;
 	
 	public List<RoomDTO> search(SearchRoomDTO searchDTO){
 		ArrayList<Room> rooms = (ArrayList<Room>) this.repository.findAll();
@@ -62,6 +71,38 @@ public class RoomService
 									room.getHotel().getName(),
 									room.getNumberOfVotes());
 		return dto;
+	}
+
+	public String getHotelName(String email)
+	{
+		HotelAdmin ha = hotelAdminRepository.findByEmail(email);
+		if(ha==null || ha.getHotel()==null) 
+		{
+			System.out.println("Nisam pronasao");
+			return null;
+		}
+		else return ha.getHotel().getName();
+	}
+
+	public Room create(RoomDTO dto)
+	{//int number, int numberOfGuests, String type, float averageScore, double overNightStay, int floor, Hotel hotel, int numberOfVotes)
+		Hotel hotel = hotelRepository.findByName(dto.getHotelName() );
+		if(hotel!=null)
+		{	
+			Room room = new Room(dto.getNumber(), 
+						  dto.getNumberOfGuests(),
+						  dto.getType(), 
+						  dto.getAverageScore(), 
+						  dto.getOverNightStay(), 
+						  dto.getFloor(), 
+						  hotel, 
+						  dto.getNumberOfVotes());
+			hotel.getRoomConfiguration().add(room);
+			repository.save(room);
+			hotelRepository.save(hotel);
+			return room;
+		}
+		return null;
 	}
 
 }

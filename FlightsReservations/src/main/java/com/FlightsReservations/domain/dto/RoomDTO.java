@@ -7,12 +7,8 @@ public class RoomDTO {
 	private double overNightStay;
 	
 	private int number;
-		
-	private int floor;
-	
-	
 	private int numberOfGuests;	
-	
+	private int floor;
 	private String type;
 	
 	private String hotelName;

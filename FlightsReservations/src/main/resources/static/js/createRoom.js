@@ -4,29 +4,36 @@ import { checkRoleFromToken } from "./securityStuff.js";
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
+var hotel;
 window.create_room = create_room;
 $(document).ready(function ()
 		{
-	/*
-			var myForm = document.getElementById("createRoomForm");
+			console.log(localStorage.getItem("email"));
+			var email = localStorage.getItem("email");
+	
+			//var myForm = document.getElementById("createRoomForm");
             $.ajax(
                     {
-        	            url: "http://localhost:8080/Admin/lookupHotelAdmins",//link assigned to method in AdminController
+        	            url: "http://localhost:8080/rooms/getHotel" + "?email=" + email, //+ "&createRoom=",//link assigned to method in AdminController
         	            method: "GET",				
         	            dataType: "json",
         	            contentType: "application/json",
         	            headers: { "Authorization": "Bearer " + token}, 
-        	            success: function(admins) {
-        	                display_admins(admins);
+        	            success: function(result) {
+        	                add_hotel(result);
         	            }, error: function(error) {
         	                console.log(error);
         	            }
                     })
             //console.log(admins);
-	 */
 		loadNavbar('hotelsHomepageNavItem');
 		}
 	);
+
+function add_hotel(result)
+{
+	hotel = result;
+}
 
 function validate_inputs(myForm)
 {
@@ -84,10 +91,10 @@ function create_room()
                     type : myForm.type.value,
                     averageScore : 0.0,
                     floor : myForm.floor.value,
-                    numberOfVotes: 0
-                    
+                    numberOfVotes: 0,
+                    hotelName : hotel
                     /*//this is a DTO => not all field are necessary
-                    hotelAdmin : null,//Object
+                    hotelName :  
                     roomConfiguration : null,//Set
                     
                     additionalServices : null,//Set
@@ -99,7 +106,7 @@ function create_room()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotels/addRoom",//link assigned to method in RoomController
+            url: "http://localhost:8080/rooms/create",//link assigned to method in RoomController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",

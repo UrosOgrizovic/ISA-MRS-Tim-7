@@ -87,6 +87,7 @@ public class HotelDTO {
 	public HotelDTO(Hotel h) {
 		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getState(), h.getPromoDescription(), h.getAverageScore(),
 				h.getNumberOfVotes());
+		//this.id = h.getId();
 	}
 
 	public float getAverageScore() {

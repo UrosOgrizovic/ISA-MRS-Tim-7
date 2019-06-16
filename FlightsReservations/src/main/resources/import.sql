@@ -21,7 +21,11 @@ INSERT INTO users (user_type, id, address, email, first_name, last_name, passwor
 
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("HA", 8, 'adresa2', 'hoteladmin1@example.com', 'Pero', 'Peric', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("HA", 9, 'adresa2', 'hoteladmin2@example.com', 'Marko', 'Markovic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("HA", 12, 'adresa2', 'hoteladmin3@example.com', 'Momo', 'Momic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 11, 'adresa3', 'airlineadmin1@example.com', 'Miljan', 'Miljanov', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
 
 
 INSERT INTO authority (id, name) VALUES (1, 'ROLE_USER');
@@ -34,12 +38,15 @@ INSERT INTO user_authority (user_id, authority_id) VALUES (6, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (6, 2);
 INSERT INTO user_authority (user_id, authority_id) VALUES (7, 1);
 INSERT INTO user_authority (user_id, authority_id) VALUES (7, 2);
+INSERT INTO user_authority (user_id, authority_id) VALUES (12,2);
 
 
 UPDATE users SET airline_id = 1 WHERE id = 6;
 UPDATE company SET admin_id = 6 WHERE id = 1;
 UPDATE users SET airline_id = 4 WHERE id = 7;
 UPDATE company SET admin_id = 7 WHERE id = 4;
+UPDATE company SET admin_id = 12 WHERE id = 3;
+UPDATE users SET hotel_id = 3 WHERE id = 12;
 
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia", 0);
@@ -61,5 +68,3 @@ INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, pr
 INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0, 3.27, 44);
 INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
 
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
