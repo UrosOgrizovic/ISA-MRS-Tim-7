@@ -111,19 +111,19 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (4, 1);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (4, 2);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (4, 3);
 
-INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 1);
-INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 2);
-INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 3);
-INSERT INTO airline_airports (airline_id, airport_id) VALUES (1, 4);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 1);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 2);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 3);
+INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 4);
 --  =================================================================================
 
 
 
 
 -- AIRLINE PRICELISTS  =================================================================================
-INSERT INTO airline_price_list (id, first, business, economic) VALUES (1, 100.0, 50.0, 20.0);
-INSERT INTO airline_price_list (id, first, business, economic) VALUES (2, 200.0, 150.0, 80.0);
-INSERT INTO airline_price_list (id, first, business, economic) VALUES (3, 400.0, 320.0, 140.0);
+INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (1, 100.0, 50.0, 20.0);
+INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (2, 200.0, 150.0, 80.0);
+INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (3, 400.0, 320.0, 140.0);
 --  =================================================================================
 
 
@@ -135,6 +135,7 @@ update company SET pricelist_id = 1 WHERE id = 1;
 
 UPDATE airline_price_list SET airline_id = 4 WHERE id = 2;
 update company SET pricelist_id = 2 WHERE id = 4;
+-- ============================================================================================================
 
 UPDATE airline_price_list SET airline_id = 6 WHERE id = 3;
 update company SET pricelist_id = 3 WHERE id = 6;
@@ -147,7 +148,12 @@ update company SET pricelist_id = 3 WHERE id = 6;
 -- CARS ============================================================================================================
 INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 0, 4.35, 57);
 INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0, 3.27, 44);
-INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
 -- ============================================================================================================
 
+
+
+
+-- CARS ============================================================================================================
+INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
+-- ============================================================================================================
 
