@@ -8,10 +8,7 @@ import com.FlightsReservations.domain.enums.AdminType;
 @Entity
 public class SystemAdmin extends Admin
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2269916359782649750L;
+	private static final long serialVersionUID = 1L;
 
 	public SystemAdmin() { this.setType(AdminType.SYSTEM);}
 	

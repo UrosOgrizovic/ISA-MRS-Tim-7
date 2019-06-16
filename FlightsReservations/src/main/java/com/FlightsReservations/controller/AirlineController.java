@@ -36,7 +36,7 @@ public class AirlineController {
 		AirlineDTO a = service.findOne(name);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,14 +49,14 @@ public class AirlineController {
 		AirlineDTO a = service.create(airline);
 		if (a != null)
 			return new ResponseEntity<>(a, HttpStatus.CREATED);
-		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping(value = "/update/{airline}/{promo}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> update(@NotBlank @PathVariable String airline, @NotBlank @PathVariable String promo) {
 		if (service.update(airline, promo))
 			return new ResponseEntity<>("OK", HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@PutMapping(value = "/addAirport/{airline}/{airport}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,7 +65,7 @@ public class AirlineController {
 		AirportDTO dto = service.addAirport(airline, airport);
 		if (dto != null)
 			return new ResponseEntity<>(dto, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(value = "/airports/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,17 +81,14 @@ public class AirlineController {
 
 	@GetMapping(value = "/pricelist/{airline}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPricelist(@NotBlank @PathVariable String airline) {
-		PricelistDTO dto = service.getPricelist(airline);
-		if (dto != null)
-			return new ResponseEntity<>(dto, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(service.getPricelist(airline), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/pricelist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> setPricelist(@Valid @RequestBody PricelistDTO dto) {
 		if (service.setPricelist(dto))
-			return new ResponseEntity<>("", HttpStatus.OK);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(value = "/reports/day", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -275,7 +275,7 @@ public class FlightReservationService {
 			try {
 				minDate = sdf.parse("2050-05-05");
 			} catch (ParseException e) {
-				e.printStackTrace();
+				System.err.println("CANCEL RESERVATION DATE CONVERSION FAILED.");
 			}
 			for (Flight f : fr.getFlights()) {
 				Date takeoffTime = f.getTakeoffTime();

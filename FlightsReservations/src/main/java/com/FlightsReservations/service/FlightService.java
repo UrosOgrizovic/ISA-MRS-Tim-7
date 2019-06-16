@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -278,11 +277,10 @@ public class FlightService {
 	}
 	
 	public Flight findOne(Long id) {
-		try {
-			return repository.findById(id).get();
-		} catch (NoSuchElementException e) {
-			return null;
-		}
+		Optional<Flight> opt = repository.findById(id);
+		if (opt.isPresent())
+			return opt.get();
+		return null;
 	}
 	
 	public Set<FlightDTO> findAll() {

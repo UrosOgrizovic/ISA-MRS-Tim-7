@@ -99,7 +99,7 @@ public class AirlineAdminService {
 
 	public AirlineAdminDTO getAdminFromContext() {
 		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return new AirlineAdminDTO(admin);
+		return new AirlineAdminDTO(repository.findByEmail(admin.getEmail()));
 	}
 
 
