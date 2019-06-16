@@ -7,8 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,6 +46,8 @@ public class AirlineService {
 					t.getState(),
 					t.getPromoDescription(), 
 					t.getAverageScore(), t.getNumberOfVotes());
+			AirlinePriceList pl = new AirlinePriceList(a, 0, 0, 0);
+			a.setPricelist(pl);
 			repository.save(a);
 			return createDTO(a);
 		}

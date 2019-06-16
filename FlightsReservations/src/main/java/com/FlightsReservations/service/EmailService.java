@@ -28,7 +28,7 @@ public class EmailService {
 			mail.setText(text);
 			javaMailSender.send(mail);
 		} catch (MailException e) {
-			e.printStackTrace();
+			System.err.println("SENDING EMAIL FAILED.");
 		}
 	}
 }
