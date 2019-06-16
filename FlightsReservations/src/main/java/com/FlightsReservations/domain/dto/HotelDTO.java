@@ -43,7 +43,7 @@ public class HotelDTO {
 	private String hotelAdminEmail;
 
 	private Set<HotelPricelistItem> pricelist = new HashSet<HotelPricelistItem>();
-	private HashMap<Integer, HashSet<Room>> roomConfiguration = new HashMap<Integer, HashSet<Room>>();
+	private Set<Room> roomConfiguration = new HashSet<Room>();
 
 	public HotelDTO() {
 		super();
@@ -129,7 +129,7 @@ public class HotelDTO {
 		this.promoDescription = promoDescription;
 	}
 
-	public HashMap<Integer, HashSet<Room>> getRoomConfiguration() {
+	public Set<Room> getRoomConfiguration() {
 		return roomConfiguration;
 	}
 
@@ -143,7 +143,7 @@ public class HotelDTO {
 		this.city = city;
 	}
 
-	public void setRoomConfiguration(HashMap<Integer, HashSet<Room>> roomConfiguration)
+	public void setRoomConfiguration(Set<Room> roomConfiguration)
 	{
 		this.roomConfiguration = roomConfiguration;
 	}

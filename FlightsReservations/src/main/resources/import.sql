@@ -6,7 +6,7 @@
 
 -- ALTER TABLE `users` ALTER `dtype` SET DEFAULT ""
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 1, 'airline1', 26.921, 33.124, 'description1', 4.75, 22, "Belgrade", "Serbia", 0);
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 4, 'airline2', 26.921, 33.124, 'description2', 4.75, 22, "Belgrade", "Serbia", 0);
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 5, 'airline2', 26.921, 33.124, 'description2', 4.75, 22, "Belgrade", "Serbia", 0);
 
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 1, 'adresa1', 'user@example.com', 'Marko', 'Markovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("U", 3, 'adresa1', 'markomarkovic@gmail.com', 'Marko', 'Markovic', '$2a$10$faqFjU6Eihfn6tKTKKqlV.a9hFzfKrOde0sIjuE9WVqlMs/P.WLAu', '01234', true, '2017-10-01 21:58:58');

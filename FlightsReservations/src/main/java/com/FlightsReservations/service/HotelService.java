@@ -139,9 +139,9 @@ public class HotelService {
 		HotelDTO dto = new HotelDTO(hotel);
 		if(hotel.getRoomConfiguration()!=null && !hotel.getRoomConfiguration().isEmpty() )
 		{
-			for (HashMap.Entry<Integer, HashSet<Room>> entry : hotel.getRoomConfiguration().entrySet() )
+			for (Room r : hotel.getRoomConfiguration() )
 			{
-				dto.getRoomConfiguration().put(entry.getKey(), entry.getValue());
+				dto.getRoomConfiguration().add(r);
 			}
 		}
 		if(hotel.getPricelist()!=null && !hotel.getPricelist().isEmpty()) for (HotelPricelistItem pli : hotel.getPricelist())
@@ -164,7 +164,7 @@ public class HotelService {
 					hotel,
 					dto.getNumberOfVotes());
 			
-			hotel.getRoomConfiguration().get(room.getFloor()).add(room);
+			hotel.getRoomConfiguration().add(room);
 			roomRepository.save(room);
 			repository.save(hotel);
 			return true;

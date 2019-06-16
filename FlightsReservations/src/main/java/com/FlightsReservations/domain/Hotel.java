@@ -1,8 +1,6 @@
 package com.FlightsReservations.domain;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +23,7 @@ public class Hotel extends Company
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "hotel_id")
-	private HashMap<Integer, HashSet<Room>> roomConfiguration = new HashMap<Integer ,HashSet<Room>>();
+	private Set<Room> roomConfiguration = new HashSet<Room>();
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private HotelAdmin admin;
@@ -74,12 +72,12 @@ public class Hotel extends Company
 		this.admin = admin;
 	}
 
-	public HashMap<Integer, HashSet<Room>> getRoomConfiguration()
+	public Set<Room> getRoomConfiguration()
 	{
 		return roomConfiguration;
 	}
 
-	public void setRoomConfiguration(HashMap<Integer, HashSet<Room>> roomConfiguration)
+	public void setRoomConfiguration(Set<Room> roomConfiguration)
 	{
 		this.roomConfiguration = roomConfiguration;
 	}

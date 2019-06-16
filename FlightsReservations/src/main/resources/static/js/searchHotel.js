@@ -8,6 +8,7 @@ var emailSelect;
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
+window.search_hotel = search_hotel;
 function validate_inputs(myForm)
 {
 	if(myForm.averageScore.value.trim()=="")
@@ -34,7 +35,7 @@ function search_hotel()
 			state		: "",
 			averageScore: ""
 		 }
-	myForm = document.getElementById("hotelSearchForm");
+	var myForm = document.getElementById("hotelSearchForm");
 	if(validate_inputs(myForm))
 	{
 		if(myForm.name.value.trim()!="")
@@ -73,6 +74,7 @@ function display_search_results(hotels)
 	console.log("Pretraga uspjesna!");
 	var results = document.getElementById("results");
     var text = "<div id=\"foundHotels\"><h2>Search results: <h2><br>";
+    var hotel;
     for (hotel of hotels) {
         text += "<div ><table border=1><tr><td>"+ " " + hotel.name + " " + hotel.city + " " + hotel.state + " " + hotel.averageScore + " " + hotel.longitude + " " + hotel.latitude + "</tr></td></div><br>";
         
