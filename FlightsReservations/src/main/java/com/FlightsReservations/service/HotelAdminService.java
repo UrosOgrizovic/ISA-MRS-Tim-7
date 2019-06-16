@@ -8,13 +8,12 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
+import com.FlightsReservations.repository.HotelRepository;
 
 @Component
 public class HotelAdminService {
@@ -24,7 +23,7 @@ public class HotelAdminService {
 	HotelAdminRepository repository;//TODO: will be deleted
 	
 	@Autowired
-	HotelService hotelService;
+	HotelRepository hotelRepository;
 	
 	
 	public HotelAdminDTO create(HotelAdminDTO dto) {
@@ -47,7 +46,7 @@ public class HotelAdminService {
 			a.setPassword(dto.getPassword());
 			a.setPhone(dto.getPhone());
 			a.setAddress(dto.getAddress());
-			Hotel h = new Hotel(hotelService.findOne(dto.getHotel()) );
+			Hotel h = hotelRepository.findByName(dto.getHotelName() );
 			a.setHotel(h);
 			repository.save(a);
 			return true;
@@ -111,8 +110,8 @@ public class HotelAdminService {
 	private HotelAdminDTO createDTO(HotelAdmin a)
 	{
 		HotelAdminDTO dto = new HotelAdminDTO(a);
-		if(a.getHotel()!=null) dto.setHotel(a.getHotel().getName() );
-		else dto.setHotel("");
+		if(a.getHotel()!=null) dto.setHotelName(a.getHotel().getName() );
+		else dto.setHotelName("");
 	return dto;
 	}
 

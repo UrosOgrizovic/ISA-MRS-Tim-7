@@ -11,7 +11,7 @@ $(document).ready(function(){
     $("#createRACSForm").on('submit', function(e) {
         e.preventDefault();
         
-        racs = {};
+        var racs = {};
         racs.name = document.getElementById("name").value;
         racs.promoDescription = document.getElementById("description").value;
         racs.pricelist = [];

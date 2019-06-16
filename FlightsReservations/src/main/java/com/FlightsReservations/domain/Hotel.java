@@ -1,6 +1,9 @@
 package com.FlightsReservations.domain;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,19 +21,15 @@ import com.FlightsReservations.domain.dto.HotelDTO;
 public class Hotel extends Company
 {
 	@OneToMany(mappedBy = "hotel")
-	private Set<PricelistItem> pricelist;
+	private Set<HotelPricelistItem> pricelist = new HashSet<HotelPricelistItem>();
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "hotel_id")
-	private Set<Room> roomConfiguration;
+	private HashMap<Integer, HashSet<Room>> roomConfiguration = new HashMap<Integer ,HashSet<Room>>();
 	
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "admin")
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private HotelAdmin admin;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
-	private Set<HotelReservation> reservations;
 	
 	public Hotel() {
 		super();
@@ -41,42 +40,28 @@ public class Hotel extends Company
 		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
 	}
 	
-	public Hotel(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
-			int numberOfVotes, HotelAdmin hotelAdmin) {
-		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
-		this.admin = hotelAdmin;
-	}
-
-
 	public Hotel(HotelDTO dto)
 	{
-		super(dto.getName(), dto.getLongitude(), dto.getLatitude(), dto.getCity(), dto.getState(), dto.getPromoDescription(), dto.getAverageScore(), dto.getNumberOfVotes() );
+		this.setAverageScore(dto.getAverageScore() );
+		this.setCity(dto.getCity());
+		this.setLatitude(dto.getLatitude());
+		this.setLongitude(dto.getLongitude());
+		this.setName(dto.getName() );
+		this.setNumberOfVotes(dto.getNumberOfVotes() );
+		this.setPromoDescription(dto.getPromoDescription() );
+		this.setState(dto.getState());
+		//this.setBranchOffices();
+		//this.setPricelist(pricelist);
+		//this.setAdmin();
 	}
 
-	public Set<PricelistItem> getPricelist() {
+
+	public Set<HotelPricelistItem> getPricelist() {
 		return pricelist;
 	}
 
-	public void setPricelist(Set<PricelistItem> pricelist) {
+	public void setPricelist(Set<HotelPricelistItem> pricelist) {
 		this.pricelist = pricelist;
-	}
-
-	public Set<Room> getRoomConfiguration()
-	{
-		return roomConfiguration;
-	}
-
-	public void setRoomConfiguration(Set<Room> roomConfiguration)
-	{
-		this.roomConfiguration = roomConfiguration;
-	}
-
-	public Set<HotelReservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(Set<HotelReservation> reservations) {
-		this.reservations = reservations;
 	}
 
 	public HotelAdmin getAdmin()
@@ -89,6 +74,16 @@ public class Hotel extends Company
 		this.admin = admin;
 	}
 
+	public HashMap<Integer, HashSet<Room>> getRoomConfiguration()
+	{
+		return roomConfiguration;
+	}
+
+	public void setRoomConfiguration(HashMap<Integer, HashSet<Room>> roomConfiguration)
+	{
+		this.roomConfiguration = roomConfiguration;
+	}
+	
 	
 	
 }

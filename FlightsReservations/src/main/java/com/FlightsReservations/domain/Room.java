@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.enums.RoomType;
@@ -28,11 +27,14 @@ public class Room {
 	@NotNull
 	private int floor;
 	
-	@NotBlank
+	@NotNull
 	private RoomType type;
 
 	@Column(nullable = false)
-	private double overallRating;
+	private float averageScore;
+	
+	@Column(nullable = false)
+	private int numberOfVotes;
 	
 	@Column(nullable = false)
 	private double overNightStay;
@@ -40,6 +42,7 @@ public class Room {
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	//@Column(nullable = false)
 	private Hotel hotel;
 	
 	public Room() 
@@ -47,47 +50,35 @@ public class Room {
 		super();
 	}
 	
-	public Room(int number, int numberOfGuests, RoomType type, double overallRating, double overNightStay, int floor, Hotel hotel) 
+	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, int floor, Hotel hotel, int numberOfVotes) 
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
-		this.type = type;
-		this.overallRating = overallRating;
+		this.type = RoomType.valueOf(type);
+		this.averageScore = averageScore;
 		this.overNightStay = overNightStay;
 		this.floor = floor;
 		this.hotel = hotel;
+		this.numberOfVotes = numberOfVotes;
 	}
 	
 	
-	
-	public int getFloor()
-	{
-		return floor;
+	public float getAverageScore() {
+		return averageScore;
 	}
 
-	public void setFloor(int floor)
-	{
-		this.floor = floor;
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
 	}
 
-	public Hotel getHotel() 
-	{
-		return hotel;
+	public int getNumberOfVotes() {
+		return numberOfVotes;
 	}
-	public void setHotel(Hotel hotel) 
-	{
-		this.hotel = hotel;
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
 	}
-	
-	public double getOverallRating() 
-	{
-		return this.overallRating;
-	}
-	
-	public void setOverallRating(double overallRating) 
-	{
-		this.overallRating = overallRating;
-	}
+
 	public double getOverNightStay() 
 	{
 		return overNightStay;
@@ -128,6 +119,26 @@ public class Room {
 	public void setNumberOfGuests(int numberOfGuests)
 	{
 		this.numberOfGuests = numberOfGuests;
+	}
+
+	public Hotel getHotel()
+	{
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel)
+	{
+		this.hotel = hotel;
+	}
+
+	public int getFloor()
+	{
+		return floor;
+	}
+
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
 	}
 	
 	

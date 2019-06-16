@@ -14,6 +14,8 @@ public class RoomReservation extends Reservation {
 	
 	private Date endTime;
 	
+	private float roomRating;
+	
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -37,6 +39,16 @@ public class RoomReservation extends Reservation {
 	public void setRoomId(Long roomId) {
 		this.roomId = roomId;
 	}
+	
+	
+
+	public float getRoomRating() {
+		return roomRating;
+	}
+
+	public void setRoomRating(float roomRating) {
+		this.roomRating = roomRating;
+	}
 
 	public RoomReservation() {}
 
@@ -46,5 +58,6 @@ public class RoomReservation extends Reservation {
 		this.roomId = roomId;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.roomRating = 0;
 	}
 }

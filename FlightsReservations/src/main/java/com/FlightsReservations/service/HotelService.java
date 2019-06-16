@@ -1,6 +1,8 @@
 package com.FlightsReservations.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.HotelAdmin;
-import com.FlightsReservations.domain.HotelReservation;
+import com.FlightsReservations.domain.HotelPricelistItem;
 import com.FlightsReservations.domain.Room;
-import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.domain.dto.HotelDTO;
-import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
@@ -46,9 +46,9 @@ public class HotelService {
 					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
 			HotelAdmin ha = null;
-			if(t.getHotelAdmin()!="" && t.getHotelAdmin()!=null)
+			if(t.getHotelAdminEmail()!="" && t.getHotelAdminEmail()!=null)
 			{
-				ha = adminRepository.findByEmail(t.getHotelAdmin() );
+				ha = adminRepository.findByEmail(t.getHotelAdminEmail() );
 				if(ha!=null)
 				{
 					
@@ -137,27 +137,34 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
-			dto.getRooms().add(a.getNumber());
-		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
-			dto.getReservations().add(new HotelReservationDTO(r));
+		if(hotel.getRoomConfiguration()!=null && !hotel.getRoomConfiguration().isEmpty() )
+		{
+			for (HashMap.Entry<Integer, HashSet<Room>> entry : hotel.getRoomConfiguration().entrySet() )
+			{
+				dto.getRoomConfiguration().put(entry.getKey(), entry.getValue());
+			}
+		}
+		if(hotel.getPricelist()!=null && !hotel.getPricelist().isEmpty()) for (HotelPricelistItem pli : hotel.getPricelist())
+			dto.getPricelist().add(pli);
 		
 		return dto;
 	}
 	
 	public boolean addRoom(RoomDTO dto) {
-		Hotel hotel = dto.getHotel();
+		Hotel hotel = repository.findByName(dto.getHotelName() );
 		
-		if (hotel != null) { 
+		if (hotel != null) { //int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes
 			Room room = new Room(
 					dto.getNumber(),
 					dto.getNumberOfGuests(),
 					dto.getType(),
-					dto.getOverallRating(),
+					dto.getAverageScore(),
 					dto.getOverNightStay(),
 					dto.getFloor(),
-					hotel);
-			hotel.getRoomConfiguration().add(room);
+					hotel,
+					dto.getNumberOfVotes());
+			
+			hotel.getRoomConfiguration().get(room.getFloor()).add(room);
 			roomRepository.save(room);
 			repository.save(hotel);
 			return true;

@@ -4,16 +4,21 @@
         <title>Create/Add an Airline</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		
+		
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>    
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href=".\..\css\table.css">
-        <link rel="stylesheet" href=".\..\css\imageButton.css">
-        <script src=".\..\js\createAirline.js"></script>
+        <script src=".\..\js\createAirline.js" type=module></script>
+        <!-- script src=".\..\flightsFront\administrator\js\map.js"></script-->
+		<link rel="stylesheet" href="../css/homepage.css">
 
 
     </head>
 
     <body>
+    <div id="nav-placeholder"></div>
         <br><br><br>
         <form id="createAirlineForm"><!-- onsubmit="return createHotel(this)" action="login.html" onsubmit="createHotel()"-->
         <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
@@ -52,16 +57,13 @@
                 -->
                 <tr>
                     <td><label> Administrator*: </label></td>
-                    <td> <select disabled name="hotelAdmin">
-                            <option value="0">Allow Selection of Airline Administrator</option>
+                    <td> <select name="airlineAdmin" id="admins">
                         </select>
-                    </td>    <!-- add a Hotel administrator selection-->
+                    </td>
                 </tr>
                 <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
                 <tr>
-                    <td> <!--input type="button" class="btn btn-primary btn-lg" onClick="createHotel()" value="Add Hotel"-->
-                    </td>
-                    <td align="center">
+                    <td colspan=2 align="center">
                     	<button type="submit" class="btn btn-primary" name="createAirline" onClick="create_airline()" id="submitButton" >Add Airline</button>
                     	                                                   
                         <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
@@ -70,5 +72,16 @@
                 <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
         </table>
         </form>
+        
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>    
+    <script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>   
+		
     </body>
 </html>

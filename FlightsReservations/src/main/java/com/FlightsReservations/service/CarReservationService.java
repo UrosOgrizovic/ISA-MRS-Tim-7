@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
+import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
 import com.FlightsReservations.repository.AbstractUserRepository;
@@ -50,8 +51,10 @@ public class CarReservationService {
 			total = total - total * discount/100;
 		}
 		
-		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime);
-		
+		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime, car.getRACSBranchOffice().getId());
+		reservation.setRating(new Rating());
+		reservation.getRating().setReservation(reservation);
+		reservation.getRating().setCompanyBranchOfficeId(car.getRACSBranchOffice().getId());
 		reservation = carReservationRepository.save(reservation);
 		return new CarReservationDTO(reservation);
 	}
@@ -59,9 +62,9 @@ public class CarReservationService {
 	private boolean creatingSemanticValidation(CarReservationRequestDTO dto) {
 		
 		// user with given email must exist
-		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null) {
+		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null)
 			return false;
-		}
+		
 		// car with given id must exist 
 		if (carRepository.findById(dto.getCarId()) == null)
 			return false;

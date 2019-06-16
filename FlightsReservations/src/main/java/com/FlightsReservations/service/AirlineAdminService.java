@@ -11,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.AirlineAdmin;
+import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
+import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.repository.AirlineAdminRepository;
 import com.FlightsReservations.repository.AuthorityRepository;
 import com.FlightsReservations.repository.UserRepository;
@@ -83,6 +85,15 @@ public class AirlineAdminService {
 	
 	
 	private AirlineAdminDTO createDTO(AirlineAdmin a) {
+		AirlineAdminDTO dto = new AirlineAdminDTO(a);
+		if(a.getAirline()==null)
+		{
+			dto.setAirlineName("");
+		}
+		else
+		{
+			dto.setAirlineName(a.getAirline().getName() );
+		}
 		return new AirlineAdminDTO(a);
 	}
 
@@ -99,6 +110,18 @@ public class AirlineAdminService {
 		for(AirlineAdmin admin : admins)
 		{
 			results.add(createDTO(admin) );
+		}
+		return results;
+	}
+
+
+	public List<AirlineAdminDTO> lookupAll()
+	{
+		List<AirlineAdmin> admins = repository.findAll();
+		List<AirlineAdminDTO> results = new ArrayList<AirlineAdminDTO>();
+		for(AirlineAdmin admin : admins)
+		{
+			if(admin.getAirline()==null) results.add(createDTO(admin));//only admins who don't already have a hotel assigned
 		}
 		return results;
 	}

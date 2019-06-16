@@ -42,7 +42,7 @@ public class RoomService
 				continue;
 			}
 			
-			if(!searchDTO.getOverallRating().equals("") && Float.parseFloat(searchDTO.getOverallRating()) != rooms.get(i).getOverallRating()){
+			if(!searchDTO.getOverallRating().equals("") && Float.parseFloat(searchDTO.getOverallRating()) != rooms.get(i).getAverageScore()){
 				continue;
 			}
 			results.add(this.createDTO( (rooms.get(i) ) ) );
@@ -52,14 +52,15 @@ public class RoomService
 
 	private RoomDTO createDTO(Room room)
 	{
-		RoomDTO dto = new RoomDTO(
-									room.getOverallRating(),
-									room.getOverNightStay(),
+		RoomDTO dto = new RoomDTO(//int number, int floor, int numberOfGuests, String type, float averageScore, double overNightStay, String hotelName, int numberOfVotes
 									room.getNumber(),
 									room.getFloor(),
 									room.getNumberOfGuests(),
-									room.getType() );
-
+									room.getType().toString(),
+									room.getAverageScore(),
+									room.getOverNightStay(),
+									room.getHotel().getName(),
+									room.getNumberOfVotes());
 		return dto;
 	}
 

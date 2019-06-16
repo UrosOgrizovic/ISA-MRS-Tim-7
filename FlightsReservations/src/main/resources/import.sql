@@ -21,6 +21,7 @@ INSERT INTO users (user_type, id, address, email, first_name, last_name, passwor
 
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("HA", 8, 'adresa2', 'hoteladmin1@example.com', 'Pero', 'Peric', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("HA", 9, 'adresa2', 'hoteladmin2@example.com', 'Marko', 'Markovic', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
+INSERT INTO users (user_type, id, address, email, first_name, last_name, password, phone, enabled, last_password_reset_date) VALUES ("AA", 11, 'adresa3', 'airlineadmin1@example.com', 'Miljan', 'Miljanov', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '97412' , true, '2017-10-01 18:57:58');
 
 
 INSERT INTO authority (id, name) VALUES (1, 'ROLE_USER');

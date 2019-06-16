@@ -39,10 +39,6 @@ function validate_inputs(myForm)
         alert("You must enter Hotel's name!");
         return false;
     }
-    else//in case of wrong type (add later)
-    {
-
-    }
 
     if(myForm.longitude.value.trim()=="")
     {
@@ -60,29 +56,18 @@ function validate_inputs(myForm)
     if(myForm.city.value.trim()=="")
     {
     	alert("You must enter Hotel's city!");
+    	return false;
     }
     if(myForm.state.value.trim()=="")
     {
     	alert("You must enter Hotel's Country/State!");
+    	return false;
     }
     if(myForm.hotelAdmin.value.trim()=="")
     {
     	alert("You must select Hotel's administrator!")
+    	return false;
     }
-/*
-    if(myForm.hotelAdministrator.value=="")//add hotel administrators first ??
-    {
-        alert("You must enter a Hotel descritpion!");
-        return false;
-    }
-
-    /*if(form.logotPath.value=="") //fix later
-    {
-       
-        return false;
-    }
-    */
-    
     return true;
 }
 
@@ -98,6 +83,7 @@ function create_hotel()
     	console.log(myForm.hotelAdmin.value);
         var hotel =
                 {
+        			id : 1,
                     name : myForm.name.value,
                     longitude : myForm.longitude.value,
                     latitude : myForm.latitude.value,
@@ -106,7 +92,7 @@ function create_hotel()
                     promoDescription : myForm.promoDescription.value,
                     averageScore : 0.0,
                     numberOfVotes: 0.0,
-                    admin : myForm.hotelAdmin.value
+                    hotelAdmin : myForm.hotelAdmin.value
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set

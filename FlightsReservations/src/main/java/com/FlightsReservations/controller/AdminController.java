@@ -101,7 +101,7 @@ public class AdminController
     @RequestMapping(value = "/lookupAirlineAdmins", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AirlineAdminDTO> lookupAirlineAdmins()
     {
-    	List<AirlineAdminDTO> results = airlineAdminService.searchAll();
+    	List<AirlineAdminDTO> results = airlineAdminService.lookupAll();
     	
 		return results;
     }

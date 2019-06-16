@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name="users")
 @DiscriminatorColumn(name="user_type", discriminatorType=DiscriminatorType.STRING)
-public class AbstractUser implements UserDetails{
+public class AbstractUser implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 

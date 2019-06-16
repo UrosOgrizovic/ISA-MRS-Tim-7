@@ -158,7 +158,7 @@ public class UserService {
 			
 		}
 		
-		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId(), types.get(types.size()-1));
+		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
