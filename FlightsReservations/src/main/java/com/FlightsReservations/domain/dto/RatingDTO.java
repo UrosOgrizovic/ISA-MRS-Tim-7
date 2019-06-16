@@ -2,21 +2,18 @@ package com.FlightsReservations.domain.dto;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 
 import org.springframework.lang.Nullable;
 
 public class RatingDTO {
 
 	@Nullable
-	@Positive
-	@Min(value = 1)
+	@Min(value = 0)
 	@Max(value = 5)
 	private float companyRating;
 	
 	@Nullable
-	@Positive
-	@Min(value = 1)
+	@Min(value = 0)
 	@Max(value = 5)
 	private float flightRoomCarRating;
 
@@ -32,10 +29,20 @@ public class RatingDTO {
 
 	public RatingDTO(Long companyBranchOfficeId, float companyRating, Long reservationId, float flightRoomCarRating) {
 		super();
-		this.companyRating = companyRating;
+		if (companyRating <= 0) {
+			this.companyRating = 0;
+		} else {
+			this.companyRating = companyRating;
+		}
+		
 		this.companyBranchOfficeId = companyBranchOfficeId;
 		this.reservationId = reservationId;
-		this.flightRoomCarRating = flightRoomCarRating;
+		if (flightRoomCarRating <= 0) {
+			this.flightRoomCarRating = 0;
+		} else {
+			this.flightRoomCarRating = flightRoomCarRating;
+		}
+		
 	}
 
 	public Long getCompanyBranchOfficeId() {

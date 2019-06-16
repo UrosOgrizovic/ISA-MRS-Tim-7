@@ -17,8 +17,6 @@ public class CarReservation extends Reservation {
 	
 	private Long racsBranchOfficeId;
 
-	private float carRating;
-	
 	public Long getRACSBranchOfficeId() {
 		return racsBranchOfficeId;
 	}
@@ -51,14 +49,6 @@ public class CarReservation extends Reservation {
 		this.carId = carId;
 	}
 	
-	public float getCarRating() {
-		return carRating;
-	}
-
-	public void setCarRating(float carRating) {
-		this.carRating = carRating;
-	}
-
 	public CarReservation() {}
 
 	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner,
@@ -68,7 +58,6 @@ public class CarReservation extends Reservation {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.racsBranchOfficeId = racsBranchOfficeId;
-		this.carRating = 0;
 	}
 
 	@Override

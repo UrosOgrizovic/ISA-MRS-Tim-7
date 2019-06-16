@@ -20,9 +20,17 @@ if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 window.cancelCarReservation = cancelCarReservation;
 window.cancelFlightReservation = cancelFlightReservation;
 window.cancelRoomReservation = cancelRoomReservation;
-window.rateRACS = rateRACS;
+window.rate = rate;
+window.displayRatingStarsOnLoad = displayRatingStarsOnLoad;
+window.checkCarRatings = checkCarRatings;
+
 
 var msg = localStorage.getItem("successMessageForToastr");
+var companyRatingsToCheck = [];
+var carRatingsToCheck = [];
+// used in displayRatingStarsOnLoad
+const racsStars = ["racsstar1|", "racsstar2|", "racsstar3|", "racsstar4|", "racsstar5|"];
+const carStars = ["carstar1|", "carstar2|", "carstar3|", "carstar4|", "carstar5|"];
 
 $(document).ready(function(){
     if (msg != "" && msg != null) {
@@ -50,7 +58,7 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.star', function(el) {
-        rateRACS(el.target);
+        rate(el.target);
     });
 
     loadNavbar('profileHomepageNavItem');
@@ -201,12 +209,11 @@ function displayCarReservations(carReservations) {
     text += "<th>Date of reservation</th>";
     text += "<th>Start time</th>";
     text += "<th>End time</th>";
-    text += "<th>Average RACS rating</th>";
     text += "<th>Your RACS rating</th>";
-    text += "<th>Average car rating</th>";
     text += "<th>Your car rating</th>";
     text += "</tr>";
     text += "</thead><tbody>";
+
     for (var cr of carReservations) {
         text += "<tr>";
         var currentTime = new Date();
@@ -233,68 +240,175 @@ function displayCarReservations(carReservations) {
         text += "<td>" + cr.startTime + "</td>";
         text += "<td>" + cr.endTime + "</td>";
 
-
-
-
-
-
-
-
-
         // RACS rating
-                
-
-        // Your rating
 
         text += "<td>";
-        var star5id = "star5" + racs.name;
-        var star4id = "star4" + racs.name;
-        var star3id = "star3" + racs.name;
-        var star2id = "star2" + racs.name;
-        var star1id = "star1" + racs.name;
+        var star5id = "racsstar5|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star4id = "racsstar4|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star3id = "racsstar3|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star2id = "racsstar2|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star1id = "racsstar1|" + cr.id + "|" + cr.racsBranchOfficeId;
         /* each radio group has to have a different name, otherwise only one 
         one of them will be checked
          */
-        var groupName = "rate" + racs.name;
+        var groupName = "racsrate" + cr.id;
+        
+        // if already rated, display without star class and add to companyRatingsToCheck
+        if (cr.rating.companyRating > 0) {
+            text += "<div class=\"rate\">" +
+            "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
+            "<label for=\""+star5id+"\">5 stars</label>" + 
+            "<input type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+            "<label for=\""+star4id+"\">4 stars</label>" +
+            "<input type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+            "<label for=\""+star3id+"\">3 stars</label>" +
+            "<input type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+            "<label for=\""+star2id+"\">2 stars</label>" +
+            "<input type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+            "<label for=\""+star1id+"\">1 star</label>" +
+            "</div>";
 
-        text += "<div class=\"rate\">" +
-        "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
-        "<label for=\""+star5id+"\">5 stars</label>" + 
-        "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
-        "<label for=\""+star4id+"\">4 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
-        "<label for=\""+star3id+"\">3 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
-        "<label for=\""+star2id+"\">2 stars</label>" +
-        "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
-        "<label for=\""+star1id+"\">1 star</label>" +
-        "</div>";
-    
+            if (cr.rating.companyRating == 1) {
+                companyRatingsToCheck.push(star1id);
+            } else if (cr.rating.companyRating == 2) {
+                companyRatingsToCheck.push(star2id);
+            } else if (cr.rating.companyRating == 3) {
+                companyRatingsToCheck.push(star3id);
+            } else if (cr.rating.companyRating == 4) {
+                companyRatingsToCheck.push(star4id);
+            } else if (cr.rating.companyRating == 5) {
+                companyRatingsToCheck.push(star5id);
+            }
+        } else {
+            text += "<div class=\"rate\">" +
+            "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
+            "<label for=\""+star5id+"\">5 stars</label>" + 
+            "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+            "<label for=\""+star4id+"\">4 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+            "<label for=\""+star3id+"\">3 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+            "<label for=\""+star2id+"\">2 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+            "<label for=\""+star1id+"\">1 star</label>" +
+            "</div>";
+
+        }
+
+        
+
+            
+        
         text += "</td>"; 
-
+        
 
         // car rating
 
+        text += "<td>";
+        var star5id = "carstar5|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star4id = "carstar4|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star3id = "carstar3|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star2id = "carstar2|" + cr.id + "|" + cr.racsBranchOfficeId;
+        var star1id = "carstar1|" + cr.id + "|" + cr.racsBranchOfficeId;
+        /* each radio group has to have a different name, otherwise only one 
+        one of them will be checked
+         */
+        var groupName = "carrate" + cr.id;
 
+        // if already rated, display without star class and add to carRatingsToCheck
+        if (cr.rating.flightRoomCarRating > 0) {
+            text += "<div class=\"rate\">" +
+            "<input type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
+            "<label for=\""+star5id+"\">5 stars</label>" + 
+            "<input type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+            "<label for=\""+star4id+"\">4 stars</label>" +
+            "<input type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+            "<label for=\""+star3id+"\">3 stars</label>" +
+            "<input type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+            "<label for=\""+star2id+"\">2 stars</label>" +
+            "<input type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+            "<label for=\""+star1id+"\">1 star</label>" +
+            "</div>";
+
+            if (cr.rating.flightRoomCarRating == 1) {
+                carRatingsToCheck.push(star1id);
+            } else if (cr.rating.flightRoomCarRating == 2) {
+                carRatingsToCheck.push(star2id);
+            } else if (cr.rating.flightRoomCarRating == 3) {
+                carRatingsToCheck.push(star3id);
+            } else if (cr.rating.flightRoomCarRating == 4) {
+                carRatingsToCheck.push(star4id);
+            } else if (cr.rating.flightRoomCarRating == 5) {
+                carRatingsToCheck.push(star5id);
+            }
+
+        } else {
+            text += "<div class=\"rate\">" +
+            "<input class=\"star\" type=\"radio\" id=\""+star5id+"\" name=\""+groupName+"\"  value=\"5\" />" + 
+            "<label for=\""+star5id+"\">5 stars</label>" + 
+            "<input class=\"star\" type=\"radio\" id=\""+star4id+"\" name=\""+groupName+"\" value=\"4\" />" +
+            "<label for=\""+star4id+"\">4 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star3id+"\" name=\""+groupName+"\" value=\"3\" />" +
+            "<label for=\""+star3id+"\">3 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star2id+"\" name=\""+groupName+"\" value=\"2\" />" +
+            "<label for=\""+star2id+"\">2 stars</label>" +
+            "<input class=\"star\" type=\"radio\" id=\""+star1id+"\" name=\""+groupName+"\" value=\"1\" />" +
+            "<label for=\""+star1id+"\">1 star</label>" +
+            "</div>";
+        }
+
+        text += "</td>"; 
         
         text += "</tr>";
     }
     
     text += "</tbody></table>";
     $(document.documentElement).append(text);
+    displayRatingStarsOnLoad();
     
 }
 
-
-function rateRACS(el) {
+function displayRatingStarsOnLoad() {
     
+    var afterSplit = [];
+    for (var id of companyRatingsToCheck) {
+        document.getElementById(id).checked = true;
+        afterSplit = id.split("|");
+        for (var star of racsStars) {
+            document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+        }
+    }
+    for (var id of carRatingsToCheck) {
+        document.getElementById(id).checked = true;
+        afterSplit = id.split("|");
+        for (var star of carStars) {
+            document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+        }
+    }
+}
+
+function checkCarRatings() {
+
+}
+
+function rate(el) {
+    
+    console.log(el);
     var arr = el.id.split("star");
-    var ratingRACSName = arr[1].split("");
+    var ratingObjectName = arr[1].split("|");
     
     var obj = {};
-    obj.name = arr[1].substring(1);
-    obj.averageScore = parseFloat(ratingRACSName[0]);
-
+    
+    if (arr[0].includes("racs")) {
+        obj.companyRating = parseInt(ratingObjectName[0]);
+        obj.flightRoomCarRating = 0;
+    } else {
+        obj.companyRating = 0;
+        obj.flightRoomCarRating = parseInt(ratingObjectName[0]);
+    }
+    obj.reservationId = parseInt(ratingObjectName[1]);
+    obj.companyBranchOfficeId = parseInt(ratingObjectName[2]);
+    console.log(obj);
     $.ajax({
         url: rateLink,
         method: "PUT",
@@ -302,13 +416,84 @@ function rateRACS(el) {
         contentType: "application/json",
         dataType: "json",
         headers: { "Authorization": "Bearer " + token}, 
-        success: function(racs) {
-            displayRACSRating(racs);
+        success: function(rating) {
+            displayRating(rating);
         },
         error: function(err) {
             toastr.error("Could not display rent-a-car service rating");
+            console.log(err);
         }
     })
+}
+
+function displayRating(rating) {
+    var elementId = "";
+    if (rating.companyRating == 5) {
+        elementId = "racsstar5|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 4) {
+        elementId = "racsstar4|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 3) {
+        elementId = "racsstar3|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 2) {
+        elementId = "racsstar2|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 1) {
+        elementId = "racsstar1|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        
+    }
+    
+    // remove class 'star' so that user cannot rate again
+    if (rating.companyRating > 0) {
+        var elIds = ["racsstar5|" + rating.reservationId + "|" + rating.companyBranchOfficeId, 
+                    "racsstar4|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "racsstar3|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "racsstar2|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "racsstar1|" + rating.reservationId + "|" + rating.companyBranchOfficeId];
+        for (var elId of elIds) {
+            document.getElementById(elId).classList.remove("star");
+            document.getElementById(elId).disabled = true;
+        }
+        
+    }
+    
+    if (rating.flightRoomCarRating == 5) {
+        elementId = "carstar5|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 4) {
+        elementId = "carstar4|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 3) {
+        elementId = "carstar3|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 2) {
+        elementId = "carstar2|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 1) {
+        elementId = "carstar1|" + rating.reservationId + "|" + rating.companyBranchOfficeId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    }
+
+    // remove class 'star' so that user cannot rate again
+    if (rating.flightRoomCarRating > 0) {
+        var elIds = ["carstar5|" + rating.reservationId + "|" + rating.companyBranchOfficeId, 
+                    "carstar4|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "carstar3|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "carstar2|" + rating.reservationId + "|" + rating.companyBranchOfficeId,
+                    "carstar1|" + rating.reservationId + "|" + rating.companyBranchOfficeId];
+        for (var elId of elIds) {
+            document.getElementById(elId).classList.remove("star");
+            document.getElementById(elId).disabled = true;
+        }
+    }
 }
 
 function displayRoomReservations(roomReservations) {

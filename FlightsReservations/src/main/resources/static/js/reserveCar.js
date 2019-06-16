@@ -149,7 +149,7 @@ function reserveCar() {
 
 function checkDates(startDate, endDate) {
     if (startDate.trim() == "" || endDate.trim() == "") {
-        alert("Start time and end time must be chosen!")
+        toastr.error("Start time and end time must be chosen!");
         return false;
     }
         
@@ -158,19 +158,19 @@ function checkDates(startDate, endDate) {
     var dateStartDate = new Date(startDate);
     var dateEndDate = new Date(endDate);
     if (dateStartDate < currentTime) {
-        alert("Start time must be after current time!");
+        toastr.error("Start time must be after current time!");
         return false;
     } else if (dateEndDate < currentTime) {
-        alert("End time must be after current time!");
+        toastr.error("End time must be after current time!");
         return false;
     }
     var diff = dateEndDate - dateStartDate;
     var oneDayInMillis = 3600000 * 24;
     if (diff < 0) {
-        alert("Start time must be before end time!");
+        toastr.error("Start time must be before end time!");
         return false;
     } else if (diff > 7 * oneDayInMillis) {
-        alert("End time must be no more than 7 days after start time!");
+        toastr.error("End time must be no more than 7 days after start time!");
         return false;
     }
 
