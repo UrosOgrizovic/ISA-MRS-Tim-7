@@ -7,7 +7,7 @@ import com.FlightsReservations.domain.Hotel;
 
 public class RoomDTO {
 	@NotNull
-	private float averageScore;
+	private double overallRating;
 	@NotNull
 	private double overNightStay;
 	
@@ -25,22 +25,15 @@ public class RoomDTO {
 	
 	private Hotel hotel;
 	
-	private int numberOfVotes;
-	
-	public int getNumberOfVotes() {
-		return numberOfVotes;
-	}
-	public void setNumberOfVotes(int numberOfVotes) {
-		this.numberOfVotes = numberOfVotes;
-	}
-	public void setAverageScore(float averageScore) {
-		this.averageScore = averageScore;
-	}
-	public float getAverageScore() 
+		
+	public double getOverallRating() 
 	{
-		return averageScore;
+		return overallRating;
 	}
-	
+	public void setOverallRating(double overallRating) 
+	{
+		this.overallRating = overallRating;
+	}
 	public double getOverNightStay() 
 	{
 		return overNightStay;
@@ -49,13 +42,15 @@ public class RoomDTO {
 	{
 		this.overNightStay = overNightStay;
 	}
-	
-	public Hotel getHotel() {
+	public Hotel getHotel() 
+	{
 		return hotel;
 	}
-	public void setHotel(Hotel hotel) {
+	public void setHotel(Hotel hotel) 
+	{
 		this.hotel = hotel;
 	}
+	
 	public int getNumber()
 	{
 		return number;
@@ -83,19 +78,6 @@ public class RoomDTO {
 	public RoomDTO() 
 	{
 		super();
-	}
-	
-	public RoomDTO(@NotNull float averageScore, @NotNull double overNightStay, @NotNull int number,
-			@NotNull int numberOfGuests, @NotBlank String name, @NotBlank String type, Hotel hotel, int numberOfVotes) {
-		super();
-		this.averageScore = averageScore;
-		this.overNightStay = overNightStay;
-		this.number = number;
-		this.numberOfGuests = numberOfGuests;
-		this.name = name;
-		this.type = type;
-		this.hotel = hotel;
-		this.numberOfVotes = numberOfVotes;
 	}
 	public String getName()
 	{

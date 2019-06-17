@@ -1,6 +1,7 @@
 package com.FlightsReservations.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -44,7 +45,7 @@ public class UserController {
 		
 	@GetMapping(value = "/getUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public AbstractUser loadUserById(@PathVariable Long id) {
+	public Optional<AbstractUser> loadUserById(@PathVariable Long id) {
 		return service.findById(id);
 	}
 	

@@ -15,6 +15,7 @@ public class RACSBranchOfficeDTO {
 	private Set<CarDTO> cars = new HashSet<CarDTO>();
 	private String RACSCompanyName;
 	
+	
 	public String getRACSCompanyName() {
 		return RACSCompanyName;
 	}
@@ -58,18 +59,12 @@ public class RACSBranchOfficeDTO {
 		super();
 	}
 	public RACSBranchOfficeDTO(RACSBranchOffice rbo) {
-		Set<Car> cars = rbo.getCars();
 		Set<CarDTO> cardtos = new HashSet<CarDTO>();
-		for (Car c : cars) {
-			c.setRACSBranchOffice(rbo);
-			CarDTO cdto = new CarDTO(c);
-			cardtos.add(cdto);
-		}
 		this.cars = cardtos;
 		this.latitude = rbo.getLatitude();
 		this.longitude = rbo.getLongitude();
 		this.name = rbo.getName();
-		this.RACSCompanyName = rbo.getRacs().getName();
+		this.RACSCompanyName = rbo.getCompany().getName();
 	}
 	
 }

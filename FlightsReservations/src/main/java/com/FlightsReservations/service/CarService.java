@@ -138,12 +138,12 @@ public class CarService {
 	public CarRatingDTO rate(CarRatingDTO dto) {
 		Car c = repository.findById(dto.getCarId()).get();
 		if (c != null) {
-			float newAvgScore = c.getAverageScore() * c.getNumberOfVotes() + dto.getAverageScore();
+			float newAvgScore = c.getAverageRating() * c.getNumberOfVotes() + dto.getAverageScore();
 			int newNumberOfVotes = c.getNumberOfVotes() + 1;
 			c.setNumberOfVotes(newNumberOfVotes);
-			c.setAverageScore(newAvgScore / newNumberOfVotes);
+			c.setAverageRating(newAvgScore / newNumberOfVotes);
 			repository.save(c);
-			return new CarRatingDTO(c.getAverageScore(), c.getId());
+			return new CarRatingDTO(c.getAverageRating(), c.getId());
 		}
 		return null;
 	}

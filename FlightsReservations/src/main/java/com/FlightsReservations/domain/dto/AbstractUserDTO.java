@@ -53,7 +53,7 @@ public class AbstractUserDTO {
 			user.isEnabled()
 			);
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}

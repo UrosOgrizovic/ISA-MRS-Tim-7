@@ -27,8 +27,6 @@ public class RACSPricelistItem implements Serializable {
 
 	@NotBlank
 	private String name;
-	
-	@NotNull
 	private double price;
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
@@ -45,12 +43,7 @@ public class RACSPricelistItem implements Serializable {
 		this.price = price;
 		this.racs = racs;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	
 	public RACS getRacs() {
 		return racs;
@@ -69,9 +62,6 @@ public class RACSPricelistItem implements Serializable {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 	
 	

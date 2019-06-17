@@ -12,10 +12,10 @@ import com.FlightsReservations.domain.Room;
 public interface RoomRepository extends JpaRepository<Room, Long>{
 	
 	List<Room> findByNumber(int number);
-	List<Room> findByHotelId(Long hotelId);
+	List<Room> findByHotel_id(Long hotel_id);
 	
 	@Query(
-		value = "SELECT * FROM room WHERE hotel_branch_office_id=?1 AND id=?2",
+		value = "SELECT * FROM rooms WHERE hotel_id=?1 AND hotel_id=?2",
 		nativeQuery = true
 		)
 	Object HaveRoom(Long hotelID, Long roomID);//TODO: update later

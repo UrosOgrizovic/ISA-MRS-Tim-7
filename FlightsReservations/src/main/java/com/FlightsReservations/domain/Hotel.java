@@ -1,7 +1,6 @@
 package com.FlightsReservations.domain;
 
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,6 +17,10 @@ public class Hotel extends Company
 	@OneToMany(mappedBy = "hotel")
 	private Set<PricelistItem> pricelist;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "hotel_id")
+	private Set<Room> roomConfiguration;
+	
 	/*
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "admin")
@@ -26,19 +29,6 @@ public class Hotel extends Company
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
 	private Set<HotelReservation> reservations;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "hotel_id")
-	private Set<Room> roomConfiguration = new HashSet<Room>();
-	
-	
-	public Set<Room> getRoomConfiguration() {
-		return roomConfiguration;
-	}
-
-	public void setRoomConfiguration(Set<Room> roomConfiguration) {
-		this.roomConfiguration = roomConfiguration;
-	}
-
 	public Hotel() {
 		super();
 	}
@@ -55,6 +45,16 @@ public class Hotel extends Company
 
 	public void setPricelist(Set<PricelistItem> pricelist) {
 		this.pricelist = pricelist;
+	}
+
+	public Set<Room> getRoomConfiguration()
+	{
+		return roomConfiguration;
+	}
+
+	public void setRoomConfiguration(Set<Room> roomConfiguration)
+	{
+		this.roomConfiguration = roomConfiguration;
 	}
 
 	public Set<HotelReservation> getReservations() {

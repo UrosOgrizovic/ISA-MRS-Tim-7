@@ -1,10 +1,8 @@
-
 var getAllLink = "/airlines";
 var rateLink = "/companies/rate";
 
 var token = localStorage.getItem("token");
-
-// everyone can access this page
+if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
    

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -103,10 +104,8 @@ public class UserService {
 	}
 	
 	
-	
-	
-	public AbstractUser findById(Long id) {
-		return abstractUserRepository.findById(id).get();
+	public Optional<AbstractUser> findById(Long id) {
+		return abstractUserRepository.findById(id);
 	}
 	
 	
@@ -142,7 +141,7 @@ public class UserService {
 	
 	
 	public void addFriend(Long userId, Long friendId) {
-		abstractUserRepository.addFriend(userId, friendId);
+		userRepository.addFriend(userId, friendId);
 	}
 	
 	
@@ -150,7 +149,16 @@ public class UserService {
 	public List<CarReservationDTO> getCarReservations(String email) {
 		AbstractUser u = abstractUserRepository.findByEmail(email);
 		
-		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
+		ArrayList<String> types = new ArrayList<String>();
+		
+		u.getAuthorities().forEach(auth -> types.add(auth.getAuthority()));
+		for (int i = 0; i < types.size(); i++) {
+			if (types.get(i).contains("USER")) types.set(i, "U");
+			else if (types.get(i).contains("ADMIN")) types.set(i, "A");
+			
+		}
+		
+		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId(), types.get(types.size()-1));
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
@@ -188,31 +196,24 @@ public class UserService {
 	
 	
 	public List<FriendRequestDTO> getSentFriendRequests(String email) {
-		AbstractUser u = abstractUserRepository.findByEmail(email);
+		User u = userRepository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
 		if (u != null && u.isEnabled()) {
-			if (u instanceof User) {
-				User user = (User) u;
-				user.getSentRequests().size();
-				for (FriendRequest fr : user.getSentRequests()) 
-					reqs.add(new FriendRequestDTO(fr));
-			}
-			
+			u.getSentRequests().size();
+			for (FriendRequest fr : u.getSentRequests()) 
+				reqs.add(new FriendRequestDTO(fr));
 		}
 		return reqs;
 	}
 	
 	
 	public List<FriendRequestDTO> getRecievedFriendRequests(String email) {
-		AbstractUser u = abstractUserRepository.findByEmail(email);
+		User u = userRepository.findByEmail(email);
 		List<FriendRequestDTO> reqs = new ArrayList<>();
 		if (u != null && u.isEnabled()) {
-			if (u instanceof User) {
-				User user = (User) u;
-				user.getRecievedRequests().size();
-				for (FriendRequest fr : user.getRecievedRequests()) 
-					reqs.add(new FriendRequestDTO(fr));
-			}
+			u.getRecievedRequests().size();
+			for (FriendRequest fr : u.getRecievedRequests()) 
+				reqs.add(new FriendRequestDTO(fr));
 		}
 		return reqs;
 	}
@@ -222,8 +223,8 @@ public class UserService {
 
 	public boolean sendFriendRequest(String sender, String reciever) {
 		if (verifyFriendRequest(sender, reciever)) {
-			User s = (User) abstractUserRepository.findByEmail(sender);
-			User r = (User) abstractUserRepository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
 			FriendRequest fr = new FriendRequest(s, r, new Date());
 			s.getSentRequests().add(fr);
 			r.getRecievedRequests().add(fr);
@@ -239,8 +240,8 @@ public class UserService {
 	
 	public boolean approveFriendRequest(String sender, String reciever) {
 		if (verifyApproveRequest(sender, reciever)) {
-			User r = (User) abstractUserRepository.findByEmail(reciever);
-			User s = (User) abstractUserRepository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 			r.getFriends().add(s);
 			s.getFriends().add(r);
@@ -256,8 +257,8 @@ public class UserService {
 	
 	public boolean declineFriendRequest(String sender, String reciever) {
 		if(verifyDeclineRequest(sender, reciever)) {
-			User r = (User) abstractUserRepository.findByEmail(reciever);
-			User s = (User) abstractUserRepository.findByEmail(sender);
+			User r = userRepository.findByEmail(reciever);
+			User s = userRepository.findByEmail(sender);
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 			friendRequestsRepository.delete(fr);
 			return true;
@@ -270,8 +271,8 @@ public class UserService {
 	
 	public boolean removeFriend(String user, String userToRemove) {
 		if (verifyRemoveFriend(user, userToRemove)) {
-			User s = (User) abstractUserRepository.findByEmail(user);
-			User r = (User) abstractUserRepository.findByEmail(userToRemove);
+			User s = userRepository.findByEmail(user);
+			User r = userRepository.findByEmail(userToRemove);
 			s.getFriends().remove(r);
 			r.getFriends().remove(s);
 			abstractUserRepository.save(s);
@@ -290,8 +291,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = (User) abstractUserRepository.findByEmail(sender);
-		User r = (User) abstractUserRepository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -303,7 +304,7 @@ public class UserService {
 			return false;
 		
 		// not friends already
-		if (abstractUserRepository.areFriends(s.getId(), r.getId()) > 0)
+		if (userRepository.areFriends(s.getId(), r.getId()) > 0)
 			return false;
 		
 		return true;
@@ -316,8 +317,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = (User) abstractUserRepository.findByEmail(sender);
-		User r = (User) abstractUserRepository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -344,8 +345,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = (User) abstractUserRepository.findByEmail(sender);
-		User r = (User) abstractUserRepository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -368,8 +369,8 @@ public class UserService {
 			return false;
 		
 		// both users exists
-		User s = (User) abstractUserRepository.findByEmail(sender);
-		User r = (User) abstractUserRepository.findByEmail(reciever);
+		User s = userRepository.findByEmail(sender);
+		User r = userRepository.findByEmail(reciever);
 		if (s == null || r == null)
 			return false;
 		
@@ -380,7 +381,7 @@ public class UserService {
 		
 		
 		// must be friends
-		if (abstractUserRepository.areFriends(s.getId(), r.getId()) == 0)
+		if (userRepository.areFriends(s.getId(), r.getId()) == 0)
 			return false;
 		
 		return true;
