@@ -21,3 +21,10 @@ export function checkIfRolesContainsAuthority(roles, authority) {
     }
     return false;
 }
+
+export function isTokenExpired(token) {
+    var d = new Date(0);
+    d.setUTCSeconds(parseInt(parseJwt(token).exp));
+    var now = new Date();
+    return d < now;
+}

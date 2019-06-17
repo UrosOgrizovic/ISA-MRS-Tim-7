@@ -1,5 +1,5 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
 var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
@@ -38,6 +38,10 @@ function dateToString(obj) {
 }
 
 var token = localStorage.getItem("token");
+
+if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
+
+
 if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 window.fastBook = fastBook;
 
@@ -52,9 +56,14 @@ $(document).ready(function() {
         contentType: "application/json",
         data: {},
         success: function(cars) {
-            displayDiscountCars(cars);
+            if (cars != null && cars.length > 0) {
+                displayDiscountCars(cars);
+            } else {
+                toastr.info("No cars to display");
+            }
+            
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not get cars for period");
             console.log(error);
         }
     });
@@ -131,13 +140,12 @@ function fastBook(carId) {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(carReservationRequestDTO),
-        headers: {
-            "Authorization": "Bearer " + token
-        },
+        headers: { "Authorization": "Bearer " + token },
         success: function(carReservationDTO) {
-            location.replace("/html/userHomepage.html");
+            localStorage.setItem("successMessageForToastr", "Reservation successful");
+            location.replace("/html/userProfilePage.html");
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not fast book car");
             console.log(error);
         }
     });

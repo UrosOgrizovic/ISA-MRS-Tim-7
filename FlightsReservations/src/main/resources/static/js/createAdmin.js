@@ -1,7 +1,9 @@
+
 var my_url = "http://localhost:8080/Admin";
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+
+
 var admin = {};
 
 function validate_inputs(myForm)

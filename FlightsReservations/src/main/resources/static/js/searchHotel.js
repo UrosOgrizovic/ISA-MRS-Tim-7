@@ -3,7 +3,8 @@ var mapa;
 var emailSelect;
 
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+
+// everyone can search, so there's no role-checking here
 
 function validate_inputs(myForm)
 {

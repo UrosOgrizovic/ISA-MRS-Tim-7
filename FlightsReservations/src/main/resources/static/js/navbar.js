@@ -1,4 +1,7 @@
 
+
+
+
 export function loadNavbar(id) {
     $("#nav-placeholder").load("navbar.html", function() {
         document.getElementById(id).classList.add('active');
@@ -8,6 +11,11 @@ export function loadNavbar(id) {
         } else {
             document.getElementById("profileHomepageNavItem").display = "none";
         }
+
+        var token = localStorage.getItem("token");
+
+        if (token != null) document.getElementById("signOutLogIn").innerHTML = "Sign out";
+        else document.getElementById("signOutLogIn").innerHTML = "Log in"
          
     });
 }

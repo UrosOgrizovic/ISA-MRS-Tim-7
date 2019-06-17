@@ -1,6 +1,8 @@
 
+
+
 var token = localStorage.getItem("token");
-if (token == null) location.replace("/html/login.html");
+
 
 function validate_inputs(myForm)
 {
