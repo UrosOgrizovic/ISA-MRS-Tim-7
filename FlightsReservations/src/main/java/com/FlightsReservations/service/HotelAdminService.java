@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
 
-@Component
+@Service	
 public class HotelAdminService {
 
 	

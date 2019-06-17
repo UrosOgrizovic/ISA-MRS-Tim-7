@@ -43,13 +43,6 @@ public class Flight {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airline airline;
 
-	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Seat> seats = new HashSet<>();
-
-	@ManyToMany
-	@JoinTable(name = "flight_stops", joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
-	private Set<Airport> stops = new HashSet<>();
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Airport start;
 
@@ -58,6 +51,13 @@ public class Flight {
 
 	@ManyToMany(mappedBy = "flights")
 	private Set<FlightReservation> reservations = new HashSet<>();
+	
+	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Seat> seats = new HashSet<>();
+
+	@ManyToMany
+	@JoinTable(name = "flight_stops", joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "airport_id", referencedColumnName = "id"))
+	private Set<Airport> stops = new HashSet<>();
 
 	@Column(nullable = false)
 	private float averageScore;

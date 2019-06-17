@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue("FR")
 public class FlightReservation extends Reservation {
 
-	@ManyToMany(mappedBy = "reservations",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "reservations", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Airline> airlines = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
