@@ -732,7 +732,6 @@ function cancelRoomReservation(id) {
 }
 
 function displayHotelAndRoomRating(rating) {
-    console.log(rating);
     var elementId = "";
     if (rating.companyRating == 5) {
         elementId = "hotelstar5|" + rating.reservationId + "|" + rating.companyId;
@@ -819,7 +818,6 @@ function displayFlightReservations(flightReservations) {
         text += "<tr>";
         
         text += "<td>" + fr.totalPrice + "</td>";
-        console.log(fr.flights);
         var currentTime = new Date();
         var takeoffTime = fr.flights[0].takeoffTime;
         var day = takeoffTime.substring(0, 2);
