@@ -1,14 +1,20 @@
 package com.FlightsReservations.domain;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 @Entity
@@ -47,6 +53,19 @@ public class Company {
 	@Column(nullable = false)
 	private Long version;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "company_id")
+	private Set<BranchOffice> branchOffices;
+	
+	
+	public Set<BranchOffice> getBranchOffices() {
+		return branchOffices;
+	}
+
+	public void setBranchOffices(Set<BranchOffice> branchOffices) {
+		this.branchOffices = branchOffices;
+	}
+
 	public Long getVersion() {
 		return version;
 	}

@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.FlightsReservations.domain.BranchOffice;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSAdmin;
@@ -122,10 +123,11 @@ public class RACSDTO {
 		this.promoDescription = promoDescription;
 		this.averageScore = averageScore;
 		this.numberOfVotes = numberOfVotes;
+		this.branchOffices = branchOffices;
+		this.pricelist = pricelist;
+	}
+	public RACSDTO() {
+		super();
 	}
 	
-	public RACSDTO(RACS racs) {
-		this(racs.getPricelist(), racs.getCars(), racs.getBranchOffices(), racs.getAdmin(), racs.getName(), racs.getCity(), racs.getState(), racs.getLongitude(),
-				racs.getLatitude(), racs.getPromoDescription(), racs.getAverageScore(), racs.getNumberOfVotes());
-	}
 }

@@ -117,9 +117,16 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 4);
 --  =================================================================================
 
+<<<<<<< HEAD
+=======
+
+
+INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('RBO', 1, 'Driven Cleveland', 41.4993, 81.6944, 3);
+>>>>>>> parent of 2dc0c5c... Fix hotel rating
 
 
 
+<<<<<<< HEAD
 -- AIRLINE PRICELISTS  =================================================================================
 INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (1, 100.0, 50.0, 20.0);
 INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (2, 200.0, 150.0, 80.0);
@@ -157,3 +164,10 @@ INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, pr
 INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
 -- ============================================================================================================
 
+=======
+-- Hotel
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
+INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 5, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
+INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('HBO', 2, 'Drina 1', 24.372, 36.278, 4);
+INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_branch_office_id) VALUES (1, 4.35, 23, 3, 50, 30, 2);
+>>>>>>> parent of 2dc0c5c... Fix hotel rating

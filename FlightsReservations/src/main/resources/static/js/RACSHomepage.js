@@ -65,8 +65,12 @@ function displayRACSS(racss) {
     text += "<th>Cars</th>";
     text += "<th>Pricelist</th>";
     text += "<th>Branch offices</th>";
+<<<<<<< HEAD
     text += "<th>Average rating</th>";
     text += "<th>Your rating</th>";
+=======
+    
+>>>>>>> parent of 2dc0c5c... Fix hotel rating
     
     text += "</tr>";
     text += "</thead><tbody>";

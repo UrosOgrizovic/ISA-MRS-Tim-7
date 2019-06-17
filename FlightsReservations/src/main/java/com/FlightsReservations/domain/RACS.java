@@ -32,7 +32,6 @@ public class RACS extends Company {
 	@JoinColumn(name = "racs_id")
 	private Set<Car> cars = new HashSet<>();	
 	
-	private ArrayList<String> branchOffices;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private RACSAdmin admin;
@@ -63,12 +62,6 @@ public class RACS extends Company {
 			this.cars.addAll(cars);
 		}
 		
-	}
-	public ArrayList<String> getBranchOffices() {
-		return branchOffices;
-	}
-	public void setBranchOffices(ArrayList<String> branchOffices) {
-		this.branchOffices = branchOffices;
 	}
 	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes, Set<RACSPricelistItem> pricelist, RACSAdmin admin) {
