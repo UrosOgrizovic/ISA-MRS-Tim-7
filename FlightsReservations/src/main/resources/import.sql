@@ -61,6 +61,7 @@ INSERT INTO company (company_type, id, name, latitude, longitude, promo_descript
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("A", 6, 'AirEngland', 51.507, 0.127, 'Best in England', 0, 0, "London", "England", 0);
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("R", 2, 'Driven', 52.3680, 4.9036, 'Earth''s finest rent-a-car service', 4.75, 22, "Amsterdam", "Netherlands", 0);
+INSERT INTO racsbranch_office (id, latitude, longitude, name, racs_id) VALUES (1, 25.572, 42.378, 'Driven branch office 1', 2);
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 3, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
 
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 5, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
@@ -117,16 +118,9 @@ INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 3);
 INSERT INTO airline_airports (airline_id, airport_id) VALUES (6, 4);
 --  =================================================================================
 
-<<<<<<< HEAD
-=======
-
-
-INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('RBO', 1, 'Driven Cleveland', 41.4993, 81.6944, 3);
->>>>>>> parent of 2dc0c5c... Fix hotel rating
 
 
 
-<<<<<<< HEAD
 -- AIRLINE PRICELISTS  =================================================================================
 INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (1, 100.0, 50.0, 20.0);
 INSERT INTO airline_price_list (id, first, bussines, economic) VALUES (2, 200.0, 150.0, 80.0);
@@ -153,8 +147,8 @@ update company SET pricelist_id = 3 WHERE id = 6;
 
 
 -- CARS ============================================================================================================
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 2, 10, 0, 4.35, 57);
-INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, price_per_hour, version, average_rating, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 2, 20, 0, 3.27, 44);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_branch_office_id, price_per_hour, version, average_score, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 1, 10, 0, 4.35, 57);
+INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_branch_office_id, price_per_hour, version, average_score, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 1, 20, 0, 3.27, 44);
 -- ============================================================================================================
 
 
@@ -164,10 +158,19 @@ INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_id, pr
 INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
 -- ============================================================================================================
 
-=======
--- Hotel
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
-INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 5, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
-INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('HBO', 2, 'Drina 1', 24.372, 36.278, 4);
-INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_branch_office_id) VALUES (1, 4.35, 23, 3, 50, 30, 2);
->>>>>>> parent of 2dc0c5c... Fix hotel rating
+
+-- ROOMS ============================================================================================================
+INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_id) VALUES (1, 4.35, 23, 3, 50, 30, 3);
+-- ============================================================================================================
+
+-- RESERVATIONS  ============================================================================================================
+INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, car_id, racs_branch_office_id, owner_id) VALUES ('CR', 1, 1, STR_TO_DATE('17-06-2019 16:00', '%d-%m-%Y %H:%i'), 500, 0, STR_TO_DATE('20-09-2019 18:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('22-09-2019 18:00', '%d-%m-%Y %H:%i'), 1, 1, 2);
+INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, room_id, hotel_id, owner_id) VALUES ('RR', 2, 1, STR_TO_DATE('17-06-2019 16:00', '%d-%m-%Y %H:%i'), 200, 0, STR_TO_DATE('22-09-2019 16:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('25-06-2019 16:00', '%d-%m-%Y %H:%i'), 1, 3, 2);
+--  ============================================================================================================
+
+-- RATINGS ============================================================================================================
+INSERT INTO rating (id, company_id, company_rating, flight_room_car_rating, racs_branch_office_id, reservation_id) VALUES (1, 0, 4, 3, 1, 1);
+INSERT INTO rating (id, company_id, company_rating, flight_room_car_rating, racs_branch_office_id, reservation_id) VALUES (2, 3, 2, 4, 0, 2);
+--  ============================================================================================================
+UPDATE reservation SET rating_id = 1 WHERE id = 1;
+UPDATE reservation SET rating_id = 2 WHERE id = 2;

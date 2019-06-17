@@ -1,0 +1,18 @@
+.form-control {
+    width: 300px;
+}
+
+input[type=submit] {
+    margin-top: 10px;
+}
+
+.column {
+    float: left;
+    width: 30%;
+    padding: 10px;
+    margin: 10px;
+}
+
+.rangeLabel {
+    margin-top: 40px;
+}

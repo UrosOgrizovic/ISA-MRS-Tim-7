@@ -32,12 +32,16 @@ public class FlightReservation extends Reservation {
 	@JoinTable(name = "reservations_flights", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"))
 	private Set<Flight> flights = new HashSet<>();
 
+	/*
+	private Set<Float> flightRatings;
+	*/
 	public FlightReservation() {
 		super();
 	}
 
 	public FlightReservation(Date dateOfReservation, Float price, User owner, Boolean confirmed) {
 		super(dateOfReservation, price, confirmed, owner);
+		//this.flightRatings.forEach(fr -> fr = 0f);
 	}
 
 	public Set<Passenger> getPassengers() {
@@ -71,6 +75,17 @@ public class FlightReservation extends Reservation {
 	public void setDiscount(float discount) {
 		this.discount = discount;
 	}
+/*
+	public Set<Float> getFlightRatings() {
+		return flightRatings;
+	}
+
+	public void setFlightRatings(Set<Float> flightRatings) {
+		this.flightRatings = flightRatings;
+	}
+*/
+	
+	
 
 	public Set<Airline> getAirlines() {
 		return airlines;

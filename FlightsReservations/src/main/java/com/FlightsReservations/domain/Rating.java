@@ -12,6 +12,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
+import org.springframework.lang.Nullable;
+
 
 @Entity
 public class Rating {
@@ -32,8 +34,31 @@ public class Rating {
 	@Max(value = 5)
 	private float companyRating;
 	
+	@Nullable
 	@Column
-	private Long companyBranchOfficeId;
+	private Long racsBranchOfficeId;
+	
+	@Nullable
+	@Column
+	private Long companyId;
+
+	
+	
+	public Long getRacsBranchOfficeId() {
+		return racsBranchOfficeId;
+	}
+
+	public void setRacsBranchOfficeId(Long racsBranchOfficeId) {
+		this.racsBranchOfficeId = racsBranchOfficeId;
+	}
+
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,21 +92,12 @@ public class Rating {
 		this.companyRating = companyRating;
 	}
 
-	public Long getCompanyBranchOfficeId() {
-		return companyBranchOfficeId;
-	}
-
-	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
-		this.companyBranchOfficeId = companyBranchOfficeId;
-	}
-
 	public Rating(Reservation reservation, @Positive @Min(1) @Max(5) float flightRoomCarRating,
-			@Positive @Min(1) @Max(5) float companyRating, Long companyBranchOfficeId) {
+			@Positive @Min(1) @Max(5) float companyRating) {
 		super();
 		this.reservation = reservation;
 		this.flightRoomCarRating = flightRoomCarRating;
 		this.companyRating = companyRating;
-		this.companyBranchOfficeId = companyBranchOfficeId;
 	}
 
 	public Rating() {

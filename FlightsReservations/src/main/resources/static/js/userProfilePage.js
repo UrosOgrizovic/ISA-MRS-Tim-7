@@ -204,97 +204,7 @@ function displayFriends(friends) {
     
 }
 
-function displayRatingStarsOnLoad(isRACSAndCar) {
-    
-    var afterSplit = [];
-    if (isRACSAndCar) {
-        for (var id of racsRatingsToCheck) {
-            document.getElementById(id).checked = true;
-            afterSplit = id.split("|");
-            for (var star of racsStars) {
-                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
-            }
-        }
-        for (var id of carRatingsToCheck) {
-            document.getElementById(id).checked = true;
-            afterSplit = id.split("|");
-            for (var star of carStars) {
-                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
-            }
-        }
-    }
-    
-    else {
-        for (var id of hotelRatingsToCheck) {
-            document.getElementById(id).checked = true;
-            afterSplit = id.split("|");
-            for (var star of hotelStars) {
-                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
-            }
-        }
-    
-        for (var id of roomRatingsToCheck) {
-            document.getElementById(id).checked = true;
-            afterSplit = id.split("|");
-            for (var star of roomStars) {
-                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
-            }
-        }
-    }
-    
-}
-
-function rate(el) {
-    
-    var arr = el.id.split("star");
-    var ratingObjectName = arr[1].split("|");
-    
-    var obj = {};
-    var racsCarFlag = false;
-    if (arr[0].includes("racs") || arr[0].includes("hotel")) {
-        if (arr[0].includes("racs")) racsCarFlag = true;
-        obj.companyRating = parseInt(ratingObjectName[0]);
-        obj.flightRoomCarRating = 0;
-    } else if (arr[0].includes("car") || arr[0].includes("room")) {
-        if (arr[0].includes("car")) racsCarFlag = true;
-        obj.companyRating = 0;
-        obj.flightRoomCarRating = parseInt(ratingObjectName[0]);
-    }
-    obj.companyId = 0;
-    obj.racsBranchOfficeId = 0;
-    obj.reservationId = parseInt(ratingObjectName[1]);
-    if (racsCarFlag) {
-        obj.racsBranchOfficeId = parseInt(ratingObjectName[2]);
-    } else {
-        obj.companyId = parseInt(ratingObjectName[2]);
-    }
-    
-    $.ajax({
-        url: rateLink,
-        method: "PUT",
-        data: JSON.stringify(obj),
-        contentType: "application/json",
-        dataType: "json",
-        headers: { "Authorization": "Bearer " + token}, 
-        success: function(rating) {
-            if (racsCarFlag) 
-                displayRACSAndCarRating(rating);
-            else 
-                displayHotelAndRoomRating(rating);
-        },
-        error: function(err) {
-            if (racsCarFlag) 
-                toastr.error("Could not display rent-a-car service and car rating");
-            else 
-                toastr.error("Could not display hotel and room service rating");
-            console.log(err);
-        }
-    })
-}
-
-
-/* racs/car reservations */
-
+/* car reservations */
 
 function displayCarReservations(carReservations) {
     var text = "<table id=\"all\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
@@ -461,21 +371,94 @@ function displayCarReservations(carReservations) {
     
 }
 
-function cancelCarReservation(id) {
-    $.ajax({
-        url: cancelCarReservationLink + id,
-        method: "PUT",
-        dataType: "json",
-        contentType: "application/json",
-        data: {},
-        headers: { "Authorization": "Bearer " + token}, 
-        success: function() {
-            getAllCarReservations();
-        }, error: function(error) {
-            toastr.error("Could not cancel car reservation");            
-            console.log(error);
+function displayRatingStarsOnLoad(isRACSAndCar) {
+    
+    var afterSplit = [];
+    if (isRACSAndCar) {
+        for (var id of racsRatingsToCheck) {
+            document.getElementById(id).checked = true;
+            afterSplit = id.split("|");
+            for (var star of racsStars) {
+                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+            }
         }
-    });
+        for (var id of carRatingsToCheck) {
+            document.getElementById(id).checked = true;
+            afterSplit = id.split("|");
+            for (var star of carStars) {
+                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+            }
+        }
+    }
+    
+    else {
+        for (var id of hotelRatingsToCheck) {
+            document.getElementById(id).checked = true;
+            afterSplit = id.split("|");
+            for (var star of hotelStars) {
+                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+            }
+        }
+    
+        for (var id of roomRatingsToCheck) {
+            document.getElementById(id).checked = true;
+            afterSplit = id.split("|");
+            for (var star of roomStars) {
+                document.getElementById(star + afterSplit[1] + "|" + afterSplit[2]).disabled = true;
+            }
+        }
+    }
+    
+}
+
+function rate(el) {
+    
+    console.log(el);
+    var arr = el.id.split("star");
+    var ratingObjectName = arr[1].split("|");
+    
+    var obj = {};
+    var racsCarFlag = false;
+    if (arr[0].includes("racs") || arr[0].includes("hotel")) {
+        if (arr[0].includes("racs")) racsCarFlag = true;
+        obj.companyRating = parseInt(ratingObjectName[0]);
+        obj.flightRoomCarRating = 0;
+    } else if (arr[0].includes("car") || arr[0].includes("room")) {
+        if (arr[0].includes("car")) racsCarFlag = true;
+        obj.companyRating = 0;
+        obj.flightRoomCarRating = parseInt(ratingObjectName[0]);
+    }
+    obj.companyId = 0;
+    obj.racsBranchOfficeId = 0;
+    obj.reservationId = parseInt(ratingObjectName[1]);
+    if (racsCarFlag) {
+        obj.racsBranchOfficeId = parseInt(ratingObjectName[2]);
+    } else {
+        obj.companyId = parseInt(ratingObjectName[2]);
+    }
+    
+    console.log(obj);
+    $.ajax({
+        url: rateLink,
+        method: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
+        success: function(rating) {
+            if (racsCarFlag) 
+                displayRACSAndCarRating(rating);
+            else 
+                displayHotelAndRoomRating(rating);
+        },
+        error: function(err) {
+            if (racsCarFlag)
+                toastr.error("Could not display rent-a-car service/car rating");
+            else
+                toastr.error("Could not display hotel/room rating");
+            console.log(err);
+        }
+    })
 }
 
 function displayRACSAndCarRating(rating) {
@@ -548,9 +531,74 @@ function displayRACSAndCarRating(rating) {
     }
 }
 
+function displayHotelAndRoomRating(rating) {
+    console.log(rating);
+    var elementId = "";
+    if (rating.companyRating == 5) {
+        elementId = "hotelstar5|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 4) {
+        elementId = "hotelstar4|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 3) {
+        elementId = "hotelstar3|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 2) {
+        elementId = "hotelstar2|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+    } else if (rating.companyRating == 1) {
+        elementId = "hotelstar1|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+    }
+    
+    // remove class 'star' so that user cannot rate again
+    if (rating.companyRating > 0) {
+        var elIds = ["hotelstar5|" + rating.reservationId + "|" + rating.companyId, 
+                    "hotelstar4|" + rating.reservationId + "|" + rating.companyId,
+                    "hotelstar3|" + rating.reservationId + "|" + rating.companyId,
+                    "hotelstar2|" + rating.reservationId + "|" + rating.companyId,
+                    "hotelstar1|" + rating.reservationId + "|" + rating.companyId];
+        for (var elId of elIds) {
+            document.getElementById(elId).classList.remove("star");
+            document.getElementById(elId).disabled = true;
+        }
+    }
+    
+    if (rating.flightRoomCarRating == 5) {
+        elementId = "roomstar5|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 4) {
+        elementId = "roomstar4|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 3) {
+        elementId = "roomstar3|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 2) {
+        elementId = "roomstar2|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    } else if (rating.flightRoomCarRating == 1) {
+        elementId = "roomstar1|" + rating.reservationId + "|" + rating.companyId;
+        document.getElementById(elementId).checked = true;
+        document.getElementById(elementId).classList.remove("star");
+    }
 
-/* hotel/room reservations */
-
+    // remove class 'star' so that user cannot rate again
+    if (rating.flightRoomCarRating > 0) {
+        var elIds = ["roomstar5|" + rating.reservationId + "|" + rating.companyId, 
+                    "roomstar4|" + rating.reservationId + "|" + rating.companyId,
+                    "roomstar3|" + rating.reservationId + "|" + rating.companyId,
+                    "roomstar2|" + rating.reservationId + "|" + rating.companyId,
+                    "roomstar1|" + rating.reservationId + "|" + rating.companyId];
+        for (var elId of elIds) {
+            document.getElementById(elId).classList.remove("star");
+            document.getElementById(elId).disabled = true;
+        }
+    }
+}
 
 function displayRoomReservations(roomReservations) {
     var text = "<table id=\"all\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
@@ -594,6 +642,8 @@ function displayRoomReservations(roomReservations) {
         
         // hotel rating
         
+        console.log(rr);
+
         text += "<td>";
 
         var star5id = "hotelstar5|" + rr.id + "|" + rr.hotelId;
@@ -714,90 +764,63 @@ function displayRoomReservations(roomReservations) {
     displayRatingStarsOnLoad(false);
 }
 
-function cancelRoomReservation(id) {
+
+function displayHotelRating(hotel) {
+    if (hotel.averageScore >= 4.5) {
+        document.getElementById("avgstar5"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 3.5) {
+        document.getElementById("avgstar4"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 2.5) {
+        document.getElementById("avgstar3"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 1.5) {
+        document.getElementById("avgstar2"+hotel.name).checked = true;
+    } else {
+        document.getElementById("avgstar1"+hotel.name).checked = true;
+    }
+    document.getElementById("avgscore"+hotel.name).innerHTML = "("+hotel.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
+}
+
+function rateHotel(el) {
+    var arr = el.id.split("star");
+    var ratingHotelName = arr[1].split("");
+    
+    var obj = {};
+    obj.name = ratingHotelName.slice(1).join("");
+    obj.averageScore = parseFloat(ratingHotelName[0]);
+
     $.ajax({
-        url: cancelRoomReservationLink + id,
+        url: rateLink,
+        method: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
+        success: function(hotel) {
+            displayHotelRating(hotel);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}
+
+function cancelCarReservation(id) {
+    $.ajax({
+        url: cancelCarReservationLink + id,
         method: "PUT",
         dataType: "json",
         contentType: "application/json",
         data: {},
         headers: { "Authorization": "Bearer " + token}, 
         success: function() {
-            getAllRoomReservations();
+            getAllCarReservations();
         }, error: function(error) {
-            toastr.error("Could not cancel room reservation");            
+            toastr.error("Could not cancel car reservation");            
             console.log(error);
         }
     });
 }
 
-function displayHotelAndRoomRating(rating) {
-    var elementId = "";
-    if (rating.companyRating == 5) {
-        elementId = "hotelstar5|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-    } else if (rating.companyRating == 4) {
-        elementId = "hotelstar4|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-    } else if (rating.companyRating == 3) {
-        elementId = "hotelstar3|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-    } else if (rating.companyRating == 2) {
-        elementId = "hotelstar2|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-    } else if (rating.companyRating == 1) {
-        elementId = "hotelstar1|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-    }
-    
-    // remove class 'star' so that user cannot rate again
-    if (rating.companyRating > 0) {
-        var elIds = ["hotelstar5|" + rating.reservationId + "|" + rating.companyId, 
-                    "hotelstar4|" + rating.reservationId + "|" + rating.companyId,
-                    "hotelstar3|" + rating.reservationId + "|" + rating.companyId,
-                    "hotelstar2|" + rating.reservationId + "|" + rating.companyId,
-                    "hotelstar1|" + rating.reservationId + "|" + rating.companyId];
-        for (var elId of elIds) {
-            document.getElementById(elId).classList.remove("star");
-            document.getElementById(elId).disabled = true;
-        }
-    }
-    
-    if (rating.flightRoomCarRating == 5) {
-        elementId = "roomstar5|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-        document.getElementById(elementId).classList.remove("star");
-    } else if (rating.flightRoomCarRating == 4) {
-        elementId = "roomstar4|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-        document.getElementById(elementId).classList.remove("star");
-    } else if (rating.flightRoomCarRating == 3) {
-        elementId = "roomstar3|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-        document.getElementById(elementId).classList.remove("star");
-    } else if (rating.flightRoomCarRating == 2) {
-        elementId = "roomstar2|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-        document.getElementById(elementId).classList.remove("star");
-    } else if (rating.flightRoomCarRating == 1) {
-        elementId = "roomstar1|" + rating.reservationId + "|" + rating.companyId;
-        document.getElementById(elementId).checked = true;
-        document.getElementById(elementId).classList.remove("star");
-    }
-
-    // remove class 'star' so that user cannot rate again
-    if (rating.flightRoomCarRating > 0) {
-        var elIds = ["roomstar5|" + rating.reservationId + "|" + rating.companyId, 
-                    "roomstar4|" + rating.reservationId + "|" + rating.companyId,
-                    "roomstar3|" + rating.reservationId + "|" + rating.companyId,
-                    "roomstar2|" + rating.reservationId + "|" + rating.companyId,
-                    "roomstar1|" + rating.reservationId + "|" + rating.companyId];
-        for (var elId of elIds) {
-            document.getElementById(elId).classList.remove("star");
-            document.getElementById(elId).disabled = true;
-        }
-    }
-}
 
 
 /* flight reservations */
@@ -870,6 +893,7 @@ function cancelFlightReservation(id) {
         headers: { "Authorization": "Bearer " + token}, 
         success: function() {
             getAllFlightReservations();
+            getAllRoomReservations();
         }, error: function(error) {
             toastr.error("Could not cancel flight reservation");            
             console.log(error);
@@ -877,3 +901,20 @@ function cancelFlightReservation(id) {
     });
 }
 
+function cancelRoomReservation(id) {
+    $.ajax({
+        url: cancelRoomReservationLink + id,
+        method: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: {},
+        headers: { "Authorization": "Bearer " + token}, 
+        success: function() {
+            getAllFlightReservations();
+            getAllRoomReservations();
+        }, error: function(error) {
+            toastr.error("Could not cancel room reservation");            
+            console.log(error);
+        }
+    });
+}

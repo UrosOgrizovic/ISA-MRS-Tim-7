@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.enums.RoomType;
@@ -25,11 +24,13 @@ public class Room {
 	@NotNull
 	private int numberOfGuests;
 	
-	@NotBlank
 	private RoomType type;
 
 	@Column(nullable = false)
-	private double overallRating;
+	private float averageScore;
+	
+	@Column(nullable = false)
+	private int numberOfVotes;
 	
 	@Column(nullable = false)
 	private double overNightStay;
@@ -44,33 +45,33 @@ public class Room {
 		super();
 	}
 	
-	public Room(int number, int numberOfGuests, String type, double overallRating, double overNightStay, Hotel hotel) 
+	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes) 
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
 		this.type = RoomType.valueOf(type);
-		this.overallRating = overallRating;
+		this.averageScore = averageScore;
 		this.overNightStay = overNightStay;
 		this.hotel = hotel;
-	}
-	public Hotel getHotel() 
-	{
-		return hotel;
-	}
-	public void setHotel(Hotel hotel) 
-	{
-		this.hotel = hotel;
+		this.numberOfVotes = numberOfVotes;
 	}
 	
-	public double getOverallRating() 
-	{
-		return this.overallRating;
+	public float getAverageScore() {
+		return averageScore;
 	}
-	
-	public void setOverallRating(double overallRating) 
-	{
-		this.overallRating = overallRating;
+
+	public void setAverageScore(float averageScore) {
+		this.averageScore = averageScore;
 	}
+
+	public int getNumberOfVotes() {
+		return numberOfVotes;
+	}
+
+	public void setNumberOfVotes(int numberOfVotes) {
+		this.numberOfVotes = numberOfVotes;
+	}
+
 	public double getOverNightStay() 
 	{
 		return overNightStay;
@@ -111,6 +112,14 @@ public class Room {
 	public void setNumberOfGuests(int numberOfGuests)
 	{
 		this.numberOfGuests = numberOfGuests;
+	}
+
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	
