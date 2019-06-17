@@ -14,6 +14,16 @@ public class CarReservationDTO {
 	private Long racsBranchOfficeId;
 	private RatingDTO rating;
 	
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	private Date dateOfReservation;
+	
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	private Date startTime;
+	
+	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+	private Date endTime;
+	
+	
 	public Long getRacsBranchOfficeId() {
 		return racsBranchOfficeId;
 	}
@@ -30,14 +40,6 @@ public class CarReservationDTO {
 		this.rating = rating;
 	}
 
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-	private Date dateOfReservation;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-	private Date startTime;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-	private Date endTime;
 	
 	public Long getRACSBranchOfficeId() {
 		return racsBranchOfficeId;
@@ -131,7 +133,7 @@ public class CarReservationDTO {
 		this.endTime = endTime;
 		this.racsBranchOfficeId = racsBranchOfficeId;
 		RatingDTO r = new RatingDTO();
-		r.setCompanyBranchOfficeId(rating.getCompanyBranchOfficeId());
+		r.setRacsBranchOfficeId(rating.getRacsBranchOfficeId());
 		r.setCompanyRating(rating.getCompanyRating());
 		r.setFlightRoomCarRating(rating.getFlightRoomCarRating());
 		r.setReservationId(rating.getId());

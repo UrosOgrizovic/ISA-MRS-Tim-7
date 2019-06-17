@@ -53,9 +53,7 @@ INSERT INTO company (company_type, id, name, latitude, longitude, promo_descript
 UPDATE users SET racs_id = 3 where id = 2;
 UPDATE company SET admin_id = 2 where id = 3;
 
-
-
-INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('RBO', 1, 'Driven Cleveland', 41.4993, 81.6944, 3);
+INSERT INTO racsbranch_office (id, name, longitude, latitude, racs_id) VALUES (1, 'Driven Cleveland', 41.4993, 81.6944, 3);
 
 INSERT INTO racspricelist_item (id, name, price, racs_id) VALUES (1, 'Local taxes', 10, 2);
 INSERT INTO racspricelist_item (id, name, price, racs_id) VALUES (2, 'Collision damage waiver', 50, 2);
@@ -67,5 +65,13 @@ INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES 
 -- Hotel
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 4, 'Drina', 26.921, 33.124, 'Hotel1',  4.75, 22, "Bijeljina", "Srpska", 0);
 INSERT INTO company (company_type, id, name, latitude, longitude, promo_description, average_score, number_of_votes, city, state, version) VALUES ("H", 5, 'Dunav', 26.921, 33.124, 'Hotel2',  4.75, 22, "Belgrade", "Serbia", 0);
-INSERT INTO branch_offices (branch_office_type, id, name, longitude, latitude, company_id) VALUES ('HBO', 2, 'Drina 1', 24.372, 36.278, 4);
-INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_branch_office_id) VALUES (1, 4.35, 23, 3, 50, 30, 2);
+INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_id) VALUES (1, 4.35, 23, 3, 50, 30, 4);
+
+-- Reservation
+INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, racs_branch_office_id, owner_id, car_id) VALUES ('CR', 1, 1, STR_TO_DATE('17-06-2019 12:00', '%d-%m-%Y %H:%i'), 500, 0, STR_TO_DATE('19-09-2019 20:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('21-09-2019 20:00', '%d-%m-%Y %H:%i'), 1, 2, 1);
+INSERT INTO rating (id, racs_branch_office_id, company_rating, flight_room_car_rating, reservation_id) VALUES (1, 1, 0, 0, 1);
+INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, hotel_id, owner_id, room_id) VALUES ('RR', 2, 1, STR_TO_DATE('17-06-2019 12:00', '%d-%m-%Y %H:%i'), 500, 0, STR_TO_DATE('19-09-2019 20:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('21-09-2019 20:00', '%d-%m-%Y %H:%i'), 4, 2, 1);
+INSERT INTO rating (id, company_id, company_rating, flight_room_car_rating, reservation_id) VALUES (2, 4, 0, 0, 2);
+
+UPDATE reservation set rating_id = 1 where id = 1;
+UPDATE reservation set rating_id = 2 where id = 2;

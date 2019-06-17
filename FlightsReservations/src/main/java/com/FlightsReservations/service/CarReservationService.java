@@ -54,7 +54,7 @@ public class CarReservationService {
 		CarReservation reservation = new CarReservation(new Date(), total, (Boolean) true, owner, dto.getCarId(), startTime, endTime, car.getRACSBranchOffice().getId());
 		reservation.setRating(new Rating());
 		reservation.getRating().setReservation(reservation);
-		reservation.getRating().setCompanyBranchOfficeId(car.getRACSBranchOffice().getId());
+		reservation.getRating().setRacsBranchOfficeId(car.getRACSBranchOffice().getId());
 		reservation = carReservationRepository.save(reservation);
 		return new CarReservationDTO(reservation);
 	}

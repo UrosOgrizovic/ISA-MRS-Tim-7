@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.FlightsReservations.domain.BranchOffice;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.RACS;
@@ -66,11 +65,11 @@ public class RACSService {
 		if (r == null) {
 			r = new RACS();
 			r.setAverageScore(t.getAverageScore());
-			Set<BranchOffice> branchOffices = new HashSet<BranchOffice>();
+			Set<RACSBranchOffice> branchOffices = new HashSet<RACSBranchOffice>();
 			Set<RACSBranchOfficeDTO> bodtos = t.getBranchOffices();
 			for (RACSBranchOfficeDTO bodto : bodtos) {
 				RACSBranchOffice bo = new RACSBranchOffice();
-				bo.setCompany(companyRepository.findByName(bodto.getRACSCompanyName()));
+				bo.setRacs(racsRepository.findByName(bodto.getRACSCompanyName()));
 				Set<CarDTO> cdtos = bodto.getCars();
 				Set<Car> cars = new HashSet<Car>();
 				for (CarDTO cdto : cdtos) {
@@ -208,7 +207,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -250,7 +249,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -291,7 +290,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -332,7 +331,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -374,7 +373,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -412,7 +411,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -452,7 +451,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -491,7 +490,7 @@ public class RACSService {
 								cars.add(c);
 							}
 							racsBranchOffice.setCars(cars);
-							racsBranchOffice.setCompany(racsRepository.findByName(bo.getRACSCompanyName()));
+							racsBranchOffice.setRacs(racsRepository.findByName(bo.getRACSCompanyName()));
 							racsBranchOffice.setLatitude(bo.getLatitude());
 							racsBranchOffice.setLongitude(bo.getLongitude());
 							racsBranchOffice.setName(bo.getName());
@@ -554,9 +553,9 @@ public class RACSService {
 	
 	public Collection<CarReservation> getCarReservationsOfRacs(String racsName) {
 		RACS r = racsRepository.findByName(racsName);
-		Set<BranchOffice> rbos = r.getBranchOffices();
+		Set<RACSBranchOffice> rbos = r.getBranchOffices();
 		Set<CarReservation> crs = new HashSet<CarReservation>();
-		for (BranchOffice bo : rbos) {
+		for (RACSBranchOffice bo : rbos) {
 			crs.addAll(carReservationRepository.findCarReservationsOfRacsBranchOffice(bo.getId()));
 		}
 		return crs;

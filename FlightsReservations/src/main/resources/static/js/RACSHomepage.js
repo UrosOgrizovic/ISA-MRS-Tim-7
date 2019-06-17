@@ -73,8 +73,6 @@ function displayRACSS(racss) {
     text += "<th>Cars</th>";
     text += "<th>Pricelist</th>";
     text += "<th>Branch offices</th>";
-    
-    
     text += "</tr>";
     text += "</thead><tbody>";
     

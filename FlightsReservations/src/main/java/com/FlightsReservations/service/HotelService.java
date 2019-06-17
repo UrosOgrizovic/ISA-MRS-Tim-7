@@ -2,16 +2,12 @@ package com.FlightsReservations.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.FlightsReservations.domain.BranchOffice;
 import com.FlightsReservations.domain.Hotel;
-import com.FlightsReservations.domain.HotelBranchOffice;
 import com.FlightsReservations.domain.HotelReservation;
-import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
@@ -115,14 +111,6 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		Set<BranchOffice> hotelBranchOffices = hotel.getBranchOffices();
-		HotelBranchOffice hbo = new HotelBranchOffice();
-		
-		for (BranchOffice bo : hotelBranchOffices) {
-			hbo = (HotelBranchOffice) bo;
-			if(hbo.getRoomConfiguration()!=null) for (Room a : hbo.getRoomConfiguration()) 
-				dto.getRooms().add(a.getNumber());
-		}
 		
 		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));

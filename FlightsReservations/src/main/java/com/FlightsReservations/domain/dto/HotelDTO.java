@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 
 public class HotelDTO {
@@ -37,7 +38,7 @@ public class HotelDTO {
 	@PositiveOrZero
 	private int numberOfVotes;
 
-	private Set<Integer> rooms = new HashSet<>();
+	private Set<Room> roomConfiguration = new HashSet<Room>();
 	private Set<HotelReservationDTO> reservations = new HashSet<>();
 
 	public HotelDTO() {
@@ -118,12 +119,12 @@ public class HotelDTO {
 		this.reservations = reservations;
 	}
 
-	public Set<Integer> getRooms() {
-		return rooms;
+	public Set<Room> getRoomConfiguration() {
+		return roomConfiguration;
 	}
 
-	public void setRooms(Set<Integer> rooms) {
-		this.rooms = rooms;
+	public void setRoomConfiguration(Set<Room> roomConfiguration) {
+		this.roomConfiguration = roomConfiguration;
 	}
 
 	public String getCity()
@@ -150,7 +151,4 @@ public class HotelDTO {
 	{
 		this.state = state;
 	}
-	
-	
-
 }

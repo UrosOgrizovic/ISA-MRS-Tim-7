@@ -1,11 +1,8 @@
 package com.FlightsReservations.domain.dto;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.FlightsReservations.domain.BranchOffice;
-import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSAdmin;
 import com.FlightsReservations.domain.RACSBranchOffice;
@@ -115,10 +112,10 @@ public class RACSDTO {
 	}
 	public RACSDTO(RACS r) {
 		this.averageScore = r.getAverageScore();
-		Set<BranchOffice> rbos = r.getBranchOffices();
+		Set<RACSBranchOffice> rbos = r.getBranchOffices();
 		Set<RACSBranchOfficeDTO> rbodtos = new HashSet<RACSBranchOfficeDTO>();
-		for (BranchOffice rbo : rbos) {
-			rbo.setCompany(r);
+		for (RACSBranchOffice rbo : rbos) {
+			rbo.setRacs(r);
 			RACSBranchOfficeDTO rbodto = new RACSBranchOfficeDTO((RACSBranchOffice) rbo);
 			rbodtos.add(rbodto);
 		}

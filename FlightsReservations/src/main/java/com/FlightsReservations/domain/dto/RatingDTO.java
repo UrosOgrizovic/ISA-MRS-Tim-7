@@ -18,16 +18,27 @@ public class RatingDTO {
 	private float flightRoomCarRating;
 
 	@Nullable
-	private Long companyBranchOfficeId;
+	private Long companyId;
+	
+	@Nullable
+	private Long racsBranchOfficeId;
 
 	@Nullable
 	private Long reservationId;
 	
+	public Long getRacsBranchOfficeId() {
+		return racsBranchOfficeId;
+	}
+
+	public void setRacsBranchOfficeId(Long racsBranchOfficeId) {
+		this.racsBranchOfficeId = racsBranchOfficeId;
+	}
+
 	public RatingDTO() {
 		super();
 	}
 
-	public RatingDTO(Long companyBranchOfficeId, float companyRating, Long reservationId, float flightRoomCarRating) {
+	public RatingDTO(float companyRating, Long reservationId, float flightRoomCarRating) {
 		super();
 		if (companyRating <= 0) {
 			this.companyRating = 0;
@@ -35,7 +46,6 @@ public class RatingDTO {
 			this.companyRating = companyRating;
 		}
 		
-		this.companyBranchOfficeId = companyBranchOfficeId;
 		this.reservationId = reservationId;
 		if (flightRoomCarRating <= 0) {
 			this.flightRoomCarRating = 0;
@@ -45,12 +55,12 @@ public class RatingDTO {
 		
 	}
 
-	public Long getCompanyBranchOfficeId() {
-		return companyBranchOfficeId;
+	public Long getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
-		this.companyBranchOfficeId = companyBranchOfficeId;
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 
 	public Long getReservationId() {
@@ -79,14 +89,9 @@ public class RatingDTO {
 
 	@Override
 	public String toString() {
-		return "CompanyRatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
-				+ ", name=" + companyBranchOfficeId + ", reservationId=" + reservationId + "]";
+		return "RatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
+				+ ", companyId=" + companyId + ", racsBranchOfficeId=" + racsBranchOfficeId + ", reservationId="
+				+ reservationId + "]";
 	}
 
-	
-
-	
-
-	
-	
 }
