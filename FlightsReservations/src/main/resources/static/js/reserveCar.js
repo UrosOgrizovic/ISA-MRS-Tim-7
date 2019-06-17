@@ -1,17 +1,15 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
+import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 
 var mapa = new Map();
 var nameSelect = $("#racs_name_select");
 var idSelect = $("#racs_id_select");
 var carSelect = $("#car_select");
 var carIdSelect = $("#car_id_select");
-var allCarsOfRACS = [];
 
 window.reserveCar = reserveCar;
 var token = localStorage.getItem("token");
-
-if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
+if (token == null) location.replace("/html/login.html");
 
 var email = parseJwt(token).sub;
 
@@ -50,7 +48,6 @@ $(document).ready(function(){
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            
             if (result != null && result.length != 0 && result != undefined) {
                 for (var i = 0; i < result.length; i++) {
                     mapa[result[i].id] = result[i];
@@ -76,15 +73,9 @@ function setInputs(){
     carIdSelect.empty();
 
     var idx = 0;
-    for (var bo of mapa[key].branchOffices) {
-        for (var car of bo.cars) {
-            allCarsOfRACS.push(car);
-        }
-    }
-    allCarsOfRACS.sort(compareCars);
-    for (var car of allCarsOfRACS) {
+    mapa[key].cars.sort(compareCars);
+    for (var car of mapa[key].cars) {
         idx++;
-        
         carIdSelect.append("<option>"+car.id+"</option>");
         carSelect.append("<option>"+ "#" + idx + " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour +"</option>");
     }
@@ -128,6 +119,7 @@ function reserveCar() {
     
     $("#error").remove();
 
+
     $.ajax({
 		url: "http://localhost:8080/carReservations",
 		method: "POST",
@@ -136,12 +128,12 @@ function reserveCar() {
         data: JSON.stringify(carReservation),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            //toastr.success("Reservation successful");
-            localStorage.setItem("successMessageForToastr", "Reservation successful");
+            
             location.replace("/html/userProfilePage.html");
         },
         error: function(err) {
-            toastr.error("Reservation for selected car already exists for selected period")
+            console.log(err);
+            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
         }
     });	
 
@@ -149,7 +141,7 @@ function reserveCar() {
 
 function checkDates(startDate, endDate) {
     if (startDate.trim() == "" || endDate.trim() == "") {
-        toastr.error("Start time and end time must be chosen!");
+        alert("Start time and end time must be chosen!")
         return false;
     }
         
@@ -158,19 +150,19 @@ function checkDates(startDate, endDate) {
     var dateStartDate = new Date(startDate);
     var dateEndDate = new Date(endDate);
     if (dateStartDate < currentTime) {
-        toastr.error("Start time must be after current time!");
+        alert("Start time must be after current time!");
         return false;
     } else if (dateEndDate < currentTime) {
-        toastr.error("End time must be after current time!");
+        alert("End time must be after current time!");
         return false;
     }
     var diff = dateEndDate - dateStartDate;
     var oneDayInMillis = 3600000 * 24;
     if (diff < 0) {
-        toastr.error("Start time must be before end time!");
+        alert("Start time must be before end time!");
         return false;
     } else if (diff > 7 * oneDayInMillis) {
-        toastr.error("End time must be no more than 7 days after start time!");
+        alert("End time must be no more than 7 days after start time!");
         return false;
     }
 

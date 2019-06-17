@@ -2,7 +2,6 @@ package com.FlightsReservations.domain.dto;
 
 import java.util.Date;
 
-import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.RoomReservation;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -20,26 +19,6 @@ public class RoomReservationDTO {
 	
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
-	
-	private Long hotelId;
-	private RatingDTO rating;
-	
-
-	public Long getHotelId() {
-		return hotelId;
-	}
-
-	public void setHotelId(Long hotelId) {
-		this.hotelId = hotelId;
-	}
-
-	public RatingDTO getRating() {
-		return rating;
-	}
-
-	public void setRating(RatingDTO rating) {
-		this.rating = rating;
-	}
 
 	public Date getStartTime() {
 		return startTime;
@@ -98,7 +77,7 @@ public class RoomReservationDTO {
 	}
 
 	public RoomReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation,
-			Date startTime, Date endTime, Long hotelId, RatingDTO rating) {
+			Date startTime, Date endTime) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -107,28 +86,6 @@ public class RoomReservationDTO {
 		this.dateOfReservation = dateOfReservation;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.hotelId = hotelId;
-		this.rating = rating;
-	}
-	
-	public RoomReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation,
-			Date startTime, Date endTime, Long hotelId, Rating rating) {
-		super();
-		this.id = id;
-		this.price = price;
-		this.ownerEmail = ownerEmail;
-		this.confirmed = confirmed;
-		this.dateOfReservation = dateOfReservation;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.hotelId = hotelId;
-		RatingDTO r = new RatingDTO();
-		r.setCompanyId(rating.getCompanyId());
-		r.setCompanyRating(rating.getCompanyRating());
-		r.setFlightRoomCarRating(rating.getFlightRoomCarRating());
-		r.setReservationId(rating.getId());
-
-		this.rating = r;
 	}
 
 	public RoomReservationDTO() {
@@ -137,6 +94,6 @@ public class RoomReservationDTO {
 	
 	public RoomReservationDTO(RoomReservation reservation) {
 		this(reservation.getId(), reservation.getPrice(), reservation.getOwner().getEmail(), reservation.getConfirmed(), 
-				reservation.getDateOfReservation(), reservation.getStartTime(), reservation.getEndTime(), reservation.getHotelId(), reservation.getRating());
+				reservation.getDateOfReservation(), reservation.getStartTime(), reservation.getEndTime());
 	}
 }

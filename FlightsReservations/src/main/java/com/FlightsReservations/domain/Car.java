@@ -3,7 +3,6 @@ package com.FlightsReservations.domain;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -47,19 +46,19 @@ public class Car {
 	
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private RACSBranchOffice racsBranchOffice;
-
+	@ManyToOne(fetch = FetchType.LAZY)
+	private RACS racs;
+	
 	@Column(nullable = false)
-	private float averageScore;
-
+	private float averageRating;
+	
 	@Column(nullable = false)
 	private int numberOfVotes;
 	
 	public Long getVersion() {
 		return version;
 	}
-	
+
 	public void setVersion(Long version) {
 		this.version = version;
 	}
@@ -73,10 +72,14 @@ public class Car {
 		this.numberOfVotes = numberOfVotes;
 	}
 
-	public float getAverageScore() {
-		return averageScore;
+	public float getAverageRating() {
+		return averageRating;
 	}
-	
+
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
+
 	public Set<Discount> getDiscounts() {
 		return discounts;
 	}
@@ -125,12 +128,12 @@ public class Car {
 		this.color = color;
 	}
 
-	public RACSBranchOffice getRACSBranchOffice() {
-		return racsBranchOffice;
+	public RACS getRacs() {
+		return racs;
 	}
 
-	public void setRACSBranchOffice(RACSBranchOffice racsBranchOffice) {
-		this.racsBranchOffice = racsBranchOffice;
+	public void setRacs(RACS racs) {
+		this.racs = racs;
 	}
 	
 	public double getPricePerHour() {
@@ -140,21 +143,17 @@ public class Car {
 	public void setPricePerHour(double pricePerHour) {
 		this.pricePerHour = pricePerHour;
 	}
-	
-	public void setAverageScore(float averageScore) {
-		this.averageScore = averageScore;
-	}
 
 	public Car(String manufacturer,String name, int yearOfManufacture,
-			String color, RACSBranchOffice racsBranchOffice, double pricePerHour, float averageScore, int numberOfVotes) {
+			String color, RACS racs, double pricePerHour, float averageRating, int numberOfVotes) {
 		super();
 		this.manufacturer = manufacturer;
 		this.name = name;
 		this.yearOfManufacture = yearOfManufacture;
 		this.color = color;
-		this.racsBranchOffice = racsBranchOffice;
+		this.racs = racs;
 		this.pricePerHour = pricePerHour;
-		this.averageScore = averageScore;
+		this.averageRating = averageRating;
 		this.numberOfVotes = numberOfVotes;
 	}
 	

@@ -6,6 +6,8 @@ import com.FlightsReservations.domain.Car;
 
 public class DiscountCarDTO {
 	private Long id;
+	
+
 	private String manufacturer;
 	private String name;
 	private int yearOfManufacture;

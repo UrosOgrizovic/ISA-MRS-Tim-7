@@ -1,9 +1,9 @@
 import {loadNavbar} from "./navbar.js"; 
-import { checkRoleFromToken, parseJwt, isTokenExpired } from "./securityStuff.js";
+import { checkRoleFromToken } from "./securityStuff.js";
 var addRACSLink = "/racss/add";
 
 var token = localStorage.getItem("token");
-if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
+if (token == null) location.replace("/html/login.html");
 
 if (!checkRoleFromToken(token, "ROLE_ADMIN")) history.go(-1);
 $(document).ready(function(){
@@ -32,9 +32,10 @@ $(document).ready(function(){
             data: JSON.stringify(racs),
             headers: { "Authorization": "Bearer " + token}, 
             success: function(result) {
-                toastr.success("Rent-a-car service successfully added");
+                console.log(result);
+                $(document.documentElement).append("<h3 id=\"addedSuccessfully\">Rent-a-car service addedd successfully</h3>");
             }, error: function(error) {
-                toastr.error("Could not add rent-a-car service");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });

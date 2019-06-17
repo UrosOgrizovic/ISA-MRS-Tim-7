@@ -33,6 +33,7 @@ $(document).ready(function(){
         
         $("#showRACSAverageRating").css("display", "none");    
 
+
         $("#error").remove();
         
         $.ajax({
@@ -43,11 +44,10 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(averageRating) {
-                $("#showRACSAverageRating").css("display", "inline");
-                $(".rate").css("display", "inline");
-                displayRACSRating(averageRating);
+                $("#showRACSAverageRating").css("display", "inline-block");
+                $("#showRACSAverageRating").html("<h3>"+averageRating+"</h3>");
             }, error: function(error) {
-                toastr.error("Could not get average rating of rent-a-car service");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -68,15 +68,10 @@ $(document).ready(function(){
             headers: { "Authorization": "Bearer " + token}, 
             success: function(carNameAverageRating) {
                 $("#showAverageRatingForEachCar").css("display", "block");
-                if (carNameAverageRating != null && Object.keys(carNameAverageRating).length > 0) {
-                    displayCars(carNameAverageRating);
-                } else {
-                    toastr.info("No average ratings to display");
-                }
-                
+                displayCars(carNameAverageRating);
                 
             }, error: function(error) {
-                toastr.error("Could not show average rating for each car");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -102,14 +97,9 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                if (dateNumberOfReservations != null && Object.keys(dateNumberOfReservations).length > 0) {
-                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsDaily", 1, 1, 2, 5, "day");
-                } else {
-                    toastr.info("No car reservations to display graph for");
-                }
-                
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsDaily", 1, 1, 2, 5, "day");
             }, error: function(error) {
-                toastr.error("Could not display number of car reservations daily graph");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -133,14 +123,9 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                if (dateNumberOfReservations != null && Object.keys(dateNumberOfReservations).length > 0) {
-                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsWeekly", 1, 1, 2, 5, "week");
-                } else {
-                    toastr.info("No car reservations to display graph for");
-                }
-                
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsWeekly", 1, 1, 2, 5, "week");
             }, error: function(error) {
-                toastr.error("Could not display number of car reservations weekly graph");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -164,14 +149,9 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dateNumberOfReservations) {
-                if (dateNumberOfReservations != null && Object.keys(dateNumberOfReservations).length > 0) {
-                    makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsMonthly", 1, 1, 2, 5, "month");
-                } else {
-                    toastr.info("No car reservations to display graph for");
-                }
-                
+                makeChart(dateNumberOfReservations, "Number of reservations", "showCarReservationChartsMonthly", 1, 1, 2, 5, "month");
             }, error: function(error) {
-                toastr.error("Could not display number of car reservations monthly graph");
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -198,15 +178,10 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(dayRevenue) {
-                if (dayRevenue != null && Object.keys(dayRevenue).length > 0) {
-                    $("#showRACSRevenueForPeriod").css("display", "block");
-                    makeChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000, "day");
-                } else {
-                    toastr.info("No revenue to display graph for");
-                }
-                
+                $("#showRACSRevenueForPeriod").css("display", "block");
+                makeChart(dayRevenue, "Revenue", "showRACSRevenueForPeriod", 1, 500, 500, 1000, "day");
             }, error: function(error) {
-                toastr.error("Could not display revenue graph");                
+                $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
@@ -233,6 +208,8 @@ $(document).ready(function(){
  * @param {*} unit - day, month or week
  */
 function makeChart(data, yAxisLabel, idOfParentElement, xAxisStep, yAxisStep, yAxisPadding, ceilToNearest, unit) {
+    
+    console.log(idOfParentElement);
     var labels = Object.keys(data);
     var newLabel;
     var maxYAxisValue = 0;
@@ -366,19 +343,4 @@ function sortCars(cars) {
         newCars[car] = cars[car];
     }
     return newCars;
-}
-
-function displayRACSRating(rating) {
-    if (rating >= 4.5) {
-        document.getElementById("avgstar5").checked = true;
-    } else if (rating >= 3.5) {
-        document.getElementById("avgstar4").checked = true;
-    } else if (rating >= 2.5) {
-        document.getElementById("avgstar3").checked = true;
-    } else if (rating >= 1.5) {
-        document.getElementById("avgstar2").checked = true;
-    } else {
-        document.getElementById("avgstar1").checked = true;
-    }
-    document.getElementById("avgscore").innerHTML = "("+rating.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
 }

@@ -1,6 +1,5 @@
 package com.FlightsReservations.domain;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -8,7 +7,6 @@ import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
-@DiscriminatorValue("HA")
 public class HotelAdmin extends Admin
 {
 	private static final long serialVersionUID = 8652154069699301151L;

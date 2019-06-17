@@ -14,16 +14,6 @@ public class RoomReservation extends Reservation {
 	
 	private Date endTime;
 	
-	private Long hotelId;
-	
-	public Long getHotelId() {
-		return hotelId;
-	}
-
-	public void setHotelId(Long hotelId) {
-		this.hotelId = hotelId;
-	}
-
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -51,11 +41,10 @@ public class RoomReservation extends Reservation {
 	public RoomReservation() {}
 
 	public RoomReservation(Date dateOfReservation, Float price, Boolean confirmed, User owner,
-			Long roomId, Date startTime, Date endTime, Long hotelId) {
+			Long roomId, Date startTime, Date endTime) {
 		super(dateOfReservation, price, confirmed, owner);
 		this.roomId = roomId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.hotelId = hotelId;
 	}
 }

@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -42,11 +41,6 @@ public class Reservation {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private AbstractUser owner;
 	
-	// rating that user has given to airline, hotel or RACS
-	// this column is nullable because user won't enter a rating when making the reservation, but rather later
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Rating rating;
-
 	@Version
 	@Column(nullable = false)
 	private Long version;
@@ -102,19 +96,10 @@ public class Reservation {
 	public void setOwner(AbstractUser owner) {
 		this.owner = owner;
 	}
-	
-	public Rating getRating() {
-		return rating;
-	}
-
-	public void setRating(Rating rating) {
-		this.rating = rating;
-	}
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation + ", price=" + price
-				+ ", confirmed=" + confirmed + ", owner=" + owner + ", rating=" + rating + "]";
+		return "Reservation [id=" + id + ", dateOfReservation=" + dateOfReservation +", price=" + price + 
+				", confirmed=" + confirmed + ", owner=" + owner + "]";
 	}
-
 }

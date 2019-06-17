@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
 import com.FlightsReservations.domain.HotelReservation;
+import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
+import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.repository.HotelRepository;
+import com.FlightsReservations.repository.RoomRepository;
 
 @Service
 public class HotelService {
@@ -19,6 +22,9 @@ public class HotelService {
 	@Autowired
 	private HotelRepository repository;
 	
+	@Autowired
+	private RoomRepository roomRepository;
+
 	public HotelDTO create(HotelDTO t) {
 		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
 		if (a == null) {
@@ -31,7 +37,7 @@ public class HotelService {
 					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
 			repository.save(a);
-			return t;
+			return createDTO(a);
 		}
 		return null;
 	}
@@ -111,11 +117,30 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		
+		if(hotel.getRoomConfiguration()!=null) for (Room a : hotel.getRoomConfiguration()) 
+			dto.getRooms().add(a.getNumber());
 		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
 			dto.getReservations().add(new HotelReservationDTO(r));
-
 		
 		return dto;
+	}
+	
+	public boolean addRoom(RoomDTO dto) {
+		Hotel hotel = dto.getHotel();
+		
+		if (hotel != null) {
+			Room room = new Room(
+					dto.getNumber(),
+					dto.getNumberOfGuests(),
+					dto.getType(),
+					dto.getOverallRating(),
+					dto.getOverNightStay(),
+					hotel);
+			hotel.getRoomConfiguration().add(room);
+			roomRepository.save(room);
+			repository.save(hotel);
+			return true;
+		}
+		return false;
 	}
 }

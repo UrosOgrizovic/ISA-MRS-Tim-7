@@ -15,16 +15,6 @@ public class CarReservation extends Reservation {
 	
 	private Date endTime;
 	
-	private Long racsBranchOfficeId;
-
-	public Long getRACSBranchOfficeId() {
-		return racsBranchOfficeId;
-	}
-
-	public void setRACSBranchOfficeId(Long racsId) {
-		this.racsBranchOfficeId = racsId;
-	}
-
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -48,16 +38,15 @@ public class CarReservation extends Reservation {
 	public void setCarId(Long carId) {
 		this.carId = carId;
 	}
-	
+
 	public CarReservation() {}
 
 	public CarReservation(Date dateOfReservation, Float price, Boolean confirmed, AbstractUser owner,
-			Long carId, Date startTime, Date endTime, Long racsBranchOfficeId) {
+			Long carId, Date startTime, Date endTime) {
 		super(dateOfReservation, price, confirmed, owner);
 		this.carId = carId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.racsBranchOfficeId = racsBranchOfficeId;
 	}
 
 	@Override
