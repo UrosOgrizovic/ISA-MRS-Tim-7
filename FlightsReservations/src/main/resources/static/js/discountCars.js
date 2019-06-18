@@ -123,7 +123,7 @@ function fastBook(carId) {
     carReservationRequestDTO.startTime = localStorage.getItem("fastBookCarStartTime");
     carReservationRequestDTO.endTime = localStorage.getItem("fastBookCarEndTime");
     
-    
+    carReservationRequestDTO.isFastReservation = true;
     
     $.ajax({
         url: carReservationLink,
@@ -134,10 +134,11 @@ function fastBook(carId) {
         headers: {
             "Authorization": "Bearer " + token
         },
-        success: function(carReservationDTO) {
+        success: function(result) {
+            localStorage.setItem("successMessageForToastr", result);
             location.replace("/html/userHomepage.html");
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error(err.responseText);
             console.log(error);
         }
     });

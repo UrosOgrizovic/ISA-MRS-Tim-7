@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
 import com.FlightsReservations.service.CarReservationService;
 
@@ -33,10 +32,10 @@ public class CarReservationController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody CarReservationRequestDTO dto) {
-		CarReservationDTO cdto = service.create(dto);
-		if (cdto != null)
-			return new ResponseEntity<>(cdto, HttpStatus.CREATED);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		String toReturn = service.create(dto);
+		if (toReturn.equalsIgnoreCase("Reservation successful"))
+			return new ResponseEntity<>(toReturn, HttpStatus.CREATED);
+		return new ResponseEntity<>(toReturn, HttpStatus.BAD_REQUEST);
 	}
 
 	@PreAuthorize("hasRole('ROLE_USER')")

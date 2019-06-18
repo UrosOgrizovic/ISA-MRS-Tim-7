@@ -164,7 +164,7 @@ INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, 
 -- ============================================================================================================
 
 -- RESERVATIONS  ============================================================================================================
-INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, car_id, racs_branch_office_id, owner_id) VALUES ('CR', 1, 1, STR_TO_DATE('17-06-2019 16:00', '%d-%m-%Y %H:%i'), 500, 0, STR_TO_DATE('20-09-2019 18:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('22-09-2019 18:00', '%d-%m-%Y %H:%i'), 1, 1, 2);
+INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, car_id, racs_branch_office_id, owner_id) VALUES ('CR', 1, 1, STR_TO_DATE('17-06-2019 16:00', '%d-%m-%Y %H:%i'), 500, 0, STR_TO_DATE('20-08-2019 18:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('22-08-2019 18:00', '%d-%m-%Y %H:%i'), 1, 1, 2);
 INSERT INTO reservation (reservation_type, id, confirmed, date_of_reservation, price, version, start_time, end_time, room_id, hotel_id, owner_id) VALUES ('RR', 2, 1, STR_TO_DATE('17-06-2019 16:00', '%d-%m-%Y %H:%i'), 200, 0, STR_TO_DATE('22-09-2019 16:00', '%d-%m-%Y %H:%i'), STR_TO_DATE('25-06-2019 16:00', '%d-%m-%Y %H:%i'), 1, 3, 2);
 --  ============================================================================================================
 
