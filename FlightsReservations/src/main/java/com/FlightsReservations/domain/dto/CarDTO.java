@@ -109,8 +109,4 @@ public class CarDTO {
 		this.racsBranchOfficeName = c.getRACSBranchOffice().getName();
 		this.yearOfManufacture = c.getYearOfManufacture();
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

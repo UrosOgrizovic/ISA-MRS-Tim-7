@@ -13,22 +13,6 @@ public class CarReservationDTO {
 	private Boolean confirmed;
 	private Long racsBranchOfficeId;
 	private RatingDTO rating;
-	
-	public Long getRacsBranchOfficeId() {
-		return racsBranchOfficeId;
-	}
-
-	public void setRacsBranchOfficeId(Long racsBranchOfficeId) {
-		this.racsBranchOfficeId = racsBranchOfficeId;
-	}
-
-	public RatingDTO getRating() {
-		return rating;
-	}
-
-	public void setRating(RatingDTO rating) {
-		this.rating = rating;
-	}
 
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date dateOfReservation;
@@ -39,8 +23,6 @@ public class CarReservationDTO {
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
 	
-<<<<<<< HEAD
-=======
 	
 	public Long getRacsBranchOfficeId() {
 		return racsBranchOfficeId;
@@ -59,7 +41,6 @@ public class CarReservationDTO {
 	}
 
 	
->>>>>>> master
 	public Long getRACSBranchOfficeId() {
 		return racsBranchOfficeId;
 	}
@@ -129,8 +110,6 @@ public class CarReservationDTO {
 	}
 
 	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime, Long racsBranchOfficeId, RatingDTO rating) {
-<<<<<<< HEAD
-=======
 		super();
 		this.id = id;
 		this.price = price;
@@ -144,7 +123,6 @@ public class CarReservationDTO {
 	}
 	
 	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime, Long racsBranchOfficeId, Rating rating) {
->>>>>>> master
 		super();
 		this.id = id;
 		this.price = price;
@@ -154,26 +132,8 @@ public class CarReservationDTO {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.racsBranchOfficeId = racsBranchOfficeId;
-<<<<<<< HEAD
-		this.rating = rating;
-	}
-	
-	public CarReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation, Date startTime, Date endTime, Long racsBranchOfficeId, Rating rating) {
-		super();
-		this.id = id;
-		this.price = price;
-		this.ownerEmail = ownerEmail;
-		this.confirmed = confirmed;
-		this.dateOfReservation = dateOfReservation;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.racsBranchOfficeId = racsBranchOfficeId;
-		RatingDTO r = new RatingDTO();
-		r.setCompanyBranchOfficeId(rating.getCompanyBranchOfficeId());
-=======
 		RatingDTO r = new RatingDTO();
 		r.setRacsBranchOfficeId(rating.getRacsBranchOfficeId());
->>>>>>> master
 		r.setCompanyRating(rating.getCompanyRating());
 		r.setFlightRoomCarRating(rating.getFlightRoomCarRating());
 		r.setReservationId(rating.getId());

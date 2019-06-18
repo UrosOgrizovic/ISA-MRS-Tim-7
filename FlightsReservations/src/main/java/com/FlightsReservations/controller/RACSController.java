@@ -124,9 +124,5 @@ public class RACSController {
 			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
-	
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> master

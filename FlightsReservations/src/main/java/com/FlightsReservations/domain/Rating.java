@@ -12,11 +12,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 
-<<<<<<< HEAD
-=======
 import org.springframework.lang.Nullable;
 
->>>>>>> master
 
 @Entity
 public class Rating {
@@ -37,10 +34,6 @@ public class Rating {
 	@Max(value = 5)
 	private float companyRating;
 	
-<<<<<<< HEAD
-	@Column
-	private Long companyBranchOfficeId;
-=======
 	@Nullable
 	@Column
 	private Long racsBranchOfficeId;
@@ -66,7 +59,6 @@ public class Rating {
 	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
->>>>>>> master
 
 	public Long getId() {
 		return id;
@@ -100,29 +92,12 @@ public class Rating {
 		this.companyRating = companyRating;
 	}
 
-<<<<<<< HEAD
-	public Long getCompanyBranchOfficeId() {
-		return companyBranchOfficeId;
-	}
-
-	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
-		this.companyBranchOfficeId = companyBranchOfficeId;
-	}
-
-	public Rating(Reservation reservation, @Positive @Min(1) @Max(5) float flightRoomCarRating,
-			@Positive @Min(1) @Max(5) float companyRating, Long companyBranchOfficeId) {
-=======
 	public Rating(Reservation reservation, @Positive @Min(1) @Max(5) float flightRoomCarRating,
 			@Positive @Min(1) @Max(5) float companyRating) {
->>>>>>> master
 		super();
 		this.reservation = reservation;
 		this.flightRoomCarRating = flightRoomCarRating;
 		this.companyRating = companyRating;
-<<<<<<< HEAD
-		this.companyBranchOfficeId = companyBranchOfficeId;
-=======
->>>>>>> master
 	}
 
 	public Rating() {
@@ -130,11 +105,5 @@ public class Rating {
 		this.companyRating = 0;
 		this.flightRoomCarRating = 0;
 	}
-	
-	
-	
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> master

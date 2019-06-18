@@ -4,18 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-<<<<<<< HEAD
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-
-
-@Entity
-@DiscriminatorValue("RBO")
-public class RACSBranchOffice extends BranchOffice {
-=======
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,7 +37,6 @@ public class RACSBranchOffice {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private RACS racs;
 
->>>>>>> master
 	
 	/* orphanRemoval = true - guarantees that when a car is removed from  
 	 * the RACS's set it will also be removed from the database
@@ -69,11 +56,6 @@ public class RACSBranchOffice {
 		}
 	}
 	
-<<<<<<< HEAD
-	public RACSBranchOffice(String name, Float longitude, Float latitude, Company company, Set<Car> cars) {
-		super(name, longitude, latitude, company);
-		this.cars = cars;
-=======
 	public Long getId() {
 		return id;
 	}
@@ -103,18 +85,10 @@ public class RACSBranchOffice {
 	}
 	public void setRacs(RACS racs) {
 		this.racs = racs;
->>>>>>> master
 	}
 	public RACSBranchOffice() {
 		super();
 	}
-<<<<<<< HEAD
-	@Override
-	public String toString() {
-		return "RACSBranchOffice [cars=" + cars + ", getId()=" + getId() + ", getName()=" + getName()
-				+ ", getLongitude()=" + getLongitude() + ", getLatitude()=" + getLatitude() + ", getCompany()="
-				+ getCompany() + "]";
-=======
 	public RACSBranchOffice(Long id, String name, Float longitude, Float latitude, RACS racs, Set<Car> cars) {
 		super();
 		this.id = id;
@@ -128,14 +102,9 @@ public class RACSBranchOffice {
 	public String toString() {
 		return "RACSBranchOffice [id=" + id + ", name=" + name + ", longitude=" + longitude + ", latitude=" + latitude
 				+ ", racs=" + racs + ", cars=" + cars + "]";
->>>>>>> master
 	}
 	
 	
 	
 	
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

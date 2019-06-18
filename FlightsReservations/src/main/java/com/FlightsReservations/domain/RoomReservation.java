@@ -14,10 +14,8 @@ public class RoomReservation extends Reservation {
 	
 	private Date endTime;
 	
-<<<<<<< HEAD
 	private float roomRating;
 	
-=======
 	private Long hotelId;
 	
 	public Long getHotelId() {
@@ -28,7 +26,6 @@ public class RoomReservation extends Reservation {
 		this.hotelId = hotelId;
 	}
 
->>>>>>> master
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -71,10 +68,7 @@ public class RoomReservation extends Reservation {
 		this.roomId = roomId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-<<<<<<< HEAD
 		this.roomRating = 0;
-=======
 		this.hotelId = hotelId;
->>>>>>> master
 	}
 }

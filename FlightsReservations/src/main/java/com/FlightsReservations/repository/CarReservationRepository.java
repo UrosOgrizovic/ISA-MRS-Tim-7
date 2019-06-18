@@ -21,8 +21,4 @@ public interface CarReservationRepository extends JpaRepository<CarReservation, 
 	
 	@Query(value="SELECT * FROM reservation r WHERE r.reservation_type='CR' AND r.car_id IN (SELECT c.id FROM car c WHERE r.car_id = c.id AND ?1 = c.racs_branch_office_id)", nativeQuery = true)
 	Collection<CarReservation> findCarReservationsOfRacsBranchOffice(Long racsBranchOfficeId);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

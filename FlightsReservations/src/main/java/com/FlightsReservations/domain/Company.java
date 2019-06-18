@@ -52,19 +52,6 @@ public class Company {
 	@Version
 	@Column(nullable = false)
 	private Long version;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "company_id")
-	private Set<BranchOffice> branchOffices;
-	
-	
-	public Set<BranchOffice> getBranchOffices() {
-		return branchOffices;
-	}
-
-	public void setBranchOffices(Set<BranchOffice> branchOffices) {
-		this.branchOffices = branchOffices;
-	}
 
 	public Long getVersion() {
 		return version;

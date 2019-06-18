@@ -117,8 +117,4 @@ public class Reservation {
 				+ ", confirmed=" + confirmed + ", owner=" + owner + ", rating=" + rating + "]";
 	}
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

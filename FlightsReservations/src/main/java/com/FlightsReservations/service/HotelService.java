@@ -1,23 +1,22 @@
 package com.FlightsReservations.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
-
 import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.HotelPricelistItem;
 import com.FlightsReservations.domain.Room;
+import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.dto.HotelDTO;
-import com.FlightsReservations.domain.dto.RoomDTO;
+import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.repository.HotelRepository;
+import com.FlightsReservations.repository.RoomRepository;
 
 @Service
 public class HotelService {
@@ -51,15 +50,12 @@ public class HotelService {
 				{
 					
 					ha.setHotel(h);
-					adminService.update(ha);
+					adminRepository.save(ha);
 					h.setAdmin(ha);
 				}
 			}
 			
 			repository.save(h);
-			
-			return createDTO(h);
-			repository.save(a);
 			return t;
 		}
 		return null;
@@ -146,10 +142,10 @@ public class HotelService {
 		}
 		if(hotel.getPricelist()!=null && !hotel.getPricelist().isEmpty()) for (HotelPricelistItem pli : hotel.getPricelist())
 			dto.getPricelist().add(pli);
-
-		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
-			dto.getReservations().add(new HotelReservationDTO(r));
-
+		/*
+		if(hotel.getReservations()!=null) for (RoomReservation r : hotel.getReservations())
+			dto.getReservations().add(r);
+		*/
 		return dto;
 	}
 	/*

@@ -24,13 +24,9 @@ public class Room {
 	@NotNull
 	private int numberOfGuests;
 	
-<<<<<<< HEAD
-	@NotNull
 	private int floor;
 	
 	@NotNull
-=======
->>>>>>> master
 	private RoomType type;
 
 	@Column(nullable = false)
@@ -53,11 +49,7 @@ public class Room {
 		super();
 	}
 	
-<<<<<<< HEAD
 	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, int floor, Hotel hotel, int numberOfVotes) 
-=======
-	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes) 
->>>>>>> master
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
@@ -68,11 +60,7 @@ public class Room {
 		this.hotel = hotel;
 		this.numberOfVotes = numberOfVotes;
 	}
-	
-<<<<<<< HEAD
-	
-=======
->>>>>>> master
+
 	public float getAverageScore() {
 		return averageScore;
 	}
@@ -130,8 +118,6 @@ public class Room {
 	{
 		this.numberOfGuests = numberOfGuests;
 	}
-
-<<<<<<< HEAD
 	public Hotel getHotel()
 	{
 		return hotel;
@@ -151,17 +137,6 @@ public class Room {
 	{
 		this.floor = floor;
 	}
-=======
-	public Hotel getHotel() {
-		return hotel;
-	}
 
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
-	}
->>>>>>> master
-	
-	
-	
 	
 }

@@ -147,9 +147,8 @@ update company SET pricelist_id = 3 WHERE id = 6;
 INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_branch_office_id, price_per_hour, version, average_score, number_of_votes) VALUES (1, "civic", "honda", 2010, 'blue', 1, 10, 0, 4.35, 57);
 INSERT INTO car (id, name, manufacturer, year_of_manufacture, color, racs_branch_office_id, price_per_hour, version, average_score, number_of_votes) VALUES (2, "supra", "toyota", 2000, 'red', 1, 20, 0, 3.27, 44);
 -- ============================================================================================================
-<<<<<<< HEAD
 --INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES (1, 20, STR_TO_DATE("18-09-2019 20:00", '%d-%m-%Y %H:%i'), STR_TO_DATE("20-09-2019 21:00", '%d-%m-%Y %H:%i'));
-=======
+
 
 
 
@@ -160,7 +159,7 @@ INSERT INTO car_discounts (car_id, discount_value, start_time, end_time) VALUES 
 
 
 -- ROOMS ============================================================================================================
-INSERT INTO room (id, average_score, number, number_of_guests, number_of_votes, over_night_stay, hotel_id) VALUES (1, 4.35, 23, 3, 50, 30, 3);
+INSERT INTO room (id, average_score, number, floor, type, number_of_guests, number_of_votes, over_night_stay, hotel_id) VALUES (1, 4.35, 23, 1, 2, 3, 50, 30, 3);
 -- ============================================================================================================
 
 -- RESERVATIONS  ============================================================================================================
@@ -174,4 +173,4 @@ INSERT INTO rating (id, company_id, company_rating, flight_room_car_rating, racs
 --  ============================================================================================================
 UPDATE reservation SET rating_id = 1 WHERE id = 1;
 UPDATE reservation SET rating_id = 2 WHERE id = 2;
->>>>>>> master
+

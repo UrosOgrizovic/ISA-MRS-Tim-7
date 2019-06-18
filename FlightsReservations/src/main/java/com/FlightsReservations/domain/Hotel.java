@@ -21,23 +21,15 @@ public class Hotel extends Company
 	@OneToMany(mappedBy = "hotel")
 	private Set<HotelPricelistItem> pricelist = new HashSet<HotelPricelistItem>();
 	
-<<<<<<< HEAD
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "hotel_id")
 	private Set<Room> roomConfiguration = new HashSet<Room>();
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-=======
-	/*
+	//@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "admin")
->>>>>>> master
 	private HotelAdmin admin;
-	
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "hotel_id")
-	private Set<Room> roomConfiguration = new HashSet<Room>();
 	
 	
 	public Set<Room> getRoomConfiguration() {
@@ -47,7 +39,25 @@ public class Hotel extends Company
 	public void setRoomConfiguration(Set<Room> roomConfiguration) {
 		this.roomConfiguration = roomConfiguration;
 	}
+	
 
+	public Set<HotelPricelistItem> getPricelist() {
+		return pricelist;
+	}
+
+	public void setPricelist(Set<HotelPricelistItem> pricelist) {
+		this.pricelist = pricelist;
+	}
+
+	public HotelAdmin getAdmin()
+	{
+		return admin;
+	}
+
+	public void setAdmin(HotelAdmin admin)
+	{
+		this.admin = admin;
+	}
 	public Hotel() {
 		super();
 	}
@@ -71,41 +81,6 @@ public class Hotel extends Company
 		//this.setPricelist(pricelist);
 		//this.setAdmin();
 	}
-
-
-	public Set<HotelPricelistItem> getPricelist() {
-		return pricelist;
-	}
-
-	public void setPricelist(Set<HotelPricelistItem> pricelist) {
-		this.pricelist = pricelist;
-	}
-
-<<<<<<< HEAD
-	public HotelAdmin getAdmin()
-	{
-		return admin;
-	}
-
-	public void setAdmin(HotelAdmin admin)
-	{
-		this.admin = admin;
-	}
-
-	public Set<Room> getRoomConfiguration()
-	{
-		return roomConfiguration;
-=======
-	public Set<HotelReservation> getReservations() {
-		return reservations;
->>>>>>> master
-	}
-
-	public void setRoomConfiguration(Set<Room> roomConfiguration)
-	{
-		this.roomConfiguration = roomConfiguration;
-	}
-	
 	
 	
 }
