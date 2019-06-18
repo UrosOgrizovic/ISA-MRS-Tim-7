@@ -13,31 +13,7 @@
     <title>Search hotels</title>
   </head>
   <body>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item" id="userHomepageNavItem">
-            <a class="nav-link" href="userHomepage.html" >Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item" id="airlinesHomepageNavItem">
-            <a class="nav-link" href="airlinesHomepage.html" >Airlines</a>
-        </li>
-        <li class="nav-item" id="hotelsHomepageNavItem">
-            <a class="nav-link" href="hotelsHomepage.html" >Hotels</a>
-        </li>
-        <li class="nav-item" id="RACSHomepageNavItem">
-            <a class="nav-link" href="RACSHomepage.html" >Rent-a-car services</a>
-        </li>
-        <li class="nav-item" id="flightsHomepageNavItem">
-            <a class="nav-link" href="flightsHomepage.html" >Flights</a>
-        </li>
-        <li class="nav-item" id="profileHomepageNavItem">
-            <a class="nav-link" href="userProfilePage.html" id="profileHomepageLink">Profile</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="login.html">Logout</a>
-        </li>
-        </ul>
-        
+      <div id="nav-placeholder">
     </div>
     
     <div>
@@ -55,15 +31,13 @@
                 </tr>
                 <tr>
 
-                    <td> <input type="text" name="name"> </td>
-                    <td> <input type="text" name="city"> </td>
-                    <td> <input type="text" name="state"> </td>
-                    <td> <input type="text" name="averageScore"> </td>
+                    <td> <input type="text" name="name" id="name"> </td>
+                    <td> <input type="text" name="city" id="city"> </td>
+                    <td> <input type="text" name="state" id="state"> </td>
+                    <td> <input type="text" name="averageScore" id="averageScore"> </td>
                 </tr>
                 <tr>
-                    <td>
-                    </td>
-                    <td align="center" colspan=3>
+                    <td align="center" colspan=4>
                     	<button type="button" class="btn btn-primary" name="searchHotel" onClick="search_hotel()" id="submitButton" >Search</button>
                     	                                                   
                         <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>

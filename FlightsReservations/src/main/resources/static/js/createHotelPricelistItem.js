@@ -5,7 +5,7 @@ var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
 var hotel = "";
-window.create_room = create_room;
+window.create_pricelistitem = create_pricelistitem;
 $(document).ready(function ()
 		{
 			console.log(localStorage.getItem("email"));
@@ -23,7 +23,6 @@ $(document).ready(function ()
         	                add_hotel(result);
         	            }, error: function(error) {
         	                console.log(error);
-        	                console.log(error.responseText);
         	            }
                     })
             //console.log(admins);
@@ -41,61 +40,32 @@ function add_hotel(result)
 
 function validate_inputs(myForm)
 {
-    
-    if(!Number.isInteger( Number(myForm.number.value) ) )
-    {
-        alert("Room number must be an integer!");
-        return false;
-    }
-
-    
-    if(!Number.isInteger( Number(myForm.numberOfGuests.value) ) )
-    {
-        alert("Number of guests must be an integer!");
-        return false;
-    }
-    else//in case of wrong type (add later)
-    {
-
-    }
-    
-    if(isNaN( Number(myForm.overnightStay.value) ) )
-    {
-        alert("You must Room number must be a number!");
-        return false;
-    }
-    else//in case of wrong type (add later)
-    {
-
-    }
-
-    if(myForm.type.value.trim()=="")
+    if(myForm.name.trim()=="")
     {
         alert("You must select Hotel room's type!");
         return false;
     }
-    
+    if(isNaN( Number(myForm.price.value) ) )
+    {
+        alert("You must Room number must be a number!");
+        return false;
+    }
     return true;
 }
 
-function create_room()
+function create_pricelistitem()
 {
-    var myForm = document.getElementById("createRoomForm");
+    var myForm = document.getElementById("createHotelPricelistItemForm");
     if(!validate_inputs(myForm))
     {
         return;
     }
     else
     {
-        var room =
+        var hotelPricelistItem =
                 {
-                    number : myForm.number.value,
-                    numberOfGuests : myForm.numberOfGuests.value,
-                    overnightStay : myForm.overnightStay.value,
-                    type : myForm.type.value,
-                    averageScore : 0.0,
-                    floor : myForm.floor.value,
-                    numberOfVotes: 0,
+                    name : myForm.name.value,
+                    price : myForm.price.value,
                     hotelName : hotel
                     /*//this is a DTO => not all field are necessary
                     hotelName :  
@@ -110,7 +80,7 @@ function create_room()
          //$("#createHotel").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/rooms/create",//link assigned to method in RoomController
+            url: "http://localhost:8080/hotelPricelist/create",//link assigned to method in RoomController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",

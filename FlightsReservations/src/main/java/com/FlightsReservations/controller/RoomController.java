@@ -26,11 +26,14 @@ public class RoomController
 	@Autowired
 	private RoomService service;
 	
+	@SuppressWarnings("unused")
 	@GetMapping(value= "/getHotel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getHotel(@RequestParam("email") String email)//, @RequestParam("createRoom") String cr)
 	{
 		String name = service.getHotelName(email);
-		return new ResponseEntity<>(name, HttpStatus.FOUND);
+		if(name!=null || name!="")return new ResponseEntity<>(name, HttpStatus.OK);
+		
+		else return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 		
 	}
 	

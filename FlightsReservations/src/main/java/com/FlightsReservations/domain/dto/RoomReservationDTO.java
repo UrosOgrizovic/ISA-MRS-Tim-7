@@ -6,7 +6,7 @@ import com.FlightsReservations.domain.RoomReservation;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class RoomReservationDTO {
-	private Long id;
+	private Long roomId;
 	private Float price;
 	private String ownerEmail;
 	private Boolean confirmed;
@@ -36,12 +36,12 @@ public class RoomReservationDTO {
 		this.endTime = endTime;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getRoomId() {
+		return roomId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setRoomId(Long id) {
+		this.roomId = id;
 	}
 
 	public Float getPrice() {
@@ -79,7 +79,7 @@ public class RoomReservationDTO {
 	public RoomReservationDTO(Long id, Float price, String ownerEmail, Boolean confirmed, Date dateOfReservation,
 			Date startTime, Date endTime) {
 		super();
-		this.id = id;
+		this.roomId = id;
 		this.price = price;
 		this.ownerEmail = ownerEmail;
 		this.confirmed = confirmed;

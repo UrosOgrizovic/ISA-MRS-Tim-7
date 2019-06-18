@@ -78,10 +78,12 @@ public class RoomService
 		HotelAdmin ha = hotelAdminRepository.findByEmail(email);
 		if(ha==null || ha.getHotel()==null) 
 		{
-			System.out.println("Nisam pronasao");
 			return null;
 		}
-		else return ha.getHotel().getName();
+		else
+		{
+			return ha.getHotel().getName();
+		}
 	}
 
 	public Room create(RoomDTO dto)

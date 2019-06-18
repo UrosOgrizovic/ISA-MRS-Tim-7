@@ -46,7 +46,8 @@ public class HotelPricelistItemDTO {
 	public HotelPricelistItemDTO(HotelPricelistItem hpl) {
 		this.name = hpl.getName();
 		this.price = hpl.getPrice();
-		this.hotelName = hpl.getHotel().getName();
+		if(hpl.getHotel()!=null)this.hotelName = hpl.getHotel().getName();
+		else this.hotelName = "";
 	}
 	
 	

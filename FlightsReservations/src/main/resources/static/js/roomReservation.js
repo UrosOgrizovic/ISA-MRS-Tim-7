@@ -1,3 +1,16 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
+
+var room;
+window.reserve_room = reserve_room;
+
+$(document).ready(function()
+		{ 
+			loadNavbar("hotelsHomepageNavItem");
+			//room = localStorage.getItem("roomId");
+			//document.getElementById("roomId").value = room;
+		}
+	);
 
 function validate_inputs(myForm)
 {
@@ -67,7 +80,7 @@ function reserve_room()
         //add image later
         //add administator later
         
-         $("#reserverRoom").click(function(){
+         $("#reserveRoom").click(function(){
             $.ajax(
             {
             url: "http://localhost:8080/roomReservations/create",//link assigned to method in RoomController
@@ -79,6 +92,6 @@ function reserve_room()
             crossDomain: true,
             success: function(result) { },
             })
-            */
+         });
     }
 }

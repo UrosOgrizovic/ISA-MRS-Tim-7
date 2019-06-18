@@ -67,7 +67,7 @@ public class HotelAdminService {
 			h.setLastPasswordResetDate(t.getLastPasswordResetDate() );
 			h.setPassword(t.getPassword() );
 			h.setPhone(t.getPhone() );
-			h.setPicturePath(t.getPicturePath() );
+			//h.setPicturePath(t.getPicturePath() );
 			repository.save(h);
 			return true;
 		}

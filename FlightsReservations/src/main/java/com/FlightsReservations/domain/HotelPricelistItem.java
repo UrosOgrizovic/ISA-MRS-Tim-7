@@ -41,7 +41,7 @@ public class HotelPricelistItem implements Serializable {
 		super();
 	}
 	
-	public HotelPricelistItem(Long id, @NotBlank String name, @NotNull double price, Hotel hotel) 
+	public HotelPricelistItem(@NotBlank String name, @NotNull double price, Hotel hotel) 
 	{
 		super();
 		this.name = name;
