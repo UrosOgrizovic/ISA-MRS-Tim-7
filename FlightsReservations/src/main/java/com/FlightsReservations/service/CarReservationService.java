@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
+import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
@@ -34,9 +36,10 @@ public class CarReservationService {
 	private CarRepository carRepository;
 	
 	@Transactional(readOnly = false)
-	public CarReservationDTO create(CarReservationRequestDTO dto) {
-		if (!creatingSemanticValidation(dto))
-			return null;
+	public String create(CarReservationRequestDTO dto) {
+		String toReturn = creatingSemanticValidation(dto); 
+		if (!toReturn.equalsIgnoreCase("success"))
+			return toReturn;
 		
 		Date startTime = dto.getStartTime();
 		Date endTime = dto.getEndTime();
@@ -56,50 +59,69 @@ public class CarReservationService {
 		reservation.getRating().setReservation(reservation);
 		reservation.getRating().setRacsBranchOfficeId(car.getRACSBranchOffice().getId());
 		reservation = carReservationRepository.save(reservation);
-		return new CarReservationDTO(reservation);
+		return "Reservation successful";
 	}
 	
-	private boolean creatingSemanticValidation(CarReservationRequestDTO dto) {
+	/**
+	 * 
+	 * @param dto
+	 * @return String indicating whether input is good
+	 */
+	private String creatingSemanticValidation(CarReservationRequestDTO dto) {
 		
 		// user with given email must exist
 		if (abstractUserRepository.findByEmail(dto.getOwnerEmail()) == null)
-			return false;
+			return "User with given email doesn't exist";
 		
 		// car with given id must exist 
 		if (carRepository.findById(dto.getCarId()) == null)
-			return false;
+			return "Car with given id doesn't exist";
 
-		Date startTime = dto.getStartTime();
-		Date endTime = dto.getEndTime();
+		Date reservationStartTime = dto.getStartTime();
+		Date reservationEndTime = dto.getEndTime();
 		
 		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(startTime);
+		calendar.setTime(reservationStartTime);
 		
 		// only on the hour (= top of the hour) times are accepted, e.g. 08:00, 12:00 etc.
 		if (!(calendar.get(Calendar.MINUTE) == 0) ) 
-			return false;
+			return "Only on the hour times are accepted for reservation start time, e.g. 08:00, 12:00 etc.";
 		
-		calendar.setTime(endTime);
+		calendar.setTime(reservationEndTime);
 
 		if (!(calendar.get(Calendar.MINUTE) == 0) ) 
-			return false;
+			return "Only on the hour times are accepted for reservation end time, e.g. 08:00, 12:00 etc.";
 		
 		// start time has to be before end time
-		if (startTime.after(endTime))
-			return false;
+		if (reservationStartTime.after(reservationEndTime))
+			return "Reservation start time has to be before reservation end time";
 		
 		// car can't be rented for more than 7 days
-		long diff = endTime.getTime() - startTime.getTime();
+		long diff = reservationEndTime.getTime() - reservationStartTime.getTime();
 		long diffInDays = diff / (1000 * 60 * 60 * 24);
 		if (diffInDays > 7)
-			return false;
+			return "Car can't be rented for more than 7 days";
 		
 		// no other reservations may exist for selected car and entered period
 		ArrayList<CarReservation> carReservationsForPeriod = (ArrayList<CarReservation>) carReservationRepository.findCarReservationsForPeriod(dto.getStartTime(), dto.getEndTime());
 		if (carReservationsForPeriod != null && carReservationsForPeriod.size() > 0) {
-			return false;
+			return "Car is already reserved in selected period";
 		}
-		return true;
+		
+		if (!dto.isFastReservation()) {
+			Car c = carRepository.getOne(dto.getCarId());
+			Set<Discount> discounts = c.getDiscounts();
+			for (Discount d : discounts) {
+				// car can't be available for a regular reservation and a fast reservation at the same time
+				if ( (reservationStartTime.compareTo(d.getStartTime()) >= 0 && reservationStartTime.compareTo(d.getEndTime()) <= 0) || 
+						(reservationEndTime.compareTo(d.getStartTime()) >= 0 && reservationEndTime.compareTo(d.getEndTime()) <= 0)) {
+					return "Car is on discount during that period, so it can't be reserved the regular way";
+				}
+			}
+		}
+		
+		
+		return "success";
 	}
 	
 	public static Date isValidFormat(String format, String value) {

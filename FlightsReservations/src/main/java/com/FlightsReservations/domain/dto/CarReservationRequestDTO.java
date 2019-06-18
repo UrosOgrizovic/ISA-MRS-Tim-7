@@ -25,6 +25,17 @@ public class CarReservationRequestDTO {
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date endTime;
 	
+	@NotNull
+	private boolean isFastReservation;
+	
+	public boolean isFastReservation() {
+		return isFastReservation;
+	}
+
+	public void setFastReservation(boolean isFastReservation) {
+		this.isFastReservation = isFastReservation;
+	}
+
 	public Date getStartTime() {
 		return startTime;
 	}

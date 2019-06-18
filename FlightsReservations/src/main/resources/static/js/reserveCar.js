@@ -125,23 +125,23 @@ function reserveCar() {
     carReservation.startTime = startDate + " " + startTime + ":00";
     carReservation.endTime = endDate + " " + endTime + ":00";
     carReservation.discount = 0;
-    
+    carReservation.isFastReservation = false;
     $("#error").remove();
 
     $.ajax({
 		url: "http://localhost:8080/carReservations",
 		method: "POST",
-		dataType: "json",
+		dataType: "text",
         contentType: "application/json",
         data: JSON.stringify(carReservation),
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-            //toastr.success("Reservation successful");
-            localStorage.setItem("successMessageForToastr", "Reservation successful");
+            localStorage.setItem("successMessageForToastr", result);
             location.replace("/html/userProfilePage.html");
         },
         error: function(err) {
-            toastr.error("Reservation for selected car already exists for selected period")
+            toastr.error(err.responseText);
+            console.log(err);
         }
     });	
 
