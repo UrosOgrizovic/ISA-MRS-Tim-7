@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
+
 import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.HotelPricelistItem;
 import com.FlightsReservations.domain.Room;
@@ -17,7 +18,6 @@ import com.FlightsReservations.domain.dto.RoomDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
 import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.repository.HotelRepository;
-import com.FlightsReservations.repository.RoomRepository;
 
 @Service
 public class HotelService {
@@ -26,13 +26,11 @@ public class HotelService {
 	private HotelRepository repository;
 	
 	@Autowired
-	private HotelAdminService adminService;
-	
-	@Autowired
 	private HotelAdminRepository adminRepository;
 	
 	@Autowired
 	private RoomRepository roomRepository;
+
 
 	public HotelDTO create(HotelDTO t) {
 		Hotel h = repository.findByName(t.getName());//TODO: check if already exists
@@ -61,6 +59,8 @@ public class HotelService {
 			repository.save(h);
 			
 			return createDTO(h);
+			repository.save(a);
+			return t;
 		}
 		return null;
 	}
@@ -146,10 +146,13 @@ public class HotelService {
 		}
 		if(hotel.getPricelist()!=null && !hotel.getPricelist().isEmpty()) for (HotelPricelistItem pli : hotel.getPricelist())
 			dto.getPricelist().add(pli);
-		
+
+		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
+			dto.getReservations().add(new HotelReservationDTO(r));
+
 		return dto;
 	}
-	
+	/*
 	public boolean addRoom(RoomDTO dto) {
 		Hotel hotel = repository.findByName(dto.getHotelName() );
 		
@@ -171,4 +174,5 @@ public class HotelService {
 		}
 		return false;
 	}
+	*/
 }

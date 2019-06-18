@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +25,11 @@ import com.FlightsReservations.repository.CarRepository;
 @Transactional(readOnly = true)
 public class CarService {
 	@Autowired
-	CarRepository repository;
+	CarRepository carRepository;
 
 	@Transactional(readOnly = false)
 	public Car create(Car t) {
-		return repository.save(t);
+		return carRepository.save(t);
 	}
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -41,7 +42,13 @@ public class CarService {
 			car.setYearOfManufacture(c.getYearOfManufacture());
 			car.setName(c.getName());
 			car.setPricePerHour(c.getPricePerHour());
-			repository.save(car);
+			carRepository.save(car);
+			// avoiding lost update problem
+			try {
+				carRepository.flush();
+			} catch (OptimisticLockingFailureException e) {
+				throw new OptimisticLockingFailureException("Car already updated");
+			}
 			return true;
 		}
 		return false;
@@ -49,33 +56,33 @@ public class CarService {
 	
 	@Transactional(readOnly = false)
 	public void delete(Long id) {
-		repository.deleteById(id);
+		carRepository.deleteById(id);
 	}
 
 	public Car findOne(Long carID) {
 		try {
-			return repository.findById(carID).get();
+			return carRepository.findById(carID).get();
 		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}
 	
 	public Collection<Car> findAll() {
-		return repository.findAll();
+		return carRepository.findAll();
 	}
 	
 	@Transactional(readOnly = false)
 	public String addDiscountToCar(CreateCarDiscountDTO discount) {
 		if (discount.getStartTime().after(discount.getEndTime()) || discount.getStartTime().compareTo(discount.getEndTime()) == 0)
 			return "Start time of discount cannot be equal to or after end time of discount";
-		Car car = repository.getOne(discount.getCarId());
+		Car car = carRepository.getOne(discount.getCarId());
 		boolean discountsExistForPeriod = car.checkIfAnyDiscountsForPeriod(discount.getStartTime(), discount.getEndTime());
 		// if no discount
 		if (!discountsExistForPeriod) {
 			Discount d = new Discount(discount.getStartTime(), discount.getEndTime(), discount.getDiscountValue());
 			Set<Discount> carDiscounts = car.getDiscounts();
 			carDiscounts.add(d);
-			repository.save(car);
+			carRepository.save(car);
 			return "Success";
 		}
 		return "Car already has discount for given period";
@@ -83,7 +90,7 @@ public class CarService {
 	}
 	
 	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(String startTime, String endTime) {
-		Collection<Car> cars = repository.findAll();
+		Collection<Car> cars = carRepository.findAll();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		Date startDate = new Date();
 		Date endDate = new Date();
@@ -136,13 +143,13 @@ public class CarService {
 	}
 	
 	public CarRatingDTO rate(CarRatingDTO dto) {
-		Car c = repository.findById(dto.getCarId()).get();
+		Car c = carRepository.findById(dto.getCarId()).get();
 		if (c != null) {
 			float newAvgScore = c.getAverageScore() * c.getNumberOfVotes() + dto.getAverageScore();
 			int newNumberOfVotes = c.getNumberOfVotes() + 1;
 			c.setNumberOfVotes(newNumberOfVotes);
 			c.setAverageScore(newAvgScore / newNumberOfVotes);
-			repository.save(c);
+			carRepository.save(c);
 			return new CarRatingDTO(c.getAverageScore(), c.getId());
 		}
 		return null;

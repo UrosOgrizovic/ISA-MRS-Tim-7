@@ -18,16 +18,38 @@ public class RatingDTO {
 	private float flightRoomCarRating;
 
 	@Nullable
+<<<<<<< HEAD
 	private Long companyBranchOfficeId;
+=======
+	private Long companyId;
+	
+	@Nullable
+	private Long racsBranchOfficeId;
+>>>>>>> master
 
 	@Nullable
 	private Long reservationId;
 	
+<<<<<<< HEAD
+=======
+	public Long getRacsBranchOfficeId() {
+		return racsBranchOfficeId;
+	}
+
+	public void setRacsBranchOfficeId(Long racsBranchOfficeId) {
+		this.racsBranchOfficeId = racsBranchOfficeId;
+	}
+
+>>>>>>> master
 	public RatingDTO() {
 		super();
 	}
 
+<<<<<<< HEAD
 	public RatingDTO(Long companyBranchOfficeId, float companyRating, Long reservationId, float flightRoomCarRating) {
+=======
+	public RatingDTO(float companyRating, Long reservationId, float flightRoomCarRating) {
+>>>>>>> master
 		super();
 		if (companyRating <= 0) {
 			this.companyRating = 0;
@@ -35,7 +57,10 @@ public class RatingDTO {
 			this.companyRating = companyRating;
 		}
 		
+<<<<<<< HEAD
 		this.companyBranchOfficeId = companyBranchOfficeId;
+=======
+>>>>>>> master
 		this.reservationId = reservationId;
 		if (flightRoomCarRating <= 0) {
 			this.flightRoomCarRating = 0;
@@ -45,12 +70,21 @@ public class RatingDTO {
 		
 	}
 
+<<<<<<< HEAD
 	public Long getCompanyBranchOfficeId() {
 		return companyBranchOfficeId;
 	}
 
 	public void setCompanyBranchOfficeId(Long companyBranchOfficeId) {
 		this.companyBranchOfficeId = companyBranchOfficeId;
+=======
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+>>>>>>> master
 	}
 
 	public Long getReservationId() {
@@ -79,6 +113,7 @@ public class RatingDTO {
 
 	@Override
 	public String toString() {
+<<<<<<< HEAD
 		return "CompanyRatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
 				+ ", name=" + companyBranchOfficeId + ", reservationId=" + reservationId + "]";
 	}
@@ -90,3 +125,11 @@ public class RatingDTO {
 	
 	
 }
+=======
+		return "RatingDTO [companyRating=" + companyRating + ", flightRoomCarRating=" + flightRoomCarRating
+				+ ", companyId=" + companyId + ", racsBranchOfficeId=" + racsBranchOfficeId + ", reservationId="
+				+ reservationId + "]";
+	}
+
+}
+>>>>>>> master

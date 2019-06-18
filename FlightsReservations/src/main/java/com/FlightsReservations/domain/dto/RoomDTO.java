@@ -4,6 +4,13 @@ public class RoomDTO {
 
 	private float averageScore;
 
+<<<<<<< HEAD
+=======
+public class RoomDTO {
+	@NotNull
+	private float averageScore;
+	@NotNull
+>>>>>>> master
 	private double overNightStay;
 	
 	private int number;
@@ -14,7 +21,11 @@ public class RoomDTO {
 	private String hotelName;
 	
 	private int numberOfVotes;
+<<<<<<< HEAD
 		
+=======
+	
+>>>>>>> master
 	public int getNumberOfVotes() {
 		return numberOfVotes;
 	}
@@ -37,6 +48,16 @@ public class RoomDTO {
 	{
 		this.overNightStay = overNightStay;
 	}
+<<<<<<< HEAD
+=======
+	
+	public Hotel getHotel() {
+		return hotel;
+	}
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
+>>>>>>> master
 	public int getNumber()
 	{
 		return number;
@@ -65,6 +86,7 @@ public class RoomDTO {
 	{
 		super();
 	}
+<<<<<<< HEAD
 	public String getHotelName()
 	{
 		return hotelName;
@@ -78,6 +100,22 @@ public class RoomDTO {
 		return floor;
 	}
 	public void setFloor(int floor)
+=======
+	
+	public RoomDTO(@NotNull float averageScore, @NotNull double overNightStay, @NotNull int number,
+			@NotNull int numberOfGuests, @NotBlank String name, @NotBlank String type, Hotel hotel, int numberOfVotes) {
+		super();
+		this.averageScore = averageScore;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.numberOfGuests = numberOfGuests;
+		this.name = name;
+		this.type = type;
+		this.hotel = hotel;
+		this.numberOfVotes = numberOfVotes;
+	}
+	public String getName()
+>>>>>>> master
 	{
 		this.floor = floor;
 	}

@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.FlightsReservations.domain.Car;
-import com.FlightsReservations.domain.Company;
 import com.FlightsReservations.domain.Discount;
+import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSBranchOffice;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
-import com.FlightsReservations.repository.CompanyRepository;
 import com.FlightsReservations.repository.RACSBranchOfficeRepository;
+import com.FlightsReservations.repository.RACSRepository;
 
 @Component
 public class RACSBranchOfficeService {
@@ -23,7 +23,7 @@ public class RACSBranchOfficeService {
 	RACSBranchOfficeRepository racsBranchOfficeRepository;
 	
 	@Autowired
-	CompanyRepository companyRepository;
+	RACSRepository racsRepository;
 	
 	public RACSBranchOffice create(RACSBranchOfficeDTO t) {
 		Set<CarDTO> cars = t.getCars();
@@ -35,8 +35,8 @@ public class RACSBranchOfficeService {
 		}
 		RACSBranchOffice rbo = new RACSBranchOffice();
 		rbo.setName(t.getName());
-		Company c = companyRepository.findByName(t.getRACSCompanyName());
-		rbo.setCompany(c);
+		RACS racs = racsRepository.findByName(t.getRACSCompanyName());
+		rbo.setRacs(racs);
 		Set<Car> carsToBeAdded = new HashSet<Car>();
 		Set<CarDTO> cdtos = t.getCars();
 		
@@ -68,7 +68,7 @@ public class RACSBranchOfficeService {
 			r.setLatitude(t.getLatitude());
 			r.setCars(t.getCars());
 			r.setName(t.getName());
-			r.setCompany(t.getCompany());
+			r.setRacs(t.getRacs());
 			racsBranchOfficeRepository.save(r);
 			return true;
 		}

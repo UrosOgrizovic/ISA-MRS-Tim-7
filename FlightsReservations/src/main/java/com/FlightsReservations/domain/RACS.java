@@ -24,8 +24,20 @@ public class RACS extends Company {
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private RACSAdmin admin;
+<<<<<<< HEAD
+=======
 	
-
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "racs_id")
+	private Set<RACSBranchOffice> branchOffices;
+>>>>>>> master
+	
+	public Set<RACSBranchOffice> getBranchOffices() {
+		return branchOffices;
+	}
+	public void setBranchOffices(Set<RACSBranchOffice> branchOffices) {
+		this.branchOffices = branchOffices;
+	}
 	public RACSAdmin getAdmin() {
 		return admin;
 	}
@@ -60,4 +72,8 @@ public class RACS extends Company {
 				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

@@ -10,8 +10,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import com.FlightsReservations.domain.Hotel;
+<<<<<<< HEAD
 import com.FlightsReservations.domain.HotelPricelistItem;
 import com.FlightsReservations.domain.Room;
+=======
+import com.FlightsReservations.domain.Room;
+import com.FlightsReservations.domain.dto.HotelReservationDTO;
+>>>>>>> master
 
 public class HotelDTO {
 	@NotBlank
@@ -42,8 +47,13 @@ public class HotelDTO {
 	
 	private String hotelAdminEmail;
 
+<<<<<<< HEAD
 	private Set<HotelPricelistItem> pricelist = new HashSet<HotelPricelistItem>();
 	private Set<Room> roomConfiguration = new HashSet<Room>();
+=======
+	private Set<Room> roomConfiguration = new HashSet<Room>();
+	private Set<HotelReservationDTO> reservations = new HashSet<>();
+>>>>>>> master
 
 	public HotelDTO() {
 		super();
@@ -130,8 +140,25 @@ public class HotelDTO {
 		this.promoDescription = promoDescription;
 	}
 
+<<<<<<< HEAD
 	public Set<Room> getRoomConfiguration() {
 		return roomConfiguration;
+=======
+	public Set<HotelReservationDTO> getReservations() {
+		return reservations;
+	}
+
+	public void setAirports(Set<HotelReservationDTO> reservations) {
+		this.reservations = reservations;
+	}
+
+	public Set<Room> getRoomConfiguration() {
+		return roomConfiguration;
+	}
+
+	public void setRoomConfiguration(Set<Room> roomConfiguration) {
+		this.roomConfiguration = roomConfiguration;
+>>>>>>> master
 	}
 
 	public String getCity()
@@ -158,6 +185,7 @@ public class HotelDTO {
 	{
 		this.state = state;
 	}
+<<<<<<< HEAD
 
 	public String getHotelAdminEmail()
 	{
@@ -182,3 +210,6 @@ public class HotelDTO {
 	
 
 }
+=======
+}
+>>>>>>> master

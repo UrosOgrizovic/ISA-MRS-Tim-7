@@ -15,7 +15,10 @@ public class RACSBranchOfficeDTO {
 	private Set<CarDTO> cars = new HashSet<CarDTO>();
 	private String RACSCompanyName;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> master
 	public String getRACSCompanyName() {
 		return RACSCompanyName;
 	}
@@ -70,7 +73,14 @@ public class RACSBranchOfficeDTO {
 		this.latitude = rbo.getLatitude();
 		this.longitude = rbo.getLongitude();
 		this.name = rbo.getName();
+<<<<<<< HEAD
 		this.RACSCompanyName = rbo.getCompany().getName();
 	}
 	
 }
+=======
+		this.RACSCompanyName = rbo.getRacs().getName();
+	}
+	
+}
+>>>>>>> master

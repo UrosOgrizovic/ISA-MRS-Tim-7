@@ -79,6 +79,10 @@ public class FlightReservation extends Reservation {
 	public Set<Float> getFlightRatings() {
 		return flightRatings;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 	public void setFlightRatings(Set<Float> flightRatings) {
 		this.flightRatings = flightRatings;
 	}

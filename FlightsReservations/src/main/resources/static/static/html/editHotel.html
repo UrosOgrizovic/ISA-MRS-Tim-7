@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create/Add a hotel</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+		      rel="stylesheet"
+		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		      crossorigin="anonymous"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" >
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <link rel="stylesheet" href=".\..\css\table.css">
+        <link rel="stylesheet" href=".\..\css\imageButton.css">
+        <script src=".\..\js\createHotel.js"></script>
+    </head>
+
+    <body>
+        <h1></h1>
+        
+        <br><br><br>
+
+        <form method="post" name="editHotelForm" ><!-- add action later-->
+            <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
+            		<tr><th colspan=2><label> Edit Hotel: </label></th></tr>
+            		<tr><td colspan=2> Leave the field blank if you don't want to change its value</td></tr>
+                    <td> <label>Select ID of a hotel you want to edit:</label></td><td>
+                        <select name="hotelId">
+                                <option value="0">-</option>
+                                <option value="123" onselect="editHotelOne()">123</option>
+                                <option value="456" onselect="editHotelTwo()">456</option>
+                                <option value="789" onselect="editHotelThree()">789</option>
+                        </select>
+                    </td>
+                    <tr>
+
+                            <td> <label class="notNull"> Name : </label> </td>
+                            <td> <input type="text" name="name"></td>
+                    </tr>
+                    <tr>
+	                    <td> <label> Longitude* : </label></td><!-- edit later-->
+	                    <td> <input type="text" name="longitude"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Latitude* : </label></td><!-- edit later-->
+                    <td> <input type="text" name="latitude"> </td>
+                </tr>
+                    <tr>
+                            <td> <label> Description: </label> </td>
+                            <td> <input type="text" name="promoDescription"> </td>
+                    </tr>
+                    <tr>
+                            <td> <label> Logo: </label> </td>
+                            <td> <input type="file" name="logoPath"> </td>
+                    </tr>
+                    <tr>
+                    <td></td>
+                        <td align="center">
+                    	<button type="submit" class="btn btn-primary" name="editHotel" onClick="create_hotel()" id="submitButton" >Edit Hotel</button>
+                    	                                                   
+                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+                    </td>
+                    </tr>
+
+
+                    <!-- hotel administrator will modify other fields, pricelist, services, rooms... - add later-->
+            </table>
+
+        </form>
+    </body>
+</html>

@@ -9,4 +9,8 @@ import com.FlightsReservations.domain.RACSBranchOffice;
 @Repository
 public interface RACSBranchOfficeRepository  extends JpaRepository<RACSBranchOffice, Long>{
 	RACSBranchOffice findByName(String name);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

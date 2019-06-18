@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FlightsReservations.domain.Rating;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.User;
@@ -19,7 +20,7 @@ import com.FlightsReservations.repository.UserRepository;
 @Service
 public class RoomReservationService {
 	@Autowired
-	private RoomReservationRepository repository;
+	private RoomReservationRepository roomReservationRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -43,9 +44,12 @@ public class RoomReservationService {
 		
 		//TODO: check if room is on discount in reservation period. If yes, then total = total - total*discount/100
 		
-		RoomReservation reservation = new RoomReservation(new Date(), total, (Boolean) true, owner, dto.getRoomId(), startTime, endTime);
+		RoomReservation reservation = new RoomReservation(new Date(), total, (Boolean) true, owner, dto.getRoomId(), startTime, endTime, room.getHotel().getId());
+		reservation.setRating(new Rating());
+		reservation.getRating().setReservation(reservation);
+		reservation.getRating().setCompanyId(room.getHotel().getId());
 		
-		reservation = repository.save(reservation);
+		reservation = roomReservationRepository.save(reservation);
 		return new RoomReservationDTO(reservation);
 	}
 	
@@ -82,7 +86,7 @@ public class RoomReservationService {
 	}
 	
 	public boolean cancel(Long id) {
-		RoomReservation rr = repository.findById(id).get();
+		RoomReservation rr = roomReservationRepository.findById(id).get();
 		if (rr != null) {
 			Date now = new Date();
 			// difference between now (cancellation time) and reservation start time in days
@@ -90,7 +94,7 @@ public class RoomReservationService {
 			// reservation cannot be cancelled less than two days before the reservation starts
 			if (diff < 2) return false;
 			rr.setConfirmed(false);
-			repository.save(rr);
+			roomReservationRepository.save(rr);
 			return true;
 		}
 		return false;
