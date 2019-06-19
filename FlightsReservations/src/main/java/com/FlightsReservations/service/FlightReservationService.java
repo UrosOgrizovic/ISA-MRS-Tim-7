@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -97,7 +96,8 @@ public class FlightReservationService {
 			
 			r = repository.save(r);
 			try { repository.flush(); } 
-			catch (OptimisticLockingFailureException ex) { return new ResponseDTO<>(new FlightReservationDTO(r)); }
+			catch (OptimisticLockingFailureException ex) { return new ResponseDTO<>("Something wrong with your request."); }
+			return new ResponseDTO<>(new FlightReservationDTO(r));
 		}
 		return new ResponseDTO<>("Something wrong with your request.");
 	}
@@ -319,6 +319,7 @@ public class FlightReservationService {
 			
 			Seat s = findSeat(f, seatNum);
 			s.setAvailable(false);
+			s.setQuickAvailable(true);
 			Passenger p = new Passenger();
 			p.setSeat(s);
 			r.getPassengers().add(p);
@@ -332,7 +333,7 @@ public class FlightReservationService {
 	}
 	
 	
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false)
 	public FlightReservationDTO takeQR(Long reservationId, String passport) {
 		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -343,6 +344,7 @@ public class FlightReservationService {
 			r.setDateOfReservation(new Date());
 			owner.getFlightReservations().add(r);
 			Passenger p = (Passenger) r.getPassengers().toArray()[0];
+			p.getSeat().setQuickAvailable(false);
 			p.setName(owner.getFirstName());
 			p.setSurname(owner.getLastName());
 			p.setPassport(passport);

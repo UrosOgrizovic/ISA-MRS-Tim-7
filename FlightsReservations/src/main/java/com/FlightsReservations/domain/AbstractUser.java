@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class AbstractUser implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -54,6 +54,9 @@ public class AbstractUser implements UserDetails{
 	
 	@Column(nullable = false)
 	private String password;
+	
+	@Column(name = "user_type", insertable = false, updatable = false)
+	private String userType;
 	
 	
 	// SPRING SECURITY
@@ -141,6 +144,10 @@ public class AbstractUser implements UserDetails{
 		this.password = password;
 	}
 	
+	public String getUserType() {
+		return userType;
+	}
+
 	// SPRING SECURITY
 	// ===========================================================================================
 	public void setAuthorities(List<Authority> authorities) {

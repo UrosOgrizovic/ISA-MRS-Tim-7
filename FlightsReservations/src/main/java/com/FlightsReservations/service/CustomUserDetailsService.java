@@ -1,7 +1,5 @@
 package com.FlightsReservations.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,26 +20,15 @@ import com.FlightsReservations.repository.AbstractUserRepository;
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
-	protected final Log LOGGER = LogFactory.getLog(getClass());
-
 	@Autowired
 	private AbstractUserRepository repository;
 	
-	public AbstractUserRepository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(AbstractUserRepository repository) {
-		this.repository = repository;
-	}
-
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		AbstractUser user = repository.findByEmail(email);
@@ -51,30 +38,29 @@ public class CustomUserDetailsService implements UserDetailsService {
 			return user;
 		}
 	}
-	
-	// This function allows the user to change their password
-	public void changePassword(String oldPassword, String newPassword) {
 
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public void changePassword(String oldPassword, String newPassword) {
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
 
 		if (authenticationManager != null) {
-			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
-
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
 		} else {
-			LOGGER.debug("No authentication manager set. Can't change Password!");
-
 			return;
 		}
 
-		LOGGER.debug("Changing password for user '" + username + "'");
-
 		AbstractUser user = (AbstractUser) loadUserByUsername(username);
-
-		// hash password before inserting into db
 		user.setPassword(passwordEncoder.encode(newPassword));
 		repository.save(user);
+	}
+
+	public AbstractUserRepository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(AbstractUserRepository repository) {
+		this.repository = repository;
 	}
 
 }

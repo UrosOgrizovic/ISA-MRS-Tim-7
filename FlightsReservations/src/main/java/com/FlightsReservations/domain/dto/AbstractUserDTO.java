@@ -3,7 +3,6 @@ package com.FlightsReservations.domain.dto;
 
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.FlightsReservations.domain.AbstractUser;
 
@@ -18,11 +17,11 @@ public class AbstractUserDTO {
 	private String phone;
 	@NotBlank
 	private String address;
-	@NotNull
 	private boolean enabled;
 
 	public AbstractUserDTO() {
 		super();
+		enabled = true;
 	}
 
 	public AbstractUserDTO(String firstName, String lastName, String email, String phone, String address, boolean enabled) {

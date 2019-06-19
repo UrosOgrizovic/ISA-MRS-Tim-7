@@ -1,3 +1,6 @@
+import {loadNavbar} from "./navbar.js"; 
+loadNavbar('flightsHomepageNavItem');
+
 var getAllLink = "/flights";
 var rateLink = "/flights/rate";
 
@@ -6,6 +9,7 @@ if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
     
+
     $("#viewAllFlights").on('click', function(e) {
         
         e.preventDefault();
@@ -28,7 +32,6 @@ $(document).ready(function(){
             }
         });
         
-
     });
 });
 

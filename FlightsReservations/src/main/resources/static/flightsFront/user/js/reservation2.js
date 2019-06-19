@@ -416,6 +416,8 @@ function continueReservation() {
 				window.location.replace("http://localhost:8080/showHotelsInCity.html");
 			} else if ($("#reserveCars").is(":checked")) {
 				window.location.replace("http://localhost:8080/showRACSInCity.html");
+			} else {
+				$("#continueReservationModal").modal("toggle");
 			}
 		}
 	});	

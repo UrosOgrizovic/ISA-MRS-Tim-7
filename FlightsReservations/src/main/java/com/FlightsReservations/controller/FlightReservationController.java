@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,8 +64,9 @@ public class FlightReservationController {
 	
 	
 	@PutMapping(value = "/quickReservation/{reservationId}/{passport}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> takeQuickReservation(@NotNull @PathVariable Long reservationId, 
-			@NotBlank @Email @PathVariable String ownerEmail,
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> takeQuickReservation(
+			@NotNull @PathVariable Long reservationId, 
 			@NotBlank @PathVariable String passport) {
 		FlightReservationDTO r = service.takeQR(reservationId, passport);
 		if (r != null)

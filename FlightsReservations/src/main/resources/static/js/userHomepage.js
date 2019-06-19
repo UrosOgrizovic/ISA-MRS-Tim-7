@@ -9,6 +9,7 @@ if (!checkRoleFromToken(token, "ROLE_USER")) history.go(-1);
 
 $(document).ready(function(){
     loadNavbar('userHomepageNavItem');
+    location.replace("/html/airlinesHomepage.html")
 });
 
 

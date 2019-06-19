@@ -7,50 +7,35 @@
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-        <li class="nav-item" id="userHomepageNavItem">
-            <a class="nav-link" href="userHomepage.html" >Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item" id="airlinesHomepageNavItem">
-            <a class="nav-link" href="airlinesHomepage.html" >Airlines</a>
-        </li>
-        <li class="nav-item" id="hotelsHomepageNavItem">
-            <a class="nav-link" href="hotelsHomepage.html" >Hotels</a>
-        </li>
-        <li class="nav-item" id="RACSHomepageNavItem">
-            <a class="nav-link" href="RACSHomepage.html" >Rent-a-car services</a>
-        </li>
-        <li class="nav-item" id="flightsHomepageNavItem">
-            <a class="nav-link" href="flightsHomepage.html" >Flights</a>
-        </li>
-        <li class="nav-item" id="profileHomepageNavItem">
-            <a class="nav-link" href="userProfilePage.html" id="profileHomepageLink">Profile</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="login.html">Logout</a>
-        </li>
-        
-        <!--
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Book
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Flight</a>
-                <a class="dropdown-item" href="#">Hotel</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Rent-a-car</a>
-            </div>
-        </li>
-        -->
-        <!--
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-        -->
+	        <li class="nav-item" id="userHomepageNavItem">
+	            <a class="nav-link" href="userHomepage.html" >Home <span class="sr-only">(current)</span></a>
+	        </li>
+	        <li class="nav-item" id="airlinesHomepageNavItem">
+	            <a class="nav-link" href="airlinesHomepage.html" >Airlines</a>
+	        </li>
+	        <li class="nav-item" id="hotelsHomepageNavItem">
+	            <a class="nav-link" href="hotelsHomepage.html" >Hotels</a>
+	        </li>
+	        <li class="nav-item" id="RACSHomepageNavItem">
+	            <a class="nav-link" href="RACSHomepage.html" >Rent-a-car</a>
+	        </li>
+	        <li class="nav-item" id="flightsHomepageNavItem">
+	            <a class="nav-link" href="flightsHomepage.html" >Flights</a>
+	        </li>
+	        <li class="nav-item" id="profileHomepageNavItem">
+	            <a class="nav-link" href="userProfilePage.html" id="profileHomepageLink">Profile</a>
+	        </li>
+	         <li class="nav-item" id="friendsNavItem">
+	            <a class="nav-link" href="manageFriends.html" id="friendsPageLink">Friends</a>
+	        </li>
+	        <li class="nav-item">
+	            <a class="nav-link" href="login.html">Logout</a>
+	        </li>
+  
         </ul>
         
         <input class="form-control mr-sm-2" type="search" placeholder="Search rent-a-car services by name" aria-label="Search" id="searchRACSName">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onClick="searchRACSByName()">Search</button>
+        <button id="searchRACSBtn" class="btn btn-outline-success my-2 my-sm-0" type="submit" onClick="searchRACSByName()">Search</button>
         
     </div>
 </nav>

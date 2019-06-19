@@ -35,6 +35,9 @@ public class Seat {
 	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
 	private Passenger passenger;
 
+	@Column(nullable = false)
+	private boolean quickAvailable;
+
 	@Version
 	private Long version;
 
@@ -48,6 +51,7 @@ public class Seat {
 		this.available = available;
 		this.type = type;
 		this.flight = flight;
+		this.quickAvailable = false;
 	}
 
 	public Long getId() {
@@ -108,6 +112,14 @@ public class Seat {
 
 	public Boolean getAvailable() {
 		return available;
+	}
+
+	public boolean isQuickAvailable() {
+		return quickAvailable;
+	}
+
+	public void setQuickAvailable(boolean quickAvailable) {
+		this.quickAvailable= quickAvailable;
 	}
 
 }

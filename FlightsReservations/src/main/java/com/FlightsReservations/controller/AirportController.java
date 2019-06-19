@@ -40,7 +40,7 @@ public class AirportController {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('admin')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> add(@Valid @RequestBody AirportDTO dto) {
 		dto = service.create(dto);

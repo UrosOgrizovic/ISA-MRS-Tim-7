@@ -1,5 +1,6 @@
 import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken } from "./securityStuff.js";
+
 var getAllLink = "/racss/getAll";
 var searchRACSByNameLink = "/racss/searchRACS";
 var rateLink = "/companies/rate";

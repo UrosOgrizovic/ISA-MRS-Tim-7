@@ -1,0 +1,20 @@
+.manageFriendsInterface {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.searchItem {
+	float:left;
+}
+
+.searchForm {
+	width: 50%;
+}
+
+.tableSelector {
+	width: 20%;
+}
+
+#searchRACSName {
+    width: 300px;
+}

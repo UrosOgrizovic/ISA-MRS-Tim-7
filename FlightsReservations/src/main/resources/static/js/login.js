@@ -30,10 +30,18 @@ $(document).ready(function() {
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);
                 localStorage.setItem("firstName", result.firstName);
-                if (localStorage.getItem("lastPage") == null)
-                    location.replace("/html/userHomepage.html");
-                else 
-                    location.replace(localStorage.getItem("lastPage"))
+                localStorage.setItem("type", result.type);
+                
+                if (result.type == "AA") {
+                	location.replace("/html/adminHomepage.html");
+                } else if (result.type == "RA") {
+                	location.replace("/racs_admin");
+                } else if (result.type == "HA") {
+                	location.replace("/hotel_admin")
+                } else {
+                	location.replace("/html/userHomepage.html");
+                }
+                
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");
                 console.log(error);
