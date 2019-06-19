@@ -4,83 +4,98 @@ var mapa;
 var emailSelect;
 
 window.updateUser = updateUser;
+
 var token = localStorage.getItem("token");
 if (token == null || isTokenExpired(token)) location.replace("/html/login.html");
 
 $(document).ready(function(){
-    
-	mapa = new Map();
-	emailSelect = $("#emailSelect");
-	emailSelect.change(setInputs);
-	
 	$.ajax({
-		url: "http://localhost:8080/users/getAll",
+		url: "/users/myDetails",
 		method: "GET",
 		dataType: "json",
         crossDomain: true,
         headers: { "Authorization": "Bearer " + token}, 
 		success: function (result) {
-			if (result != null && result.length > 0) {
-				for (var i = 0; i < result.length; i++) {
-					mapa[result[i].email] = result[i];
-					emailSelect.append("<option>"+result[i].email+"</option>");
-				}
-				setInputs();
-			} else {
-				toastr.info("No users to display");
-			}
-			
-		}, error: function (error) {
-			toastr.error("Could not get all users");
-			console.log(error);
+			$("#email").val(result.email);
+			$("#firstName").val(result.firstName);
+			$("#lastName").val(result.lastName);
+			$("#phone").val(result.phone);
+			$("#address").val(result.address);
+		},
+		error: function(result) {
+			toastr.error("Something is wrong with your request.(get details)");
 		}
     });	
     loadNavbar('profileHomepageNavItem');
+    $("#changePasswordBtn").click(editPassword);
+    $("#updateUserBtn").click(updateUser);
 });
 
-function updateUser() {
-	if (!validateInputs()) {
-		alert("Inputs are invalid!");
+
+
+function editPassword() {
+	var dto = {
+		oldPassword : $("#old").val().trim(),
+		newPassword : $("#new").val().trim()
+	};
+	
+	if (!validateInputs(Object.values(dto))) {
+		toastr.info("Please enter all inputs.");
 		return;
 	}
 	
-	var key = emailSelect.val();
-	mapa[key].firstName = $("#firstName").val();
-	mapa[key].lastName = $("#lastName").val();
-	mapa[key].phone = $("#phone").val();
-	mapa[key].address = $("#address").val();
-		
 	$.ajax({
-		url: "http://localhost:8080/users/update",
-		method: "PUT",
+		url: "/auth/change-password",
+		method: "POST",
+		dataType: "json",
 		contentType: "application/json",
-		dataType: "json",	
-        data: JSON.stringify(mapa[key]),
-        headers: { "Authorization": "Bearer " + token}, 
+		data: JSON.stringify(dto),
 		success: function(result) {
-			toastr.success("Update succesful");
-		}, error: function(error) {
-			toastr.error("Could not update user");
+			toastr.success("Password changed successfully.");
+			$("#changePasswordModal").modal("toggle");
+		},
+		error: function(result) {
+			toastr.error("Something is wrong with your request.(change password)");
 		}
 	});
 }
 
-function validateInputs() {
-	var ids = ["firstName", "lastName", "phone", "address"];
-	var flag = true;
+
+
+
+function updateUser() {
+	var dto = {
+		firstName : $("#firstName").val().trim(),
+		lastName  : $("#lastName").val().trim(),
+ 		phone     : $("#phone").val().trim(),
+		address   : $("#address").val().trim(),
+		email     : $("#email").val().trim()
+	};
 	
-	for (var i = 0; i < ids.length; i++)
-		if ($("#"+ids[i]).val().trim() == "") {
-			flag = false;
-			break;
+	if (!validateInputs(Object.values(dto))) {
+		toastr.info("Please enter all inputs.");
+		return;
+	}
+	
+	$.ajax({
+		url: "/users/update",
+		method: "PUT",
+		contentType: "application/json",
+        data: JSON.stringify(dto),
+        headers: { "Authorization": "Bearer " + token}, 
+		success: function(result) {
+			toastr.success("Profile details are updated.");
+		}, 
+		error: function(result) {
+			toastr.error("Something is wrong with your request.(update profile)");
 		}
-	return flag;
+	});
 }
 
-function setInputs(){
-	var key = emailSelect.val();
-	$("#firstName").val(mapa[key].firstName);
-	$("#lastName").val(mapa[key].lastName);
-	$("#phone").val(mapa[key].phone);
-	$("#address").val(mapa[key].address);
+function validateInputs(inputs) {
+	for (var input of inputs)
+		if (!input)
+			return false;
+	return true;
 }
+

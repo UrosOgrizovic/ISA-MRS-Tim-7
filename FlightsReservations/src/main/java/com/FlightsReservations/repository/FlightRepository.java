@@ -16,7 +16,8 @@ public interface FlightRepository extends JpaRepository<Flight, Long>{
 				   "start_id IN (SELECT id FROM airport WHERE city = ?2) AND " + 
 				   "end_id IN (SELECT id FROM airport where city = ?3) AND " + 
 				   "(?4 <= (SELECT COUNT(*) FROM seat WHERE seat.flight_id = flight.id AND seat.available = 1 AND (seat.type = ?5 OR ?5 IS NULL)) OR ?4 IS NULL)",
-		   countQuery = "SELECT COUNT(*) FROM flight " + 
+		   
+			countQuery = "SELECT COUNT(*) FROM flight " + 
                    "WHERE DATE(takeoff_time) = ?1 AND " + 
 				   "start_id IN (SELECT id FROM airport WHERE city = ?2) AND " + 
 				   "end_id IN (SELECT id FROM airport where city = ?3) AND " + 

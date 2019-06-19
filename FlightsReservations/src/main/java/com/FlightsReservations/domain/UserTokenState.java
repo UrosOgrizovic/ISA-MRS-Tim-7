@@ -6,6 +6,20 @@ public class UserTokenState {
     private String email;
     private String firstName;
     private Long expiresIn;
+    private String type;
+    
+    public UserTokenState() {
+        this.accessToken = null;
+        this.expiresIn = null;
+    }
+
+    public UserTokenState(String accessToken, long expiresIn, String email, String firstName, String type) {
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.email = email;
+        this.firstName = firstName;
+        this.setType(type);
+    }
 
     public String getFirstName() {
 		return firstName;
@@ -23,18 +37,6 @@ public class UserTokenState {
 		this.email = email;
 	}
 
-	public UserTokenState() {
-        this.accessToken = null;
-        this.expiresIn = null;
-    }
-
-    public UserTokenState(String accessToken, long expiresIn, String email, String firstName) {
-        this.accessToken = accessToken;
-        this.expiresIn = expiresIn;
-        this.email = email;
-        this.firstName = firstName;
-    }
-
     public String getAccessToken() {
         return accessToken;
     }
@@ -50,4 +52,12 @@ public class UserTokenState {
     public void setExpiresIn(Long expiresIn) {
         this.expiresIn = expiresIn;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
