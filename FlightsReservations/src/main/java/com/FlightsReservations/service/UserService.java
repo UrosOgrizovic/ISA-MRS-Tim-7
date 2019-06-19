@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +113,10 @@ public class UserService {
 	}
 	
 	
-	public Optional<AbstractUser> findById(Long id) {
-		return abstractUserRepository.findById(id);
+	
+	
+	public AbstractUser findById(Long id) {
+		return abstractUserRepository.findById(id).get();
 	}
 	
 	
@@ -125,21 +126,11 @@ public class UserService {
 			dtos.add(new AbstractUserDTO(u));
 		return dtos;
 	}
-
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
 		AbstractUser u = abstractUserRepository.findByEmail(email);
 		
-		ArrayList<String> types = new ArrayList<String>();
-		
-		u.getAuthorities().forEach(auth -> types.add(auth.getAuthority()));
-		for (int i = 0; i < types.size(); i++) {
-			if (types.get(i).contains("USER")) types.set(i, "U");
-			else if (types.get(i).contains("ADMIN")) types.set(i, "A");
-			
-		}
-		
-		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId(), types.get(types.size()-1));
+		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {
 			CarReservationDTO crdto = new CarReservationDTO(cr);
@@ -251,7 +242,6 @@ public class UserService {
 		AbstractUser aUser = (AbstractUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User r = userRepository.findByEmail(aUser.getEmail());
 		User s = userRepository.findByEmail(sender);
-		
 		if(verifyDeclineRequest(s, r)) {
 			FriendRequest fr = friendRequestsRepository.findFriendRequest(s.getId(), r.getId());
 			friendRequestsRepository.delete(fr);
@@ -297,7 +287,7 @@ public class UserService {
 			return false;
 		
 		// not friends already
-		if (userRepository.areFriends(s.getId(), r.getId()) > 0)
+		if (abstractUserRepository.areFriends(s.getId(), r.getId()) > 0)
 			return false;
 		
 		return true;

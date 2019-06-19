@@ -42,7 +42,7 @@ public class Company {
 
 	@Column(nullable = false)
 	private int numberOfVotes;
-	
+
 	@Version
 	@Column(nullable = false)
 	private Long version;

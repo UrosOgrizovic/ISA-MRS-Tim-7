@@ -1,5 +1,8 @@
-var loginLink1 = "/users/login";
+import {loadNavbar} from "./navbar.js";
+
 var loginLink2 = "/auth/login";
+
+var user = {};
 
 $(document).ready(function() {
     // no user should be logged in while on this page
@@ -8,13 +11,14 @@ $(document).ready(function() {
     localStorage.clear();
     localStorage.setItem("lastPage", temp);
 
+    loadNavbar('loginNavItem');
+
     $("#login_form").on('submit', function(e) {
         e.preventDefault();
         
         user = {};
         user.email = document.getElementById("email").value;
         user.password = document.getElementById("password").value;
-
 
         $("#error").remove();
         console.clear();
@@ -25,7 +29,8 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(user),
             success: function(result) {
-                //console.log(result.email);
+                //console.log(result);
+                console.log(result.accessToken);
                 localStorage.setItem("token", result.accessToken);
                 localStorage.setItem("email", result.email);
                 localStorage.setItem("expiresIn", result.expiresIn);
@@ -43,7 +48,7 @@ $(document).ready(function() {
                 }
                 
             }, error: function(error) {
-                $(document.documentElement).append("<h3 id=\"error\">Wrong email/password</h3>");
+                toastr.error("Wrong email or password");
                 console.log(error);
             }
         });

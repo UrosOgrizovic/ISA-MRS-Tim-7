@@ -1,0 +1,15 @@
+.master-div {
+	width: 30%;
+	float: left;
+	margin: 3%;
+}
+
+.map-div {
+	margin: 3%;
+	float: left;
+	width: 50%;
+}
+
+.map {
+	width:100%; height:400px;
+}

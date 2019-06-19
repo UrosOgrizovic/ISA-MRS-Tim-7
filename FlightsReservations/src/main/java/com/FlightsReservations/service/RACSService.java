@@ -2,12 +2,13 @@ package com.FlightsReservations.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -22,15 +23,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
-import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.RACS;
 import com.FlightsReservations.domain.RACSAdmin;
+import com.FlightsReservations.domain.RACSBranchOffice;
+import com.FlightsReservations.domain.RACSPricelistItem;
 import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.dto.UpdateRACSDTO;
+import com.FlightsReservations.domain.dto.RACSBranchOfficeDTO;
+import com.FlightsReservations.domain.dto.RACSDTO;
+import com.FlightsReservations.domain.dto.RACSPricelistItemDTO;
 import com.FlightsReservations.repository.CarReservationRepository;
+import com.FlightsReservations.repository.CompanyRepository;
 import com.FlightsReservations.repository.RACSAdminRepository;
 import com.FlightsReservations.repository.RACSRepository;
+import com.FlightsReservations.repository.RACSBranchOfficeRepository;
 
 @Component
 @Transactional(readOnly = false)
@@ -40,7 +47,11 @@ public class RACSService {
 	RACSRepository racsRepository;
 	
 	@Autowired
-	CarService carService;
+	RACSBranchOfficeRepository racsBranchOfficeRepository;
+	
+	@Autowired
+	CompanyRepository companyRepository;
+
 
 	@Autowired
 	CarReservationRepository carReservationRepository;
@@ -48,21 +59,67 @@ public class RACSService {
 	@Autowired
 	RACSAdminRepository racsAdminRepository;
 
-	public RACS create(RACS t) {
-		Set<Car> cars = t.getCars();
-		if (cars != null) {
-			for (Car c : cars) {
-				if (c.getDiscounts() == null)
-					c.setDiscounts(new HashSet<Discount>());
+	@Transactional(readOnly = false)
+	public RACSDTO create(RACSDTO t) {
+		RACS r = racsRepository.findByName(t.getName());
+		if (r == null) {
+			r = new RACS();
+			r.setAverageScore(t.getAverageScore());
+			Set<RACSBranchOffice> branchOffices = new HashSet<RACSBranchOffice>();
+			Set<RACSBranchOfficeDTO> bodtos = t.getBranchOffices();
+			for (RACSBranchOfficeDTO bodto : bodtos) {
+				RACSBranchOffice bo = new RACSBranchOffice();
+				bo.setRacs(racsRepository.findByName(bodto.getRACSCompanyName()));
+				Set<CarDTO> cdtos = bodto.getCars();
+				Set<Car> cars = new HashSet<Car>();
+				for (CarDTO cdto : cdtos) {
+					Car car = new Car();
+					car.setAverageScore(cdto.getAverageScore());
+					car.setColor(cdto.getColor());
+					car.setDiscounts(cdto.getDiscounts());
+					car.setManufacturer(cdto.getManufacturer());
+					car.setName(cdto.getName());
+					car.setNumberOfVotes(cdto.getNumberOfVotes());
+					car.setPricePerHour(cdto.getPricePerHour());
+					car.setRACSBranchOffice(racsBranchOfficeRepository.findByName(cdto.getRacsBranchOfficeName()));
+					car.setYearOfManufacture(cdto.getYearOfManufacture());
+					cars.add(car);
+				}
+				bo.setCars(cars);
+				bo.setLatitude(bodto.getLatitude());
+				bo.setLongitude(bodto.getLongitude());
+				bo.setName(bodto.getName());
+				branchOffices.add(bo);
 			}
+			r.setBranchOffices(branchOffices);
+			r.setCity(t.getCity());
+			r.setLatitude(t.getLatitude());
+			r.setLongitude(t.getLongitude());
+			r.setName(t.getName());
+			r.setNumberOfVotes(t.getNumberOfVotes());
+			Set<RACSPricelistItemDTO> plidtos = t.getPricelist();
+			Set<RACSPricelistItem> pricelist = new HashSet<RACSPricelistItem>();
+			for (RACSPricelistItemDTO plidto : plidtos) {
+				RACSPricelistItem pli = new RACSPricelistItem();
+				pli.setName(plidto.getName());
+				pli.setPrice(plidto.getPrice());
+				pli.setRacs(r);
+				pricelist.add(pli);
+			}
+			r.setPricelist(pricelist);
+			r.setPromoDescription(t.getPromoDescription());
+			r.setState(t.getState());
+			
+			racsRepository.save(r);
+			return new RACSDTO(r);
 		}
+		return null;
 		
-		return racsRepository.save(t);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public boolean update(UpdateRACSDTO t) {
-		RACS r = findOne(t.getId());
+		RACS r = racsRepository.findByName(t.getName());
 		if (r != null) {
 			r.setLongitude(t.getLongitude());
 			r.setLatitude(t.getLatitude());
@@ -78,54 +135,195 @@ public class RACSService {
 	
 	@Transactional(readOnly = false)
 	public boolean addCar(CarDTO car) {
-		Long racsID = car.getRacs_id();
-		RACS racs = findOne(racsID);
-
-		if (racs != null) {
+		RACSBranchOffice rbo = racsBranchOfficeRepository.findByName(car.getRacsBranchOfficeName());
+		
+		if (rbo != null) {
+			
 			Car c = new Car(
 					car.getManufacturer(), 
 					car.getName(), 
 					car.getYearOfManufacture(), 
 					car.getColor(), 
-					racs,
+					rbo,
 					car.getPricePerHour(),
-					car.getAverageRating(),
+					car.getAverageScore(),
 					car.getNumberOfVotes());
 
-			racs.getCars().add(c);
-			racsRepository.save(racs);
+			rbo.getCars().add(c);
+			
+			racsBranchOfficeRepository.save(rbo);
 			return true;
 		}
 		return false;
 	}
 	
 
-	public RACS findOne(Long id) {
-		try {
-			return racsRepository.findById(id).get();
-		} catch (NoSuchElementException e) {
-			return null;
-		}
+	public RACSDTO findOne(String name) {
+		RACS r = racsRepository.findByName(name);
+		if (r != null) 
+			return new RACSDTO(r);
+		return null;
 	}
 	
-	public Collection<RACS> findByName(String name) {
-		try {
-			return racsRepository.findByName(name);
-		} catch (NoSuchElementException e) {
-			return null;
-		}
-	}
 	
 	@Transactional(readOnly = false)
 	public void delete(Long id) {
 		racsRepository.deleteById(id);
 	}
 
-	public Collection<RACS> findAll() {
-		return racsRepository.findAll();
+	public List<RACSDTO> findAll() {
+		List<RACSDTO> dtos = new ArrayList<RACSDTO>();
+		for (RACS r : racsRepository.findAll()) {
+			dtos.add(new RACSDTO(r));
+		}
+		return dtos;
 	}
 
-	public HashMap<String, Float> getRevenueForPeriod(Long racsId, String startTime, String endTime) {
+	public ArrayList<CarDTO> searchAllCars(String racsName, String name, String manufacturer, int yearOfManufacture) {
+		Collection<RACSDTO> racss = new ArrayList<RACSDTO>();
+		if (racsName == null || racsName.equals("")) {
+			 racss = findAll();
+		} else {
+			RACS r = racsRepository.findByName(racsName);
+			if (r != null)
+				racss.add(new RACSDTO(r));
+			else
+				return new ArrayList<CarDTO>();
+		}
+		
+		ArrayList<CarDTO> matchingCars = new ArrayList<CarDTO>();
+		Set<RACSBranchOfficeDTO> branchOffices = new HashSet<RACSBranchOfficeDTO>();
+		if (yearOfManufacture != 0) {
+			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (cdto.getYearOfManufacture() == yearOfManufacture) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+					
+				}
+			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (yearOfManufacture == cdto.getYearOfManufacture() && manufacturer.equals(cdto.getManufacturer())) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (name.equals(cdto.getName()) && yearOfManufacture == cdto.getYearOfManufacture()) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			} else {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (name.equals(cdto.getName()) && yearOfManufacture == cdto.getYearOfManufacture() && manufacturer.equals(cdto.getManufacturer())) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			}
+		} else { // yearOfManufacture == 0
+			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								matchingCars.add(cdto);
+							}
+						}
+					}
+				}
+			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (manufacturer.equals(cdto.getManufacturer())) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (name.equals(cdto.getName())) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			} else {
+				for (RACSDTO r : racss) {
+					branchOffices = r.getBranchOffices();
+					
+					for (RACSBranchOfficeDTO bo : branchOffices) {
+						if (bo instanceof RACSBranchOfficeDTO) {
+							Set<CarDTO> cardtos = bo.getCars();
+							for (CarDTO cdto : cardtos) {
+								if (name.equals(cdto.getName()) && manufacturer.equals(cdto.getManufacturer())) {
+									matchingCars.add(cdto);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return matchingCars;
+
+	}
+
+	public HashMap<String, Float> getRevenueForPeriod(String racsName, String startTime, String endTime) {
 		HashMap<String, Float> dayRevenue = new HashMap<String, Float>();
 		
 		Date startDate = parseDate(startTime);
@@ -138,10 +336,9 @@ public class RACSService {
 		String moy = String.valueOf(dt.getMonthOfYear());
 		if (moy.length() == 1) moy = "0" + moy;
 		Date currentDay = parseDate(dt.getDayOfMonth() + "-" + moy + "-" + dt.getYear() + " 00:00");
-		System.out.println(currentDay);
 		
 		float revenueForCurrentDay;
-		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
+		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsName);
 		while (currentDay.compareTo(endDate) < 0) {
 			moy = String.valueOf(dt.getMonthOfYear());
 			if (moy.length() == 1) moy = "0" + moy;
@@ -165,14 +362,20 @@ public class RACSService {
 		return dayRevenue;
 	}
 	
-	public Collection<CarReservation> getCarReservationsOfRacs(Long id) {
-		return carReservationRepository.findCarReservationsOfRacs(id);
+	public Collection<CarReservation> getCarReservationsOfRacs(String racsName) {
+		RACS r = racsRepository.findByName(racsName);
+		Set<RACSBranchOffice> rbos = r.getBranchOffices();
+		Set<CarReservation> crs = new HashSet<CarReservation>();
+		for (RACSBranchOffice bo : rbos) {
+			crs.addAll(carReservationRepository.findCarReservationsOfRacsBranchOffice(bo.getId()));
+		}
+		return crs;
 	}
 	
 	// <String, Integer> = <date of reservation, number of reservations for date>
-	public HashMap<String, Integer> getNumberOfCarReservationsOfRacs(Long racsId, String startTime, String endTime, String unit) {
+	public HashMap<String, Integer> getNumberOfCarReservationsOfRacs(String racsName, String startTime, String endTime, String unit) {
 		HashMap<String, Integer> dateNumberOfReservations = new HashMap<String, Integer>();
-		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsId);
+		Collection<CarReservation> carReservations = getCarReservationsOfRacs(racsName);
 		Date startDate = parseDate(startTime);
 		Date endDate = parseDate(endTime);
 		
@@ -246,11 +449,9 @@ public class RACSService {
 
 	// add RACSAdmin to RACS
 	public RACSAdminDTO addAdmin(Long racsId, @Email String email) {
-		RACS racs = findOne(racsId);
+		RACS racs = racsRepository.findById(racsId).get();
 		RACSAdmin racsAdmin = racsAdminRepository.findByEmail(email);
 		if (racs != null && racsAdmin != null) {
-			
-				
 			racsAdmin.setRACS(racs);
 			
 			racs.setAdmin(racsAdmin);
@@ -263,11 +464,23 @@ public class RACSService {
 	}
 
 	// <String, Float> - <car id: car manufacturer car name, average rating>
-	public HashMap<String, Float> getAverageRatingForEachCarOfRacs(RACS racs) {
-		Set<Car> cars = racs.getCars();
+	public HashMap<String, Float> getAverageRatingForEachCarOfRacs(RACSDTO racsDTO) {
+		
+		Set<RACSBranchOfficeDTO> rbos = racsDTO.getBranchOffices();
+		Set<Car> cars = new HashSet<Car>();
+		Set<Car> carsOfRBO = new HashSet<Car>();
+		RACSBranchOffice rbo = new RACSBranchOffice();
+		for (RACSBranchOfficeDTO bo : rbos) {
+			rbo = racsBranchOfficeRepository.findByName(bo.getName());
+			carsOfRBO = rbo.getCars();
+			for (Car c : carsOfRBO) {
+				cars.add(c);
+			}
+		}
+		
 		HashMap<String, Float> carNameAverageRating = new HashMap<String, Float>();
 		for (Car c : cars) {
-			carNameAverageRating.put("#" + c.getId() + ": " + c.getManufacturer() + " " + c.getName(), c.getAverageRating());
+			carNameAverageRating.put("#" + c.getId() + ": " + c.getManufacturer() + " " + c.getName(), c.getAverageScore());
 		}
 		return carNameAverageRating;
 	}

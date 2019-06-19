@@ -60,10 +60,16 @@ public class User extends AbstractUser {
 		//this.flightBonusPoints = flightBonusPoints;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "User [getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName() + ", getEmail()="
-				+ getEmail() + "]";
+		return "User [friends=" + friends + ", sentRequests=" + sentRequests + ", recievedRequests=" + recievedRequests
+				+ ", friendOf=" + friendOf + ", flightReservations=" + flightReservations + ", getId()=" + getId()
+				+ ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName() + ", getEmail()="
+				+ getEmail() + ", getPhone()=" + getPhone() + ", getAddress()=" + getAddress() + ", getPassword()="
+				+ getPassword() + ", getAuthorities()=" + getAuthorities() + ", getUsername()=" + getUsername()
+				+ ", isEnabled()=" + isEnabled() + "]";
 	}
 
 	public List<FriendRequest> getSentRequests() {

@@ -1,6 +1,5 @@
 package com.FlightsReservations.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -21,11 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Car;
-import com.FlightsReservations.domain.RACS;
-import com.FlightsReservations.domain.dto.CarDTO;
 import com.FlightsReservations.domain.dto.UpdateRACSDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
+import com.FlightsReservations.domain.dto.RACSDTO;
 import com.FlightsReservations.service.RACSAdminService;
 import com.FlightsReservations.service.RACSService;
 
@@ -41,24 +38,29 @@ public class RACSController {
 	private RACSAdminService racsAdminService;
 	
 	@GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE) 
-	public Collection<RACS> getAll() {
+	public Collection<RACSDTO> getAll() {
 		return service.findAll();
 	}
 	
 	@GetMapping(value="/searchRACS/{value}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<RACS> searchRACS(@PathVariable String value) {
-		return service.findByName(value);
+	public ResponseEntity<RACSDTO> searchRACS(@PathVariable String value) {
+		RACSDTO rdto = service.findOne(value);
+		if (rdto != null) {
+			return new ResponseEntity<>(rdto, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(rdto, HttpStatus.NOT_FOUND);
+		
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RACS> add(@RequestBody @Valid RACS racs) {
-		RACS r = service.create(racs);
-		if (r != null) {
-			return new ResponseEntity<>(r, HttpStatus.CREATED);
+	public ResponseEntity<RACSDTO> add(@RequestBody @Valid RACSDTO racsDTO) {
+		RACSDTO rdto = service.create(racsDTO);
+		if (rdto != null) {
+			return new ResponseEntity<>(rdto, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(r, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(rdto, HttpStatus.CONFLICT);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -72,103 +74,20 @@ public class RACSController {
 	}
 	
 	@GetMapping(value="/searchCars", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<Car>> searchCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
+	public ResponseEntity<?> searchAllCars(@RequestParam("racsName") String racsName, @RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
-		Collection<RACS> racss = service.findAll();
-		ArrayList<Car> matchingCars = new ArrayList<Car>();
-		
-		if (yearOfManufacture != 0) {
-			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (yearOfManufacture == c.getYearOfManufacture()) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture()) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && yearOfManufacture == c.getYearOfManufacture() && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			}
-		} else { // yearOfManufacture == 0
-			if (name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						matchingCars.add(c);
-					}
-				}
-			} else if (name.trim().isEmpty() && !manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else if (!name.trim().isEmpty() && manufacturer.trim().isEmpty()) {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			} else {
-				for (RACS r : racss) {
-					for (Car c : r.getCars()) {
-						if (name.equals(c.getName()) && manufacturer.equals(c.getManufacturer())) {
-							matchingCars.add(c);
-						}
-					}
-				}
-			}
-		}
-		
-		
-		return new ResponseEntity<ArrayList<Car>>(matchingCars, HttpStatus.OK);
+		return new ResponseEntity<>(service.searchAllCars(racsName, name, manufacturer, yearOfManufacture), HttpStatus.OK);
 
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping(
-			value = "/addCar",
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addCar(@RequestBody @Valid CarDTO car) {
-		if (service.addCar(car))
-			return new ResponseEntity<>(car, HttpStatus.OK);
-		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "getRevenueForPeriod/{email}/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getRevenueForPeriod(@PathVariable String email, @PathVariable String startTime, @PathVariable String endTime) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getRevenueForPeriod(racs.getId(), startTime, endTime), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getRevenueForPeriod(racsDTO.getName(), startTime, endTime), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
@@ -176,23 +95,20 @@ public class RACSController {
 	@GetMapping(value = "getNumberOfCarReservationsOfRacs/{email}/{startTime}/{endTime}/{unit}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getNumberOfCarReservationsOfRacs(@PathVariable @Email String email, @PathVariable String startTime, @PathVariable String endTime, @PathVariable String unit) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racs.getId(), startTime, endTime, unit), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getNumberOfCarReservationsOfRacs(racsDTO.getName(), startTime, endTime, unit), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
-	
-	
-	
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "getAverageRatingForEachCarOfRacs/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getAverageRatingForEachCarOfRacs(@PathVariable @Email String email) {
 		RACSAdminDTO racsAdmin = racsAdminService.findOne(email);
-		RACS racs = service.findOne(racsAdmin.getRacs().getId());
-		if (racs != null)
-			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racs), HttpStatus.OK);
+		RACSDTO racsDTO = service.findOne(racsAdmin.getRacs().getName());
+		if (racsDTO != null)
+			return new ResponseEntity<>(service.getAverageRatingForEachCarOfRacs(racsDTO), HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
 	
@@ -204,8 +120,5 @@ public class RACSController {
 			return new ResponseEntity<>(dto, HttpStatus.OK);
 		return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	}
-	
-	
-	
 	
 }

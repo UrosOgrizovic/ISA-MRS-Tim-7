@@ -17,11 +17,11 @@ import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.repository.AbstractUserRepository;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private AbstractUserRepository repository;
+	private AbstractUserRepository abstractUserRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -31,11 +31,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		AbstractUser user = repository.findByEmail(email);
-		if (user == null) {
+		AbstractUser abstractUser = abstractUserRepository.findByEmail(email);
+		if (abstractUser == null) {
 			throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
 		} else {
-			return user;
+			return abstractUser;
 		}
 	}
 
@@ -52,15 +52,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		AbstractUser user = (AbstractUser) loadUserByUsername(username);
 		user.setPassword(passwordEncoder.encode(newPassword));
-		repository.save(user);
+		abstractUserRepository.save(user);
 	}
 
-	public AbstractUserRepository getRepository() {
-		return repository;
+	public AbstractUserRepository getAbstractUserRepository() {
+		return abstractUserRepository;
 	}
 
-	public void setRepository(AbstractUserRepository repository) {
-		this.repository = repository;
+	public void setAbstractUserRepository(AbstractUserRepository abstractUserRepository) {
+		this.abstractUserRepository = abstractUserRepository;
 	}
-
+	
 }

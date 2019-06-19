@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create/Add an Admin</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+		      rel="stylesheet"
+		      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		      crossorigin="anonymous"
+        />
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <link rel="stylesheet" href=".\..\css\table.css">
+        <link rel="stylesheet" href=".\..\css\imageButton.css">
+        <script src=".\..\js\createAdmin.js"></script>
+
+
+    </head>
+
+    <body>
+        <br><br><br>
+        <form id="createAdminForm"><!-- onsubmit="return createHotel(this)" action="login.html" onsubmit="createHotel()"-->
+        <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
+                <th colspan=2> Add a new administrator to application:</th>
+                <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
+                <tr>
+                    <td><label> Administrator type*: </label></td>
+                    <td> <select name="adminType">
+                            <option value="0">-</option>
+                            <option value="1">Airline company Administrator</option>
+                            <option value="2">Hotel Administrator</option>
+                            <option value="3">Rent-A-Car service Administrator</option>
+                            <option value="4">System Administrator</option>
+                        </select>
+                    </td>    <!-- add a Hotel administrator selection-->
+                </tr>
+                <tr>
+                    <td> <label> First Name* : </label> </td>
+                    <td> <input type="text" name="firstName"> </td>
+                </tr>
+
+                <tr>
+                    <td> <label> Last Name* : </label> </td>
+                    <td> <input type="text" name="lastName"> </td>
+                </tr>
+                <tr>
+                    <td> <label> E-mail* : </label> </td>
+                    <td> <input type="text" name="email"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Phone : </label> </td>
+                    <td> <input type="text" name="phone"> </td>
+                </tr>
+                <tr>
+                    <td> <label> Address : </label></td><!-- edit later-->
+                    <td> <input type="text" name="address"> </td>
+                </tr>
+                <tr>
+                    <td> <label>  Password*: </label> </td>
+                    <td> <input type="text" name="password"> </td>
+                </tr>
+
+                <tr height="40px"><td></td><td>Fields with a * are necessary to fill.</td></tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td align="center">
+                    	<button type="submit" class="btn btn-primary" name="createHotel" onClick="create_admin()" id="submitButton" >Add Administrator</button>
+                    	                                                   
+                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+                    </td>
+                </tr>
+                <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
+        </table>
+        </form>
+    </body>
+</html>

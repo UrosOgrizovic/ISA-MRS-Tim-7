@@ -1,6 +1,5 @@
 package com.FlightsReservations.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,23 +20,21 @@ public class RACS extends Company {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "racs_id")
-	private Set<RACSPricelistItem> pricelist = new HashSet<>();
-	
-	
-	/* orphanRemoval = true - guarantees that when a car is removed from  
-	 * the RACS's set it will also be removed from the database
-	 * more: https://stackoverflow.com/a/5642615
-	*/
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "racs_id")
-	private Set<Car> cars = new HashSet<>();	
-	
-	private ArrayList<String> branchOffices;
+	private Set<RACSPricelistItem> pricelist = new HashSet<RACSPricelistItem>();
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private RACSAdmin admin;
 	
-
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "racs_id")
+	private Set<RACSBranchOffice> branchOffices = new HashSet<RACSBranchOffice>();
+	
+	public Set<RACSBranchOffice> getBranchOffices() {
+		return branchOffices;
+	}
+	public void setBranchOffices(Set<RACSBranchOffice> branchOffices) {
+		this.branchOffices = branchOffices;
+	}
 	public RACSAdmin getAdmin() {
 		return admin;
 	}
@@ -54,22 +51,7 @@ public class RACS extends Company {
 			this.pricelist.addAll(pricelist);
 		}
 	}
-	public Set<Car> getCars() {
-		return cars;
-	}
-	public void setCars(Set<Car> cars) {
-		this.cars.clear();
-		if (cars != null) {
-			this.cars.addAll(cars);
-		}
-		
-	}
-	public ArrayList<String> getBranchOffices() {
-		return branchOffices;
-	}
-	public void setBranchOffices(ArrayList<String> branchOffices) {
-		this.branchOffices = branchOffices;
-	}
+	
 	public RACS(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float avarageScore,
 			int numberOfVotes, Set<RACSPricelistItem> pricelist, RACSAdmin admin) {
 		super(name, longitude, latitude, city, state, promoDescription, avarageScore, numberOfVotes);
@@ -80,16 +62,11 @@ public class RACS extends Company {
 	public RACS() {
 		super();
 	}
-	
 	@Override
 	public String toString() {
 		return "RACS [getId()=" + getId() + ", getName()=" + getName() + ", getLongitude()=" + getLongitude()
 				+ ", getLatitude()=" + getLatitude() + ", getPromoDescription()=" + getPromoDescription()
 				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
-	
-	
-	
-		
 	
 }
