@@ -69,7 +69,7 @@ function reserve_room()
                     numberOfGuests : myForm.numberOfGuests.value,
                     overnightStay : myForm.overnightStay.value,
                     type : myForm.type.value,
-                    overallRating : 0.0
+                    averageScore : 0.0
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set
