@@ -12,18 +12,18 @@ import com.FlightsReservations.domain.Flight;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long>{
 	@Query(value = "SELECT * FROM flight " + 
-                   "WHERE DATE(takeoff_time) = ?1 AND " + 
+                   "WHERE to_char(takeoff_time, 'DD-MM-YYYY') = ?1 AND " + 
 				   "start_id IN (SELECT id FROM airport WHERE city = ?2) AND " + 
 				   "end_id IN (SELECT id FROM airport where city = ?3) AND " + 
-				   "(?4 <= (SELECT COUNT(*) FROM seat WHERE seat.flight_id = flight.id AND seat.available = 1 AND (seat.type = ?5 OR ?5 IS NULL)) OR ?4 IS NULL)",
+				   "(?4 <= (SELECT COUNT(*) FROM seat WHERE seat.flight_id = flight.id AND (seat.available = true) AND (seat.type = ?5 OR ?5 = 0)) OR ?4 = 0)",
 		   
 			countQuery = "SELECT COUNT(*) FROM flight " + 
-                   "WHERE DATE(takeoff_time) = ?1 AND " + 
+                   "WHERE to_char(takeoff_time, 'DD-MM-YYYY') = ?1 AND " + 
 				   "start_id IN (SELECT id FROM airport WHERE city = ?2) AND " + 
 				   "end_id IN (SELECT id FROM airport where city = ?3) AND " + 
-				   "(?4 <= (SELECT COUNT(*) FROM seat WHERE seat.flight_id = flight.id AND seat.available = 1 AND (seat.type = ?5 OR ?5 IS NULL)) OR ?4 IS NULL)",
+				   "(?4 <= (SELECT COUNT(*) FROM seat WHERE seat.flight_id = flight.id AND (seat.available = true) AND (seat.type = ?5 OR ?5 = 0)) OR ?4 = 0)",
 		   nativeQuery = true)
-	Page<Flight> search(String takeoffDate, String startCity, String endCity, Integer numberOfPassengers, Long type, Pageable pageable);
+	Page<Flight> search(String takeoffDate, String startCity, String endCity, int numberOfPassengers, int type, Pageable pageable);
 
 	@Query(value = "SELECT DISTINCT(passenger.passport) FROM passenger "
 				 + "WHERE passenger.seat_id IN (SELECT seat.id FROM seat WHERE seat.flight_id = ?1)",

@@ -3,6 +3,7 @@ package com.FlightsReservations.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class HotelReservation
 	private Date start;
 	
 	@NotNull
+	@Column(name="endDate")
 	private Date end;
 	
 	@NotNull
