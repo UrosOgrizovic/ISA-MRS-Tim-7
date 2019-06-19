@@ -7,6 +7,8 @@ import com.FlightsReservations.domain.Hotel;
 
 public class RoomDTO {
 
+	private Long id;
+	
 	@NotNull
 	private float averageScore;
 	@NotNull
@@ -88,6 +90,16 @@ public class RoomDTO {
 		this.floor = floor;
 	}
 	
+	
+	
+	public Long getId()
+	{
+		return id;
+	}
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
 	public RoomDTO(@NotNull float averageScore, @NotNull double overNightStay, @NotNull int number,
 			@NotNull int numberOfGuests, @NotBlank String name, @NotBlank String type, Hotel hotel, int numberOfVotes) {
 		super();
@@ -109,6 +121,20 @@ public class RoomDTO {
 		this.number = number;
 		this.floor = floor;
 		this.numberOfGuests = numberOfGuests;
+		this.type = type;
+		this.hotelName = hotelName;
+		this.numberOfVotes = numberOfVotes;
+	}
+	public RoomDTO(Long id, @NotNull float averageScore, @NotNull double overNightStay, int number, int numberOfGuests,
+			int floor, String type, String hotelName, int numberOfVotes)
+	{
+		super();
+		this.id = id;
+		this.averageScore = averageScore;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.numberOfGuests = numberOfGuests;
+		this.floor = floor;
 		this.type = type;
 		this.hotelName = hotelName;
 		this.numberOfVotes = numberOfVotes;

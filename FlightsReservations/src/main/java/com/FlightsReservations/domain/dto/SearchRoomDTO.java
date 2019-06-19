@@ -13,15 +13,31 @@ public class SearchRoomDTO
 	private String overallRating;
 	
 	private String overNightStay;
+	
+	private String hotelName;
 
-	public SearchRoomDTO(String type, String floor, String numberOfGuests, String overallRating, String overNightStay)
+	public SearchRoomDTO(String type, String floor, String numberOfGuests, String overallRating, String overNightStay, String hotelName)
 	{
 		this.numberOfGuests = numberOfGuests;
 		this.floor = floor;
 		this.type = type;
 		this.overallRating = overallRating;
 		this.overNightStay = overNightStay;
+		this.hotelName = hotelName;
 	}
+
+	
+	public String getHotelName()
+	{
+		return hotelName;
+	}
+
+
+	public void setHotelName(String hotelName)
+	{
+		this.hotelName = hotelName;
+	}
+
 
 	public String getNumberOfGuests()
 	{

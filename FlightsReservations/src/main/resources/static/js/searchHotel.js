@@ -207,3 +207,42 @@ function display_search_results(hotels)
     table.appendChild(clone); // add new row to end of table
     */
 }
+
+function displayHotelRating(hotel) {
+    if (hotel.averageScore >= 4.5) {
+        document.getElementById("avgstar5"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 3.5) {
+        document.getElementById("avgstar4"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 2.5) {
+        document.getElementById("avgstar3"+hotel.name).checked = true;
+    } else if (hotel.averageScore >= 1.5) {
+        document.getElementById("avgstar2"+hotel.name).checked = true;
+    } else {
+        document.getElementById("avgstar1"+hotel.name).checked = true;
+    }
+    document.getElementById("avgscore"+hotel.name).innerHTML = "("+hotel.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
+}
+
+function rateHotel(el) {
+    var arr = el.id.split("star");
+    var ratingHotelName = arr[1].split("");
+    
+    var obj = {};
+    obj.name = ratingHotelName.slice(1).join("");
+    obj.averageScore = parseFloat(ratingHotelName[0]);
+
+    $.ajax({
+        url: rateLink,
+        method: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        dataType: "json",
+        headers: { "Authorization": "Bearer " + token}, 
+        success: function(hotel) {
+            displayHotelRating(hotel);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    })
+}

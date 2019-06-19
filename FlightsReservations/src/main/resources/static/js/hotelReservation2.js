@@ -11,18 +11,18 @@ if (token == null) location.replace("/html/login.html");
 $(document).ready(function()
 	{
 		loadNavbar("hotelsHomepageNavItem");
-		var hotel =
+		var room =
 		 {
-			name 		: "",
-			//city 		: localStorage.getItem("city"),
-			//state		: localStorage.getItem("state"),
-			city : "Bijeljina",
-			state: "Srpska",
+			number : "",
+			floor : "",
+			numberOfGuests : "",
+			overNightStay : "",
+			hotelName : localStorage.getItem("hotel_name"),
 			averageScore: ""
 		 };
 		
 	    $.ajax({
-	        url: "http://localhost:8080/hotels/searchHotels" + "?name=" + hotel.name + "&city=" + hotel.city + "&state=" + hotel.state + "&averageScore=" + hotel.averageScore + "&searchHotel=", //+ myForm.searchHotel.value
+	        url: "http://localhost:8080/rooms/searchRooms" + "?hotelName=" + room.hotelName + "&number=" + room.number + "&floor=" + room.floor + "&numberOfGuests=" + room.numberOfGuests + "&averageScore=" + room.averageScore + "&searchRoom=", //+ myForm.searchHotel.value
 	        method: "GET",				
 	        dataType: "json",
 	        contentType: "application/json",
@@ -56,11 +56,13 @@ function validate_inputs(myForm)
 
 function search_hotel()
 {
-	var hotel =
+	var room =
 		 {
-			name 		: "",
-			city 		: localStorage.getItem("city"),
-			state		: localStorage.getItem("state"),
+			number 		: document.getElementById("number").value,
+			floor 		: document.getElementById("floor").value,
+			numberOfGuets	: document.getElementById("number").value,
+			hotelName : localStorage.getItem("hotel_name"),
+			overNightStay : document.getElementById("overNightStay").value,
 			averageScore: ""
 		 }
 	var myForm = document.getElementById("hotelSearchForm");
@@ -75,26 +77,27 @@ function search_hotel()
 			hotel.averageScore = myForm.averageScore.value;
 		}
 	}
-	document.getElementById("name").value = "";
+	document.getElementById("number").value = "";
+	document.getElementById("floor").value = "";
+	document.getElementById("numberOfGuests").value = "";
 	document.getElementById("averageScore").value="";
-	//document.getElementById("city").value = "";
-	//document.getElementById("state").value = "";
+	document.getElementById("overNightStay").value="";
 	
     $.ajax({
-        url: "http://localhost:8080/hotels/searchHotels" + "?name=" + hotel.name + "&city=" + hotel.city + "&state=" + hotel.state + "&averageScore=" + hotel.averageScore + "&searchHotel=", //+ myForm.searchHotel.value
+        url: "http://localhost:8080/rooms/searchRooms" + "?hotelName=" + room.hotelName + "&number=" + room.number + "&floor=" + room.floor + "&numberOfGuests=" + room.numberOfGuests + "&averageScore=" + room.averageScore + "&searchRoom=", //+ myForm.searchHotel.value
         method: "GET",				
         dataType: "json",
         contentType: "application/json",
         headers: { "Authorization": "Bearer " + token}, 
         success: function(hotels) {
-            display_search_results(hotels);
+            display_search_results(rooms);
         }, error: function(error) {
             console.log(error);
         }
     });
 }
 
-function display_search_results(hotels)
+function display_search_results(rooms)
 {
 	console.log("Pretraga uspjesna!");
 	
@@ -102,33 +105,29 @@ function display_search_results(hotels)
     var text = "<table id=\"all\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
     text += "<thead>";
     text += "<tr>";
-    text += "<th>Name</th>";
-    text += "<th>Longitude</th>";
-    text += "<th>Latitude</th>";
-    text += "<th>Description</th>";
-    text += "<th>Average rating</th>";
+    text += "<th>Number</th>";
+    text += "<th>Floor</th>";
+    text += "<th>Number of Guests</th>";
+    text += "<th>One Night Stay price</th>";
     text += "<th></th>";
     text += "</tr>";
     text += "</thead><tbody>";
     var i = 0;
-    for (var hotel of hotels) {
+    for (var room of rooms) {
         text += "<tr>";
-        text += "<td>" + hotel.name + "</td>";
-        text += "<td>" + hotel.longitude + "</td>";
-        text += "<td>" + hotel.latitude + "</td>";
-        text += "<td>" + hotel.promoDescription + "</td>";
+        text += "<td>" + room.number + "</td>";
+        text += "<td>" + room.floor + "</td>";
+        text += "<td>" + room.numberOfGuests + "</td>";
+        text += "<td>" + room.overNightStay + "</td>";
         
         // Average rating
-
+        /*
         text += "<td>";
         var avgstar5id = "avgstar5" + hotel.name;
         var avgstar4id = "avgstar4" + hotel.name;
         var avgstar3id = "avgstar3" + hotel.name;
         var avgstar2id = "avgstar2" + hotel.name;
         var avgstar1id = "avgstar1" + hotel.name;
-        /* each radio group has to have a different name, otherwise only one 
-        one of them will be checked
-            */
         var groupName = "avg" + hotel.name;
         text += "<div class=\"rate\">" +
         "<input type=\"radio\" id=\""+avgstar5id+"\" name=\""+groupName+"\" value=\"5\" />" + 
@@ -143,9 +142,9 @@ function display_search_results(hotels)
         "<label for=\""+avgstar1id+"\">1 star</label>" +
         "<div id=\"avgscore"+hotel.name+"\"></div>" +
         "</div>";        
-
-        text += "</td>";
-        text += `<td><button class="btn btn-primary" id="button${i}" onclick="book_hotel(${hotel.id}, ${hotel.name});"> Book hotel <button></td>`;
+		*/
+        text += "</td>"; 
+        text += "<td><button class=\"btn btn-primary\" id=\"button"+i+"\" onclick=\"book_room("+room.id+");\">Book room</button>";
         text += "</tr>";
         i += 1;
     }
@@ -174,25 +173,9 @@ function display_search_results(hotels)
     */
 }
 
-function displayHotelRating(hotel) {
-    if (hotel.averageScore >= 4.5) {
-        document.getElementById("avgstar5"+hotel.name).checked = true;
-    } else if (hotel.averageScore >= 3.5) {
-        document.getElementById("avgstar4"+hotel.name).checked = true;
-    } else if (hotel.averageScore >= 2.5) {
-        document.getElementById("avgstar3"+hotel.name).checked = true;
-    } else if (hotel.averageScore >= 1.5) {
-        document.getElementById("avgstar2"+hotel.name).checked = true;
-    } else {
-        document.getElementById("avgstar1"+hotel.name).checked = true;
-    }
-    document.getElementById("avgscore"+hotel.name).innerHTML = "("+hotel.averageScore.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]+")";
-}
-
-function book_hotel(hotel_id, hotel_name)
+function book_room(room_id)
 {
-	console.log(hotel_id);
-	localStorage.setItem("hotel_id", hotel_id);
-	localStorage.setItem("hotel_name", hotel_name);
-	location.replace("/hmtl/hotelReservation2.html");
+	console.log(room_id);
+	localStorage.setItem("room_id", room_id);
+	location.replace("/html/roomReservation.html");
 }

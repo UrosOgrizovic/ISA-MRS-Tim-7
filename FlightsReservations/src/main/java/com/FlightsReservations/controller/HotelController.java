@@ -89,10 +89,10 @@ public class HotelController {
 	@GetMapping( value = "/searchRooms",
 				 consumes = MediaType.APPLICATION_JSON_VALUE,
 				 produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<RoomDTO> > searchRooms(@RequestParam("type") String type, @RequestParam("floor") String floor, @RequestParam("numberOfGuests") String numberOfGuests, @RequestParam("overallRating") String overallRating, @RequestParam("overnightStay") String overnightStay, @RequestParam("searchRoom") String sr)
+	public ResponseEntity<Collection<RoomDTO> > searchRooms(@RequestParam("type") String type, @RequestParam("floor") String floor, @RequestParam("numberOfGuests") String numberOfGuests, @RequestParam("overallRating") String overallRating, @RequestParam("overnightStay") String overnightStay, @RequestParam("hotelName") String hotelName, @RequestParam("searchRoom") String sr)
 	{
 		
-		SearchRoomDTO room = new SearchRoomDTO(type, floor, numberOfGuests, overallRating, overnightStay);
+		SearchRoomDTO room = new SearchRoomDTO(type, floor, numberOfGuests, overallRating, overnightStay, hotelName);
 		
 		Collection<RoomDTO> results = roomService.search(room);
 		for(RoomDTO r : results)
