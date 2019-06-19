@@ -38,14 +38,14 @@ public class CarController {
 		return service.findAll();
 	}
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value = "/removeCar/{id}")
 	public Collection<Car> removeCar(@PathVariable Long id) {
 		service.delete(id);
 		return service.findAll();
 	}
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(
 			value = "/update",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +55,7 @@ public class CarController {
 		return new ResponseEntity<>("Car with given id does not exist", HttpStatus.NOT_FOUND);
 	}
 	
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value = "/addDiscountToCar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> addDiscountToCar(@Valid @RequestBody CreateCarDiscountDTO discount) {
 		String success = service.addDiscountToCar(discount);
@@ -64,9 +64,9 @@ public class CarController {
 		return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping(value = "/getAllDiscountCarsForPeriod/{startTime}/{endTime}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(@PathVariable String startTime, @PathVariable String endTime) {
-		return service.getAllDiscountCarsForPeriod(startTime, endTime);
+	@GetMapping(value = "/getAllDiscountCarsForPeriod/{startTime}/{endTime}/{city}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(@PathVariable String startTime, @PathVariable String endTime, @PathVariable String city) {
+		return service.getAllDiscountCarsForPeriod(startTime, endTime, city);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_USER')")
