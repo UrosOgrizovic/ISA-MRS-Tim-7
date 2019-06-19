@@ -4,13 +4,18 @@ var getAllDiscountCarsForPeriod = "/cars/getAllDiscountCarsForPeriod";
 var carReservationLink = "/carReservations";
 
 var rps = localStorage.getItem("reservationPeriodStart");
+if (rps == null) history.go(-1);
 var reservationPeriodStart = dateFormatter(rps);
 var stringReservationPeriodStart = dateToString(rps);
 
 
 var rpe = localStorage.getItem("reservationPeriodEnd");
+if (rpe == null) history.go(-1);
 var reservationPeriodEnd = dateFormatter(rpe);
 var stringReservationPeriodEnd = dateToString(rpe);
+
+var city = localStorage.getItem("city");
+if (city == null) history.go(-1);
 
 // used for converting String to Date of desired format (dd-MM-yyyy HH:mm)
 function dateFormatter(obj) {
@@ -46,15 +51,18 @@ $(document).ready(function() {
     $("#error").remove();
     
     $.ajax({
-        url: getAllDiscountCarsForPeriod + "/" + stringReservationPeriodStart + "/" + stringReservationPeriodEnd,
+        url: getAllDiscountCarsForPeriod + "/" + stringReservationPeriodStart + "/" + stringReservationPeriodEnd + "/" + city,
         method: "GET",
         dataType: "json",
         contentType: "application/json",
         data: {},
         success: function(cars) {
-            displayDiscountCars(cars);
+            if (cars != null && cars.length > 0)
+                displayDiscountCars(cars);
+            else 
+                toastr.info("No discount cars to display");
         }, error: function(error) {
-            $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
+            toastr.error("Could not display discount cars");
             console.log(error);
         }
     });

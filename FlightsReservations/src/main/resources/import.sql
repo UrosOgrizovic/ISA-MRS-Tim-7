@@ -89,10 +89,10 @@ UPDATE company SET admin_id = 2 WHERE id = 2;
 
 
 -- AIRPORTS ============================================================================================================
-INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (1, 'BEG', 'Belgrade', 'Serbia', 44.7866, 20.4489);
-INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (2, 'LON', 'London', 'England', 51.507, 0.127);
-INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (3, 'NY', 'New York', 'USA', 40.7128, 74.0060);
-INSERT INTO airport (id, name, city, state, longitude, latitude) VALUES (4, 'TOK', 'Tokyo', 'Japan', 35.6804, 139.7690);
+INSERT INTO airport (id, name, city, state, latitude, longitude) VALUES (1, 'BEG', 'Belgrade', 'Serbia', 44.7866, 20.4489);
+INSERT INTO airport (id, name, city, state, latitude, longitude) VALUES (2, 'LON', 'London', 'England', 51.507, 0.127);
+INSERT INTO airport (id, name, city, state, latitude, longitude) VALUES (3, 'NY', 'New York', 'USA', 40.7128, -74.0060);
+INSERT INTO airport (id, name, city, state, latitude, longitude) VALUES (4, 'TOK', 'Tokyo', 'Japan', 35.6804, 139.7690);
 -- ============================================================================================================
 
 

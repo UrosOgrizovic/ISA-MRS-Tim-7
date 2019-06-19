@@ -121,8 +121,16 @@ public class AirlineService {
 	public boolean setPricelist(PricelistDTO dto) {
 		Airline a = repository.findByName(dto.getAirline());
 		if (a != null) {
-			AirlinePriceList p = new AirlinePriceList(a, dto.getBusiness(), dto.getEconomic(), dto.getFirst());
-			a.setPricelist(p);
+			AirlinePriceList ap = a.getPricelist();
+			if (ap == null) {
+				ap = new AirlinePriceList(a, dto.getBusiness(), dto.getEconomic(), dto.getFirst());
+				a.setPricelist(ap);
+			} else {
+				ap.setBussines(dto.getBusiness());
+				ap.setFirst(dto.getFirst());
+				ap.setEconomic(dto.getEconomic());
+			}
+			
 			repository.save(a);
 			return true;
 		}

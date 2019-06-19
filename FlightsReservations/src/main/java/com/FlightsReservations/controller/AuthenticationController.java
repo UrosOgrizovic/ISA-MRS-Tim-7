@@ -68,7 +68,7 @@ public class AuthenticationController {
 		int expiresIn = tokenUtils.getExpiredIn();
 
 		// return token as response to signify successful authentication
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getEmail(), user.getFirstName()));
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getEmail(), user.getFirstName(), user.getUserType()));
 	}
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -82,15 +82,15 @@ public class AuthenticationController {
 			String refreshedToken = tokenUtils.refreshToken(token);
 			int expiresIn = tokenUtils.getExpiredIn();
 
-			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn, user.getEmail(), user.getFirstName()));
+			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn, user.getEmail(), user.getFirstName(), user.getUserType()));
 		} else {
 			UserTokenState userTokenState = new UserTokenState();
 			return ResponseEntity.badRequest().body(userTokenState);
 		}
 	}
-
+	
 	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
 		userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 		

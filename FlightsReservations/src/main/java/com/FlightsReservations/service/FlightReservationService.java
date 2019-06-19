@@ -10,8 +10,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import com.FlightsReservations.domain.dto.FlightReservationDetailsDTO;
 import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.domain.dto.PassengerDTO;
 import com.FlightsReservations.domain.dto.QuickFlightReservationDTO;
+import com.FlightsReservations.domain.dto.ResponseDTO;
 import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.FlightInviteRepository;
@@ -58,8 +61,9 @@ public class FlightReservationService {
 	@Autowired
 	private AirlineRepository airlineRepository;
 	
-
-	public FlightReservationDTO create(FlightsReservationRequestDTO reservationDTO) {
+	
+	@Transactional(readOnly = false)
+	public ResponseDTO<FlightReservationDTO> create(FlightsReservationRequestDTO reservationDTO) {
 		
 		if (verifyCreateReservation(reservationDTO)) {
 			User owner = userRepository.findByEmail(reservationDTO.getOwnerEmail());
@@ -89,11 +93,15 @@ public class FlightReservationService {
 					sendInviteEmail(owner, i);
 				}
 			}
-			repository.save(r);
-			return new FlightReservationDTO(r);
+			
+			r = repository.save(r);
+			try { repository.flush(); } 
+			catch (OptimisticLockingFailureException ex) { return new ResponseDTO<>("Something wrong with your request."); }
+			return new ResponseDTO<>(new FlightReservationDTO(r));
 		}
-		return null;
+		return new ResponseDTO<>("Something wrong with your request.");
 	}
+	
 	
 	// TODO: ADD ADDITIONAL DISCOUNT BASED ON USER POINTS
 	private float calculatePrice(Seat s, Flight f) {
@@ -193,7 +201,6 @@ public class FlightReservationService {
 		}
 		return true;
 	}
-	
 	
 	private boolean verifyPassportUniqueness(Flight flight, List<PassengerDTO> passengers) {
 		Set<String> flightPassports = flightRepository.findPassportsInFlight(flight.getId());
@@ -296,7 +303,7 @@ public class FlightReservationService {
 		return false;
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
 		if (verifyCreateQR(id, seatNum)) {
 			AirlineAdmin admin = ((AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -312,29 +319,38 @@ public class FlightReservationService {
 			
 			Seat s = findSeat(f, seatNum);
 			s.setAvailable(false);
+			s.setQuickAvailable(true);
 			Passenger p = new Passenger();
 			p.setSeat(s);
 			r.getPassengers().add(p);
 			r.setPrice(calculatePrice(s, f));
 			repository.save(r);
+			
+			try { repository.flush(); } catch(OptimisticLockingFailureException ex ) { return false; }
 			return true;
 		}
 		return false;
 	}
 	
 	
-	public FlightReservationDTO takeQR(Long reservationId, String ownerEmail, String passport) {
-		if (verifyTakeQR(reservationId, ownerEmail, passport)) {
-			User owner = userRepository.findByEmail(ownerEmail);
+	@Transactional(readOnly = false)
+	public FlightReservationDTO takeQR(Long reservationId, String passport) {
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if (verifyTakeQR(reservationId, u.getEmail(), passport)) {
+			User owner = userRepository.findByEmail(u.getEmail());
 			FlightReservation r = repository.findById(reservationId).get();
 			r.setOwner(owner);
 			r.setDateOfReservation(new Date());
 			owner.getFlightReservations().add(r);
 			Passenger p = (Passenger) r.getPassengers().toArray()[0];
+			p.getSeat().setQuickAvailable(false);
 			p.setName(owner.getFirstName());
 			p.setSurname(owner.getLastName());
 			p.setPassport(passport);
 			repository.save(r);
+			
+			try { repository.flush(); } catch(OptimisticLockingFailureException ex ) { return null; }
 			return new FlightReservationDTO(r);
 		}
 		return null;
@@ -385,10 +401,12 @@ public class FlightReservationService {
 		Flight f = (Flight) r.getFlights().toArray()[0];
 		if (!verifyPassportUniqueness(f, passengers))
 			return false;
-		
+
 		return true;		
 	}
 	
+	
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public List<QuickFlightReservationDTO> getQuickReservations(String airlineName) {
 		List<QuickFlightReservationDTO> results = new ArrayList<>();
 		List<FlightReservation> quickReservations = repository.findQuickReservations();

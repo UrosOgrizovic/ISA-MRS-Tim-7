@@ -7,21 +7,23 @@ public class SeatDTO {
 	private Boolean available;
 	private String typeClass;
 	private Long flightId;
+	private boolean quickAvailable;
 
 	public SeatDTO() {
 		super();
 	}
 
-	public SeatDTO(Integer seatNum, boolean available, String typeClass, Long flightId) {
+	public SeatDTO(Integer seatNum, boolean available, String typeClass, Long flightId, boolean quickAvailable) {
 		super();
 		this.seatNum = seatNum;
 		this.available = available;
 		this.typeClass = typeClass;
 		this.flightId = flightId;
+		this.quickAvailable = quickAvailable;
 	}
 
 	public SeatDTO(Seat s) {
-		this(s.getSeatNumber(), s.isAvailable(), s.getType().toString(), s.getFlight().getId());
+		this(s.getSeatNumber(), s.isAvailable(), s.getType().toString(), s.getFlight().getId(), s.isQuickAvailable());
 	}
 
 	public Integer getSeatNum() {
@@ -54,6 +56,22 @@ public class SeatDTO {
 
 	public void setFlightId(Long flightId) {
 		this.flightId = flightId;
+	}
+
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Boolean available) {
+		this.available = available;
+	}
+
+	public boolean isQuickAvailable() {
+		return quickAvailable;
+	}
+
+	public void setQuickAvailable(boolean quickAvailable) {
+		this.quickAvailable = quickAvailable;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -24,6 +26,9 @@ import com.FlightsReservations.repository.CarRepository;
 @Component
 @Transactional(readOnly = true)
 public class CarService {
+	
+	private final static Logger LOGGER = Logger.getLogger(CarService.class.getName());
+	
 	@Autowired
 	CarRepository carRepository;
 
@@ -89,7 +94,10 @@ public class CarService {
 			
 	}
 	
-	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(String startTime, String endTime) {
+	public Collection<DiscountCarDTO> getAllDiscountCarsForPeriod(String startTime, String endTime, String city) {
+		if (startTime == null || startTime.equals("") || endTime == null || endTime.equals("") || city == null || city.equals("")) {
+			return null;
+		}
 		Collection<Car> cars = carRepository.findAll();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		Date startDate = new Date();
@@ -98,7 +106,7 @@ public class CarService {
 			startDate = sdf.parse(startTime);
 			endDate = sdf.parse(endTime);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.FINE, e.toString(), e);
 		}
 		
 		double totalPrice = 0;
@@ -107,36 +115,39 @@ public class CarService {
 		Date dtoEndTime = new Date();
 		ArrayList<DiscountCarDTO> discountCars = new ArrayList<DiscountCarDTO>();
 		for (Car c : cars) {
-			totalPrice = 0;
-			pph = c.getPricePerHour();
-			Set<Discount> carDiscounts = c.getDiscounts();
-			for (Discount d : carDiscounts) {
-				if (! (endDate.before(d.getStartTime()) && startDate.after(d.getEndTime()))) {
-					// after, after
-					if (d.getStartTime().after(startDate) && d.getEndTime().after(endDate)) {
-						dtoStartTime = d.getStartTime();
-						dtoEndTime = endDate;
-					// after, before
-					} else if (d.getStartTime().after(startDate) && d.getEndTime().before(endDate)) {
-						dtoStartTime = d.getStartTime();
-						dtoEndTime = d.getEndTime();
-					// before, after
-					} else if (d.getStartTime().before(startDate) && d.getEndTime().after(endDate)) {
-						dtoStartTime = startDate;
-						dtoEndTime = endDate;
-					// before, before
-					} else {
-						dtoStartTime = startDate;
-						dtoEndTime = d.getEndTime();
+			if (c.getRACSBranchOffice().getRacs().getCity().equalsIgnoreCase(city)) {
+				totalPrice = 0;
+				pph = c.getPricePerHour();
+				Set<Discount> carDiscounts = c.getDiscounts();
+				for (Discount d : carDiscounts) {
+					if (! (endDate.before(d.getStartTime()) && startDate.after(d.getEndTime()))) {
+						// after, after
+						if (d.getStartTime().after(startDate) && d.getEndTime().after(endDate)) {
+							dtoStartTime = d.getStartTime();
+							dtoEndTime = endDate;
+						// after, before
+						} else if (d.getStartTime().after(startDate) && d.getEndTime().before(endDate)) {
+							dtoStartTime = d.getStartTime();
+							dtoEndTime = d.getEndTime();
+						// before, after
+						} else if (d.getStartTime().before(startDate) && d.getEndTime().after(endDate)) {
+							dtoStartTime = startDate;
+							dtoEndTime = endDate;
+						// before, before
+						} else {
+							dtoStartTime = startDate;
+							dtoEndTime = d.getEndTime();
+						}
+						int hoursBetween = (int) (dtoEndTime.getTime() - dtoStartTime.getTime()) / 3600000;
+						double newPPH = pph - pph * d.getDiscountValue() / 100;
+						totalPrice += newPPH * hoursBetween;
+						
+						
+						discountCars.add(new DiscountCarDTO(c, totalPrice, dtoStartTime, dtoEndTime));
 					}
-					int hoursBetween = (int) (dtoEndTime.getTime() - dtoStartTime.getTime()) / 3600000;
-					double newPPH = pph - pph * d.getDiscountValue() / 100;
-					totalPrice += newPPH * hoursBetween;
-					
-					
-					discountCars.add(new DiscountCarDTO(c, totalPrice, dtoStartTime, dtoEndTime));
 				}
 			}
+			
 			
 		}
 		return discountCars;

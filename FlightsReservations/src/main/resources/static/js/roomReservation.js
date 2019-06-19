@@ -7,7 +7,7 @@ window.reserve_room = reserve_room;
 $(document).ready(function()
 		{ 
 			loadNavbar("hotelsHomepageNavItem");
-			//room = localStorage.getItem("roomId");
+			room = localStorage.getItem("roomId");
 			//document.getElementById("roomId").value = room;
 		}
 	);

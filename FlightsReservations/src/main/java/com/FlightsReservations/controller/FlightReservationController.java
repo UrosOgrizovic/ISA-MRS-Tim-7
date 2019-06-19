@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,18 +35,15 @@ public class FlightReservationController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
-		FlightReservationDTO fdto = service.create(dto);
-		if (fdto != null)
-			return new ResponseEntity<>(fdto, HttpStatus.CREATED);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
 	}
-
+	
 	
 	@PutMapping(value = "/cancel/{id}")
 	public ResponseEntity<?> cancel(@NotNull @Positive @PathVariable Long id) {
 		if (service.cancel(id))
-			return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
-		return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	
@@ -65,11 +63,12 @@ public class FlightReservationController {
 	}
 	
 	
-	@PutMapping(value = "/quickReservation/{reservationId}/{ownerEmail}/{passport}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> takeQuickReservation(@NotNull @PathVariable Long reservationId, 
-			@NotBlank @Email @PathVariable String ownerEmail,
+	@PutMapping(value = "/quickReservation/{reservationId}/{passport}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> takeQuickReservation(
+			@NotNull @PathVariable Long reservationId, 
 			@NotBlank @PathVariable String passport) {
-		FlightReservationDTO r = service.takeQR(reservationId, ownerEmail, passport);
+		FlightReservationDTO r = service.takeQR(reservationId, passport);
 		if (r != null)
 			return new ResponseEntity<>(r, HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

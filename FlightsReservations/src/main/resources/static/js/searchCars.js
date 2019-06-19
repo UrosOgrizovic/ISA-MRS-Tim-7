@@ -16,7 +16,7 @@ $(document).ready(function(){
     
     $("#carSearchForm").on('submit', function(e) {
         e.preventDefault();
-        
+        var racsName = $("#racsName").val();
         var name = $("#name").val();
         var yearOfManufacture = $("#yearOfManufacture").val();
         if (yearOfManufacture == "") {
@@ -26,7 +26,7 @@ $(document).ready(function(){
     
         $("#foundCars").remove();
         $.ajax({
-            url: searchUrl + "?name=" + name + "&manufacturer=" + manufacturer + "&yearOfManufacture=" + yearOfManufacture,
+            url: searchUrl + "?racsName=" + racsName + "&name=" + name + "&manufacturer=" + manufacturer + "&yearOfManufacture=" + yearOfManufacture,
             method: "GET",
             dataType: "json",
             contentType: "application/json",
@@ -50,11 +50,14 @@ $(document).ready(function(){
 });
 
 function displaySearchResults(cars) {
-    var text = "<div id=\"foundCars\"><h2>Search results: <h2><br>";
-    for (car of cars) {
-        text += "<h3>"+ " " + car.manufacturer + " " + car.name + " " + car.color + " " + car.yearOfManufacture + " " + car.pricePerHour + "</h3><br>";
+    var text = "<table id=\"foundCars\" style= \"margin:20px; width: 90%; float: center; text-align: center;\" class=\"table table-striped\">";
+    text += "<thead>";
+    text += "<th>Manufacturer</th><th>Name</th><th>Color</th><th>Year of manufacture</th><th>Price per hour</th><th>RACS branch office name</th>";
+    text += "</thead><tbody>";
+    for (var car of cars) {
+        text += "<tr><td>" + car.manufacturer + "</td><td>" + car.name + "</td><td>" + car.color + "</td><td>" + car.yearOfManufacture + "</td><td>" + car.pricePerHour +"</td><td>"+car.racsBranchOfficeName+"</td>" + "</tr>";
     }
-    text += "</div>";
+    text += "</tbody></table>";
     $(document.documentElement).append(text);
 }
 

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 import com.FlightsReservations.domain.enums.SeatType;
 
@@ -28,11 +29,17 @@ public class Seat {
 	@Column(nullable = false)
 	private SeatType type;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Flight flight;
 
 	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
 	private Passenger passenger;
+
+	@Column(nullable = false)
+	private boolean quickAvailable;
+
+	@Version
+	private Long version;
 
 	public Seat() {
 		super();
@@ -44,6 +51,7 @@ public class Seat {
 		this.available = available;
 		this.type = type;
 		this.flight = flight;
+		this.quickAvailable = false;
 	}
 
 	public Long getId() {
@@ -92,6 +100,26 @@ public class Seat {
 
 	public void setPassenger(Passenger passenger) {
 		this.passenger = passenger;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public boolean isQuickAvailable() {
+		return quickAvailable;
+	}
+
+	public void setQuickAvailable(boolean quickAvailable) {
+		this.quickAvailable= quickAvailable;
 	}
 
 }

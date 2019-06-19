@@ -1,6 +1,5 @@
 package com.FlightsReservations.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.dto.UpdateRACSDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.dto.RACSDTO;
@@ -76,12 +74,10 @@ public class RACSController {
 	}
 	
 	@GetMapping(value="/searchCars", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<Car>> searchAllCars(@RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
+	public ResponseEntity<?> searchAllCars(@RequestParam("racsName") String racsName, @RequestParam("name") String name, @RequestParam("manufacturer") String manufacturer,
 			@RequestParam("yearOfManufacture") int yearOfManufacture) {
 		
-		Collection<RACSDTO> racss = service.findAll();
-		
-		return new ResponseEntity<ArrayList<Car>>(service.searchAllCars(racss, name, manufacturer, yearOfManufacture), HttpStatus.OK);
+		return new ResponseEntity<>(service.searchAllCars(racsName, name, manufacturer, yearOfManufacture), HttpStatus.OK);
 
 	}
 	

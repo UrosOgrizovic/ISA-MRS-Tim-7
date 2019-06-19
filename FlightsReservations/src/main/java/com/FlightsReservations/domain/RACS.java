@@ -27,7 +27,7 @@ public class RACS extends Company {
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "racs_id")
-	private Set<RACSBranchOffice> branchOffices;
+	private Set<RACSBranchOffice> branchOffices = new HashSet<RACSBranchOffice>();
 	
 	public Set<RACSBranchOffice> getBranchOffices() {
 		return branchOffices;

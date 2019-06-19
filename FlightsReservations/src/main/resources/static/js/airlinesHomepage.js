@@ -1,20 +1,18 @@
+import {loadNavbar} from "./navbar.js"; 
+loadNavbar('airlinesHomepageNavItem');
+
+
 var getAllLink = "/airlines";
 var rateLink = "/companies/rate";
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 
-$(document).ready(function(){
-   
-    
-    $("#viewAllAirlines").on('click', function(e) {
+$(document).ready(function(){ 
+	$("#all").remove();
+    $("#error").remove();
         
-        e.preventDefault();
-        
-        $("#all").remove();
-        $("#error").remove();
-        
-        $.ajax({
+    $.ajax({
             url: getAllLink,
             method: "GET",
             dataType: "json",
@@ -22,16 +20,13 @@ $(document).ready(function(){
             data: {},
             headers: { "Authorization": "Bearer " + token}, 
             success: function(airlines) {
-                displayAirlines(airlines);
-                
+                displayAirlines(airlines);      
             }, error: function(error) {
                 $(document.documentElement).append("<h3 id=\"error\">Error</h3>");
                 console.log(error);
             }
         });
-        
 
-    });
 });
 
 function displayAirlines(airlines) {
@@ -51,7 +46,8 @@ function displayAirlines(airlines) {
     for (var al of airlines) {
         
         text += "<tr>";
-        text += "<td>" + al.name + "</td>";
+        text += `<td> <a href="javascript:show('${al.name}');"> ${al.name} </a> </td>`;
+        //text += "<td>" + al.name + "</td>";
         text += "<td>" + al.longitude + "</td>";
         text += "<td>" + al.latitude + "</td>";
         text += "<td>" + al.promoDescription + "</td>";
@@ -120,7 +116,7 @@ function displayAirlines(airlines) {
 
     text += "</tbody></table>";
 
-    $(document.documentElement).append(text);
+    $("#airlines").append(text);
     
     for (var airline of airlines) {        
         displayAirlineRating(airline);
