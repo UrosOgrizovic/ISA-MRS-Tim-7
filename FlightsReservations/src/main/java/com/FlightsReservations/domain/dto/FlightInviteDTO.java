@@ -7,15 +7,16 @@ import javax.validation.constraints.Positive;
 public class FlightInviteDTO {
 	@NotBlank
 	private String friendEmail;
-
+	
 	@NotNull
 	@Positive
 	private Integer seatNumber;
+	
 
 	public FlightInviteDTO() {
 		super();
 	}
-
+	
 	public String getFriendEmail() {
 		return friendEmail;
 	}

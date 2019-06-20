@@ -85,13 +85,6 @@ public class FlightService {
 			Integer seatOrdinal = getSeatOrdinal(dto.getSeatType());
 			
 			for (FlightSearchQueryDTO query : dto.getQueries()) {		
-				System.out.println(sdf.format(query.getTakeoffDate()));
-				System.out.println(query.getStartCity());
-				System.out.println(query.getEndCity());
-				System.out.println(seatOrdinal);
-				System.out.println(pageable);
-
-				
 				Page<Flight> flights = repository.search(
 						sdf.format(query.getTakeoffDate()), 
 						query.getStartCity(), 

@@ -65,8 +65,6 @@ public class Flight {
 	@Column(nullable = false)
 	private int numberOfVotes;
 	
-	//TODO: add discountValue (0 - 100)
-	
 	public Flight() {
 		super();
 	}

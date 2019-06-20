@@ -110,10 +110,6 @@ public class Seat {
 		this.version = version;
 	}
 
-	public Boolean getAvailable() {
-		return available;
-	}
-
 	public boolean isQuickAvailable() {
 		return quickAvailable;
 	}
