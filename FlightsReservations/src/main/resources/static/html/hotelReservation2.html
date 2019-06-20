@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/homepage.css">
+    <link rel="stylesheet" href="../css/table.css" />
+
+    <title>Room reservation</title>
+  </head>
+  <body>
+      <div id="nav-placeholder">
+    </div>
+    
+    <div>
+    	<br>
+        <form method="GET" id="hotelSearchForm">
+                    <table class="table table-condensed table-hover table-bordered td-fit th-fit" >
+                <th colspan=4>Search for a hotel:</th>
+                <tr><td colspan=4 align=center>Leaving a field blank will be considered as a universal match.</td></tr>
+                <tr>
+                    <td> <label> Number : </label> </td>
+                    <td> <label> Floor : </label> </td>
+                    <td> <label> Number of guests : </label> </td>
+                    <td> <label> Minimal average score: </label> </td>
+                    
+                </tr>
+                <tr>
+
+                    <td> <input type="text" name="number" id="number"> </td>
+                    <td> <input type="text" name="floor" id="floor"> </td>
+                    <td> <input type="text" name="numberOfGuests" id="numberOfGuests"> </td>
+                    <td> <input type="text" name="averageScore" id="averageScore"> </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan=4>
+                    	<button type="button" class="btn btn-primary" name="searchHotel" onClick="search_hotel()" id="submitButton" >Search</button>
+                    	                                                   
+                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
+                    </td>
+                </tr>
+                <!-- hotel administrator will modify other fields, pricelist, services, rooms...-->
+        </table>
+        </form>
+    </div>
+    
+    <div id="results">
+    </div>
+
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="../js/hotelReservation.js" type=module> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="../js/hotelsHomepage.js"></script>
+    <script src=".\..\js\ajaxSetup.js" ></script>
+  </body>
+</html>

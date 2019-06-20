@@ -24,6 +24,9 @@ public class Room {
 	@NotNull
 	private int numberOfGuests;
 	
+	private int floor;
+	
+	@NotNull
 	private RoomType type;
 
 	@Column(nullable = false)
@@ -38,6 +41,7 @@ public class Room {
 	//@JsonIgnore is used so as to avoid infinite recursion
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	//@Column(nullable = false)
 	private Hotel hotel;
 	
 	public Room() 
@@ -45,17 +49,18 @@ public class Room {
 		super();
 	}
 	
-	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes) 
+	public Room(int number, int numberOfGuests, String type, float averageScore, double overNightStay, int floor, Hotel hotel, int numberOfVotes) 
 	{
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
 		this.type = RoomType.valueOf(type);
 		this.averageScore = averageScore;
 		this.overNightStay = overNightStay;
+		this.floor = floor;
 		this.hotel = hotel;
 		this.numberOfVotes = numberOfVotes;
 	}
-	
+
 	public float getAverageScore() {
 		return averageScore;
 	}
@@ -113,16 +118,25 @@ public class Room {
 	{
 		this.numberOfGuests = numberOfGuests;
 	}
-
-	public Hotel getHotel() {
+	public Hotel getHotel()
+	{
 		return hotel;
 	}
 
-	public void setHotel(Hotel hotel) {
+	public void setHotel(Hotel hotel)
+	{
 		this.hotel = hotel;
 	}
-	
-	
-	
+
+	public int getFloor()
+	{
+		return floor;
+	}
+
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
+	}
+
 	
 }

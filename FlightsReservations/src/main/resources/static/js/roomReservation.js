@@ -1,3 +1,16 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
+
+var room;
+window.reserve_room = reserve_room;
+
+$(document).ready(function()
+		{ 
+			loadNavbar("hotelsHomepageNavItem");
+			room = localStorage.getItem("roomId");
+			//document.getElementById("roomId").value = room;
+		}
+	);
 
 function validate_inputs(myForm)
 {
@@ -50,13 +63,13 @@ function reserve_room()
     }
     else
     {
-        var room =
+        var reservation =
                 {
                     number : myForm.number.value,
                     numberOfGuests : myForm.numberOfGuests.value,
                     overnightStay : myForm.overnightStay.value,
                     type : myForm.type.value,
-                    overallRating : 0.0
+                    averageScore : 0.0
                     /*//this is a DTO => not all field are necessary
                     hotelAdmin : null,//Object
                     roomConfiguration : null,//Set
@@ -66,11 +79,11 @@ function reserve_room()
                 };
         //add image later
         //add administator later
-        /*
-         //$("#createHotel").click(function(){
+        
+         $("#reserveRoom").click(function(){
             $.ajax(
             {
-            url: "http://localhost:8080/hotels/addRoom",//link assigned to method in RoomController
+            url: "http://localhost:8080/roomReservations/create",//link assigned to method in RoomController
             method: "POST",//POST request
             dataType: 'json',//
             contentType: "application/json",
@@ -79,6 +92,6 @@ function reserve_room()
             crossDomain: true,
             success: function(result) { },
             })
-            */
+         });
     }
 }

@@ -1,3 +1,6 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
+
 var getAllHotelsLink = "/hotels/getAll";
 var rateLink = "/companies/rate";
 
@@ -6,6 +9,8 @@ if (token == null) location.replace("/html/login.html");
 
 $(document).ready(function(){
     
+	loadNavbar("hotelsHomepageNavItem");
+	
     $("#viewAllHotels").on('click', function(e) {
         e.preventDefault();
         
@@ -27,6 +32,7 @@ $(document).ready(function(){
             }
         });
     });
+    
 });
 
 function displayHotels(hotels) {

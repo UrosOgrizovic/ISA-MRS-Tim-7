@@ -1,8 +1,16 @@
+import {loadNavbar} from "./navbar.js"; 
+import { checkRoleFromToken } from "./securityStuff.js";
 var my_url = "http://localhost:8080/Admin";
 
 var token = localStorage.getItem("token");
 if (token == null) location.replace("/html/login.html");
 var admin = {};
+
+window.create_admin = create_admin;
+$(document).ready(function ()
+		{
+			loadNavbar('hotelsHomepageNavItem');
+		});
 
 function validate_inputs(myForm)
 {
@@ -83,7 +91,7 @@ function validate_inputs(myForm)
 
 function create_admin()
 {
-    myForm = document.getElementById("createAdminForm");
+    var myForm = document.getElementById("createAdminForm");
     if(!validate_inputs(myForm))
     {
         return;

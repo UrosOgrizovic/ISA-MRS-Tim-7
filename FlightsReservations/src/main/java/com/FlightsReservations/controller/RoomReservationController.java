@@ -28,7 +28,7 @@ public class RoomReservationController {
 	@Autowired
 	private RoomReservationService service;
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
+	@PostMapping(value= "/create", consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody RoomReservationRequestDTO dto) {
 		RoomReservationDTO rdto = service.create(dto);

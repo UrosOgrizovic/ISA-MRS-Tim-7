@@ -33,7 +33,8 @@ public class AirlineAdminDTO {
 		this.password = a.getPassword();
 		this.phone = a.getPhone();
 		this.address = a.getAddress();
-		this.airlineName = a.getAirline().getName();
+		if(a.getAirline()!=null)this.airlineName = a.getAirline().getName();
+		else this.airlineName = "";
 	}
 
 	public AirlineAdminDTO() {

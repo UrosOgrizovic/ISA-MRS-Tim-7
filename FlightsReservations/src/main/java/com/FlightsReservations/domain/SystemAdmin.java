@@ -1,11 +1,13 @@
 package com.FlightsReservations.domain;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.FlightsReservations.domain.dto.SystemAdminDTO;
 import com.FlightsReservations.domain.enums.AdminType;
 
 @Entity
+@DiscriminatorValue("SA")
 public class SystemAdmin extends Admin
 {
 	private static final long serialVersionUID = 1L;

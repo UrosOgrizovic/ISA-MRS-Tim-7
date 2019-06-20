@@ -1,22 +1,31 @@
 package com.FlightsReservations.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FlightsReservations.domain.HotelAdmin;
 import com.FlightsReservations.domain.dto.AirlineAdminDTO;
 import com.FlightsReservations.domain.dto.HotelAdminDTO;
 import com.FlightsReservations.domain.dto.RACSAdminDTO;
 import com.FlightsReservations.domain.dto.SystemAdminDTO;
+import com.FlightsReservations.domain.dto.UpdateRACSDTO;
+import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.service.AirlineAdminService;
 import com.FlightsReservations.service.HotelAdminService;
 import com.FlightsReservations.service.RACSAdminService;
@@ -81,8 +90,27 @@ public class AdminController
 	}
     
     //@PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/lookupHotelAdmins", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<HotelAdminDTO> lookupHotelAdmins()
+    {
+    	List<HotelAdminDTO> results = hotelAdminService.lookupAll();
+    	
+		return results;
+    }
+    
+    @RequestMapping(value = "/lookupAirlineAdmins", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<AirlineAdminDTO> lookupAirlineAdmins()
+    {
+    	List<AirlineAdminDTO> results = airlineAdminService.lookupAll();
+    	
+		return results;
+    }
+    
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/getAllRACSAdmins", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public List<RACSAdminDTO> getAll()  {
 		return racsAdminService.findAll();
 	}
+    
+
 }

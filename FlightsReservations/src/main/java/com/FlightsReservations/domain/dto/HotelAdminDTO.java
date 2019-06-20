@@ -24,6 +24,8 @@ public class HotelAdminDTO
 	@NotBlank
 	private String password;
 	
+	private String hotelName;
+	
 	public HotelAdminDTO(HotelAdmin a)
 	{
 		this.firstName = a.getFirstName();
@@ -32,6 +34,8 @@ public class HotelAdminDTO
 		this.password = a.getPassword();
 		this.phone = a.getPhone();
 		this.address = a.getAddress();
+		if(a.getHotel()!=null) this.hotelName = a.getHotel().getName();
+		else this.hotelName="";
 	}
 
 	public HotelAdminDTO() {
@@ -47,6 +51,18 @@ public class HotelAdminDTO
 		this.phone = phone;
 		this.address = address;
 		this.password = password;
+	}
+	
+	public HotelAdminDTO(String firstName, String lastName,  String email,
+			 String phone,  String address,  String password, String hotelname) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.password = password;
+		this.hotelName = hotelname;
 	}
 
 	public String getFirstName() {
@@ -95,6 +111,16 @@ public class HotelAdminDTO
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getHotelName()
+	{
+		return hotelName;
+	}
+
+	public void setHotelName(String hotelName)
+	{
+		this.hotelName = hotelName;
 	}
 	
 	

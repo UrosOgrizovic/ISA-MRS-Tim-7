@@ -6,24 +6,20 @@ import javax.validation.constraints.NotNull;
 import com.FlightsReservations.domain.Hotel;
 
 public class RoomDTO {
+
+	private Long id;
+	
 	@NotNull
 	private float averageScore;
 	@NotNull
 	private double overNightStay;
 	
-	@NotNull
 	private int number;
-	
-	@NotNull
-	private int numberOfGuests;
-	
-	@NotBlank
-	private String name;
-	
-	@NotBlank
+	private int numberOfGuests;	
+	private int floor;
 	private String type;
 	
-	private Hotel hotel;
+	private String hotelName;
 	
 	private int numberOfVotes;
 	
@@ -48,13 +44,6 @@ public class RoomDTO {
 	public void setOverNightStay(double overNightStay) 
 	{
 		this.overNightStay = overNightStay;
-	}
-	
-	public Hotel getHotel() {
-		return hotel;
-	}
-	public void setHotel(Hotel hotel) {
-		this.hotel = hotel;
 	}
 	public int getNumber()
 	{
@@ -84,7 +73,33 @@ public class RoomDTO {
 	{
 		super();
 	}
+	public String getHotelName()
+	{
+		return hotelName;
+	}
+	public void setHotelName(String hotelName)
+	{
+		this.hotelName = hotelName;
+	}
+	public int getFloor()
+	{
+		return floor;
+	}
+	public void setFloor(int floor)
+	{
+		this.floor = floor;
+	}
 	
+	
+	
+	public Long getId()
+	{
+		return id;
+	}
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
 	public RoomDTO(@NotNull float averageScore, @NotNull double overNightStay, @NotNull int number,
 			@NotNull int numberOfGuests, @NotBlank String name, @NotBlank String type, Hotel hotel, int numberOfVotes) {
 		super();
@@ -92,18 +107,37 @@ public class RoomDTO {
 		this.overNightStay = overNightStay;
 		this.number = number;
 		this.numberOfGuests = numberOfGuests;
-		this.name = name;
+		if(hotel!=null)this.hotelName = hotel.getName();
+		else this.hotelName = "";
 		this.type = type;
-		this.hotel = hotel;
 		this.numberOfVotes = numberOfVotes;
 	}
-	public String getName()
+
+	public RoomDTO(int number, int floor, int numberOfGuests, String type, float averageScore, double overNightStay, String hotelName, int numberOfVotes)
 	{
-		return name;
+		super();
+		this.averageScore = averageScore;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.floor = floor;
+		this.numberOfGuests = numberOfGuests;
+		this.type = type;
+		this.hotelName = hotelName;
+		this.numberOfVotes = numberOfVotes;
 	}
-	public void setName(String name)
+	public RoomDTO(Long id, @NotNull float averageScore, @NotNull double overNightStay, int number, int numberOfGuests,
+			int floor, String type, String hotelName, int numberOfVotes)
 	{
-		this.name = name;
+		super();
+		this.id = id;
+		this.averageScore = averageScore;
+		this.overNightStay = overNightStay;
+		this.number = number;
+		this.numberOfGuests = numberOfGuests;
+		this.floor = floor;
+		this.type = type;
+		this.hotelName = hotelName;
+		this.numberOfVotes = numberOfVotes;
 	}
 	
 	

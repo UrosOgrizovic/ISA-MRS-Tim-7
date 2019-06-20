@@ -1,5 +1,7 @@
 package com.FlightsReservations.domain.dto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,10 +10,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import com.FlightsReservations.domain.Hotel;
+import com.FlightsReservations.domain.HotelPricelistItem;
 import com.FlightsReservations.domain.Room;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 
 public class HotelDTO {
+	private Long id;
 	@NotBlank
 	private String name;
 	
@@ -37,25 +41,28 @@ public class HotelDTO {
 	@NotNull
 	@PositiveOrZero
 	private int numberOfVotes;
+	
+	private String hotelAdminEmail;
 
+	private Set<HotelPricelistItem> pricelist = new HashSet<HotelPricelistItem>();
 	private Set<Room> roomConfiguration = new HashSet<Room>();
 	private Set<HotelReservationDTO> reservations = new HashSet<>();
+	
+	
 
-	public HotelDTO() {
-		super();
+	public Long getId()
+	{
+		return id;
 	}
 
-	public HotelDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
-			int numberOfVotes) {
-		super();
-		this.name = name;
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.city = city;
-		this.state = state;
-		this.promoDescription = promoDescription;
-		this.averageScore = score;
-		this.numberOfVotes = numberOfVotes;
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
+
+	public void setReservations(Set<HotelReservationDTO> reservations)
+	{
+		this.reservations = reservations;
 	}
 
 	public int getNumberOfVotes() {
@@ -66,10 +73,7 @@ public class HotelDTO {
 		this.numberOfVotes = numberOfVotes;
 	}
 
-	public HotelDTO(Hotel h) {
-		this(h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getState(), h.getPromoDescription(), h.getAverageScore(),
-				h.getNumberOfVotes());
-	}
+
 
 	public float getAverageScore() {
 		return averageScore;
@@ -111,14 +115,6 @@ public class HotelDTO {
 		this.promoDescription = promoDescription;
 	}
 
-	public Set<HotelReservationDTO> getReservations() {
-		return reservations;
-	}
-
-	public void setAirports(Set<HotelReservationDTO> reservations) {
-		this.reservations = reservations;
-	}
-
 	public Set<Room> getRoomConfiguration() {
 		return roomConfiguration;
 	}
@@ -126,6 +122,11 @@ public class HotelDTO {
 	public void setRoomConfiguration(Set<Room> roomConfiguration) {
 		this.roomConfiguration = roomConfiguration;
 	}
+	
+	public Set<HotelReservationDTO> getReservations() {
+		return reservations;
+	}
+	
 
 	public String getCity()
 	{
@@ -137,11 +138,6 @@ public class HotelDTO {
 		this.city = city;
 	}
 
-	public void setReservations(Set<HotelReservationDTO> reservations)
-	{
-		this.reservations = reservations;
-	}
-
 	public String getState()
 	{
 		return state;
@@ -151,4 +147,91 @@ public class HotelDTO {
 	{
 		this.state = state;
 	}
+
+	public String getHotelAdminEmail()
+	{
+		return hotelAdminEmail;
+	}
+
+	public void setHotelAdminEmail(String hotelAdminEmail)
+	{
+		this.hotelAdminEmail = hotelAdminEmail;
+	}
+
+	public void setPricelist(Set<HotelPricelistItem> pricelist)
+	{
+		this.pricelist = pricelist;
+	}
+
+	public Set<HotelPricelistItem> getPricelist()
+	{
+		return pricelist;
+	}
+	
+	public HotelDTO(Hotel h) {
+		this(h.getId(), h.getName(), h.getLongitude(), h.getLatitude(), h.getCity(), h.getState(), h.getPromoDescription(), h.getAverageScore(),
+				h.getNumberOfVotes());
+		//this.id = h.getId();
+	}
+	
+	public HotelDTO() {
+		super();
+	}
+
+	public HotelDTO(Long id, String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
+			int numberOfVotes) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
+		this.promoDescription = promoDescription;
+		this.averageScore = score;
+		this.numberOfVotes = numberOfVotes;
+	}
+	
+	public HotelDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
+			int numberOfVotes) {
+		super();
+		this.name = name;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
+		this.promoDescription = promoDescription;
+		this.averageScore = score;
+		this.numberOfVotes = numberOfVotes;
+	}
+	
+	public HotelDTO(Long id, String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
+			int numberOfVotes, String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
+		this.promoDescription = promoDescription;
+		this.averageScore = score;
+		this.numberOfVotes = numberOfVotes;
+		this.hotelAdminEmail = email;
+	}
+	
+	public HotelDTO(String name, Float longitude, Float latitude, String city, String state, String promoDescription, float score,
+			int numberOfVotes, String email) {
+		super();
+		this.name = name;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.city = city;
+		this.state = state;
+		this.promoDescription = promoDescription;
+		this.averageScore = score;
+		this.numberOfVotes = numberOfVotes;
+		this.hotelAdminEmail = email;
+	}
+
 }

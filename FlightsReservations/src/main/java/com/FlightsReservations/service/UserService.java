@@ -129,7 +129,6 @@ public class UserService {
 	
 	public List<CarReservationDTO> getCarReservations(String email) {
 		AbstractUser u = abstractUserRepository.findByEmail(email);
-		
 		Collection<CarReservation> carReservations = carReservationRepository.findCarReservationsOfUser(u.getId());
 		List<CarReservationDTO> carReservationsDTO = new ArrayList<>();
 		for (CarReservation cr : carReservations) {

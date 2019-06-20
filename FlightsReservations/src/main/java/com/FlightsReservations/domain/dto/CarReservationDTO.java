@@ -13,7 +13,7 @@ public class CarReservationDTO {
 	private Boolean confirmed;
 	private Long racsBranchOfficeId;
 	private RatingDTO rating;
-	
+
 	@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
 	private Date dateOfReservation;
 	

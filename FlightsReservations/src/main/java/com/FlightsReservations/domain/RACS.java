@@ -69,4 +69,5 @@ public class RACS extends Company {
 				+ ", getAverageScore()=" + getAverageScore() + ", getNumberOfVotes()=" + getNumberOfVotes() + ", getVersion()=" + getVersion() + "]";
 	}
 	
+
 }

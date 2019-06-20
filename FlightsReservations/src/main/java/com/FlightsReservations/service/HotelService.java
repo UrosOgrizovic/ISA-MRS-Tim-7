@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.FlightsReservations.domain.Hotel;
-import com.FlightsReservations.domain.HotelReservation;
+import com.FlightsReservations.domain.HotelAdmin;
+import com.FlightsReservations.domain.HotelPricelistItem;
+import com.FlightsReservations.domain.Room;
+import com.FlightsReservations.domain.RoomReservation;
 import com.FlightsReservations.domain.dto.HotelDTO;
 import com.FlightsReservations.domain.dto.HotelReservationDTO;
 import com.FlightsReservations.domain.dto.SearchHotelDTO;
+import com.FlightsReservations.repository.HotelAdminRepository;
 import com.FlightsReservations.repository.HotelRepository;
+import com.FlightsReservations.repository.RoomRepository;
 
 @Service
 public class HotelService {
@@ -19,10 +24,17 @@ public class HotelService {
 	@Autowired
 	private HotelRepository repository;
 	
+	@Autowired
+	private HotelAdminRepository adminRepository;
+	
+	@Autowired
+	private RoomRepository roomRepository;
+
+
 	public HotelDTO create(HotelDTO t) {
-		Hotel a = repository.findByName(t.getName());//TODO: provjera da li vec postoji
-		if (a == null) {
-			a = new Hotel(
+		Hotel h = repository.findByName(t.getName());//TODO: check if already exists
+		if (h == null) {
+			h = new Hotel(
 					t.getName(), 
 					t.getLongitude(), 
 					t.getLatitude(), 
@@ -30,39 +42,49 @@ public class HotelService {
 					t.getState(),
 					t.getPromoDescription(),
 					t.getAverageScore(), t.getNumberOfVotes());
-			repository.save(a);
+			HotelAdmin ha = null;
+			if(t.getHotelAdminEmail()!="" && t.getHotelAdminEmail()!=null)
+			{
+				ha = adminRepository.findByEmail(t.getHotelAdminEmail() );
+				if(ha!=null)
+				{
+					
+					ha.setHotel(h);
+					adminRepository.save(ha);
+					h.setAdmin(ha);
+				}
+			}
+			
+			repository.save(h);
 			return t;
 		}
 		return null;
 	}
 	
-	public List<HotelDTO> search(SearchHotelDTO searchHotelDTO){
+	public List<HotelDTO> search(SearchHotelDTO searchDTO){
 		ArrayList<Hotel> hotels = (ArrayList<Hotel>) this.repository.findAll();
 		ArrayList<HotelDTO> results = new ArrayList<HotelDTO>();
-		
+
 		for(int i = 0;i<hotels.size();i++) {
-			if(!searchHotelDTO.getName().equalsIgnoreCase(hotels.get(i).getName()) || !searchHotelDTO.getName().equals("")){
+			
+			if(!searchDTO.getName().equalsIgnoreCase(hotels.get(i).getName()) && !searchDTO.getName().equals("")){
 				continue;
 			}
 			
-			if(!searchHotelDTO.getCity().equalsIgnoreCase(hotels.get(i).getCity()) || !searchHotelDTO.getCity().equals("")){
+			if(!searchDTO.getCity().equalsIgnoreCase(hotels.get(i).getCity()) && !searchDTO.getCity().equals("")){
 				continue;
 			}
 			
-			if(!searchHotelDTO.getState().equalsIgnoreCase(hotels.get(i).getState()) || !searchHotelDTO.getState().equals("")){
+			if(!searchDTO.getState().equalsIgnoreCase(hotels.get(i).getState()) && !searchDTO.getState().equals("")){
 				continue;
 			}
 			
-			if(Float.parseFloat(searchHotelDTO.getAverageScore()) > hotels.get(i).getAverageScore() || !searchHotelDTO.getAverageScore().equals("")){
+			if(!searchDTO.getAverageScore().equals("") && Float.parseFloat(searchDTO.getAverageScore()) > hotels.get(i).getAverageScore()){
 				continue;
 			}
-			System.out.println("Usao u servis for 1");
 			results.add(this.createDTO( (hotels.get(i) ) ) );
-			System.out.println("Usao u servis for 2");
 		}
-		
 		return results;
-		
 	}
 
 	public boolean update(HotelDTO t) {
@@ -111,11 +133,42 @@ public class HotelService {
 	
 	private HotelDTO createDTO(Hotel hotel) {
 		HotelDTO dto = new HotelDTO(hotel);
-		
-		if(hotel.getReservations()!=null) for (HotelReservation r : hotel.getReservations())
-			dto.getReservations().add(new HotelReservationDTO(r));
-
-		
+		if(hotel.getRoomConfiguration()!=null && !hotel.getRoomConfiguration().isEmpty() )
+		{
+			for (Room r : hotel.getRoomConfiguration() )
+			{
+				dto.getRoomConfiguration().add(r);
+			}
+		}
+		if(hotel.getPricelist()!=null && !hotel.getPricelist().isEmpty()) for (HotelPricelistItem pli : hotel.getPricelist())
+			dto.getPricelist().add(pli);
+		/*
+		if(hotel.getReservations()!=null) for (RoomReservation r : hotel.getReservations())
+			dto.getReservations().add(r);
+		*/
 		return dto;
 	}
+	/*
+	public boolean addRoom(RoomDTO dto) {
+		Hotel hotel = repository.findByName(dto.getHotelName() );
+		
+		if (hotel != null) { //int number, int numberOfGuests, String type, float averageScore, double overNightStay, Hotel hotel, int numberOfVotes
+			Room room = new Room(
+					dto.getNumber(),
+					dto.getNumberOfGuests(),
+					dto.getType(),
+					dto.getAverageScore(),
+					dto.getOverNightStay(),
+					dto.getFloor(),
+					hotel,
+					dto.getNumberOfVotes());
+			
+			hotel.getRoomConfiguration().add(room);
+			roomRepository.save(room);
+			repository.save(hotel);
+			return true;
+		}
+		return false;
+	}
+	*/
 }

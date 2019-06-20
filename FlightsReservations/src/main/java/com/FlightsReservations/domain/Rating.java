@@ -105,7 +105,5 @@ public class Rating {
 		this.companyRating = 0;
 		this.flightRoomCarRating = 0;
 	}
-	
-	
-	
+
 }
