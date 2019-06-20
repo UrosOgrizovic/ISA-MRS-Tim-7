@@ -143,6 +143,7 @@ public class CompanyService {
 					if (cr.getRating().getFlightRoomCarRating() > 0) {
 						return null;
 					}
+					
 					Car car = carRepository.findById(cr.getCarId()).get();
 					float newCarAvgScore = car.getAverageScore() * car.getNumberOfVotes() + dto.getFlightRoomCarRating();
 					int newCarNumberOfVotes = car.getNumberOfVotes() + 1;

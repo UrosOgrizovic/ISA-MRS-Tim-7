@@ -19,8 +19,7 @@ $(document).ready(function(){
         contentType: "application/json",
         crossDomain: true, 
 		success: function (result) {
-            
-            if (result != null && result.length > 0) {
+            if (result != null) {
                 
                 branchOfficeName.innerHTML = result.name;
                 carsOfBranchOffice = result.cars;
