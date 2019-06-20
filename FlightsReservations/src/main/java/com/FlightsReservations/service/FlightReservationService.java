@@ -63,7 +63,7 @@ public class FlightReservationService {
 	
 	
 	@Transactional(readOnly = false)
-	public ResponseDTO<FlightReservationDTO> create(FlightsReservationRequestDTO reservationDTO) {
+	public FlightReservationDTO create(FlightsReservationRequestDTO reservationDTO) {
 		
 		if (verifyCreateReservation(reservationDTO)) {
 			User owner = userRepository.findByEmail(reservationDTO.getOwnerEmail());
@@ -96,10 +96,10 @@ public class FlightReservationService {
 			
 			r = repository.save(r);
 			try { repository.flush(); } 
-			catch (OptimisticLockingFailureException ex) { return new ResponseDTO<>("Something wrong with your request."); }
-			return new ResponseDTO<>(new FlightReservationDTO(r));
+			catch (OptimisticLockingFailureException ex) { return null; }
+			return new FlightReservationDTO(r);
 		}
-		return new ResponseDTO<>("Something wrong with your request.");
+		return null;
 	}
 	
 	
