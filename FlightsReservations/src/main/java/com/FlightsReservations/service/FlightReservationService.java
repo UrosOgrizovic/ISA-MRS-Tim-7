@@ -169,7 +169,8 @@ public class FlightReservationService {
 			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
 			for (Long id : invite.getSeatIds()) {
 				Seat s = seatRepository.findById(id).get();
-				s.setAvailable(false);
+				s.setAvailable(true);
+				seatRepository.save(s);
 			}
 			flightInviteRepository.delete(invite);
 			return true;
