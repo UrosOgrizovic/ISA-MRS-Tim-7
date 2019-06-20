@@ -35,7 +35,10 @@ public class FlightReservationController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@Valid @RequestBody FlightsReservationRequestDTO dto) {
-		return new ResponseEntity<>(service.create(dto), HttpStatus.OK);
+		FlightReservationDTO fr = service.create(dto);
+		if (fr != null)
+			return new ResponseEntity<>(fr, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

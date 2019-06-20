@@ -128,11 +128,11 @@ function sendRequest(request) {
 			} else {
 				if (pageNumber > 0)
 					pageNumber--;
-				alert("No results!");
+				toastr.info("No results.");
 			}
 		},
 		error: function(error) {
-			alert("Bad request says server!");
+			toastr.info("Please enter all fields.");
 		}
 	});
 }
@@ -183,7 +183,7 @@ function showPaginationButtons() {
 
 function prevPage() {
 	if (pageNumber == 0) {
-		alert("Already on first page!");
+		toastr.info("Already on first page.");
 		return;
 	}
 
