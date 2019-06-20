@@ -119,8 +119,6 @@ function displayRACSS(racss) {
     
 }
 
-
-
 function viewRACSBranchOffice(boName) {
     localStorage.setItem("branchOfficeName", boName);
     location.replace("RACSBranchOffice.html");

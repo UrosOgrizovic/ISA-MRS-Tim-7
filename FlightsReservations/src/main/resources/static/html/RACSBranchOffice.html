@@ -20,16 +20,23 @@
         <div id="nav-placeholder"></div>
 
         <div class="text">
-          <div class="column">
+          <div style="float: left; width: 50%; padding: 10px;">
+            <table>
+              <tr><td>Branch office name:</td><td id="branch_office_name"></td></tr>
+              <tr><td>Branch office longitude:</td><td id="branch_office_longitude"></td></tr>
+              <tr><td>Branch office latitude:</td><td id="branch_office_latitude"></td></tr>
+              <tr><td style="width: 300px;">Branch office company name:</td><td id="branch_office_company_name"></td></tr>
+            </table>
+            <!--
             <label for="branch_office_name" style="float: left;">Branch office name: </label>
             <div id="branch_office_name" style="float: right;"></div>
-            <label for="branch_office_longitude">Branch office longitude: </label>
+            <label for="branch_office_longitude" style="float: left;">Branch office longitude: </label>
             <div id="branch_office_longitude" style="float: right;"></div>
-            <label for="branch_office_latitude">Branch office latitude: </label>
+            <label for="branch_office_latitude" style="float: left;">Branch office latitude: </label>
             <div id="branch_office_latitude" style="float: right;"></div>
-            <label for="branch_office_company_name">Branch office company name: </label>
+            <label for="branch_office_company_name" style="float: left;">Branch office company name: </label>
             <div id="branch_office_company_name" style="float: right;"></div>
-
+              -->
             
             <select id="car_id_select" class="form-control" style="display:none;"></select>
             
@@ -38,7 +45,7 @@
             </form>
             
           </div>
-        <div class="column">
+        <div style="float: left; width: 40%; padding: 10px;">
             <label for="car_select" style="margin-left: 10px;">Cars</label>
             <select class="form-control" id="car_select">
             </select>      

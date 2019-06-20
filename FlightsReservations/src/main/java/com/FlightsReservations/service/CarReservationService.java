@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,6 @@ import com.FlightsReservations.domain.Car;
 import com.FlightsReservations.domain.CarReservation;
 import com.FlightsReservations.domain.Discount;
 import com.FlightsReservations.domain.Rating;
-import com.FlightsReservations.domain.dto.CarReservationDTO;
 import com.FlightsReservations.domain.dto.CarReservationRequestDTO;
 import com.FlightsReservations.repository.AbstractUserRepository;
 import com.FlightsReservations.repository.CarRepository;
@@ -46,7 +46,8 @@ public class CarReservationService {
 		
 		int reservationDurationHours = (int) ( (endTime.getTime() - startTime.getTime() ) / 3600000 );
 		AbstractUser owner = abstractUserRepository.findByEmail(dto.getOwnerEmail());
-		Car car = carRepository.findById(dto.getCarId()).get();
+		Car car = carRepository.reservationFindById(dto.getCarId()).get();
+		//Car car = carRepository.findById(dto.getCarId()).get();
 		Float total = (float) car.getPricePerHour() * reservationDurationHours;
 		
 		float discount = car.getDiscountValueForPeriod(dto.getStartTime(), dto.getEndTime()); 
