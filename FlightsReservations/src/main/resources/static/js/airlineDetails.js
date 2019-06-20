@@ -1,9 +1,11 @@
 var quickTickets = [];
 var ownerEmail = localStorage.getItem("email");
 var selectedTicketId = null;
+var lastClicked = null;
 
 $(document).ready(function(){
 	$("#airline").hide();
+	$("#makeQuickRes").click(finishReservation);
 });
 
 
@@ -17,10 +19,9 @@ function show(name) {
 			initMap(result);
 		}
 	});	
-	
+	lastClicked = name;
 	$("#airline").show();
 	getQuickReservations(name);
-	$("#makeQuickRes").click(finishReservation);
 }
 
 
@@ -67,7 +68,10 @@ function initMap(result) {
 function updateTable() {
 	var table = $("#QRTable tbody");
 	table.html("");
+	var html = "";
+	console.log(quickTickets.length);
 	quickTickets.forEach(function(ticket){
+		console.log(ticket);
 		row = 
 		`
 		<tr>
@@ -81,8 +85,9 @@ function updateTable() {
 			<td> <button type="button" class="btn btn-success" onclick="showReserveModal(${ticket.id})">Reserve</button></td>
 		</tr>
 		`;
-		table.append(row);
+		html+=row;
 	});
+	table.html(html);
 }
 
 
@@ -102,7 +107,7 @@ function finishReservation() {
 		dataType: "json",
 		success: function(result) {
 			toastr.success("Reservation made successfully.");
-			getQuickReservations();
+			getQuickReservations(lastClicked);
 		},
 		error: function() {
 			toastr.error("Something is wrong with your request.(make quick reservation)"); 

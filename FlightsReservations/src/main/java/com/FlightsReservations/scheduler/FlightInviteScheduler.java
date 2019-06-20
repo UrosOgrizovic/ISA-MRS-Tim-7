@@ -30,7 +30,7 @@ public class FlightInviteScheduler {
 			if (!(now.before(invite.getExpirationDate()) && now.before(invite.getFlightStart()))) {
 				for (Long id : invite.getSeatIds()) {
 					Seat s = seatRepo.findById(id).get();
-					s.setAvailable(false);
+					s.setAvailable(true);
 					seatRepo.save(s);
 				}
 				repo.delete(invite);
