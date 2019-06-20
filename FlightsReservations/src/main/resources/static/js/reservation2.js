@@ -433,7 +433,7 @@ function sendReservationRequest() {
 		data: JSON.stringify(reservation),
 		success: function(result) {
 			console.log(result);
-			reservationReturn = result.body;
+			reservationReturn = result;
 			$("#reservationModal").modal("toggle");
 			$("#continueReservationModal").modal("toggle");
 			toastr.success("Reservation is made.")
@@ -446,35 +446,48 @@ function sendReservationRequest() {
 
 
 function continueReservation() {
-	var airport = null;
-	if ($("#type-search").val() == "OneWay")
-		airport = reservationReturn.flights[0].endAirport;
-	else if ($("#type-search").val() == "RoundTrip")
-		airport = reservationReturn.flights[0].endAirport; 
-	else
-	    airport = reservationReturn.flights[1].endAirport;
+	var flight = null;
+	var endDate = null;
+	if ($("#type-search").val() == "OneWay") {
+		flight = reservationReturn.flights[0];
+		endDate = moment(flight.landingTime, "DD-MM-YYYY HH:mm");
+		endDate.add(30, 'days');
+		endDate = endDate.format("DD-MM-YYYY HH:mm");
+	}
+	else if ($("#type-search").val() == "RoundTrip") {
+		flight = reservationReturn.flights[0];
+		retFlight = reservationReturn.flights[1];
+		endDate = retFlight.takeoffTime;
+	}
+	else {
+		flight = reservationReturn.flights[1];
+		endDate = moment(flight.landingTime, "DD-MM-YYYY HH:mm");
+		endDate.add(30, 'days');
+		endDate = endDate.format("DD-MM-YYYY HH:mm");
+	}
 	
 	$.ajax({
-		url: `/airports/${airport}`,
+		url: `/airports/${flight.endAirport}`,
 		method: "GET",
 		dataType: "json",
 		success: function(airport) {
 			
+			localStorage.setItem("city",airport.city);
+			localStorage.setItem("state", airport.state);
+			localStorage.setItem("flightReservationId", reservationReturn.id);
+			localStorage.setItem("reservationPeriodStart", flight.landingTime);
+			localStorage.setItem("reservationPeriodEnd", endDate);
+			
 			if ($("#reserveHotel").is(":checked")) {	
-				window.location.replace("hotelReservation.html");
-				localStorage.setItem("city") = airport.city;
-				localStorage.setItem("state") = airport.state;
-				localStorage.setItem("flightReservationId") = reservationReturn.id;
-			
+				//window.location.replace("/html/hotelReservation.html");
+				toastr.info("To be implemented...");
 			} else if ($("#reserveCars").is(":checked")) {
-				window.location.replace("/showRACSInCity.html");
-				localStorage.setItem("city") = airport.city;
-				localStorage.setItem("flightReservationId") = reservationReturn.id;
-			
+				window.location.replace("/html/discountCars.html");
 			} else {
 				$("#continueReservationModal").modal("toggle");
 			}
 		}
 	});
 }
+
 
