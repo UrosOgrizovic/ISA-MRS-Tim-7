@@ -58,6 +58,8 @@ public class FlightService {
 					end.getLatitude(), 
 					end.getLongitude(), "K");
 			
+			
+			
 			Flight f = new Flight(
 					dto.getTakeOffTime(), 
 					dto.getLandingTime(), 
@@ -76,13 +78,20 @@ public class FlightService {
 	
 	public List<List<FlightDTO>> search(FlightSearchRequestDTO dto) {
 		if (verifySearchDTO(dto)) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			
 			List<List<FlightDTO>> toCombine = new ArrayList<>();			
 			Pageable pageable = PageRequest.of(dto.getPageNumber(), dto.getResultCount());
-			Long seatOrdinal = getSeatOrdinal(dto.getSeatType());
+			Integer seatOrdinal = getSeatOrdinal(dto.getSeatType());
 			
 			for (FlightSearchQueryDTO query : dto.getQueries()) {		
+				System.out.println(sdf.format(query.getTakeoffDate()));
+				System.out.println(query.getStartCity());
+				System.out.println(query.getEndCity());
+				System.out.println(seatOrdinal);
+				System.out.println(pageable);
+
+				
 				Page<Flight> flights = repository.search(
 						sdf.format(query.getTakeoffDate()), 
 						query.getStartCity(), 
@@ -169,10 +178,10 @@ public class FlightService {
 	
 	
 	
-	private Long getSeatOrdinal(SeatType seatType) {
+	private Integer getSeatOrdinal(SeatType seatType) {
 		if (seatType != null)
-			return (long) seatType.ordinal();
-		return null;
+			return (int) seatType.ordinal();
+		return 0;
 	}
 	
 	

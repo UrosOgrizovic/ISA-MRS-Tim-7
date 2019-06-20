@@ -29,7 +29,6 @@ import com.FlightsReservations.security.TokenUtils;
 import com.FlightsReservations.security.auth.JwtAuthenticationRequest;
 import com.FlightsReservations.service.CustomUserDetailsService;
 
-// Controller for authenticating users
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
