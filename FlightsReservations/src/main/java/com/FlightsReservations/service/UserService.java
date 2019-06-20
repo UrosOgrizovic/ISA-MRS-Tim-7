@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +117,10 @@ public class UserService {
 	
 	
 	public AbstractUser findById(Long id) {
-		return abstractUserRepository.findById(id).get();
+		Optional<AbstractUser> opt = abstractUserRepository.findById(id);
+		if (opt.isPresent())
+			return opt.get();
+		return null;
 	}
 	
 	

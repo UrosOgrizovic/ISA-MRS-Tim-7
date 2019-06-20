@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,57 +20,34 @@ public class User extends AbstractUser {
 
 	private static final long serialVersionUID = -4209208559406236164L;
 
-
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-			name="user_friends",
-	 		joinColumns=@JoinColumn(name="user_id"),
-	        inverseJoinColumns=@JoinColumn(name="friend_id"))
+	@JoinTable(name = "user_friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	private List<User> friends;
-
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<FriendRequest> sentRequests;
-	
-	
+
 	@OneToMany(mappedBy = "reciever", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<FriendRequest> recievedRequests;
-	
-	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name="user_friends",
-	 joinColumns=@JoinColumn(name="friend_id"),
-	 inverseJoinColumns=@JoinColumn(name="user_id")
-	)
-	private List<User> friendOf;
-	
-	
+
 	@OneToMany(mappedBy = "owner")
 	private Set<FlightReservation> flightReservations = new HashSet<>();
+
+	@OneToMany(mappedBy = "user")
+	private Set<FlightInvite> flightInvites = new HashSet<>();
 	
-	//@Column(nullable = false)
-	//private Integer flightBonusPoints;
+	@Column(name = "bonus_points")
+	private Integer flightBonusPoints;
 
 	public User() {
 		super();
+		flightBonusPoints = 0;
 	}
 
 	public User(String firstName, String lastName, String email, String phone, String address, String password,
-			boolean enabled, Integer flightBonusPoints) {
+			boolean enabled) {
 		super(firstName, lastName, email, phone, address, password, enabled);
-		//this.flightBonusPoints = flightBonusPoints;
-	}
-
-	
-
-	@Override
-	public String toString() {
-		return "User [friends=" + friends + ", sentRequests=" + sentRequests + ", recievedRequests=" + recievedRequests
-				+ ", friendOf=" + friendOf + ", flightReservations=" + flightReservations + ", getId()=" + getId()
-				+ ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName() + ", getEmail()="
-				+ getEmail() + ", getPhone()=" + getPhone() + ", getAddress()=" + getAddress() + ", getPassword()="
-				+ getPassword() + ", getAuthorities()=" + getAuthorities() + ", getUsername()=" + getUsername()
-				+ ", isEnabled()=" + isEnabled() + "]";
+		this.flightBonusPoints = 0;
 	}
 
 	public List<FriendRequest> getSentRequests() {
@@ -103,5 +81,27 @@ public class User extends AbstractUser {
 	public void setFriends(List<User> friends) {
 		this.friends = friends;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "User [friends=" + friends + ", sentRequests=" + sentRequests + ", recievedRequests=" + recievedRequests
+				+ ", flightReservations=" + flightReservations + ", flightBonusPoints=" + flightBonusPoints + "]";
+	}
+
+	public Set<FlightInvite> getFlightInvites() {
+		return flightInvites;
+	}
+
+	public void setFlightInvites(Set<FlightInvite> flightInvites) {
+		this.flightInvites = flightInvites;
+	}
+
+	public Integer getFlightBonusPoints() {
+		return flightBonusPoints;
+	}
+
+	public void setFlightBonusPoints(Integer flightBonusPoints) {
+		this.flightBonusPoints = flightBonusPoints;
+	}
+
 }

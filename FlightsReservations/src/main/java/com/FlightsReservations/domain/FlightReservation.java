@@ -1,7 +1,9 @@
 package com.FlightsReservations.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,7 +32,7 @@ public class FlightReservation extends Reservation {
 
 	@ManyToMany
 	@JoinTable(name = "reservations_flights", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"))
-	private Set<Flight> flights = new HashSet<>();
+	private List<Flight> flights = new ArrayList<>();
 
 	public FlightReservation() {
 		super();
@@ -46,14 +48,6 @@ public class FlightReservation extends Reservation {
 
 	public void setPassengers(Set<Passenger> passengers) {
 		this.passengers = passengers;
-	}
-
-	public Set<Flight> getFlights() {
-		return flights;
-	}
-
-	public void setFlights(Set<Flight> flights) {
-		this.flights = flights;
 	}
 
 	public Set<FlightInvite> getInvites() {
@@ -78,6 +72,14 @@ public class FlightReservation extends Reservation {
 
 	public void setAirlines(Set<Airline> airlines) {
 		this.airlines = airlines;
+	}
+
+	public List<Flight> getFlights() {
+		return flights;
+	}
+
+	public void setFlights(List<Flight> flights) {
+		this.flights = flights;
 	}
 
 }

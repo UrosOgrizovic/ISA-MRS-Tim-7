@@ -1,7 +1,6 @@
 package com.FlightsReservations.controller;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -50,11 +49,29 @@ public class FlightReservationController {
 	}
 	
 	
-	@PutMapping(value = "/acceptInvite/{inviteId}/{invitedEmail}")
-	public ResponseEntity<?> acceptInvite(@NotNull @Positive @PathVariable Long inviteId, @NotBlank @Email @PathVariable String invitedEmail) {
-		if (service.acceptInvite(inviteId, invitedEmail)) 
+	
+	@PutMapping(value = "/confirmInvite/{inviteId}/{passport}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> acceptInvite(@NotNull @Positive @PathVariable("inviteId") Long inviteId,
+			@NotBlank @PathVariable("passport") String passport) {
+		if (service.acceptInvite(inviteId, passport)) 
 			return new ResponseEntity<>(HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@PutMapping(value = "/declineInvite/{inviteId}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> declineInvite(@NotNull @Positive @PathVariable Long inviteId) {
+		if (service.declineInvite(inviteId)) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}	
+	
+	
+	@GetMapping(value = "/getInvites")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> getInvites() {
+		return new ResponseEntity<>(service.getInvites(), HttpStatus.OK);
 	}
 	
 	

@@ -2,9 +2,12 @@ package com.FlightsReservations.domain;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,12 +22,6 @@ public class FlightInvite {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private FlightReservation reservation;
-
-	@Column(nullable = false)
-	private String friendEmail;
-
 	@Column(nullable = false)
 	private boolean accepted;
 
@@ -32,32 +29,37 @@ public class FlightInvite {
 	private Date expirationDate;
 
 	@Column(nullable = false)
-	private Long seatId;
+	private Date flightStart;
+
+	@ElementCollection
+	private Set<Long> seatIds = new HashSet<>();
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private FlightReservation reservation;
 
 	public FlightInvite() {
 		super();
 	}
 
-	public FlightInvite(FlightReservation reservation, String friendEmail, Long seatId) {
+	public FlightInvite(FlightReservation reservation, User user, Date flightStart) {
 		super();
 		this.reservation = reservation;
-		this.friendEmail = friendEmail;
-		this.seatId = seatId;
+		this.user = user;
 		this.accepted = false;
 		
 		this.expirationDate = new Date();
 		Calendar c = Calendar.getInstance();
 		c.setTime(this.expirationDate);
-		c.add(Calendar.DATE, 1);
+		c.add(Calendar.DATE, 3);
 		this.expirationDate = c.getTime();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+		
+		this.flightStart = flightStart;
+		c.setTime(this.flightStart);
+		c.add(Calendar.HOUR_OF_DAY, -3);
+		this.flightStart = c.getTime();
 	}
 
 	public FlightReservation getReservation() {
@@ -68,12 +70,12 @@ public class FlightInvite {
 		this.reservation = reservation;
 	}
 
-	public String getFriendEmail() {
-		return friendEmail;
+	public Long getId() {
+		return id;
 	}
 
-	public void setFriendEmail(String friendEmail) {
-		this.friendEmail = friendEmail;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public boolean isAccepted() {
@@ -92,12 +94,28 @@ public class FlightInvite {
 		this.expirationDate = expirationDate;
 	}
 
-	public Long getSeatId() {
-		return seatId;
+	public Date getFlightStart() {
+		return flightStart;
 	}
 
-	public void setSeatId(Long seatId) {
-		this.seatId = seatId;
+	public void setFlightStart(Date flightStart) {
+		this.flightStart = flightStart;
+	}
+
+	public Set<Long> getSeatIds() {
+		return seatIds;
+	}
+
+	public void setSeatIds(Set<Long> seatIds) {
+		this.seatIds = seatIds;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
