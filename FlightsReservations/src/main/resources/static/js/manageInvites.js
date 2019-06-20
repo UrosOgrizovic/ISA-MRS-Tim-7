@@ -47,8 +47,8 @@ function displayInvites(invites) {
                 <td> ${flights[0].startAirport} </td> // start destination
                 <td> ${flights[flights.length - 1].endAirport} </td> // end destination
                 
-                <td> <button type="button" class="btn btn-success" onclick=createPassportModal("${invite.reservation.id}") >Accept invite</button>  </td>
-                <td> <button type="button" class="btn btn-danger" onclick=declineInvite("${invite.reservation.id}")>Decline invite</button> </td></tr>
+                <td> <button type="button" class="btn btn-success" onclick=createPassportModal("${invite.id}") >Accept invite</button>  </td>
+                <td> <button type="button" class="btn btn-danger" onclick=declineInvite("${invite.id}")>Decline invite</button> </td></tr>
             </tr>`;        
 	});
 	if (html) {
