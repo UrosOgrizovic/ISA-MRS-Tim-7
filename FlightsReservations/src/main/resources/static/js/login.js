@@ -40,7 +40,7 @@ $(document).ready(function() {
                 if (result.type == "AA") {
                 	location.replace("/html/adminHomepage.html");
                 } else if (result.type == "RA") {
-                	location.replace("/racs_admin");
+                	location.replace("/html/userHomepage.html");
                 } else if (result.type == "HA") {
                 	location.replace("/hotel_admin")
                 } else {
