@@ -444,22 +444,37 @@ function sendReservationRequest() {
 	});
 }
 
+
 function continueReservation() {
-	var lastAirport = reservationReturn.flights[reservationReturn.flights.length-1].endAirport;
+	var airport = null;
+	if ($("#type-search").val() == "OneWay")
+		airport = reservationReturn.flights[0].endAirport;
+	else if ($("#type-search").val() == "RoundTrip")
+		airport = reservationReturn.flights[0].endAirport; 
+	else
+	    airport = reservationReturn.flights[1].endAirport;
+	
 	$.ajax({
-		url: `/airports/${lastAirport}`,
+		url: `/airports/${airport}`,
 		method: "GET",
 		dataType: "json",
 		success: function(airport) {
-			localStorage.setItem("reservationCity", airport.city);
-
+			
 			if ($("#reserveHotel").is(":checked")) {	
-				window.location.replace("/showHotelsInCity.html");
+				window.location.replace("hotelReservation.html");
+				localStorage.setItem("city") = airport.city;
+				localStorage.setItem("state") = airport.state;
+				localStorage.setItem("flightReservationId") = reservationReturn.id;
+			
 			} else if ($("#reserveCars").is(":checked")) {
 				window.location.replace("/showRACSInCity.html");
+				localStorage.setItem("city") = airport.city;
+				localStorage.setItem("flightReservationId") = reservationReturn.id;
+			
 			} else {
 				$("#continueReservationModal").modal("toggle");
 			}
 		}
-	});	
+	});
 }
+
