@@ -172,6 +172,9 @@ public class FlightReservationService {
 				s.setAvailable(true);
 				seatRepository.save(s);
 			}
+			FlightReservation r = invite.getReservation();
+			r.getInvites().remove(invite);
+			repository.save(r);
 			flightInviteRepository.delete(invite);
 			return true;
 		}

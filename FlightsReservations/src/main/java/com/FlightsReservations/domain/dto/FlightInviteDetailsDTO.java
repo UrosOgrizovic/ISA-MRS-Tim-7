@@ -6,6 +6,7 @@ import java.util.Date;
 import com.FlightsReservations.domain.FlightInvite;
 
 public class FlightInviteDetailsDTO {
+	private Long id;
 	private String sender;
 	private String acceptDeadline;
 	private FlightReservationDTO reservation;
@@ -16,6 +17,7 @@ public class FlightInviteDetailsDTO {
 
 	public FlightInviteDetailsDTO(FlightInvite invite) {
 		super();
+		this.id = invite.getId();
 		this.sender = invite.getReservation().getOwner().getEmail();
 		Date d = null;
 		if (invite.getFlightStart().before(invite.getExpirationDate()))
@@ -25,6 +27,14 @@ public class FlightInviteDetailsDTO {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		this.acceptDeadline = sdf.format(d);
 		this.reservation = new FlightReservationDTO(invite.getReservation());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getSender() {
