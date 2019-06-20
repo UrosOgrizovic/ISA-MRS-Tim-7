@@ -100,7 +100,6 @@ public class FlightReservationService {
 					if (!invites.containsKey(inviteDTO.getFriendEmail())) 
 						invites.put(inviteDTO.getFriendEmail(), new ArrayList<>());
 					invites.get(inviteDTO.getFriendEmail()).add(s.getId());
-					r.setPrice(r.getPrice() + calculatePrice(s, f) - ( (float) 0.1 * owner.getFlightBonusPoints()));
 				}
 			}
 			
@@ -141,6 +140,7 @@ public class FlightReservationService {
 		if (verifyAcceptInvite(inviteId, u)) {
 			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
 			invite.setAccepted(true);
+			FlightReservation r = invite.getReservation();
 			for (Long id : invite.getSeatIds()) {
 				Optional<Seat> opt = seatRepository.findById(id);
 				if (opt.isPresent()) {
@@ -148,7 +148,9 @@ public class FlightReservationService {
 					Passenger p = new Passenger(u.getFirstName(), u.getLastName(), passport, s);
 					s.setPassenger(p);
 					invite.setAccepted(true);
+					r.setPrice(r.getPrice() + calculatePrice(s, s.getFlight()) - ( (float) 0.1 * u.getFlightBonusPoints()));
 					seatRepository.save(s);
+					repository.save(r);
 				}
 			}
 			flightInviteRepository.save(invite);
@@ -159,13 +161,16 @@ public class FlightReservationService {
 	
 	
 	
-	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public boolean declineInvite(Long inviteId) {
 		AbstractUser au = (AbstractUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User u = userRepository.findByEmail(au.getEmail());
 		if (verifyDeclineInvite(inviteId, u)) {
 			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
+			for (Long id : invite.getSeatIds()) {
+				Seat s = seatRepository.findById(id).get();
+				s.setAvailable(false);
+			}
 			flightInviteRepository.delete(invite);
 			return true;
 		}
@@ -206,7 +211,7 @@ public class FlightReservationService {
 	
 	private void sendInviteEmail(FlightInvite invite) {
 		String subject = "New trip invite!";
-		String template = "You have new invite by %s (invite %d) check it out!";
+		String template = "You have new invite by %s (invite %d) check it here: http://localhost:8080/html/manageInvites.html";
 		String text = String.format(template, invite.getReservation().getOwner().getEmail(),
 				invite.getId());
 		emailService.sendEmail("ivkovicdjordje1997@gmail.com", subject, text);
