@@ -1,8 +1,8 @@
 import {loadNavbar} from "./navbar.js"; 
 import { checkRoleFromToken, parseJwt } from "./securityStuff.js";
 
-var getAllInvitesLink = "/fligthReservations/getInvites";
-var acceptInviteLink = "/flightReservations/acceptInvite";
+var getAllInvitesLink = "/flightReservations/getInvites";
+var acceptInviteLink = "/flightReservations/confirmInvite";
 var declineInviteLink = "/flightReservations/declineInvite";
 
 loadNavbar('invitesNavItem'); 
@@ -39,17 +39,17 @@ function getAllInvites() {
 function displayInvites(invites) {
     var html = "";
 	invites.forEach(function(invite){
-		html += 
-		`
-        <tr>
-            <td> </td>
-			<td> ${invite.firstName} </td>
-			<td> ${invite.flights[0].startAirport} </td> // start destination
-            <td> ${invite.flights[flights.length - 1].endAirport} </td> // end destination
-            <td> <button type="button" class="btn btn-success" onclick=acceptInvite("${invite.id}")>Accept invite</button>  </td>
-			<td> <button type="button" class="btn btn-danger" onclick=declineInvite("${invite.id}")>Decline invite</button> </td></tr>
-		</tr>
-		`;
+        var flights = invite.reservation.flights;
+        html += `
+            <tr>
+                <td> ${invite.sender} </td>
+                <td> ${invite.acceptDeadline} </td>
+                <td> ${flights[0].startAirport} </td> // start destination
+                <td> ${flights[flights.length - 1].endAirport} </td> // end destination
+                
+                <td> <button type="button" class="btn btn-success" onclick=createPassportModal("${invite.reservation.id}") >Accept invite</button>  </td>
+                <td> <button type="button" class="btn btn-danger" onclick=declineInvite("${invite.reservation.id}")>Decline invite</button> </td></tr>
+            </tr>`;        
 	});
 	if (html) {
 		$("#invitesTable tbody").html(html);
@@ -57,14 +57,44 @@ function displayInvites(invites) {
 	}
 }
 
+window.createPassportModal = createPassportModal;
+function createPassportModal(inviteId) {
+    inviteId = parseInt(inviteId);
+    
+   var modalBody = "<div class=\"modal-body\">" +
+   "<label for=\"passport\">Passport number</label>" +
+   "<input type=\"text\" class=\"form-control\" id=\"passport"+inviteId+"\"></div>";
+   var modalFooter = "<div class=\"modal-footer\">" +
+   "<button type=\"button\" class=\"btn btn-primary\" onclick=acceptInvite("+inviteId+")>Save changes</button>" +
+   "<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" onclick=refreshModal()>Close</button></div>";
+   /*$(".modal-body").append(modalBody);
+   $(".modal-footer").append(modalFooter);*/
+    document.getElementById("passportModal").setAttribute("aria-hidden", "false");
+    
+    
+    $(".modal-content").append(modalBody);
+    $(".modal-content").append(modalFooter);
+    $('#passportModal').modal('show');
+}
+
+window.refreshModal = refreshModal;
+function refreshModal() {
+    $("#passportModal").modal("hide");
+    $(".modal-body").remove();
+    $(".modal-footer").remove();
+    //console.log(document);
+}
+
 window.acceptInvite = acceptInvite;
-function acceptInvite(id) {
+function acceptInvite(inviteId) {
+    var passportNumber = document.getElementById("passport" + inviteId).value;
+    
     $.ajax({
-		url: acceptInviteLink + "/" + id,
-		method: "GET",
-        data: "json",
+		url: acceptInviteLink + "/" + inviteId + "/" + passportNumber,
+		method: "PUT",
         headers: {"Authorization": "Bearer " + token},
 		success: function() {
+            refreshModal();
             toastr.success("Invite accept successful")
 			getAllInvites();
 		},	
@@ -72,17 +102,18 @@ function acceptInvite(id) {
             toastr.error("Invite accept unsuccessful");
             console.log(error);
 		}
-	});
+    });
+
 }
 
 window.declineInvite = declineInvite;
 function declineInvite(id) {
     $.ajax({
 		url: declineInviteLink + "/" + id,
-		method: "GET",
-        data: "json",
+		method: "PUT",
         headers: {"Authorization": "Bearer " + token},
 		success: function() {
+            refreshModal();
             toastr.success("Invite decline successful");
 			getAllInvites();
 		},	

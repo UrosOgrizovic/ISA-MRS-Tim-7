@@ -27,17 +27,33 @@
 				<thead class="thead-light">
 					<tr>
                         <th scope="col">Friend email</th>
+                        <th scope="col">Accept deadline</th>
 						<th scope="col">Start destination</th>
 						<th scope="col">End destination</th>
-                        <th scope="col">Approve</th>
+                        <th scope="col">Accept</th>
                         <th scope="col">Decline</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
-			
-		</div>
+            
+            
+            <div class="modal" tabindex="-1" role="dialog" aria-hidden="true" id="passportModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enter passport</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
 		
 		<script src="../js/ajaxSetup.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
