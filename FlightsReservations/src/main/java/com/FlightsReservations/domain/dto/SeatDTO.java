@@ -58,10 +58,6 @@ public class SeatDTO {
 		this.flightId = flightId;
 	}
 
-	public Boolean getAvailable() {
-		return available;
-	}
-
 	public void setAvailable(Boolean available) {
 		this.available = available;
 	}

@@ -153,7 +153,6 @@ public class AirlineService {
 		// daily reports:   dd-MM-yyyy
 		// monthly reports: MM-yyyy
 		// weekly reports:  W-MM-yyyy (W - week of month)
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		AirlineAdmin admin = (AirlineAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Airline a = repository.findByName(admin.getAirline().getName());
 		
@@ -182,8 +181,6 @@ public class AirlineService {
 	
 	
 	public Map<String, Float> getIncomeForPeriod(String startDateStr, String endDateStr) {
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
 		LinkedHashMap<String, Float> income = new LinkedHashMap<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		

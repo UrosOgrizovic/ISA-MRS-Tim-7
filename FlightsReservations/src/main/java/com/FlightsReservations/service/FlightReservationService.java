@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.FlightsReservations.domain.AbstractUser;
 import com.FlightsReservations.domain.Airline;
 import com.FlightsReservations.domain.AirlineAdmin;
 import com.FlightsReservations.domain.AirlinePriceList;
@@ -27,20 +28,22 @@ import com.FlightsReservations.domain.Passenger;
 import com.FlightsReservations.domain.Seat;
 import com.FlightsReservations.domain.User;
 import com.FlightsReservations.domain.dto.FlightInviteDTO;
+import com.FlightsReservations.domain.dto.FlightInviteDetailsDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDTO;
 import com.FlightsReservations.domain.dto.FlightReservationDetailsDTO;
 import com.FlightsReservations.domain.dto.FlightsReservationRequestDTO;
 import com.FlightsReservations.domain.dto.PassengerDTO;
 import com.FlightsReservations.domain.dto.QuickFlightReservationDTO;
-import com.FlightsReservations.domain.dto.ResponseDTO;
 import com.FlightsReservations.domain.enums.SeatType;
 import com.FlightsReservations.repository.AirlineRepository;
 import com.FlightsReservations.repository.FlightInviteRepository;
 import com.FlightsReservations.repository.FlightRepository;
 import com.FlightsReservations.repository.FlightReservationRepository;
+import com.FlightsReservations.repository.SeatRepository;
 import com.FlightsReservations.repository.UserRepository;
 
 @Service
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 public class FlightReservationService {
 
 	@Autowired
@@ -61,13 +64,17 @@ public class FlightReservationService {
 	@Autowired
 	private AirlineRepository airlineRepository;
 	
+	@Autowired
+	private SeatRepository seatRepository;
 	
-	@Transactional(readOnly = false)
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public FlightReservationDTO create(FlightsReservationRequestDTO reservationDTO) {
 		
 		if (verifyCreateReservation(reservationDTO)) {
 			User owner = userRepository.findByEmail(reservationDTO.getOwnerEmail());
 			FlightReservation r = new FlightReservation(new Date(), (float) 0, owner, true);
+			HashMap<String, ArrayList<Long>> invites = new HashMap<String, ArrayList<Long>>();
 			
 			for (FlightReservationDetailsDTO detailDTO : reservationDTO.getFlights()) {
 				Flight f = flightRepository.findById(detailDTO.getFlightId()).get();
@@ -76,24 +83,29 @@ public class FlightReservationService {
 				f.getAirline().getReservations().add(r);
 				r.getAirlines().add(f.getAirline());
 				
+				
 				for (PassengerDTO passengerDTO : detailDTO.getPassengers()) {
 					Seat s = findSeat(f, passengerDTO.getSeatNumber());
 					s.setAvailable(false);
 					r.setPrice(r.getPrice() + calculatePrice(s, f));
 					Passenger p= new Passenger(passengerDTO, s);
 					r.getPassengers().add(p);
+					s.setPassenger(p);
 				}
+				
 				
 				for (FlightInviteDTO inviteDTO : detailDTO.getInvites()) {
 					Seat s = findSeat(f, inviteDTO.getSeatNumber());
 					s.setAvailable(false);
-					FlightInvite i = new FlightInvite(r, inviteDTO.getFriendEmail(), s.getId());
-					r.setPrice(r.getPrice() + calculatePrice(s, f));
-					r.getInvites().add(i);
-					sendInviteEmail(owner, i);
+					if (!invites.containsKey(inviteDTO.getFriendEmail())) 
+						invites.put(inviteDTO.getFriendEmail(), new ArrayList<>());
+					invites.get(inviteDTO.getFriendEmail()).add(s.getId());
+					r.setPrice(r.getPrice() + calculatePrice(s, f) - ( (float) 0.1 * owner.getFlightBonusPoints()));
 				}
 			}
 			
+			createInvites(invites, reservationDTO.getFlights().get(0).getFlightId(), r);
+			owner.setFlightBonusPoints(owner.getFlightBonusPoints() + 100);
 			r = repository.save(r);
 			try { repository.flush(); } 
 			catch (OptimisticLockingFailureException ex) { return null; }
@@ -103,7 +115,105 @@ public class FlightReservationService {
 	}
 	
 	
-	// TODO: ADD ADDITIONAL DISCOUNT BASED ON USER POINTS
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	private void createInvites(HashMap<String, ArrayList<Long>> invites, Long firstFlightId, FlightReservation r) {
+		Flight f = flightRepository.findById(firstFlightId).get();
+		Date d = f.getTakeoffTime();
+		for (String invite : invites.keySet()) {
+			User u = userRepository.findByEmail(invite);
+			FlightInvite i = new FlightInvite(r, u, d);
+			u.getFlightInvites().add(i);
+			r.getInvites().add(i);
+			i.getSeatIds().addAll(invites.get(invite));
+			flightInviteRepository.save(i);
+			sendInviteEmail(i);
+		}
+	}
+	
+	
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public boolean acceptInvite(Long inviteId, String passport) {
+		AbstractUser au = (AbstractUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = userRepository.findByEmail(au.getEmail());
+		
+		if (verifyAcceptInvite(inviteId, u)) {
+			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
+			invite.setAccepted(true);
+			for (Long id : invite.getSeatIds()) {
+				Optional<Seat> opt = seatRepository.findById(id);
+				if (opt.isPresent()) {
+					Seat s = opt.get();
+					Passenger p = new Passenger(u.getFirstName(), u.getLastName(), passport, s);
+					s.setPassenger(p);
+					invite.setAccepted(true);
+					seatRepository.save(s);
+				}
+			}
+			flightInviteRepository.save(invite);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public boolean declineInvite(Long inviteId) {
+		AbstractUser au = (AbstractUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = userRepository.findByEmail(au.getEmail());
+		if (verifyDeclineInvite(inviteId, u)) {
+			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
+			flightInviteRepository.delete(invite);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	public List<FlightInviteDetailsDTO> getInvites() {
+		AbstractUser au = (AbstractUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = userRepository.findByEmail(au.getEmail());
+		List<FlightInviteDetailsDTO> invites = new ArrayList<>();
+		for (FlightInvite invite : u.getFlightInvites())
+			if (!invite.isAccepted())
+				invites.add(new FlightInviteDetailsDTO(invite));
+		return invites;
+	}
+	
+	
+	
+	private boolean verifyDeclineInvite(Long inviteId, User user) {
+		Optional<FlightInvite> opt = flightInviteRepository.findById(inviteId);
+		if (!opt.isPresent())
+			return false;
+		
+		FlightInvite i = opt.get();
+		if (i.getUser().getId() != user.getId())
+			return false;
+		
+		Date now = new Date();
+		if (now.after(i.getExpirationDate()) || now.after(i.getFlightStart()))
+			return false;
+		
+		return true;
+	}
+	
+	
+	
+	private void sendInviteEmail(FlightInvite invite) {
+		String subject = "New trip invite!";
+		String template = "You have new invite by %s (invite %d) check it out!";
+		String text = String.format(template, invite.getReservation().getOwner().getEmail(),
+				invite.getId());
+		emailService.sendEmail("ivkovicdjordje1997@gmail.com", subject, text);
+	}
+
+	
+	
 	private float calculatePrice(Seat s, Flight f) {
 		SeatType t = s.getType(); 
 		AirlinePriceList pricelist = f.getAirline().getPricelist();
@@ -119,66 +229,30 @@ public class FlightReservationService {
 	}
 
 	
-	private void sendInviteEmail(User owner, FlightInvite invite) {
-		String subject = "New trip invite!";
-		String template = "Your friend %s invited you to a trip.\nYou can view details and accept invite on this page: http://localhost:8080/flightsFront/user/flightInvitation.html/%s";
-		String text = String.format(template, owner.getFirstName() + " " + owner.getLastName(), invite.getId());
-		emailService.sendEmail("ivkovicdjordje1997@gmail.com", subject, text);
-	}
-
 	
-	public boolean acceptInvite(Long inviteId, String invitedEmail) {
-		if (verifyAcceptInvite(inviteId, invitedEmail)) {
-			User invitedUser = userRepository.findByEmail(invitedEmail);
-			FlightInvite invite = flightInviteRepository.findById(inviteId).get();
-			invite.setAccepted(true);
-			
-			FlightReservation r = new FlightReservation();
-			r.setOwner(invitedUser);
-			invitedUser.getFlightReservations().add(r);
-			r.setPrice(invite.getReservation().getPrice());
-			r.setDateOfReservation(new Date());
-			r.setDiscount((float)0);
-			r.setConfirmed(true);
-			
-			for (Flight f : invite.getReservation().getFlights()) {
-				r.getFlights().add(f);
-				f.getReservations().add(r);
-				//Passenger p = new Passenger(
-					//	invitedUser.getFirstName(), 
-						//invitedUser.getLastName(), 
-					//	invite.getPassport(),
-					//	seatRepository.findById(invite.getSeatId()).get());
-				//r.getPassengers().add(p);
-			}
-			repository.save(r);
-			return true;
-		}
-		return false;
-	}
-
-	
-	private boolean verifyAcceptInvite(Long inviteId, String invitedEmail) {
+	private boolean verifyAcceptInvite(Long inviteId, User u) {
 		Optional<FlightInvite> opt = flightInviteRepository.findById(inviteId);
 		if (!opt.isPresent())
 			return false;
 		
 		FlightInvite invite = opt.get();
+		Date now = new Date();
+		
+		if (!(now.before(invite.getExpirationDate()) && now.before(invite.getFlightStart())))
+			return false;
 		
 		if (invite.isAccepted())
 			return false;
 		
-		if (userRepository.findByEmail(invitedEmail) == null)
-			return false;
-		
-		if (!invite.getFriendEmail().equals(invitedEmail))
-			return false;
-		
 		if (new Date().after(invite.getExpirationDate()))
+			return false;
+		
+		if (invite.getUser().getId() != u.getId())
 			return false;
 			
 		return true;
 	}
+	
 	
 	
 	private boolean verifyCreateReservation(FlightsReservationRequestDTO dto) {
@@ -202,6 +276,8 @@ public class FlightReservationService {
 		return true;
 	}
 	
+	
+	
 	private boolean verifyPassportUniqueness(Flight flight, List<PassengerDTO> passengers) {
 		Set<String> flightPassports = flightRepository.findPassportsInFlight(flight.getId());
 		for (PassengerDTO passenger : passengers) {
@@ -211,6 +287,7 @@ public class FlightReservationService {
 		}
 		return true;
 	}
+	
 	
 	
 	private boolean verifyInvites(User sender, List<FlightInviteDTO> invites) {
@@ -223,6 +300,7 @@ public class FlightReservationService {
 		}
 		return true;
 	}
+	
 	
 	
 	private boolean verifyRequestedSeats(Flight flight, List<PassengerDTO> passengers, List<FlightInviteDTO> invites) {
@@ -253,6 +331,7 @@ public class FlightReservationService {
 	}
 
 	
+	
 	private boolean verifySeatUniqueness(List<PassengerDTO> passengers, List<FlightInviteDTO> invites) {
 		int numberOfRequestedSeats = passengers.size() + invites.size();
 		Set<Integer> seatNumbers = new HashSet<>();
@@ -270,8 +349,10 @@ public class FlightReservationService {
 				return s;
 		return null;
 	}
-
 	
+	
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public boolean cancel(Long id) {
 		FlightReservation fr = repository.findById(id).get();
 		
@@ -292,7 +373,6 @@ public class FlightReservationService {
 			}
 			// difference between now (cancellation time) and reservation start time in hours
 			long diff = (minDate.getTime() - now.getTime()) / (60 * 60 * 1000);
-			System.out.println(diff);
 			// reservation cannot be cancelled less than two days before the reservation starts
 			if (diff < 3) return false;
 			
@@ -302,6 +382,8 @@ public class FlightReservationService {
 		}
 		return false;
 	}
+	
+	
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public boolean createQuickReservation(Long id, Integer seatNum, Float discount) {
@@ -333,7 +415,7 @@ public class FlightReservationService {
 	}
 	
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public FlightReservationDTO takeQR(Long reservationId, String passport) {
 		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -357,6 +439,7 @@ public class FlightReservationService {
 	}
 	
 	
+	
 	private boolean verifyCreateQR(Long id, Integer seatNum) {
 		Optional<Flight> opt = flightRepository.findById(id);
 		if (!opt.isPresent())
@@ -371,6 +454,7 @@ public class FlightReservationService {
 		
 		return true;
 	}
+	
 	
 	
 	private boolean verifyTakeQR(Long reservationId, String ownerEmail, String passport) {
@@ -406,7 +490,7 @@ public class FlightReservationService {
 	}
 	
 	
-	@Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+	
 	public List<QuickFlightReservationDTO> getQuickReservations(String airlineName) {
 		List<QuickFlightReservationDTO> results = new ArrayList<>();
 		List<FlightReservation> quickReservations = repository.findQuickReservations();

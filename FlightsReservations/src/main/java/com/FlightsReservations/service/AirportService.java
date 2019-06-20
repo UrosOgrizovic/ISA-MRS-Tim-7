@@ -67,13 +67,6 @@ public class AirportService {
 		AirportDTO dto = new AirportDTO(a);
 		for (Airline al : a.getAirlines())
 			dto.getAirlines().add(al.getName());
-		
-//		for (Flight f : a.getStarts())
-//			dto.getFlights().add(f.buduciId);
-//		
-//		for (Flight f : a.getEnds())
-//			dto.getFlights().add(f.buduciId);
-		
 		return dto;
 	}	
 }
